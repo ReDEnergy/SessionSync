@@ -1,0 +1,12 @@
+{
+  "name": "sessions-sync",
+  "fullName": "Sessions Sync",
+  "id": "sessionsync@gabrielivanica.com",
+  "description": "Save sessions as bookmarks and sync using Firefox Sync",
+  "author": "Gabriel Ivanica",
+  "license": "MPL 2.0",
+  "version": "0.1",
+  "permissions": {
+    "private-browsing": true
+  }
+}

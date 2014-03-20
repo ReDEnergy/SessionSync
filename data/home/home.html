@@ -1,0 +1,141 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+
+	<meta charset="utf-8">
+	<title>Bookmark UI</title>
+	<link rel="icon" href="icon16.png" />
+	<link rel="stylesheet" href="resource://jid1-ksjmjr3rkzsqka-at-jetpack/bookmarks-ui/data/home/home.css" />
+
+</head>
+
+<body>
+
+	<div id="wrapper">
+
+		<!-- Identity -->
+		<div id="identity">
+			<div class="logo"> </div>
+			<div class="title"> </div>
+			<div id="save" class="save"> Settings saved </div>
+		</div>
+
+		<div id="container">
+			<!-- HotKeys -->
+			<div class="box">
+				<div class="title">
+					Hotkeys
+				</div>
+				<div class="cell">
+					<div id="hotkeys">
+						<div id="kstate" class="state"> Disable </div>
+
+						<div class="selectlist">
+							<div class="info"> Keyboard Key </div>
+							<div id="keyletter" class="drop" > </div>
+							<div id="dropKey" class="dropdown"> </div>
+						</div>
+
+						<div id="specialkey">
+							<div id="kctrl" value='1'> Ctrl </div>
+							<div id="kalt" value='2'> Alt </div>
+							<div id="kshift" value='3'> Shift </div>
+						</div>
+
+						<div id="resetkeys" class="reset" > Default </div>
+					</div>
+				</div>
+			</div>
+
+
+			<!-- Mouse Actions -->
+			<div class="box">
+				<div class="title">
+					Mouse Actions
+				</div>
+				<div class="cell">
+					<div id="mouse">
+						<div class="selectlist">
+							<div class="info"> Left click </div>
+							<div id="mouseL" class="drop"> </div>
+							<div id="mouse_drop_L" class="dropdown"> </div>
+						</div>
+
+						<div class="selectlist">
+							<div class="info"> Middle click	</div>
+							<div id="mouseM" class="drop"> </div>
+							<div id="mouse_drop_M" class="dropdown"> </div>
+						</div>
+
+						<div class="selectlist">
+							<div class="info"> Right click </div>
+							<div id="mouseR" class="drop"> </div>
+							<div id="mouse_drop_R" class="dropdown"> </div>
+						</div>
+
+						<div id="resetmouse" class="reset"> Default </div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<div id="container">
+			<!-- Dimensions -->
+			<div class="box">
+				<div class="title">
+					Panel Dimensions
+				</div>
+				<div class="cell">
+					<div id="dimensions">
+						<div class="selectlist">
+							<div class="info"> Height </div>
+							<div id="panelH" class="drop"> </div>
+							<div id="panelH_drop" class="dropdown"> </div>
+						</div>
+
+						<div class="selectlist">
+							<div class="info"> Columns </div>
+							<div id="panelC" class="drop"> </div>
+							<div id="panelC_drop" class="dropdown"> </div>
+						</div>
+
+						<div id="resetdims" class="reset" > Default </div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Background Image -->
+			<div class="box">
+				<div class="title"> Background </div>
+				<div class="cell">
+					<div id="load_img" class="state"> Click to load an image </div>
+					<div id="preview"> </div>
+					<div id="resetbackground" class="reset"> Default </div>
+					<input id="browse_img" type="file"/>
+				</div>
+			</div>
+
+			<!-- About -->
+			<div class="box">
+				<div class="title"> About </div>
+				<div class="cell">
+					<div id="credits">
+						<div class="state"> 
+						  <a id="version" href="https://github.com/ReDEnergy/Bookmarks-UI/tree/release" 
+						      title="GitHub source code" target="_blank"> Version </a>
+                        </div>
+						<div class="state" style="margin: 0;">
+							<a href="mailto:gabriel.ivanica@gmail.com?Subject=Feedback%20-%20Bookmarks%20UI%20"> Feedback </a>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</body>
+</html>
+
+
+
