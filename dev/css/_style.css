@@ -1,0 +1,135 @@
+@charset "utf-8";
+/* CSS Document */
+
+/* Panel Style */
+/* TODO inspect if possible to append UI relative to btn */
+#sessions-sync {
+	width: 700px;
+	height: 400px;
+
+	background: #FFF;
+	border: 1px solid #BBB;
+	border-radius: 3px;
+	font-size: 12px;
+	font-family: "Open Sans", "Segoe UI", Arial, Helvetica, sans-serif;
+
+	position: fixed;
+	z-index: 100;
+
+	transition: all 0.2s;
+	box-shadow: 0px 0px 5px 0px #CCC;
+}
+
+#sessions-sync[state='centered'] {
+	margin: -200px -350px;
+	top: 50%;
+	left: 50%;
+}
+
+#sessions-sync[state='pinned-right'] {
+	width: 600px;
+	margin: 0 0 0 -565px;
+}
+
+#sessions-sync[state='pinned-left'] {
+	margin: 0 0 0 -35px;
+}
+
+#sessions-sync[show='true'] {
+	display: block;
+}
+
+#sessions-sync[show='false'] {
+	display: none;
+}
+
+/*
+ * Media Queries
+ */
+@media (min-width: 600px) and (max-width: 700px) {
+	#sessions-sync {
+		width: 600px;
+	}
+	#sessions-sync[state='centered'] {
+		margin: -200px -300px;
+	}
+}
+
+@media (max-width: 600px) {
+	#sessions-sync {
+		width: 500px;
+	}
+	#sessions-sync[state='centered'] {
+		margin: -200px -250px;
+	}
+	#sessions-sync[state='pinned-right'] {
+		margin: 0 0 0 -465px;
+	}
+}
+
+#sessions-sync .group {
+	width: 100%;
+	clear: both;
+}
+
+#sessions-sync .content {
+	width: 100%;
+	height: 100%;
+
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+/*
+ * Panel Body
+ */
+
+#sessions-sync .body {
+	width: 100%;
+	height: 100%;
+	border-radius: 3px;
+}
+
+/*
+ * Session Info States
+ */
+
+#sessions-sync[session="current"] .session-info .menu {
+	display: block;
+}
+
+#sessions-sync[session="current"] .session-info .menu > * {
+	display: none;
+}
+
+#sessions-sync[session="current"] .session-info .save {
+	display: block;
+}
+
+#sessions-sync[session="save-session"] .session-info .edit-panel {
+	display: block;
+}
+
+#sessions-sync[session="save-session"] .session-info .menu {
+	display: none;
+}
+
+#sessions-sync[session="save-session"] .session-info .delete {
+	display: none;
+}
+
+#sessions-sync[session="edit"] .session-info .edit-panel {
+	display: block;
+}
+
+#sessions-sync[session="edit"] .session-info .delete {
+	display: block;
+}
+
+#sessions-sync[session="restore"] .session-info .menu {
+	display: block;
+}
+
+#sessions-sync[session="restore"] .session-info .description {
+	display: block;
+}

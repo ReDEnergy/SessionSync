@@ -1,0 +1,193 @@
+/*
+ * Display info about a Session
+ */
+
+#sessions-sync .session-info {
+	width: calc(100% - 250px);
+	height: 100%;
+	background: #FEFEFE;
+	float: right;
+
+	/*CSS3*/
+	display: flex;
+	flex-direction: column;
+
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+#sessions-sync .session-info .description {
+	width: 100%;
+	height: 45px;
+	padding: 10px;
+	background: #F5F5F5;
+	border-bottom: 1px solid #CCC;
+	font-size: 16px;
+	white-space: nowrap;
+	color: #555;
+	overflow: hidden;
+
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+#sessions-sync .session-info .bookmark-url {
+	width: 100%;
+	height: 0;
+	padding: 0;
+	background: #629BD4;
+	color: #FFF;
+	opacity: 0;
+	white-space: nowrap;
+	transition: all 0.2s  ease-out;
+
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+#sessions-sync .session-info .bookmark-url[data-active="true"] {
+	height: 24px;
+	padding: 4px;
+	opacity: 1;
+}
+
+/*
+ * Style Tabs
+ */
+
+#sessions-sync .session-info .bookmarks {
+	width: 100%;
+	padding: 4px;
+	overflow: hidden;
+
+	/*CSS3*/
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	flex: 1;
+}
+
+#sessions-sync .session-info .bookmarks:hover {
+	overflow: auto;
+}
+
+#sessions-sync .session-info .bookmark {
+	width: 100%;
+	height: 24px;
+	margin: 0;
+	padding: 4px;
+	border: #999;
+	display: block;
+
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+#sessions-sync .session-info .bookmark:hover {
+	background: #EEE;
+	cursor: pointer;
+}
+
+#sessions-sync .session-info .bookmark.simple:hover {
+	cursor: default;
+}
+
+#sessions-sync .session-info .bookmark * {
+	float: left;
+}
+
+#sessions-sync .session-info .bookmark .favicon {
+	width: 16px;
+	height: 16px;
+	background: url('images/favicon.png');
+	background-size: 16px 16px;
+}
+
+#sessions-sync .session-info .bookmark .text {
+	width: calc(100% - 20px);
+	height: 100%;
+	padding: 0 5px;
+	white-space: nowrap;
+	overflow: hidden;
+
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+/**
+ * 	Menu Section
+ */
+
+
+#sessions-sync .menu {
+	width: 100%;
+	padding: 5px;
+	border-bottom: 1px solid #CCC;
+	background: #EEE;
+	display: none;
+
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+#sessions-sync .menu > div {
+	padding: 0px 10px;
+	font-size: 14px;
+	color: #555;
+	float: left;
+}
+
+#sessions-sync .menu > div:hover {
+	color: #000;
+	cursor: pointer;
+}
+
+#sessions-sync .menu .save,
+#sessions-sync .session-info .description {
+	display: none;
+}
+
+#sessions-sync .menu .delete {
+	float: right;
+}
+
+/**
+ * 	Edit Session Section
+ */
+#sessions-sync .edit-panel {
+	width: 100%;
+	padding: 10px;
+	background: #EEE;
+	border-bottom: 1px solid #CCC;
+	display: none;
+
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+#sessions-sync .edit-panel .group {
+	margin: 3px 0;
+	float: left;
+}
+
+#sessions-sync .edit-panel label {
+	width: 80px;
+	float: left;
+}
+
+#sessions-sync .edit-panel input {
+	width: calc(100% - 100px);
+	float: left;
+}
+
+#sessions-sync .edit-panel .button {
+	padding: 0 10px;
+	font-size: 14px;
+	text-align: center;
+	color: #555;
+	float: right;
+}
+
+#sessions-sync .edit-panel .button:hover {
+	color: #000;
+	cursor: pointer;
+}
