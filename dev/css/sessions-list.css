@@ -2,7 +2,7 @@
  * Display lsit of all Sessions
  */
 
-#sessions-sync .sessions {
+#Session-Sync-Add-on-ReD .sessions {
 	width: 250px;
 	height: 100%;
 	padding: 0px;
@@ -23,13 +23,13 @@
 	box-sizing: border-box;
 }
 
-#sessions-sync[state='pinned-right'] .sessions {
+#Session-Sync-Add-on-ReD[state='pinned-right'] .sessions {
 	float: right;
 	border-right: 1px solid #CCC;
 	border-width: 0 0 0 1px;
 }
 
-#sessions-sync .search {
+#Session-Sync-Add-on-ReD .search {
 	width: calc(100% - 20px);
 	height: 24px;
 	margin: 10px;
@@ -40,22 +40,23 @@
 	box-sizing: border-box;
 }
 
-#sessions-sync .sessions .category {
-	margin: 0 0 5px 0;
-	padding: 3px 6px;
-	border-top: 1px solid #CCC;
+#Session-Sync-Add-on-ReD .sessions .category {
+	margin: 0 0 2px 0;
+	padding: 6px;
+	border-bottom: 1px solid #CCC;
 }
 
-#sessions-sync .sessions .category .title {
+#Session-Sync-Add-on-ReD .sessions .category .title {
 	padding: 2px 10px 2px 0;
 	border: none;
-	text-align: left;
+	text-align: center;
 	color: #999;
 }
 
-#sessions-sync .sessions .list {
+#Session-Sync-Add-on-ReD .sessions .list {
 	width: 100%;
-	padding: 0 6px 6px 6px;
+	padding: 0 6px;
+	margin: 4px 0 4px 0;
 	overflow: auto;
 	position: relative;
 	overflow: hidden;
@@ -66,26 +67,26 @@
 	transition: width 0.2s;
 }
 
-#sessions-sync .sessions .list:hover {
+#Session-Sync-Add-on-ReD .sessions .list:hover {
 	overflow: auto;
 }
 
-#sessions-sync .sessions .list > div {
+#Session-Sync-Add-on-ReD .sessions .list > div {
 	margin: 0 0 2px 0;
 }
 
-#sessions-sync .sessions .list .date {
+#Session-Sync-Add-on-ReD .sessions .list .date {
 	padding: 2px 10px 2px 0;
 	border-top: 1px solid #999;
 	text-align: right;
 	color: #999;
 }
 
-#sessions-sync .sessions .date:first-child {
+#Session-Sync-Add-on-ReD .sessions .date:first-child {
 	border-top: none;
 }
 
-#sessions-sync .sessions .date[filter="true"] {
+#Session-Sync-Add-on-ReD .sessions .date[filter="true"] {
 	display: none;
 }
 
@@ -93,7 +94,7 @@
  * Style Folder Session
  */
 
-#sessions-sync .sessions .folder {
+#Session-Sync-Add-on-ReD .sessions .folder {
 	height: 30px;
 	padding: 0 0 0 10px;
 	line-height: 30px;
@@ -104,16 +105,20 @@
 	box-sizing: border-box;
 }
 
-#sessions-sync .sessions .folder:hover {
+#Session-Sync-Add-on-ReD .sessions .folder.drag {
+	background: #FBD4B0;
+}
+
+#Session-Sync-Add-on-ReD .sessions .folder:hover {
 	background: #EEE;
 	cursor: pointer;
 }
 
-#sessions-sync .sessions .folder[active="true"] {
+#Session-Sync-Add-on-ReD .sessions .folder[active="true"] {
 	background: #629BD4;
 	color: #FFF;
 }
 
-#sessions-sync .sessions .folder[filter="true"] {
+#Session-Sync-Add-on-ReD .sessions .folder[filter="true"] {
 	display: none;
 }

@@ -1,0 +1,59 @@
+/**
+ * 	Edit Session Section
+ */
+#Session-Sync-Add-on-ReD .field-edit-widget {
+	width: 100%;
+	padding: 10px;
+	background: #FFF;
+	border: 1px solid #CCC;
+
+	visibility: hidden;
+	opacity: 0;
+
+	position: absolute;
+	top: 0;
+
+	box-sizing: border-box;
+	box-shadow: 0px 0px 5px 0px #CCC;
+
+	transition: 0.2s all ease-out;
+}
+
+#Session-Sync-Add-on-ReD .field-edit-widget[data-active] {
+	top: -100px;
+	opacity: 1;
+	visibility: visible;
+	z-index: 1000;
+}
+
+#Session-Sync-Add-on-ReD[state='pinned-right'] .field-edit-widget[data-active] {
+	top: 100px;
+}
+
+#Session-Sync-Add-on-ReD .field-edit-widget .group {
+	margin: 3px 0;
+	float: left;
+}
+
+#Session-Sync-Add-on-ReD .field-edit-widget label {
+	width: 80px;
+	float: left;
+}
+
+#Session-Sync-Add-on-ReD .field-edit-widget input {
+	width: calc(100% - 100px);
+	float: left;
+}
+
+#Session-Sync-Add-on-ReD .field-edit-widget .button {
+	padding: 0 10px;
+	font-size: 14px;
+	text-align: center;
+	color: #555;
+	float: right;
+}
+
+#Session-Sync-Add-on-ReD .field-edit-widget .button:hover {
+	color: #000;
+	cursor: pointer;
+}

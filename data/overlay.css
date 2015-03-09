@@ -3,7 +3,7 @@
 
 /* Panel Style */
 /* TODO inspect if possible to append UI relative to btn */
-#sessions-sync {
+#Session-Sync-Add-on-ReD {
 	width: 700px;
 	height: 400px;
 
@@ -15,31 +15,33 @@
 
 	position: fixed;
 	z-index: 100;
+	color: #000 !important;
+	text-shadow: none !important;
 
-	transition: all 0.2s;
+	/*transition: all 0.2s;*/
 	box-shadow: 0px 0px 5px 0px #CCC;
 }
 
-#sessions-sync[state='centered'] {
+#Session-Sync-Add-on-ReD[state='centered'] {
 	margin: -200px -350px;
 	top: 50%;
 	left: 50%;
 }
 
-#sessions-sync[state='pinned-right'] {
+#Session-Sync-Add-on-ReD[state='pinned-right'] {
 	width: 600px;
 	margin: 0 0 0 -565px;
 }
 
-#sessions-sync[state='pinned-left'] {
+#Session-Sync-Add-on-ReD[state='pinned-left'] {
 	margin: 0 0 0 -35px;
 }
 
-#sessions-sync[show='true'] {
+#Session-Sync-Add-on-ReD[show='true'] {
 	display: block;
 }
 
-#sessions-sync[show='false'] {
+#Session-Sync-Add-on-ReD[show='false'] {
 	display: none;
 }
 
@@ -47,32 +49,32 @@
  * Media Queries
  */
 @media (min-width: 600px) and (max-width: 700px) {
-	#sessions-sync {
+	#Session-Sync-Add-on-ReD {
 		width: 600px;
 	}
-	#sessions-sync[state='centered'] {
+	#Session-Sync-Add-on-ReD[state='centered'] {
 		margin: -200px -300px;
 	}
 }
 
 @media (max-width: 600px) {
-	#sessions-sync {
+	#Session-Sync-Add-on-ReD {
 		width: 500px;
 	}
-	#sessions-sync[state='centered'] {
+	#Session-Sync-Add-on-ReD[state='centered'] {
 		margin: -200px -250px;
 	}
-	#sessions-sync[state='pinned-right'] {
+	#Session-Sync-Add-on-ReD[state='pinned-right'] {
 		margin: 0 0 0 -465px;
 	}
 }
 
-#sessions-sync .group {
+#Session-Sync-Add-on-ReD .group {
 	width: 100%;
 	clear: both;
 }
 
-#sessions-sync .content {
+#Session-Sync-Add-on-ReD .content {
 	width: 100%;
 	height: 100%;
 
@@ -84,7 +86,7 @@
  * Panel Body
  */
 
-#sessions-sync .body {
+#Session-Sync-Add-on-ReD .body {
 	width: 100%;
 	height: 100%;
 	border-radius: 3px;
@@ -93,127 +95,87 @@
 /*
  * Session Info States
  */
-
-#sessions-sync[session="current"] .session-info .menu {
-	display: block;
-}
-
-#sessions-sync[session="current"] .session-info .menu > * {
+#Session-Sync-Add-on-ReD[session="current"] .session-info .menu > * {
 	display: none;
 }
 
-#sessions-sync[session="current"] .session-info .save {
+#Session-Sync-Add-on-ReD[session="current"] .session-info .menu,
+#Session-Sync-Add-on-ReD[session="current"] .session-info .save {
 	display: block;
 }
 
-#sessions-sync[session="save-session"] .session-info .edit-panel {
+#Session-Sync-Add-on-ReD[session="restore"] .session-info .description,
+#Session-Sync-Add-on-ReD[session="restore"] .session-info .menu {
 	display: block;
 }
 
-#sessions-sync[session="save-session"] .session-info .menu {
-	display: none;
-}
-
-#sessions-sync[session="save-session"] .session-info .delete {
-	display: none;
-}
-
-#sessions-sync[session="edit"] .session-info .edit-panel {
-	display: block;
-}
-
-#sessions-sync[session="edit"] .session-info .delete {
-	display: block;
-}
-
-#sessions-sync[session="restore"] .session-info .menu {
-	display: block;
-}
-
-#sessions-sync[session="restore"] .session-info .description {
-	display: block;
-}
-
-#sessions-sync .bookmark-edit {
-	width: 100%;
-	height: 100%;
+#Session-Sync-Add-on-ReD .confirm-box {
+	width: 160px;
 	padding: 10px;
+	margin: -50px 0 0 -95px;
 	background: #FFF;
-	position: absolute;
-	top: 0px;
-	left: 100%;
-	opacity: 0;
-	z-index: -1;
+	border: 1px #CCC solid;
 
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-	transition: 0.2s all ease-out;
-}
-
-#sessions-sync .bookmark-edit * {
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-#sessions-sync[edit-bookmark] .bookmark-edit {
+	display: none;
+	position: fixed;
 	left: 0;
-	opacity: 1;
+	top: 0;
+	overflow: auto;
+
+	box-shadow: 3px 3px 5px 0 #CCC;
+	transform: translateX(5px);
 	z-index: 1;
 }
 
-#sessions-sync .bookmark-edit .group {
-	margin: 0 0 10px 0;
-	color: #3F7FBF;
-	font-weight: bold;
-	font-size: 12px;
-}
-
-#sessions-sync .bookmark-edit .group input {
-	width: 100%;
-	margin: 2px 0;
-	height: 26px !important;
-	/*padding: 3px 5px !important;*/
-	border: 1px #DDD solid;
-
-}
-
-#sessions-sync .bookmark-edit label.group {
-	width: 100%;
+#Session-Sync-Add-on-ReD .confirm-box[data-active="true"] {
 	display: block;
 }
 
-#sessions-sync .bookmark-edit .group textarea {
+#Session-Sync-Add-on-ReD .confirm-box .info {
 	width: 100%;
-	min-height: 50px;
-	max-height: 100px;
-	border: 1px solid #DDD;
-	resize: vertical;
-}
-#sessions-sync .bookmark-edit .group input:focus,
-#sessions-sync .bookmark-edit .group textarea:focus {
-	border-color: #7DBED8;
-}
-
-#sessions-sync .bookmark-edit .button {
-	width: 60px;
-	margin: 10px 0 0 10px;
-	padding: 3px 5px;
-	border: 1px solid #DDD;
-	font-weight: normal;
-	color: #555;
+	margin: 0 0 5px 0;
+	padding: 5px 0;
+	color: #333;
 	text-align: center;
-	float: right;
+	font-size: 16px;
 }
 
-#sessions-sync .bookmark-edit .button:hover {
-	cursor: pointer;
-	border-color: #7DBED8;
-	background: #EFF9FA;
+#Session-Sync-Add-on-ReD .confirm-box .ok {
+	margin: 0 10px 0 0;
+	color: #FFF;
+	background: #E86A5C; /*#EA5F4D;*/
 }
-#sessions-sync .context-menu {
+
+#Session-Sync-Add-on-ReD .confirm-box .ok:hover {
+	background: #DC462C;
+}
+
+#Session-Sync-Add-on-ReD .confirm-box .cancel {
+	color: #FFF;
+	background: #999;
+}
+
+#Session-Sync-Add-on-ReD .confirm-box .cancel:hover {
+	background: #777;
+}
+
+#Session-Sync-Add-on-ReD .confirm-box .button {
+	width: 75px;
+	padding: 5px 0;
+	text-align: center;
+	float: left;
+
+	box-sizing: border-box;
+}
+
+#Session-Sync-Add-on-ReD .confirm-box .button:hover {
+	cursor: pointer;
+}
+
+#Session-Sync-Add-on-ReD .context-menu {
 	width: 135px;
 	padding: 5px;
-	background: #F5F5F5;
+	background: #FFF;
 	border: 1px #CCC solid;
 
 	display: none;
@@ -223,23 +185,82 @@
 
 	box-shadow: 3px 3px 5px 0 #CCC;
 	transform: translateX(5px);
-	z-index: 1;
+	z-index: 2;
 }
 
-#sessions-sync .context-menu[data-active="true"] {
+#Session-Sync-Add-on-ReD .context-menu[data-active="true"] {
 	display: block;
 }
 
-#sessions-sync .context-menu .button {
+#Session-Sync-Add-on-ReD .context-menu .button {
 	width: 100%;
 	padding: 5px;
 
-	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
 
-#sessions-sync .context-menu .button:hover {
+#Session-Sync-Add-on-ReD .context-menu .button:hover {
 	background: #EEE;
+	cursor: pointer;
+}
+
+/**
+ * 	Edit Session Section
+ */
+#Session-Sync-Add-on-ReD .field-edit-widget {
+	width: 100%;
+	padding: 10px;
+	background: #FFF;
+	border: 1px solid #CCC;
+
+	visibility: hidden;
+	opacity: 0;
+
+	position: absolute;
+	top: 0;
+
+	box-sizing: border-box;
+	box-shadow: 0px 0px 5px 0px #CCC;
+
+	transition: 0.2s all ease-out;
+}
+
+#Session-Sync-Add-on-ReD .field-edit-widget[data-active] {
+	top: -100px;
+	opacity: 1;
+	visibility: visible;
+	z-index: 1000;
+}
+
+#Session-Sync-Add-on-ReD[state='pinned-right'] .field-edit-widget[data-active] {
+	top: 100px;
+}
+
+#Session-Sync-Add-on-ReD .field-edit-widget .group {
+	margin: 3px 0;
+	float: left;
+}
+
+#Session-Sync-Add-on-ReD .field-edit-widget label {
+	width: 80px;
+	float: left;
+}
+
+#Session-Sync-Add-on-ReD .field-edit-widget input {
+	width: calc(100% - 100px);
+	float: left;
+}
+
+#Session-Sync-Add-on-ReD .field-edit-widget .button {
+	padding: 0 10px;
+	font-size: 14px;
+	text-align: center;
+	color: #555;
+	float: right;
+}
+
+#Session-Sync-Add-on-ReD .field-edit-widget .button:hover {
+	color: #000;
 	cursor: pointer;
 }
 
@@ -247,7 +268,7 @@
  * Display info about a Session
  */
 
-#sessions-sync .session-info {
+#Session-Sync-Add-on-ReD .session-info {
 	width: calc(100% - 250px);
 	height: 100%;
 	background: #FEFEFE;
@@ -257,65 +278,44 @@
 	display: flex;
 	flex-direction: column;
 
-	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
 
-#sessions-sync .session-info .description {
+#Session-Sync-Add-on-ReD .session-info .description {
 	width: 100%;
-	height: 45px;
+	height: 43px;
 	padding: 10px;
+
 	background: #F5F5F5;
 	border-bottom: 1px solid #CCC;
+
 	font-size: 16px;
 	white-space: nowrap;
 	color: #555;
+
 	overflow: hidden;
-
-	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-}
-
-#sessions-sync .session-info .bookmark-url {
-	width: 100%;
-	height: 0;
-	padding: 0;
-	background: #629BD4;
-	color: #FFF;
-	opacity: 0;
-	white-space: nowrap;
-	transition: all 0.2s  ease-out;
-
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-#sessions-sync .session-info .bookmark-url[data-active="true"] {
-	height: 24px;
-	padding: 4px;
-	opacity: 1;
 }
 
 /*
  * Style Tabs
  */
 
-#sessions-sync .session-info .bookmarks {
+#Session-Sync-Add-on-ReD .session-info .bookmarks {
 	width: 100%;
 	padding: 4px;
 	overflow: hidden;
 
 	/*CSS3*/
-	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	flex: 1;
 }
 
-#sessions-sync .session-info .bookmarks:hover {
+#Session-Sync-Add-on-ReD .session-info .bookmarks:hover {
 	overflow: auto;
 }
 
-#sessions-sync .session-info .bookmark {
+#Session-Sync-Add-on-ReD .session-info .bookmark {
 	width: 100%;
 	height: 24px;
 	margin: 0;
@@ -323,38 +323,37 @@
 	border: #999;
 	display: block;
 
-	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
 
-#sessions-sync .session-info .bookmark:hover {
+#Session-Sync-Add-on-ReD .session-info .bookmark.drag {
+	background-color: #FBD4B0;
+}
+
+#Session-Sync-Add-on-ReD .session-info .bookmark:hover {
 	background: #EEE;
 	cursor: pointer;
 }
 
-#sessions-sync .session-info .bookmark.simple:hover {
-	cursor: default;
-}
-
-#sessions-sync .session-info .bookmark * {
+#Session-Sync-Add-on-ReD .session-info .bookmark * {
 	float: left;
 }
 
-#sessions-sync .session-info .bookmark .favicon {
+#Session-Sync-Add-on-ReD .session-info .bookmark .favicon {
 	width: 16px;
 	height: 16px;
 	background: url('images/favicon.png');
-	background-size: 16px 16px;
+	background-size: 16px;
+	background-repeat: no-repeat;
 }
 
-#sessions-sync .session-info .bookmark .text {
+#Session-Sync-Add-on-ReD .session-info .bookmark .text {
 	width: calc(100% - 20px);
 	height: 100%;
 	padding: 0 5px;
 	white-space: nowrap;
 	overflow: hidden;
 
-	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
 
@@ -363,85 +362,88 @@
  */
 
 
-#sessions-sync .menu {
+#Session-Sync-Add-on-ReD .menu {
 	width: 100%;
-	padding: 5px;
+	height: 20px;
+	padding: 5px 0;
 	border-bottom: 1px solid #CCC;
-	background: #EEE;
+	background: #F9F9F9;
 	display: none;
-
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
 }
 
-#sessions-sync .menu > div {
-	padding: 0px 10px;
+#Session-Sync-Add-on-ReD .menu .save,
+#Session-Sync-Add-on-ReD .session-info .description {
+	display: none;
+}
+
+#Session-Sync-Add-on-ReD .menu .button {
+	height: 100%;
+	width: 40px;
 	font-size: 14px;
 	color: #555;
 	float: left;
 }
 
-#sessions-sync .menu > div:hover {
+#Session-Sync-Add-on-ReD .menu .button:hover {
 	color: #000;
 	cursor: pointer;
 }
 
-#sessions-sync .menu .save,
-#sessions-sync .session-info .description {
-	display: none;
+#Session-Sync-Add-on-ReD .menu .save {
+	width: 100%;
+	padding-left: 30px;
+	background: url('images/add-bookmark.png') no-repeat 10px center;
+	box-sizing: border-box;
 }
 
-#sessions-sync .menu .delete {
-	float: right;
+#Session-Sync-Add-on-ReD .menu .add {
+	background: url('images/add-tab-grey.png') no-repeat center;
 }
 
-/**
- * 	Edit Session Section
+#Session-Sync-Add-on-ReD .menu .add:hover {
+	background: url('images/add-tab.png') no-repeat center;
+}
+
+#Session-Sync-Add-on-ReD .menu .restore {
+	background: url('images/restore-grey.png') no-repeat center;
+}
+
+#Session-Sync-Add-on-ReD .menu .restore:hover {
+	background: url('images/restore.png') no-repeat center;
+}
+
+#Session-Sync-Add-on-ReD .menu .restore.new-w {
+	background: url('images/restoreW-grey.png') no-repeat center;
+}
+
+#Session-Sync-Add-on-ReD .menu .restore.new-w:hover {
+	background: url('images/restoreW.png') no-repeat center;
+}
+
+/*
+ * Tooltips
  */
-#sessions-sync .edit-panel {
-	width: 100%;
-	padding: 10px;
-	background: #EEE;
-	border-bottom: 1px solid #CCC;
-	display: none;
 
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
+#Session-Sync-Add-on-ReD .menu .add .tooltip {
+	width: 110px;
+	left: -35px;
 }
 
-#sessions-sync .edit-panel .group {
-	margin: 3px 0;
-	float: left;
-}
-
-#sessions-sync .edit-panel label {
+#Session-Sync-Add-on-ReD .menu .restore .tooltip {
 	width: 80px;
-	float: left;
+	left: -20px;
 }
 
-#sessions-sync .edit-panel input {
-	width: calc(100% - 100px);
-	float: left;
+#Session-Sync-Add-on-ReD .menu .restore.new-w .tooltip {
+	width: 100px;
+	left: -30px;
+	margin-top: -45px;
 }
-
-#sessions-sync .edit-panel .button {
-	padding: 0 10px;
-	font-size: 14px;
-	text-align: center;
-	color: #555;
-	float: right;
-}
-
-#sessions-sync .edit-panel .button:hover {
-	color: #000;
-	cursor: pointer;
-}
-
 /*
  * Display lsit of all Sessions
  */
 
-#sessions-sync .sessions {
+#Session-Sync-Add-on-ReD .sessions {
 	width: 250px;
 	height: 100%;
 	padding: 0px;
@@ -462,13 +464,13 @@
 	box-sizing: border-box;
 }
 
-#sessions-sync[state='pinned-right'] .sessions {
+#Session-Sync-Add-on-ReD[state='pinned-right'] .sessions {
 	float: right;
 	border-right: 1px solid #CCC;
 	border-width: 0 0 0 1px;
 }
 
-#sessions-sync .search {
+#Session-Sync-Add-on-ReD .search {
 	width: calc(100% - 20px);
 	height: 24px;
 	margin: 10px;
@@ -479,22 +481,23 @@
 	box-sizing: border-box;
 }
 
-#sessions-sync .sessions .category {
-	margin: 0 0 5px 0;
-	padding: 3px 6px;
-	border-top: 1px solid #CCC;
+#Session-Sync-Add-on-ReD .sessions .category {
+	margin: 0 0 2px 0;
+	padding: 6px;
+	border-bottom: 1px solid #CCC;
 }
 
-#sessions-sync .sessions .category .title {
+#Session-Sync-Add-on-ReD .sessions .category .title {
 	padding: 2px 10px 2px 0;
 	border: none;
-	text-align: left;
+	text-align: center;
 	color: #999;
 }
 
-#sessions-sync .sessions .list {
+#Session-Sync-Add-on-ReD .sessions .list {
 	width: 100%;
-	padding: 0 6px 6px 6px;
+	padding: 0 6px;
+	margin: 4px 0 4px 0;
 	overflow: auto;
 	position: relative;
 	overflow: hidden;
@@ -505,26 +508,26 @@
 	transition: width 0.2s;
 }
 
-#sessions-sync .sessions .list:hover {
+#Session-Sync-Add-on-ReD .sessions .list:hover {
 	overflow: auto;
 }
 
-#sessions-sync .sessions .list > div {
+#Session-Sync-Add-on-ReD .sessions .list > div {
 	margin: 0 0 2px 0;
 }
 
-#sessions-sync .sessions .list .date {
+#Session-Sync-Add-on-ReD .sessions .list .date {
 	padding: 2px 10px 2px 0;
 	border-top: 1px solid #999;
 	text-align: right;
 	color: #999;
 }
 
-#sessions-sync .sessions .date:first-child {
+#Session-Sync-Add-on-ReD .sessions .date:first-child {
 	border-top: none;
 }
 
-#sessions-sync .sessions .date[filter="true"] {
+#Session-Sync-Add-on-ReD .sessions .date[filter="true"] {
 	display: none;
 }
 
@@ -532,7 +535,7 @@
  * Style Folder Session
  */
 
-#sessions-sync .sessions .folder {
+#Session-Sync-Add-on-ReD .sessions .folder {
 	height: 30px;
 	padding: 0 0 0 10px;
 	line-height: 30px;
@@ -543,16 +546,138 @@
 	box-sizing: border-box;
 }
 
-#sessions-sync .sessions .folder:hover {
+#Session-Sync-Add-on-ReD .sessions .folder.drag {
+	background: #FBD4B0;
+}
+
+#Session-Sync-Add-on-ReD .sessions .folder:hover {
 	background: #EEE;
 	cursor: pointer;
 }
 
-#sessions-sync .sessions .folder[active="true"] {
+#Session-Sync-Add-on-ReD .sessions .folder[active="true"] {
 	background: #629BD4;
 	color: #FFF;
 }
 
-#sessions-sync .sessions .folder[filter="true"] {
+#Session-Sync-Add-on-ReD .sessions .folder[filter="true"] {
 	display: none;
+}
+
+#Session-Sync-Add-on-ReD .tooltip {
+	width: 100px;
+	padding: 5px;
+	margin: -25px 0 0 -5px;
+
+	color: #333;
+	background: #FFF;
+	text-align: center;
+	line-height: 20px;
+	border: 1px solid #AAA;
+
+	visibility: hidden;
+	opacity: 0;
+
+	/*display: none;*/
+	position: absolute;
+	top: -100%;
+	left: 0;
+	z-index: 1000;
+
+	transition: 0.1s all ease-out;
+	transition-delay: 0.3s;
+}
+
+#Session-Sync-Add-on-ReD .tooltip:after {
+	content: " ";
+	width: 16px;
+	height: 16px;
+	margin: 17px 0 0 -8px;
+
+	background: #FFF;
+	border-style: solid;
+	border-color: #AAA;
+	border-width: 0 1px 1px 0;
+
+	position: absolute;
+	left: 50%;
+
+	transform: rotate(45deg);
+	z-index: -100;
+}
+
+#Session-Sync-Add-on-ReD .tooltip-parent {
+	position: relative;
+	z-index: 1001;
+}
+
+#Session-Sync-Add-on-ReD .tooltip-parent:hover .tooltip {
+	opacity: 1;
+	visibility: visible;
+	/*display: block;*/
+}
+
+/*
+ * Display info about a Session
+ */
+
+#Session-Sync-Add-on-ReD .session-info .bookmark-url {
+	width: 100%;
+	height: 28px;
+	margin: 0;
+	padding: 0;
+
+	background: #629BD4;
+	color: #FFF;
+	line-height: 26px;
+	border: 1px solid #CCC;
+
+	opacity: 0;
+
+	position: absolute;
+	overflow: hidden;
+	left: -1px;
+	bottom: 0;
+
+	box-sizing: content-box;
+	transition: all 0.2s  ease-out;
+	z-index: -1;
+}
+
+#Session-Sync-Add-on-ReD .session-info .bookmark-url .url {
+	padding: 0 40px;
+	white-space: nowrap;
+}
+
+#Session-Sync-Add-on-ReD .session-info .bookmark-url .arrow {
+	width: 20px;
+	height: 100%;
+
+	background: #FFF;
+	text-align: right;
+	color: #777;
+
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 0;
+}
+
+#Session-Sync-Add-on-ReD .session-info .bookmark-url .arrow:after {
+	content: " ";
+	width: 22px;
+	height: 22px;
+	margin: 2px 0;
+	background: inherit;
+
+	position: absolute;
+	right: 0;
+	z-index: -2;
+	transform:  translate(11px, 1px) rotate(45deg);
+}
+
+#Session-Sync-Add-on-ReD .session-info .bookmark-url[data-active="true"] {
+	height: 28px;
+	opacity: 1;
+	bottom: -40px;
 }

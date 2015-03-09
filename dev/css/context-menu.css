@@ -1,7 +1,7 @@
-#sessions-sync .context-menu {
+#Session-Sync-Add-on-ReD .context-menu {
 	width: 135px;
 	padding: 5px;
-	background: #F5F5F5;
+	background: #FFF;
 	border: 1px #CCC solid;
 
 	display: none;
@@ -11,22 +11,21 @@
 
 	box-shadow: 3px 3px 5px 0 #CCC;
 	transform: translateX(5px);
-	z-index: 1;
+	z-index: 2;
 }
 
-#sessions-sync .context-menu[data-active="true"] {
+#Session-Sync-Add-on-ReD .context-menu[data-active="true"] {
 	display: block;
 }
 
-#sessions-sync .context-menu .button {
+#Session-Sync-Add-on-ReD .context-menu .button {
 	width: 100%;
 	padding: 5px;
 
-	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
 
-#sessions-sync .context-menu .button:hover {
+#Session-Sync-Add-on-ReD .context-menu .button:hover {
 	background: #EEE;
 	cursor: pointer;
 }

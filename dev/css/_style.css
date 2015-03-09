@@ -3,7 +3,7 @@
 
 /* Panel Style */
 /* TODO inspect if possible to append UI relative to btn */
-#sessions-sync {
+#Session-Sync-Add-on-ReD {
 	width: 700px;
 	height: 400px;
 
@@ -15,31 +15,33 @@
 
 	position: fixed;
 	z-index: 100;
+	color: #000 !important;
+	text-shadow: none !important;
 
-	transition: all 0.2s;
+	/*transition: all 0.2s;*/
 	box-shadow: 0px 0px 5px 0px #CCC;
 }
 
-#sessions-sync[state='centered'] {
+#Session-Sync-Add-on-ReD[state='centered'] {
 	margin: -200px -350px;
 	top: 50%;
 	left: 50%;
 }
 
-#sessions-sync[state='pinned-right'] {
+#Session-Sync-Add-on-ReD[state='pinned-right'] {
 	width: 600px;
 	margin: 0 0 0 -565px;
 }
 
-#sessions-sync[state='pinned-left'] {
+#Session-Sync-Add-on-ReD[state='pinned-left'] {
 	margin: 0 0 0 -35px;
 }
 
-#sessions-sync[show='true'] {
+#Session-Sync-Add-on-ReD[show='true'] {
 	display: block;
 }
 
-#sessions-sync[show='false'] {
+#Session-Sync-Add-on-ReD[show='false'] {
 	display: none;
 }
 
@@ -47,32 +49,32 @@
  * Media Queries
  */
 @media (min-width: 600px) and (max-width: 700px) {
-	#sessions-sync {
+	#Session-Sync-Add-on-ReD {
 		width: 600px;
 	}
-	#sessions-sync[state='centered'] {
+	#Session-Sync-Add-on-ReD[state='centered'] {
 		margin: -200px -300px;
 	}
 }
 
 @media (max-width: 600px) {
-	#sessions-sync {
+	#Session-Sync-Add-on-ReD {
 		width: 500px;
 	}
-	#sessions-sync[state='centered'] {
+	#Session-Sync-Add-on-ReD[state='centered'] {
 		margin: -200px -250px;
 	}
-	#sessions-sync[state='pinned-right'] {
+	#Session-Sync-Add-on-ReD[state='pinned-right'] {
 		margin: 0 0 0 -465px;
 	}
 }
 
-#sessions-sync .group {
+#Session-Sync-Add-on-ReD .group {
 	width: 100%;
 	clear: both;
 }
 
-#sessions-sync .content {
+#Session-Sync-Add-on-ReD .content {
 	width: 100%;
 	height: 100%;
 
@@ -84,7 +86,7 @@
  * Panel Body
  */
 
-#sessions-sync .body {
+#Session-Sync-Add-on-ReD .body {
 	width: 100%;
 	height: 100%;
 	border-radius: 3px;
@@ -93,43 +95,16 @@
 /*
  * Session Info States
  */
-
-#sessions-sync[session="current"] .session-info .menu {
-	display: block;
-}
-
-#sessions-sync[session="current"] .session-info .menu > * {
+#Session-Sync-Add-on-ReD[session="current"] .session-info .menu > * {
 	display: none;
 }
 
-#sessions-sync[session="current"] .session-info .save {
+#Session-Sync-Add-on-ReD[session="current"] .session-info .menu,
+#Session-Sync-Add-on-ReD[session="current"] .session-info .save {
 	display: block;
 }
 
-#sessions-sync[session="save-session"] .session-info .edit-panel {
-	display: block;
-}
-
-#sessions-sync[session="save-session"] .session-info .menu {
-	display: none;
-}
-
-#sessions-sync[session="save-session"] .session-info .delete {
-	display: none;
-}
-
-#sessions-sync[session="edit"] .session-info .edit-panel {
-	display: block;
-}
-
-#sessions-sync[session="edit"] .session-info .delete {
-	display: block;
-}
-
-#sessions-sync[session="restore"] .session-info .menu {
-	display: block;
-}
-
-#sessions-sync[session="restore"] .session-info .description {
+#Session-Sync-Add-on-ReD[session="restore"] .session-info .description,
+#Session-Sync-Add-on-ReD[session="restore"] .session-info .menu {
 	display: block;
 }

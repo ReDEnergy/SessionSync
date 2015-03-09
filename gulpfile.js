@@ -60,7 +60,6 @@ gulp.task('watch', ['livereload'], function() {
  * Concat CSS
  */
 
-var declare = require('gulp-declare');
 var concat = require('gulp-concat');
 
 gulp.task('css', function() {

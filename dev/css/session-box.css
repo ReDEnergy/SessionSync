@@ -2,7 +2,7 @@
  * Display info about a Session
  */
 
-#sessions-sync .session-info {
+#Session-Sync-Add-on-ReD .session-info {
 	width: calc(100% - 250px);
 	height: 100%;
 	background: #FEFEFE;
@@ -12,65 +12,44 @@
 	display: flex;
 	flex-direction: column;
 
-	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
 
-#sessions-sync .session-info .description {
+#Session-Sync-Add-on-ReD .session-info .description {
 	width: 100%;
-	height: 45px;
+	height: 43px;
 	padding: 10px;
+
 	background: #F5F5F5;
 	border-bottom: 1px solid #CCC;
+
 	font-size: 16px;
 	white-space: nowrap;
 	color: #555;
+
 	overflow: hidden;
-
-	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-}
-
-#sessions-sync .session-info .bookmark-url {
-	width: 100%;
-	height: 0;
-	padding: 0;
-	background: #629BD4;
-	color: #FFF;
-	opacity: 0;
-	white-space: nowrap;
-	transition: all 0.2s  ease-out;
-
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-#sessions-sync .session-info .bookmark-url[data-active="true"] {
-	height: 24px;
-	padding: 4px;
-	opacity: 1;
 }
 
 /*
  * Style Tabs
  */
 
-#sessions-sync .session-info .bookmarks {
+#Session-Sync-Add-on-ReD .session-info .bookmarks {
 	width: 100%;
 	padding: 4px;
 	overflow: hidden;
 
 	/*CSS3*/
-	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	flex: 1;
 }
 
-#sessions-sync .session-info .bookmarks:hover {
+#Session-Sync-Add-on-ReD .session-info .bookmarks:hover {
 	overflow: auto;
 }
 
-#sessions-sync .session-info .bookmark {
+#Session-Sync-Add-on-ReD .session-info .bookmark {
 	width: 100%;
 	height: 24px;
 	margin: 0;
@@ -78,38 +57,37 @@
 	border: #999;
 	display: block;
 
-	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
 
-#sessions-sync .session-info .bookmark:hover {
+#Session-Sync-Add-on-ReD .session-info .bookmark.drag {
+	background-color: #FBD4B0;
+}
+
+#Session-Sync-Add-on-ReD .session-info .bookmark:hover {
 	background: #EEE;
 	cursor: pointer;
 }
 
-#sessions-sync .session-info .bookmark.simple:hover {
-	cursor: default;
-}
-
-#sessions-sync .session-info .bookmark * {
+#Session-Sync-Add-on-ReD .session-info .bookmark * {
 	float: left;
 }
 
-#sessions-sync .session-info .bookmark .favicon {
+#Session-Sync-Add-on-ReD .session-info .bookmark .favicon {
 	width: 16px;
 	height: 16px;
 	background: url('images/favicon.png');
-	background-size: 16px 16px;
+	background-size: 16px;
+	background-repeat: no-repeat;
 }
 
-#sessions-sync .session-info .bookmark .text {
+#Session-Sync-Add-on-ReD .session-info .bookmark .text {
 	width: calc(100% - 20px);
 	height: 100%;
 	padding: 0 5px;
 	white-space: nowrap;
 	overflow: hidden;
 
-	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
 
@@ -118,76 +96,80 @@
  */
 
 
-#sessions-sync .menu {
+#Session-Sync-Add-on-ReD .menu {
 	width: 100%;
-	padding: 5px;
+	height: 20px;
+	padding: 5px 0;
 	border-bottom: 1px solid #CCC;
-	background: #EEE;
+	background: #F9F9F9;
 	display: none;
-
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
 }
 
-#sessions-sync .menu > div {
-	padding: 0px 10px;
+#Session-Sync-Add-on-ReD .menu .save,
+#Session-Sync-Add-on-ReD .session-info .description {
+	display: none;
+}
+
+#Session-Sync-Add-on-ReD .menu .button {
+	height: 100%;
+	width: 40px;
 	font-size: 14px;
 	color: #555;
 	float: left;
 }
 
-#sessions-sync .menu > div:hover {
+#Session-Sync-Add-on-ReD .menu .button:hover {
 	color: #000;
 	cursor: pointer;
 }
 
-#sessions-sync .menu .save,
-#sessions-sync .session-info .description {
-	display: none;
+#Session-Sync-Add-on-ReD .menu .save {
+	width: 100%;
+	padding-left: 30px;
+	background: url('images/add-bookmark.png') no-repeat 10px center;
+	box-sizing: border-box;
 }
 
-#sessions-sync .menu .delete {
-	float: right;
+#Session-Sync-Add-on-ReD .menu .add {
+	background: url('images/add-tab-grey.png') no-repeat center;
 }
 
-/**
- * 	Edit Session Section
+#Session-Sync-Add-on-ReD .menu .add:hover {
+	background: url('images/add-tab.png') no-repeat center;
+}
+
+#Session-Sync-Add-on-ReD .menu .restore {
+	background: url('images/restore-grey.png') no-repeat center;
+}
+
+#Session-Sync-Add-on-ReD .menu .restore:hover {
+	background: url('images/restore.png') no-repeat center;
+}
+
+#Session-Sync-Add-on-ReD .menu .restore.new-w {
+	background: url('images/restoreW-grey.png') no-repeat center;
+}
+
+#Session-Sync-Add-on-ReD .menu .restore.new-w:hover {
+	background: url('images/restoreW.png') no-repeat center;
+}
+
+/*
+ * Tooltips
  */
-#sessions-sync .edit-panel {
-	width: 100%;
-	padding: 10px;
-	background: #EEE;
-	border-bottom: 1px solid #CCC;
-	display: none;
 
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
+#Session-Sync-Add-on-ReD .menu .add .tooltip {
+	width: 110px;
+	left: -35px;
 }
 
-#sessions-sync .edit-panel .group {
-	margin: 3px 0;
-	float: left;
-}
-
-#sessions-sync .edit-panel label {
+#Session-Sync-Add-on-ReD .menu .restore .tooltip {
 	width: 80px;
-	float: left;
+	left: -20px;
 }
 
-#sessions-sync .edit-panel input {
-	width: calc(100% - 100px);
-	float: left;
-}
-
-#sessions-sync .edit-panel .button {
-	padding: 0 10px;
-	font-size: 14px;
-	text-align: center;
-	color: #555;
-	float: right;
-}
-
-#sessions-sync .edit-panel .button:hover {
-	color: #000;
-	cursor: pointer;
+#Session-Sync-Add-on-ReD .menu .restore.new-w .tooltip {
+	width: 100px;
+	left: -30px;
+	margin-top: -45px;
 }

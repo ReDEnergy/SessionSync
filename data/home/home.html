@@ -5,135 +5,131 @@
 	<meta charset="utf-8">
 	<title>Bookmark UI</title>
 	<link rel="icon" href="icon16.png" />
-	<link rel="stylesheet" href="resource://jid1-ksjmjr3rkzsqka-at-jetpack/bookmarks-ui/data/home/home.css" />
+	<link rel="stylesheet" href="./home.css" />
 
 </head>
 
 <body>
 
-	<div id="wrapper">
+	<div id="page">
 
 		<!-- Identity -->
 		<div id="identity">
-			<div class="logo"> </div>
-			<div class="title"> </div>
-			<div id="save" class="save"> Settings saved </div>
+			<div class="logo">
+				<div class="title titleA"> Session </div>
+				<div class="title titleB"> Sync </div>
+			</div>
 		</div>
 
 		<div id="container">
-			<!-- HotKeys -->
-			<div class="box">
-				<div class="title">
-					Hotkeys
+			<div id="carousel" class="carousel" advance="0">
+				<div class="box">
+					<div class="title">
+						How to use
+					</div>
+					<div class="info">
+							Press <b>CTRL + SHIFT + S</b> to open the panel or use the <b>widget</b> provided to open the panel
+							<br />
+							You can change the default hotkeys in <span style="color: #DF5600">add-on settings</span>
+					</div>
+					<div class="tutorial-image pin-mode">
+					</div>
 				</div>
-				<div class="cell">
-					<div id="hotkeys">
-						<div id="kstate" class="state"> Disable </div>
+				<div class="box">
+					<div class="title">
+						Tooltips
+					</div>
+					<div class="info">
 
-						<div class="selectlist">
-							<div class="info"> Keyboard Key </div>
-							<div id="keyletter" class="drop" > </div>
-							<div id="dropKey" class="dropdown"> </div>
-						</div>
-
-						<div id="specialkey">
-							<div id="kctrl" value='1'> Ctrl </div>
-							<div id="kalt" value='2'> Alt </div>
-							<div id="kshift" value='3'> Shift </div>
-						</div>
-
-						<div id="resetkeys" class="reset" > Default </div>
+					</div>
+					<div class="tutorial-image add-tab">
+					</div>
+				</div>
+				<div class="box">
+					<div class="title">
+						Context menu
+					</div>
+					<div class="info">
+						Press left click to access aditional <b>context options</b>
+					</div>
+					<div class="tutorial-image context-menu">
+					</div>
+				</div>
+				<div class="box">
+					<div class="title">
+						Bookmark menu
+					</div>
+					<div class="info">
+						<b>Open, Copy URL, Edit or Remove </b> bookmarks from Sessions
+					</div>
+					<div class="tutorial-image context-menu2">
+					</div>
+				</div>
+				<div class="box">
+					<div class="title">
+						URL preview
+					</div>
+					<div class="info">
+						Move your mouse above a bookmark to <b>view the URL</b>.
+						</br>
+						<b> Click </b> on the URL bar to <b>copy</b> the link</b>
+					</div>
+					<div class="tutorial-image current-session">
+					</div>
+				</div>
+				<div class="box">
+					<div class="title">
+						Edit panel
+					</div>
+					<div class="info">
+						<b>Edit</b> session or bookmark info. Press <b>Enter</b> to save or <b>Esc</b> to cancel
+					</div>
+					<div class="tutorial-image edit">
+					</div>
+				</div>
+				<div class="box">
+					<div class="title">
+						Create empty session
+					</div>
+					<div class="info">
+						<b>Start from scratch?</b> No problem... just create an <b>empty session</b> and add bookmarks later
+					</div>
+					<div class="tutorial-image new-session">
 					</div>
 				</div>
 			</div>
-
-
-			<!-- Mouse Actions -->
-			<div class="box">
-				<div class="title">
-					Mouse Actions
-				</div>
-				<div class="cell">
-					<div id="mouse">
-						<div class="selectlist">
-							<div class="info"> Left click </div>
-							<div id="mouseL" class="drop"> </div>
-							<div id="mouse_drop_L" class="dropdown"> </div>
-						</div>
-
-						<div class="selectlist">
-							<div class="info"> Middle click	</div>
-							<div id="mouseM" class="drop"> </div>
-							<div id="mouse_drop_M" class="dropdown"> </div>
-						</div>
-
-						<div class="selectlist">
-							<div class="info"> Right click </div>
-							<div id="mouseR" class="drop"> </div>
-							<div id="mouse_drop_R" class="dropdown"> </div>
-						</div>
-
-						<div id="resetmouse" class="reset"> Default </div>
-					</div>
-				</div>
-			</div>
-
+			<div id="scroll-left" class="scroll-button"></div>
+			<div id="scroll-right" class="scroll-button"></div>
 		</div>
 
-		<div id="container">
-			<!-- Dimensions -->
-			<div class="box">
-				<div class="title">
-					Panel Dimensions
-				</div>
-				<div class="cell">
-					<div id="dimensions">
-						<div class="selectlist">
-							<div class="info"> Height </div>
-							<div id="panelH" class="drop"> </div>
-							<div id="panelH_drop" class="dropdown"> </div>
-						</div>
-
-						<div class="selectlist">
-							<div class="info"> Columns </div>
-							<div id="panelC" class="drop"> </div>
-							<div id="panelC_drop" class="dropdown"> </div>
-						</div>
-
-						<div id="resetdims" class="reset" > Default </div>
-					</div>
-				</div>
-			</div>
-
-			<!-- Background Image -->
-			<div class="box">
-				<div class="title"> Background </div>
-				<div class="cell">
-					<div id="load_img" class="state"> Click to load an image </div>
-					<div id="preview"> </div>
-					<div id="resetbackground" class="reset"> Default </div>
-					<input id="browse_img" type="file"/>
-				</div>
-			</div>
-
-			<!-- About -->
-			<div class="box">
-				<div class="title"> About </div>
-				<div class="cell">
-					<div id="credits">
-						<div class="state"> 
-						  <a id="version" href="https://github.com/ReDEnergy/Bookmarks-UI/tree/release" 
-						      title="GitHub source code" target="_blank"> Version </a>
-                        </div>
-						<div class="state" style="margin: 0;">
-							<a href="mailto:gabriel.ivanica@gmail.com?Subject=Feedback%20-%20Bookmarks%20UI%20"> Feedback </a>
-						</div>
-					</div>
-				</div>
-			</div>
-			
+		<div id="github">
+			<a href="https://github.com/ReDEnergy/SessionSync" title="GitHub Repo" target="_blank"> </a>
+		</div>
+		<div id="feedback">
+			<a href="mailto:gabriel.ivanica@gmail.com?Subject=[Session-Sync]%20User%20feedback"> </a>
+			<div class="tooltip"> Send Feedback</div>
 		</div>
 	</div>
+	<script type="text/javascript">
+
+		var carusel = document.getElementById("carousel");
+		var moveLeft = document.getElementById("scroll-left");
+		var moveRight = document.getElementById("scroll-right");
+
+		function advance(offset) {
+			var advance = carusel.getAttribute('advance') | 0;
+			offset += advance;
+			if (offset > 0) return;
+			if (offset < -600) return;
+			carusel.style.left = offset + '%';
+			carusel.setAttribute('advance', offset);
+		};
+
+
+		moveLeft.addEventListener('click', advance.bind(null, 100));
+		moveRight.addEventListener('click', advance.bind(null, -100));
+
+	</script>
 </body>
 </html>
 
