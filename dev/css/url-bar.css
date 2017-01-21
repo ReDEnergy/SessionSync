@@ -1,20 +1,25 @@
-/*
- * Display info about a Session
+/**
+ * URL Bar
  */
 
-#Session-Sync-Add-on-ReD .session-info .bookmark-url {
+#Session-Sync-Add-on-ReD .url-bar {
 	width: 100%;
-	height: 28px;
+	height: 2em;
 	margin: 0;
 	padding: 0;
 
 	background: #629BD4;
-	color: #FFF;
-	line-height: 26px;
+	background: #2D92EB;
 	border: 1px solid #CCC;
+
+	color: #FFF;
+	font-size: 14px;
+	line-height: 26px;
 
 	opacity: 0;
 
+	line-height: 1.8em;
+	
 	position: absolute;
 	overflow: hidden;
 	left: -1px;
@@ -25,40 +30,54 @@
 	z-index: -1;
 }
 
-#Session-Sync-Add-on-ReD .session-info .bookmark-url .url {
-	padding: 0 40px;
-	white-space: nowrap;
-}
-
-#Session-Sync-Add-on-ReD .session-info .bookmark-url .arrow {
-	width: 20px;
+#Session-Sync-Add-on-ReD .url-bar .arrow {
+	width: 2em;
 	height: 100%;
 
 	background: #FFF;
 	text-align: right;
 	color: #777;
-
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 0;
+	float: left;
 }
 
-#Session-Sync-Add-on-ReD .session-info .bookmark-url .arrow:after {
+#Session-Sync-Add-on-ReD .url-bar .arrow:after {
 	content: " ";
-	width: 22px;
-	height: 22px;
+	width: 2em;
+	height: 2em;
 	margin: 2px 0;
 	background: inherit;
 
 	position: absolute;
-	right: 0;
+	left: 0;
 	z-index: -2;
-	transform:  translate(11px, 1px) rotate(45deg);
+	transform:  translate(1em, -0.1em) rotate(45deg);
 }
 
-#Session-Sync-Add-on-ReD .session-info .bookmark-url[data-active="true"] {
-	height: 28px;
+#Session-Sync-Add-on-ReD .url-bar .url {
+	padding: 0 0 0 4em;
+	white-space: nowrap;
+}
+
+#Session-Sync-Add-on-ReD .url-bar[data-active="true"] {
 	opacity: 1;
-	bottom: -40px;
+	bottom: calc(-2em - 10px);
+}
+
+#Session-Sync-Add-on-ReD .url-bar .copy-feedback {
+	width: 5em;
+	height: 100%;
+
+	background: #38B751;
+	color: #FFF;
+	text-align: center;
+
+	position: absolute;
+	top: 0;
+	right: -5em;
+
+	transition: all 0.2s;
+}
+
+#Session-Sync-Add-on-ReD .url-bar .copy-feedback[active] {
+	right: 0;
 }

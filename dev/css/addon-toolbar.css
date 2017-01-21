@@ -1,0 +1,117 @@
+/**
+ * Configuration button
+ */
+
+#Session-Sync-Add-on-ReD .addon-toolbar {
+	width: auto;
+	height: 3.1em;
+	padding: 0.5em;
+	font-size: 12px;
+
+	background: rgba(255, 255, 255, 0.9);
+	border-bottom-left-radius: 1.5em;
+	border-bottom-right-radius: 1.5em;
+	border: 1px solid #CCC;
+	border-top: unset;
+	position: absolute;
+	top: 1px;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 1000;
+
+	transition: opacity, transform, right;
+	transition-duration: 0.2s;
+	box-sizing: border-box;
+}
+
+#Session-Sync-Add-on-ReD[addon-toolbar="true"] .addon-toolbar {
+	display: block;
+}
+
+#Session-Sync-Add-on-ReD[addon-toolbar="false"] .addon-toolbar {
+	display: none;
+}
+
+#Session-Sync-Add-on-ReD[show='true'] .addon-toolbar {
+	top: 1px;
+	opacity: 1;
+}
+
+#Session-Sync-Add-on-ReD[show='true'] .addon-toolbar:hover {
+	opacity: 1;
+}
+
+#Session-Sync-Add-on-ReD[show='false'] .addon-toolbar {
+	top: -150px;
+	opacity: 0;
+}
+
+
+#Session-Sync-Add-on-ReD .addon-toolbar .button {
+	width: 3em;
+	height: 100%;
+
+	background: url("images/icons/brightness.png") no-repeat center;
+	background-size: contain !important;
+
+	opacity: 0.75;
+
+	filter: saturate(0%);
+	transition: opacity 0.25s ease-out;
+	float: left;
+}
+
+#Session-Sync-Add-on-ReD .addon-toolbar .button:hover {
+	opacity: 1;
+	cursor: pointer;
+	filter: saturate(100%);
+}
+
+/*
+ * Toolbar buttons
+ */
+
+#Session-Sync-Add-on-ReD .addon-toolbar .instructions {
+	background: url("images/icons/brightness.png") no-repeat center;
+}
+
+#Session-Sync-Add-on-ReD .addon-toolbar .config {
+	background: url("images/icons/gear.png") no-repeat center;
+}
+
+#Session-Sync-Add-on-ReD[config="on"] .addon-toolbar .config {
+	opacity: 1 !important;
+	filter: saturate(100%) !important;
+}
+
+#Session-Sync-Add-on-ReD .addon-toolbar .close {
+	background: url("images/icons/power.png") no-repeat center;
+}
+
+/*
+ * Style Reload
+ */
+
+#Session-Sync-Add-on-ReD .addon-toolbar .style-reload {
+	background: url("images/icons/paintbrush2.png") no-repeat center;
+	display: block;
+}
+
+/*
+ * DOM inspector
+ */
+
+#Session-Sync-Add-on-ReD .addon-toolbar .dom-inspector {
+	background: url("images/icons/bolt.png") no-repeat center;
+	display: block;
+}
+
+#Session-Sync-Add-on-ReD .addon-toolbar .dom-inspector[active] {
+	opacity: 1;
+	filter: saturate(100%);
+}
+
+#Session-Sync-Add-on-ReD .dom-inspector:hover {
+	cursor: pointer;
+}
+

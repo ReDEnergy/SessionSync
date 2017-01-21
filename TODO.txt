@@ -1,0 +1,61 @@
+WARNING!!!!
+	Make sure no IDs are used across the addon, only classes
+	
+Features:
+	Reminder pins
+		Reminder pins on webpages so you can easily go back to them (fast scrolling)
+		Pins should be relative to scrollTop
+		Integrate the interface into SessionSync
+		
+General UI/UX features:
+	- filter sessions
+		- tag selection
+	- search for a global link
+	- prevent duplicates in the same session
+	- improve customizability
+		- add support for stylesheets
+	- support multiple item selection
+		- view multiple session at the same time
+			- use tag selection
+			- use control ?!
+		- delete multiple 
+	- support tab groups
+	- help button
+	- implement an auto-savign mechanism
+	- highlight current tab in the URL list
+		- if the current tab is already saved in the active list, show it
+		- global search of the link ?
+			- show information the current tab
+
+		
+Session:
+	Properties:
+		- create date
+		- update date
+		- tags
+		- links
+		- description
+	
+	Actions: 
+		- edit properties
+		- open in new window
+		- restore session
+		- replace session
+		- merge sessions
+		- add current tab
+		- delete certain link
+			
+
+Session links:
+	Properties:
+		- create date
+		- update date
+		- tags
+
+	Actions:
+		- edit properties
+		- open in current tab
+		- open in new tab
+		- open in new window
+		- delete
+		- copy/paste/cut

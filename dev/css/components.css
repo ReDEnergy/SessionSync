@@ -1,0 +1,117 @@
+/**
+ * Dom Components
+ */
+
+/**
+ * Toggle Switch
+ */
+
+#Session-Sync-Add-on-ReD .comp-toggle-switch {
+	width: 100%;
+	color: #333;
+	display: flex; 
+}
+
+#Session-Sync-Add-on-ReD .comp-toggle-switch:first-child {
+	margin-top: 0;
+}
+
+#Session-Sync-Add-on-ReD .comp-toggle-switch:hover {
+	cursor: pointer;
+	color: #4C91D6;
+}
+
+#Session-Sync-Add-on-ReD .comp-toggle-switch .label {
+	width: 8em;
+	line-height: 1.3em;
+	float: left;
+}
+
+#Session-Sync-Add-on-ReD .comp-toggle-switch .switch {
+	margin-left: 0.4em;
+	padding: 0 0 0.25em 0;
+	border-radius: 0.3em;
+	text-align: center;
+	color: #FFF;
+	line-height: 1.3em;
+	text-transform: lowercase;
+	float: left;
+
+	flex: 1;
+	transition: all 0.3s; 
+}
+
+#Session-Sync-Add-on-ReD .comp-toggle-switch .switch[state="true"] {
+	background: #208020;
+}
+
+#Session-Sync-Add-on-ReD .comp-toggle-switch .switch[state="false"] {
+	background: #CB4D4D;
+}
+
+/**
+ * Toggle Switch
+ */
+
+#Session-Sync-Add-on-ReD .comp-dropdown {
+	width: 100%;
+	height: 2em;
+	color: #555;
+	display: flex; 
+	text-align: center;
+}
+
+#Session-Sync-Add-on-ReD .comp-dropdown .label {
+	width: 50%;
+}
+
+#Session-Sync-Add-on-ReD .comp-dropdown .select {
+	width: 50%;
+	background: #38B751;
+	position: relative;
+}
+
+#Session-Sync-Add-on-ReD .comp-dropdown .select-value {
+	width: 100%;
+	height: 100%;
+}
+
+#Session-Sync-Add-on-ReD .comp-dropdown .drop-list {
+	width: 100%;
+	min-height: 100%;
+	background: #FFF;
+	color: #333;
+	border: 1px solid #208020;
+
+	display: block;
+	position: absolute;
+	z-index: 100;
+	top: 100%;
+	left: 0;
+
+	box-sizing: border-box;
+}
+
+#Session-Sync-Add-on-ReD .comp-dropdown .drop-list[visible="true"] {
+	display: block;
+}
+
+#Session-Sync-Add-on-ReD .comp-dropdown .drop-list[visible="false"] {
+	display: none;
+}
+
+#Session-Sync-Add-on-ReD .comp-dropdown .drop-list .option {
+	width: 50%;
+	transition: all 0.2s;
+	float: left;
+}
+
+#Session-Sync-Add-on-ReD .comp-dropdown .drop-list .option:hover {
+	transition: none;
+	background: #EEE;
+}
+
+#Session-Sync-Add-on-ReD .comp-dropdown .drop-list .option[selected] {
+	background: #38B751;
+	color: #FFF;
+}

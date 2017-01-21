@@ -22,84 +22,60 @@
 		</div>
 
 		<div id="container">
-			<div id="carousel" class="carousel" advance="0">
-				<div class="box">
-					<div class="title">
-						How to use
-					</div>
-					<div class="info">
-							Press <b>CTRL + SHIFT + S</b> to open the panel or use the <b>widget</b> provided to open the panel
-							<br />
-							You can change the default hotkeys in <span style="color: #DF5600">add-on settings</span>
-					</div>
-					<div class="tutorial-image pin-mode">
-					</div>
-				</div>
-				<div class="box">
-					<div class="title">
-						Tooltips
-					</div>
-					<div class="info">
-
-					</div>
-					<div class="tutorial-image add-tab">
-					</div>
-				</div>
-				<div class="box">
-					<div class="title">
-						Context menu
-					</div>
-					<div class="info">
-						Press left click to access aditional <b>context options</b>
-					</div>
-					<div class="tutorial-image context-menu">
-					</div>
-				</div>
-				<div class="box">
-					<div class="title">
-						Bookmark menu
-					</div>
-					<div class="info">
-						<b>Open, Copy URL, Edit or Remove </b> bookmarks from Sessions
-					</div>
-					<div class="tutorial-image context-menu2">
-					</div>
-				</div>
-				<div class="box">
-					<div class="title">
-						URL preview
-					</div>
-					<div class="info">
-						Move your mouse above a bookmark to <b>view the URL</b>.
-						</br>
-						<b> Click </b> on the URL bar to <b>copy</b> the link</b>
-					</div>
-					<div class="tutorial-image current-session">
-					</div>
-				</div>
-				<div class="box">
-					<div class="title">
-						Edit panel
-					</div>
-					<div class="info">
-						<b>Edit</b> session or bookmark info. Press <b>Enter</b> to save or <b>Esc</b> to cancel
-					</div>
-					<div class="tutorial-image edit">
-					</div>
-				</div>
-				<div class="box">
-					<div class="title">
-						Create empty session
-					</div>
-					<div class="info">
-						<b>Start from scratch?</b> No problem... just create an <b>empty session</b> and add bookmarks later
-					</div>
-					<div class="tutorial-image new-session">
-					</div>
-				</div>
-			</div>
+			<div id="bullets" class="bullets"></div>
+			<div id="carousel" class="carousel" advance="0"></div>
 			<div id="scroll-left" class="scroll-button"></div>
 			<div id="scroll-right" class="scroll-button"></div>
+			<div class="helpers">
+				<div id="info-active-session">
+					Press <b>CTRL + SHIFT + S</b> to open the panel or use the <b>widget</b> provided to open the panel
+					<br />
+					You can change the default hotkeys in the <span class="highlight">add-on config pannel</span>
+				</div>
+				<div id="info-context-menus">
+					Press left click to access aditional <b>context menus</b> for 
+					<span class="highlight">sessions</span> or
+					<span class="highlight">bookmarks</span>
+					<br />
+				</div>
+				<div id="info-resize-ui">
+					Resize the UI panel using the 
+					<span class="highlight">resize-handle</span> from the 
+					<span class="highlight">bottom-right corner</span> 
+				</div>
+				<div id="info-resize-sessions">
+					Resize session list width by dragging around the
+					<span class="highlight">green resize handle</span> 
+				</div>				
+				<div id="info-config-panel">
+					The addon offers multiple configuration options. Explore all of them in the <b>configuration panel</b>.
+					</br>
+					Configuration panel can be accessed from <span class="highlight">addon options (about:addons) </span> or from the <span class="highlight">addon UI menu</span>
+				</div>
+				<div id="info-addon-toolbar">
+					The addon toolbar offers fast access to the addon-menu entries.
+					</br>
+					You can toggle toolbar state from configuration.
+				</div>
+				<div id="info-session-save-settings">
+					Session sync offers the ability to save or not pinned tabs and also to remember the 
+					<span class="highlight">pinned state</span> 
+				</div>
+				<div id="info-session-edit">
+					You can edit session and bookmarks information to provide more valuable future information. 
+				</div>
+				<div id="info-session-sorting">
+					Sort sessions by name, position, or date using the sort-selection menu from the bottom-left corner of the UI.  
+				</div>
+				<div id="info-session-menu">
+					The session menu toolbar provides fast access to various commands such as <span class="highlight">Restore, Replace, Merge or adding the current tab as bookmark</span>  
+				</div>
+				<div id="info-url-bar">
+					Move your mouse above a bookmark to <b>view the URL</b>.
+					</br>
+					<b> Click </b> on the URL bar to <b>copy</b> the link</b>
+				</div>
+			</div>
 		</div>
 
 		<div id="github">
@@ -110,26 +86,8 @@
 			<div class="tooltip"> Send Feedback</div>
 		</div>
 	</div>
-	<script type="text/javascript">
 
-		var carusel = document.getElementById("carousel");
-		var moveLeft = document.getElementById("scroll-left");
-		var moveRight = document.getElementById("scroll-right");
-
-		function advance(offset) {
-			var advance = carusel.getAttribute('advance') | 0;
-			offset += advance;
-			if (offset > 0) return;
-			if (offset < -600) return;
-			carusel.style.left = offset + '%';
-			carusel.setAttribute('advance', offset);
-		};
-
-
-		moveLeft.addEventListener('click', advance.bind(null, 100));
-		moveRight.addEventListener('click', advance.bind(null, -100));
-
-	</script>
+	<script type="text/javascript" src="home.js"></script>
 </body>
 </html>
 

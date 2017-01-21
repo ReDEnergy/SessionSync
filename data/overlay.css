@@ -1,118 +1,564 @@
-@charset "utf-8";
-/* CSS Document */
-
-/* Panel Style */
-/* TODO inspect if possible to append UI relative to btn */
-#Session-Sync-Add-on-ReD {
-	width: 700px;
-	height: 400px;
-
-	background: #FFF;
-	border: 1px solid #BBB;
-	border-radius: 3px;
-	font-size: 12px;
-	font-family: "Open Sans", "Segoe UI", Arial, Helvetica, sans-serif;
-
-	position: fixed;
-	z-index: 100;
-	color: #000 !important;
-	text-shadow: none !important;
-
-	/*transition: all 0.2s;*/
-	box-shadow: 0px 0px 5px 0px #CCC;
-}
-
-#Session-Sync-Add-on-ReD[state='centered'] {
-	margin: -200px -350px;
-	top: 50%;
-	left: 50%;
-}
-
-#Session-Sync-Add-on-ReD[state='pinned-right'] {
-	width: 600px;
-	margin: 0 0 0 -565px;
-}
-
-#Session-Sync-Add-on-ReD[state='pinned-left'] {
-	margin: 0 0 0 -35px;
-}
-
-#Session-Sync-Add-on-ReD[show='true'] {
-	display: block;
-}
-
-#Session-Sync-Add-on-ReD[show='false'] {
-	display: none;
-}
-
-/*
- * Media Queries
+/**
+ * Configuration button
  */
-@media (min-width: 600px) and (max-width: 700px) {
-	#Session-Sync-Add-on-ReD {
-		width: 600px;
-	}
-	#Session-Sync-Add-on-ReD[state='centered'] {
-		margin: -200px -300px;
-	}
-}
 
-@media (max-width: 600px) {
-	#Session-Sync-Add-on-ReD {
-		width: 500px;
-	}
-	#Session-Sync-Add-on-ReD[state='centered'] {
-		margin: -200px -250px;
-	}
-	#Session-Sync-Add-on-ReD[state='pinned-right'] {
-		margin: 0 0 0 -465px;
-	}
-}
+#Session-Sync-Add-on-ReD .addon-toolbar {
+	width: auto;
+	height: 3.1em;
+	padding: 0.5em;
+	font-size: 12px;
 
-#Session-Sync-Add-on-ReD .group {
-	width: 100%;
-	clear: both;
-}
+	background: rgba(255, 255, 255, 0.9);
+	border-bottom-left-radius: 1.5em;
+	border-bottom-right-radius: 1.5em;
+	border: 1px solid #CCC;
+	border-top: unset;
+	position: absolute;
+	top: 1px;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 1000;
 
-#Session-Sync-Add-on-ReD .content {
-	width: 100%;
-	height: 100%;
-
-	-moz-box-sizing: border-box;
+	transition: opacity, transform, right;
+	transition-duration: 0.2s;
 	box-sizing: border-box;
 }
 
-/*
- * Panel Body
- */
-
-#Session-Sync-Add-on-ReD .body {
-	width: 100%;
-	height: 100%;
-	border-radius: 3px;
+#Session-Sync-Add-on-ReD[addon-toolbar="true"] .addon-toolbar {
+	display: block;
 }
 
-/*
- * Session Info States
- */
-#Session-Sync-Add-on-ReD[session="current"] .session-info .menu > * {
+#Session-Sync-Add-on-ReD[addon-toolbar="false"] .addon-toolbar {
 	display: none;
 }
 
-#Session-Sync-Add-on-ReD[session="current"] .session-info .menu,
-#Session-Sync-Add-on-ReD[session="current"] .session-info .save {
+#Session-Sync-Add-on-ReD[show='true'] .addon-toolbar {
+	top: 1px;
+	opacity: 1;
+}
+
+#Session-Sync-Add-on-ReD[show='true'] .addon-toolbar:hover {
+	opacity: 1;
+}
+
+#Session-Sync-Add-on-ReD[show='false'] .addon-toolbar {
+	top: -150px;
+	opacity: 0;
+}
+
+
+#Session-Sync-Add-on-ReD .addon-toolbar .button {
+	width: 3em;
+	height: 100%;
+
+	background: url("images/icons/brightness.png") no-repeat center;
+	background-size: contain !important;
+
+	opacity: 0.75;
+
+	filter: saturate(0%);
+	transition: opacity 0.25s ease-out;
+	float: left;
+}
+
+#Session-Sync-Add-on-ReD .addon-toolbar .button:hover {
+	opacity: 1;
+	cursor: pointer;
+	filter: saturate(100%);
+}
+
+/*
+ * Toolbar buttons
+ */
+
+#Session-Sync-Add-on-ReD .addon-toolbar .instructions {
+	background: url("images/icons/brightness.png") no-repeat center;
+}
+
+#Session-Sync-Add-on-ReD .addon-toolbar .config {
+	background: url("images/icons/gear.png") no-repeat center;
+}
+
+#Session-Sync-Add-on-ReD[config="on"] .addon-toolbar .config {
+	opacity: 1 !important;
+	filter: saturate(100%) !important;
+}
+
+#Session-Sync-Add-on-ReD .addon-toolbar .close {
+	background: url("images/icons/power.png") no-repeat center;
+}
+
+/*
+ * Style Reload
+ */
+
+#Session-Sync-Add-on-ReD .addon-toolbar .style-reload {
+	background: url("images/icons/paintbrush2.png") no-repeat center;
 	display: block;
 }
 
-#Session-Sync-Add-on-ReD[session="restore"] .session-info .description,
-#Session-Sync-Add-on-ReD[session="restore"] .session-info .menu {
+/*
+ * DOM inspector
+ */
+
+#Session-Sync-Add-on-ReD .addon-toolbar .dom-inspector {
+	background: url("images/icons/bolt.png") no-repeat center;
 	display: block;
 }
+
+#Session-Sync-Add-on-ReD .addon-toolbar .dom-inspector[active] {
+	opacity: 1;
+	filter: saturate(100%);
+}
+
+#Session-Sync-Add-on-ReD .dom-inspector:hover {
+	cursor: pointer;
+}
+
+
+/**
+ * Dom Components
+ */
+
+/**
+ * Toggle Switch
+ */
+
+#Session-Sync-Add-on-ReD .comp-toggle-switch {
+	width: 100%;
+	color: #333;
+	display: flex; 
+}
+
+#Session-Sync-Add-on-ReD .comp-toggle-switch:first-child {
+	margin-top: 0;
+}
+
+#Session-Sync-Add-on-ReD .comp-toggle-switch:hover {
+	cursor: pointer;
+	color: #4C91D6;
+}
+
+#Session-Sync-Add-on-ReD .comp-toggle-switch .label {
+	width: 8em;
+	line-height: 1.3em;
+	float: left;
+}
+
+#Session-Sync-Add-on-ReD .comp-toggle-switch .switch {
+	margin-left: 0.4em;
+	padding: 0 0 0.25em 0;
+	border-radius: 0.3em;
+	text-align: center;
+	color: #FFF;
+	line-height: 1.3em;
+	text-transform: lowercase;
+	float: left;
+
+	flex: 1;
+	transition: all 0.3s; 
+}
+
+#Session-Sync-Add-on-ReD .comp-toggle-switch .switch[state="true"] {
+	background: #208020;
+}
+
+#Session-Sync-Add-on-ReD .comp-toggle-switch .switch[state="false"] {
+	background: #CB4D4D;
+}
+
+/**
+ * Toggle Switch
+ */
+
+#Session-Sync-Add-on-ReD .comp-dropdown {
+	width: 100%;
+	height: 2em;
+	color: #555;
+	display: flex; 
+	text-align: center;
+}
+
+#Session-Sync-Add-on-ReD .comp-dropdown .label {
+	width: 50%;
+}
+
+#Session-Sync-Add-on-ReD .comp-dropdown .select {
+	width: 50%;
+	background: #38B751;
+	position: relative;
+}
+
+#Session-Sync-Add-on-ReD .comp-dropdown .select-value {
+	width: 100%;
+	height: 100%;
+}
+
+#Session-Sync-Add-on-ReD .comp-dropdown .drop-list {
+	width: 100%;
+	min-height: 100%;
+	background: #FFF;
+	color: #333;
+	border: 1px solid #208020;
+
+	display: block;
+	position: absolute;
+	z-index: 100;
+	top: 100%;
+	left: 0;
+
+	box-sizing: border-box;
+}
+
+#Session-Sync-Add-on-ReD .comp-dropdown .drop-list[visible="true"] {
+	display: block;
+}
+
+#Session-Sync-Add-on-ReD .comp-dropdown .drop-list[visible="false"] {
+	display: none;
+}
+
+#Session-Sync-Add-on-ReD .comp-dropdown .drop-list .option {
+	width: 50%;
+	transition: all 0.2s;
+	float: left;
+}
+
+#Session-Sync-Add-on-ReD .comp-dropdown .drop-list .option:hover {
+	transition: none;
+	background: #EEE;
+}
+
+#Session-Sync-Add-on-ReD .comp-dropdown .drop-list .option[selected] {
+	background: #38B751;
+	color: #FFF;
+}
+
+/**
+ * Configuration button
+ */
+
+#Session-Sync-Add-on-ReD .config-panel {
+	width: 350px;
+	height: unset;
+	min-height: 100%;
+	font-size: 12px;
+	border-right: 1px solid #CCC;
+	background: #F5F5F5;
+	opacity: 0.95;
+	color: #000;
+
+	position: absolute;
+	top: 1px;
+	left: -355px;
+	z-index: 100;
+	box-shadow: 0 0 3px 0 #CCC;
+	
+	transition: all 0.3s ease-out;
+	opacity: 0.5;
+}
+
+#Session-Sync-Add-on-ReD[config] .config-panel {
+	left: 0;
+	opacity: 1;
+}
+
+#Session-Sync-Add-on-ReD[show="false"] .config-panel {
+	left: -355px !important;
+}
+
+/*
+ * Close button
+ */
+
+#Session-Sync-Add-on-ReD .config-panel .css-close-button {
+	width: 2.4em;
+	height: 2.4em;
+	top: .5em;
+	right: .5em;
+	opacity: 0.85 !important;
+	transition: all 0.2s ease-out;
+}
+
+#Session-Sync-Add-on-ReD .config-panel .css-close-button:hover {
+	cursor: pointer;
+	opacity: 0.7 !important;
+}
+
+/*
+ * Logo
+ */
+
+#Session-Sync-Add-on-ReD .config-panel .logo {
+	width: 100px;
+	height: 64px;
+	margin: 2em auto;
+	padding: 0;
+	border: none;
+	background: url("images/icon64.png") center top no-repeat;
+}
+
+#Session-Sync-Add-on-ReD .config-panel .logo:hover {
+	cursor: pointer;	
+}
+
+/*
+ * Sctions
+ */
+
+#Session-Sync-Add-on-ReD .config-panel .section-container {
+	height: auto;
+	padding: 1em 0 0 0;
+	border-bottom: 1px dashed #CCC;
+	border: none;
+}
+
+#Session-Sync-Add-on-ReD .config-panel .section-container .section-title {
+	padding: 0 1em;
+	margin: 0 0 1em 0;
+	font-weight: 600;
+	text-align: left;
+	color: #333;
+	border-bottom: 1px solid #DDD;
+	border-top: none;
+	font-size: 14px;
+}
+
+#Session-Sync-Add-on-ReD .config-panel .section-container .section-title:hover {
+	cursor: pointer;
+}
+
+#Session-Sync-Add-on-ReD .config-panel .section-container .section-body {
+	transition: all 0.2s ease-out;
+}
+
+#Session-Sync-Add-on-ReD .config-panel .section-container[collapsed] .section-body {
+	overflow: hidden;
+	height: 0px !important;
+}
+
+/*
+ * Range control
+ */
+
+#Session-Sync-Add-on-ReD .config-panel .comp-range-control {
+	width: 100%;
+	height: 2em;
+	margin: 0.5em 0;
+	padding: 0 1em 0 2em;
+	line-height: 1.8em;
+	overflow: hidden;
+	border: none;
+
+	display: flex;
+	box-sizing: border-box;
+}
+
+#Session-Sync-Add-on-ReD .config-panel .comp-range-control .label
+{
+	height: 100%;
+	font-size: 1em;
+	color: #555;
+	border: none;
+	word-break: break-all;
+	float: left;
+	font-size: 1.1em;
+
+	flex: 1;
+	box-sizing: border-box;
+}
+
+
+#Session-Sync-Add-on-ReD .config-panel .comp-range-control .range-input {
+	width: 8em;
+	margin: 0 1em 0 0;
+	height: 100%;
+	text-align: center; 
+	box-sizing: border-box;
+	float: left;
+	display: flex;
+}
+
+#Session-Sync-Add-on-ReD .config-panel .comp-range-control .range-input > * 
+{
+	float: left;
+}
+
+#Session-Sync-Add-on-ReD .config-panel .comp-range-control .button {
+	width: 2em;
+	height: 100%;
+	filter: opacity(50%);
+	transition: 0.2s all;
+}
+
+#Session-Sync-Add-on-ReD .config-panel .comp-range-control .button:hover {
+	cursor: pointer;
+	filter: opacity(100%);
+}
+
+#Session-Sync-Add-on-ReD .config-panel .comp-range-control .button.inc {
+	background: url("images/arrow-right.png") center top no-repeat;
+	background-size: 100%;
+}
+
+#Session-Sync-Add-on-ReD .config-panel .comp-range-control .button.dec
+{
+	background: url("images/arrow-left.png") center top no-repeat;
+	background-size: 100%;
+}
+
+#Session-Sync-Add-on-ReD .config-panel .comp-range-control .value {
+	margin: 0 0.2em;
+	width: 2.8em !important;
+	background: #FFF;
+	text-align: center;
+	line-height: 1.8em;
+	color: #2D92EB;
+	font-size: 1.1em;
+}
+
+/*
+ * Toggle control
+ */
+
+#Session-Sync-Add-on-ReD .config-panel .comp-toggle-button {
+	width: 100%;
+	height: 2em;
+	margin: 5px 0;
+	padding: 0 1em 0 2em;
+	line-height: 1.8em;
+	display: flex;
+	box-sizing: border-box;
+}
+
+#Session-Sync-Add-on-ReD .config-panel .comp-toggle-button .label {
+	height: 100%;
+	color: #555;
+	word-break: break-all;
+	font-size: 1.1em;
+	float: left;
+
+	flex: 1;
+	box-sizing: border-box;
+}
+
+#Session-Sync-Add-on-ReD .config-panel .comp-toggle-button .button {
+	width: 8em;
+	height: 100%;
+	margin: 0 1em 0 0;
+	border-radius: 1em;
+	line-height: 1.9em;
+	color: white;
+	text-align: center;
+	float: left;
+}
+
+#Session-Sync-Add-on-ReD .config-panel .comp-toggle-button .button:hover {
+	cursor: pointer;
+}
+
+#Session-Sync-Add-on-ReD .config-panel .comp-toggle-button .button[state='true'] {
+	background: #38B751;
+}
+
+#Session-Sync-Add-on-ReD .config-panel .comp-toggle-button .button[state='false'] {
+	background: #66AAEF;
+	background: #CCC;
+}
+
+#Session-Sync-Add-on-ReD .config-panel .comp-toggle-button .button[state='disable'] {
+	background: #66AAEF;
+	background: #CCC;
+}
+
+
+/*
+ * Dropdown Component
+ */
+
+#Session-Sync-Add-on-ReD .config-panel .comp-dropdown {
+	width: 100%;
+	height: 2em;
+	margin: 5px 0;
+	padding: 0 1em 0 2em;
+	line-height: 1.8em;
+	display: flex;
+	box-sizing: border-box;	
+}
+
+#Session-Sync-Add-on-ReD .config-panel .comp-dropdown .label {
+	height: 100%;
+	color: #555;
+	text-align: left;
+	word-break: break-all;
+	font-size: 1.1em;
+	float: left;
+
+	flex: 1;
+	box-sizing: border-box;
+}
+
+#Session-Sync-Add-on-ReD .config-panel .comp-dropdown .select {
+	width: 8em;
+	height: 100%;
+	margin: 0 1em 0 0;
+	background: #38B751;
+	border-radius: 1em;
+	line-height: 1.9em;
+	color: white;
+	text-align: center;
+	float: left;
+	
+	transition: all 0.2s ease-out;
+}
+
+#Session-Sync-Add-on-ReD .config-panel .comp-dropdown .select:hover {
+	cursor: pointer;
+	background: #66AAEF;
+}
+
+#Session-Sync-Add-on-ReD .config-panel .comp-dropdown .drop-list {
+	width: 14em;
+	top: calc(100% + 0px);
+}
+
+#Session-Sync-Add-on-ReD .config-panel .comp-dropdown .drop-list .option {
+	width: 16.6%;
+}
+
+#Session-Sync-Add-on-ReD .config-panel .comp-dropdown[id="SpecialKey"] .drop-list {
+	width: 8em;
+}
+
+#Session-Sync-Add-on-ReD .config-panel .comp-dropdown[id="SpecialKey"] .option {
+	width: 100%;
+}
+
+#Session-Sync-Add-on-ReD .config-panel .section-container[id='auto-save'] {
+	display: block;
+}
+
+/*
+ * Custom states
+ */
+
+#Session-Sync-Add-on-ReD[auto-save="false"] .config-panel .section-container[id='auto-save'] .comp-range-control {
+	display: none;
+}
+
+#Session-Sync-Add-on-ReD[hotkey="false"] .config-panel .section-container[id='hotkey'] .comp-dropdown {
+	display: none;
+}
+
+
+/**
+ * Confirm Box
+ */
 
 #Session-Sync-Add-on-ReD .confirm-box {
-	width: 160px;
-	padding: 10px;
-	margin: -50px 0 0 -95px;
+	width: auto;
+	padding: 15px;
+	margin: -40px 0 0 0;
 	background: #FFF;
 	border: 1px #CCC solid;
 
@@ -121,23 +567,35 @@
 	left: 0;
 	top: 0;
 	overflow: auto;
-
+	
 	box-shadow: 3px 3px 5px 0 #CCC;
-	transform: translateX(5px);
+	transform: translate(-50%, 0);
 	z-index: 1;
 }
 
 #Session-Sync-Add-on-ReD .confirm-box[data-active="true"] {
 	display: block;
+	z-index: 1001;
 }
 
 #Session-Sync-Add-on-ReD .confirm-box .info {
 	width: 100%;
 	margin: 0 0 5px 0;
-	padding: 5px 0;
+	padding: 5px 0; 
 	color: #333;
 	text-align: center;
 	font-size: 16px;
+}
+
+#Session-Sync-Add-on-ReD .confirm-box .controls {
+	padding: 10px 0 0 0;
+	border-top: 1px solid #DDD;
+	overflow: hidden;
+	display: flex;
+}
+
+#Session-Sync-Add-on-ReD .confirm-box .controls .flex {
+	flex: 1;
 }
 
 #Session-Sync-Add-on-ReD .confirm-box .ok {
@@ -172,8 +630,12 @@
 	cursor: pointer;
 }
 
+/**
+ * Context Menu
+ */
+
 #Session-Sync-Add-on-ReD .context-menu {
-	width: 135px;
+	width: 145px;
 	padding: 5px;
 	background: #FFF;
 	border: 1px #CCC solid;
@@ -183,26 +645,77 @@
 	left: 0;
 	top: 0;
 
-	box-shadow: 3px 3px 5px 0 #CCC;
+	box-shadow: 0px 0px 5px 0 #CCC;
 	transform: translateX(5px);
-	z-index: 2;
+	z-index: 1000;
 }
 
 #Session-Sync-Add-on-ReD .context-menu[data-active="true"] {
 	display: block;
 }
 
+#Session-Sync-Add-on-ReD .context-menu .separator {
+	width: 100%;
+	height: 1px;
+	margin: 3px 0;
+	background: #CCC;
+}
+
+
 #Session-Sync-Add-on-ReD .context-menu .button {
 	width: 100%;
-	padding: 5px;
+	padding: 5px 5px 5px 30px;
 
+	background-image: url("images/icons/cloud.png");
+	background-size: 20px;
+	background-repeat: no-repeat;
+	background-position: 3px 3px;
 	box-sizing: border-box;
 }
 
 #Session-Sync-Add-on-ReD .context-menu .button:hover {
-	background: #EEE;
+	background-color: #EEE;
 	cursor: pointer;
 }
+
+#Session-Sync-Add-on-ReD .context-menu .button[icon="new-tab"] {
+	background-image: url("images/icons/ribbon.png");
+}
+
+#Session-Sync-Add-on-ReD .context-menu .button[icon="same-tab"] {
+	background-image: url("images/icons/recycle.png");
+}
+
+#Session-Sync-Add-on-ReD .context-menu .button[icon="new-window"] {
+	background-image: url("images/icons/polaroids.png");
+}
+
+#Session-Sync-Add-on-ReD .context-menu .button[icon="copy"] {
+	background-image: url("images/icons/clipboard.png");
+}
+
+#Session-Sync-Add-on-ReD .context-menu .button[icon="edit"] {
+	background-image: url("images/icons/document.png");
+}
+
+#Session-Sync-Add-on-ReD .context-menu .button[icon="delete"] {
+	background-image: url("images/icons/denied.png");
+}
+
+#Session-Sync-Add-on-ReD .context-menu .button[icon="same-window"] {
+	background-image: url("images/icons/stack.png");
+}
+
+#Session-Sync-Add-on-ReD .context-menu .button[icon="new-session"] {
+	background-image: url("images/icons/star.png");
+}
+
+#Session-Sync-Add-on-ReD .context-menu[icons="no"] .button
+{
+	padding: 5px;
+	background-image: unset;
+}
+
 
 /**
  * 	Edit Session Section
@@ -213,322 +726,1342 @@
 	background: #FFF;
 	border: 1px solid #CCC;
 
-	visibility: hidden;
 	opacity: 0;
 
 	position: absolute;
-	top: 0;
 
 	box-sizing: border-box;
 	box-shadow: 0px 0px 5px 0px #CCC;
 
+	bottom: 0;
+	left: 0;
+	z-index: -1;
 	transition: 0.2s all ease-out;
 }
 
 #Session-Sync-Add-on-ReD .field-edit-widget[data-active] {
-	top: -100px;
 	opacity: 1;
-	visibility: visible;
 	z-index: 1000;
 }
 
-#Session-Sync-Add-on-ReD[state='pinned-right'] .field-edit-widget[data-active] {
-	top: 100px;
-}
-
 #Session-Sync-Add-on-ReD .field-edit-widget .group {
+	width: 100%;
+	height: 2.4em;
 	margin: 3px 0;
+	line-height: 2.0em;
 	float: left;
+	display: flex;
 }
 
 #Session-Sync-Add-on-ReD .field-edit-widget label {
 	width: 80px;
-	float: left;
+	padding: 0 20px 0 0;
+	text-decoration: underline;
+	font-size: 1.2em;
+	text-align: right;
 }
 
 #Session-Sync-Add-on-ReD .field-edit-widget input {
-	width: calc(100% - 100px);
-	float: left;
+	height: 100%;
+	padding: 0 1em 0.2em 1em !important;
+	color: #333;
+	box-sizing: border-box; 
+	border-radius: 1.2em !important;
+	flex: 1;
+}
+
+#Session-Sync-Add-on-ReD .field-edit-widget input:focus {
+	border-color: #2D92EB !important;
+	box-shadow: 0 0 3px 0 rgba(0, 131, 255, 0.5) inset !important;	
 }
 
 #Session-Sync-Add-on-ReD .field-edit-widget .button {
-	padding: 0 10px;
+	height: 2em;
+	padding: 0 1.5em;
+	line-height: 1.8em;
+	margin: 3px 0 0 10px;
+
 	font-size: 14px;
 	text-align: center;
-	color: #555;
+	color: #FFF;
+	border: unset;
+	border-radius: 1em; 
+	background: #999;
+	
+	transition: all 0.2s;
 	float: right;
 }
 
 #Session-Sync-Add-on-ReD .field-edit-widget .button:hover {
-	color: #000;
+	color: #FFF;
 	cursor: pointer;
 }
 
-/*
- * Display info about a Session
+#Session-Sync-Add-on-ReD .field-edit-widget .button.save:hover {
+	background: #23A823;
+}
+
+#Session-Sync-Add-on-ReD .field-edit-widget .button.cancel:hover {
+	background: #DC462C;
+}
+
+/**
+ * Filter Menu
  */
 
-#Session-Sync-Add-on-ReD .session-info {
-	width: calc(100% - 250px);
+#Session-Sync-Add-on-ReD .filter-panel {
+	width: 150px;
 	height: 100%;
-	background: #FEFEFE;
-	float: right;
+	min-height: 10000px;
+	font-size: 16px;
+	border-right: 1px solid #DDD;
+	background: #F5F5F5;
+	opacity: 0.95;
+	color: #000;
+	
+	position: absolute;
+	top: 1px;
+	z-index: 100;
+	display: none;
+	
+	transition: all 0.3s;
+}
 
-	/*CSS3*/
+#Session-Sync-Add-on-ReD[show="true"] .filter-panel {
+	left: 0px;
+}
+
+#Session-Sync-Add-on-ReD[show="false"] .filter-panel {
+	left: -151px;
+}
+
+#Session-Sync-Add-on-ReD .filter-panel:hover {
+	width: 200px;
+}
+
+#Session-Sync-Add-on-ReD .filter-panel .logo {
+	margin: 10px 0;
+	height: 64px;
+	width: 100%;
+	background: url("images/icon64.png") center top no-repeat;
+}
+
+#Session-Sync-Add-on-ReD .filter-panel .separator {
+	margin: 5px 0; 
+	border-bottom: 1px solid #DDD;
+}
+
+
+#Session-Sync-Add-on-ReD .filter-panel .session-box {
+	padding: 5px 0;
+	color: #555;
+	text-align: center;
+}
+
+#Session-Sync-Add-on-ReD .filter-panel .session-box:hover {
+	background: #DDD;
+	cursor: pointer;
+}
+
+#Session-Sync-Add-on-ReD .filter-panel .session-box[active] {
+	background: #2D92EB;
+	color: #FFF;
+}
+
+#Session-Sync-Add-on-ReD .filter-panel .filters {
+}
+
+#Session-Sync-Add-on-ReD .filter-panel .filters .title {
+	margin: 10px 0;
+	padding: 10px 0;
+	text-align: center;
+}
+
+#Session-Sync-Add-on-ReD .filter-panel .label {
+	height: 24px;
+	padding: 3px 0;
+	text-align: center;
+	font-size: 12px;
+	line-height: 22px;
+	word-break: break-all;
+
 	display: flex;
-	flex-direction: column;
+	position: relative;
+	transition: background 0.2s;
+}
 
+#Session-Sync-Add-on-ReD .filter-panel .label[edit-mode] div {
+	display: none;
+}
+
+#Session-Sync-Add-on-ReD .filter-panel .label[edit-mode] input {
+	display: block;
+}
+
+
+#Session-Sync-Add-on-ReD .filter-panel .label:hover {
+	cursor: pointer;
+	background: #FFF;
+	transition: none;
+}
+
+#Session-Sync-Add-on-ReD .filter-panel .name {
+	width: 80%;
+	padding: 0 10px;
+	text-align: right;
+	overflow: hidden;
+	
+	flex: 1;
+}
+
+#Session-Sync-Add-on-ReD .filter-panel .count {
+	width: 30px;
+	height: 12px;
+	margin: 3px 10px 3px 0;
+	padding: 3px 0;
+	background: #DDD;
+	border-radius: 3px;
+	text-align: center;
+	line-height: 100%; 
+	color: #333;
+}
+
+#Session-Sync-Add-on-ReD .filter-panel .label input {
+	margin: 0 10px;
+	color: #333;
+	display: none;
+}
+
+#Session-Sync-Add-on-ReD .filter-panel .label[active] {
+	background: #FFF;
+}
+
+#Session-Sync-Add-on-ReD .filter-panel .label[active] .name {
+	color: #4C91D6;
+	font-weight: bold;
+}
+
+#Session-Sync-Add-on-ReD .filter-panel .label[active] .count {
+	background: #23A823;
+	color: #FFF;
+}
+
+#Session-Sync-Add-on-ReD .filter-panel .label[active]:after {
+	content: " ";
+	width: 3px;
+	height: 100%;
+	position: absolute;
+	right: 0;
+	top: 0;
+	background: #1AB61A;
+}
+
+#Session-Sync-Add-on-ReD .filter-panel .add-label {
+	margin: 0 auto;
+	font-size: 12px;
+	padding: 4px 20px;
+	color: #555;
+	text-align: center;
+}
+
+#Session-Sync-Add-on-ReD .filter-panel .add-label:hover {
+	cursor: pointer;
+	background: #2D92EB;
+	color: #FFF;
+}
+
+
+/**
+ * Generic CSS
+ */
+
+
+#Session-Sync-Add-on-ReD .css-close-button {
+	width: 2em;
+	height: 2em;
+	font-size: 12px;
+	border-radius: 2em;
+	position: absolute;
+	top: 0;
+	z-index: 0;
+	opacity: 0.75;
 	box-sizing: border-box;
 }
 
-#Session-Sync-Add-on-ReD .session-info .description {
-	width: 100%;
-	height: 43px;
-	padding: 10px;
+#Session-Sync-Add-on-ReD .css-close-button:hover {
+	cursor: pointer;
+	opacity: 1;
+}
 
+#Session-Sync-Add-on-ReD .css-close-button:hover::after,
+#Session-Sync-Add-on-ReD .css-close-button:hover::before {
+	background: #333;
+}
+
+#Session-Sync-Add-on-ReD .css-close-button:after,
+#Session-Sync-Add-on-ReD .css-close-button:before {
+	content: "";
+	width: 60%;
+	height: 16%;
+	background: #AAA;
+	position: absolute;
+	top: 42%;
+	left: 20%;
+	transform: rotate(45deg);
+}
+
+#Session-Sync-Add-on-ReD .css-close-button:after {
+	transform: rotate(-45deg);
+}
+/**
+ * Notification System
+ */
+
+#Session-Sync-Add-on-ReD .notification-system {
+	width: 40%;
+	height: 0px;
+	font-size: 16px;
+	
+	position: absolute;
+	top: 1px;
+	left: 50%;
+	z-index: 10000;
+	transform: translateX(-50%);
+}
+
+#Session-Sync-Add-on-ReD .notification-system .info
+{
+	width: 100%;
+	padding: 0.5em 2em;
+	padding-left: 3.5em;
+	background: #2D92EB;
 	background: #F5F5F5;
+	word-break: break-all;
+	color: #333;
+	text-align: center;
+
+	position: absolute;
+	top: -150px;
+
+	opacity: 0;
+	transition: all 0.4s;
+	box-sizing: border-box;
+	transform: translateX(0);
+}
+
+#Session-Sync-Add-on-ReD .notification-system .info[active]
+{
+	opacity: 1;
+	top: 10px; 
+	border: 1px solid #CCC;
+}
+
+#Session-Sync-Add-on-ReD .notification-system .info:after {
+	content: " ";
+	width: 24px;
+	height: 24px;
+	background: url("images/logo.png") center no-repeat;
+	background-size: contain;
+	top: 50%;
+	left: 20px;
+	position: absolute;
+	transform: translateY(-50%);
+}
+/**
+ * Control Panel
+ */
+
+#Session-Sync-Add-on-ReD .search-bar {
+	width: calc(100% + 2px);
+	padding: 1px;
+	font-size: 16px;
+	background: hsla(0, 0%, 100%, 0.5);
+	
+	color: #000;	
+	position: absolute;
+	overflow: visible;
+	top: 0;
+	left: -1px;
+	z-index: -1;
+	opacity: 0;	
+	border-radius: 2em;
+
+	transition: all 0.25s;	box-sizing: border-box;
+}
+
+#Session-Sync-Add-on-ReD .search-bar[active="true"]
+{
+	top: -50px;
+	opacity: 100;
+}
+
+#Session-Sync-Add-on-ReD .search-bar:hover
+{
+	opacity: 100;
+} 
+
+#Session-Sync-Add-on-ReD .search-bar .search {
+	width: 100%;
+	height: 2.2em;
+	padding: 0 0.8em 0.2em 0.8em !important;
+	background: hsla(0, 0%, 100%, 0.95);
+	border-width: 2px !important;
+	border-radius: 1.2em !important;
+	color: #333; 
+	box-sizing: border-box;
+}
+
+#Session-Sync-Add-on-ReD .search-bar .search:focus {
+	border-color: #2D92EB !important; /* In Firefox Addon must be set from JavaScript */
+}
+
+#Session-Sync-Add-on-ReD .search-bar .close {
+	width: 2em;
+	height: 2em;
+	background: #FFF;
+	font-size: 12px;
+	border-radius: 2em;
+	position: absolute;
+	top: 3px;
+	right: 10px;
+	z-index: 0;
+	opacity: 0.75;
+	box-sizing: border-box;
+}
+
+#Session-Sync-Add-on-ReD .search-bar .close:hover {
+	cursor: pointer;
+}
+
+#Session-Sync-Add-on-ReD .search-bar .close:hover::after,
+#Session-Sync-Add-on-ReD .search-bar .close:hover::before {
+	background: #333;
+}
+
+#Session-Sync-Add-on-ReD .search-bar .close:after,
+#Session-Sync-Add-on-ReD .search-bar .close:before {
+	content: "";
+	width: 60%;
+	height: 16%;
+	background: #AAA;
+	position: absolute;
+	top: 42%;
+	left: 20%;
+	transform: rotate(45deg);
+}
+
+#Session-Sync-Add-on-ReD .search-bar .close:after {
+	transform: rotate(-45deg);
+}
+
+/**
+ * Display info about a Session
+ */
+
+#Session-Sync-Add-on-ReD .session-container {
+	height: 100%;
+	background: #FEFEFE;
+
+	font-size: 12px;
+	float: right;
+	overflow: hidden;
+
+	/*CSS3*/
+	box-sizing: border-box;
+	position: relative;
+
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+}
+
+/*
+ * Save button - not used for the moment
+ */
+
+#Session-Sync-Add-on-ReD[session] .session-container .save-session {
+	display: none;
+}
+
+#Session-Sync-Add-on-ReD .session-container .save-session {
+	height: 3.4em;
+	width: 3.4em;
+
+	background: url("images/icons/heart.png") no-repeat;
+	background-size: 2em;
+	background-position: 1em 0.4em;
+	background-color: #F5F5F5;
+	
+	border-radius: 0 0 0 100%;
+	border-left: 1px solid #CCC;
 	border-bottom: 1px solid #CCC;
 
-	font-size: 16px;
-	white-space: nowrap;
-	color: #555;
+	position: absolute;
+	z-index: 1;
+	top: 0;
+	right: -1px;
 
-	overflow: hidden;
-	box-sizing: border-box;
+	filter: saturate(75%);	
+}
+
+#Session-Sync-Add-on-ReD .session-container .save-session:hover {
+	cursor: pointer;
+	background-color: #FFF;
+	filter: saturate(100%);	
 }
 
 /*
  * Style Tabs
  */
 
-#Session-Sync-Add-on-ReD .session-info .bookmarks {
-	width: 100%;
-	padding: 4px;
-	overflow: hidden;
+#Session-Sync-Add-on-ReD .session-container .bookmarks {
+	width: calc(100% + 10px);
+	margin: 2px 0 2px 2px;
+
+	overflow-x: hidden;
+	overflow-y: scroll;
+	position: relative;
 
 	/*CSS3*/
 	box-sizing: border-box;
 	flex: 1;
 }
 
-#Session-Sync-Add-on-ReD .session-info .bookmarks:hover {
-	overflow: auto;
+#Session-Sync-Add-on-ReD .session-container .bookmarks:hover {
+	overflow-y: scroll;
 }
 
-#Session-Sync-Add-on-ReD .session-info .bookmark {
+#Session-Sync-Add-on-ReD .session-container .window-separator {
 	width: 100%;
-	height: 24px;
-	margin: 0;
-	padding: 4px;
-	border: #999;
-	display: block;
+	height: 2em;
+	line-height: 1.9em;
+	text-align: center;
+	background: #F8F8F8;
+	color: #555;
+	position: absolute;
+	transition: all 0.2s;	
+}
 
+#Session-Sync-Add-on-ReD .session-container .window-separator:hover {
+	cursor: pointer;
+	text-decoration: underline;
+	color: #333;
+}
+
+#Session-Sync-Add-on-ReD .session-container .window-separator:hover:after {
+	content: "(switch to)";
+	position: absolute;
+	font-size: 0.8em;
+	top: 0;
+	margin-left: 40px;
+	left: 50%;
+}
+
+#Session-Sync-Add-on-ReD .session-container .bookmark {
+	width: 100%;
+	height: 2em;
+	padding: 0 4px;
+
+	line-height: 1.9em;
+	word-break: keep-all;
+	
+	overflow: hidden;
+	position: absolute;
+	left: 0;
+	top: 0;
+
+	/*CSS3*/
 	box-sizing: border-box;
+	transition-property: left, top, background;
+	transition-duration: 0.2s;	
+	display: flex;
+	flex: 1;
 }
 
-#Session-Sync-Add-on-ReD .session-info .bookmark.drag {
-	background-color: #FBD4B0;
-}
-
-#Session-Sync-Add-on-ReD .session-info .bookmark:hover {
+#Session-Sync-Add-on-ReD .session-container .bookmark:hover {
 	background: #EEE;
 	cursor: pointer;
+	transition-property: left, top;
 }
 
-#Session-Sync-Add-on-ReD .session-info .bookmark * {
+#Session-Sync-Add-on-ReD .session-container .bookmark[dragging] {
+	width: 400px;
+	margin: 1px 0 0 1px;
+	background-color: #FBD4B0;
+	background: #4396E9 !important;
+	color: #FFF;
+	opacity: 0.9;
+
+	transition: none;
+	position: fixed;
+	z-index: 1000;
+}
+
+#Session-Sync-Add-on-ReD .session-container .bookmark[dragging="drop"] {
+	background: #4396E9 !important;
+	color: #FFF;
+	opacity: 0.9;
+	transition: none;
+	position: absolute;
+
+	z-index: 1000;
+}
+
+#Session-Sync-Add-on-ReD .session-container .bookmark[dragging]:hover {
+	cursor: default;	
+}
+
+#Session-Sync-Add-on-ReD .session-container .bookmark[pinned]:before {
+	content: "";
+	width: 1.5em;
+	height: 100%;
+	background-image: url("images/icons/pin.png");
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center center;
+	color: green;
+	position: absolute;
+	top: 0;
+	right: 0.35em;
+	z-index: 0;
+	opacity: 0.85;
+}
+
+#Session-Sync-Add-on-ReD .session-container .bookmark * {
 	float: left;
 }
 
-#Session-Sync-Add-on-ReD .session-info .bookmark .favicon {
-	width: 16px;
-	height: 16px;
-	background: url('images/favicon.png');
-	background-size: 16px;
+#Session-Sync-Add-on-ReD .session-container .bookmark .favicon {
+	width: 1.33em;
+	height: 100%;
+	background: url("images/icons/globe.png");
+	background-size: contain;
 	background-repeat: no-repeat;
+	background-position: center center;
 }
 
-#Session-Sync-Add-on-ReD .session-info .bookmark .text {
-	width: calc(100% - 20px);
+#Session-Sync-Add-on-ReD .session-container .bookmark .text {
 	height: 100%;
 	padding: 0 5px;
+	word-break: keep-all;
 	white-space: nowrap;
 	overflow: hidden;
 
 	box-sizing: border-box;
+	flex: 1;
+}
+
+/*
+ * History Style
+ */
+
+#Session-Sync-Add-on-ReD .session-container .history-window-separator {
+	width: 100%;
+	height: 2em;
+	line-height: 1.9em;
+	text-align: center;
+	background: #F8F8F8;
+	color: #555;
+	position: absolute;
+	transition: all 0.2s;	
+}
+/**
+ * Header Bar
+ */
+
+#Session-Sync-Add-on-ReD .header-bar {
+	width: 100%;
+	height: calc(2.5em);
+
+	background: #F5F5F5;
+	border-bottom: 1px solid #DDD; 
+	line-height: 2.4em;
+	font-size: 18px;
+	position: relative;
+
+	box-sizing: border-box;
+}
+
+/**
+ * Active session button
+ */
+
+#Session-Sync-Add-on-ReD .header-bar .active-session-btn {
+	width: 2.5em;
+	background: url('images/icons/globe.png') no-repeat center;
+	background-size: 1em;
+	height: 60%;
+	opacity: 0.5;
+	border: 1px solid red;
+	border: unset;
+	position: absolute;
+	top: 0.5em;
+	left: 0;
+	transition: all 0.2s ease-out;
+	box-sizing: border-box;
+}
+
+#Session-Sync-Add-on-ReD[session="current"] .header-bar .active-session-btn,
+#Session-Sync-Add-on-ReD .header-bar .active-session-btn:hover {
+	background-size: 1.2em;
+	cursor: pointer;
+	opacity: 1;
+}
+
+/**
+ * Active session description
+ */
+
+#Session-Sync-Add-on-ReD .header-bar .description {
+	width: 100%;
+	height: 100%;
+
+	text-align: center;
+	white-space: nowrap;
+	overflow: hidden;
+	color: #555;
+
+	box-sizing: border-box;
+}
+
+/**
+ * Config button
+ */
+
+#Session-Sync-Add-on-ReD .header-bar .addon-config {
+	width: 1.8em;
+	height: 1.8em;
+	background-image: url("images/menu.png");
+	background-size: 55%;
+	background-repeat: no-repeat;
+	background-position: center center;
+	border: 1px solid rgba(0, 0, 0, 0);
+	position: absolute;
+	top: 0.3em;
+	right: 0.3em;
+	z-index: 2;
+	opacity: 0.4;
+	box-sizing: border-box;
+	display: none;
+}
+
+#Session-Sync-Add-on-ReD .header-bar .addon-config:hover {
+	cursor: pointer;
+	background-color: #EEE;
+	border: 1px solid #CCC;
+	opacity: 1;
+}
+
+/**
+ * Header Menu
+ */
+
+#Session-Sync-Add-on-ReD .header-bar .header-menu {
+	width: 1.8em;
+	height: 1.8em;
+	background-image: url("images/menu.png");
+	background-size: 55%;
+	background-repeat: no-repeat;
+	background-position: center center;
+	border: 1px solid rgba(0, 0, 0, 0);
+	position: absolute;
+	top: 0.3em;
+	right: 0.3em;
+	z-index: 2;
+	opacity: 0.4;
+	box-sizing: border-box;
+}
+
+
+#Session-Sync-Add-on-ReD .header-bar .header-menu:hover {
+	cursor: pointer;
+	background-color: #EEE;
+	border: 1px solid #CCC;
+	opacity: 1;
+}
+
+#Session-Sync-Add-on-ReD .header-bar .header-menu[active='1'] {
+	opacity: 1;
+}
+
+#Session-Sync-Add-on-ReD .header-bar .header-menu .menu-area {
+	width: 14em;
+	height: 0;
+	margin: 0;
+	padding: 0;
+	background: #FFF;
+	font-size: 0.75em;
+	border: 1px solid rgba(0, 0, 0, 0);
+	position: absolute;
+	top: 100%;
+	right: -1px;
+	overflow: hidden;
+
+	opacity: 0;
+	display: flex;
+	flex-direction: row;
+	
+	transition-property: height, padding, opacity;
+	transition-duration: 0.2s;
+	transition-timing-function: ease-out;
+}
+
+#Session-Sync-Add-on-ReD .header-bar .header-menu[active='1'] .menu-area {
+	display: flex;
+	height: 3.8em;
+	padding: 1em;
+	border: 1px solid #CCC;
+	opacity: 1;
+}
+
+#Session-Sync-Add-on-ReD .header-bar .header-menu .menu-area:hover {
+	cursor: default;
+}
+
+#Session-Sync-Add-on-ReD .header-bar .header-menu .menu-button {
+	border: 1px solid #FFF;
+	padding: 0.3em 0;
+	flex: 1;
+}
+
+#Session-Sync-Add-on-ReD .header-bar .header-menu .menu-button:hover {
+	cursor: pointer;
+	background-color: #F5F5F5;
+	border-color: #DDD;
+}
+
+#Session-Sync-Add-on-ReD .header-bar .header-menu .menu-button .icon {
+	height: 2em;
+	background-image: url("images/icons/power.png");
+	background-size: contain !important;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+#Session-Sync-Add-on-ReD .header-bar .header-menu .menu-button[id="help"] .icon {
+	background-image: url("images/icons/brightness.png");
+}
+
+#Session-Sync-Add-on-ReD .header-bar .header-menu .menu-button[id="config"] .icon {
+	background-image: url("images/icons/gear.png");
+}
+
+#Session-Sync-Add-on-ReD .header-bar .header-menu .menu-button[id="help"] {
+	margin: 0 0.75em;
+}
+
+#Session-Sync-Add-on-ReD .header-bar .header-menu .menu-button[id="close"] .icon {
+	background-image: url("images/icons/power.png");
+}
+
+#Session-Sync-Add-on-ReD .header-bar .header-menu .menu-button .title {
+	height: 1em;
+	margin-top: 0.25em;
+	color: #555;
+	font-size: 0.8em;
+	line-height: 100%;
+	text-align: center;
+}
+
+
+
+/**
+ * Control Panel
+ */
+
+#Session-Sync-Add-on-ReD .session-toolbar {
+	width: 100%;
+	height: 3em;
+
+	background: #FFF;
+	color: #000;
+	display: flex;
+	font-size: 12px;	
+	
+	position: relative;
+	opacity: 100;
+	border-bottom: 1px solid #CCC;
+	box-shadow: 0px 0px 3px 0px #CCC;
+	z-index: 1;
+
+	transition: all 0.15s;}
+
+#Session-Sync-Add-on-ReD .session-toolbar .session-selector {
+	width: 220px;
+	min-width: 160px;
+	max-width: 60%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	border-right: 1px solid #DDD;
+
+	line-height: 3em;
+	word-break: break-all;
+	text-align: center;
+	color: #555;
+
+	display: flex;
+	box-sizing: border-box;
+}
+
+#Session-Sync-Add-on-ReD .session-toolbar .session-selector .button {
+	display: block;
+	float: left;
+	color: #333;
+	flex: 1;
+}
+
+#Session-Sync-Add-on-ReD .session-toolbar .session-selector .button:hover {
+	cursor: pointer;
+}
+
+#Session-Sync-Add-on-ReD[list="sync"] .session-toolbar .session-selector .sync {
+	display: block;
+	background: #2D92EB;
+	color: #FFF;
+}
+
+#Session-Sync-Add-on-ReD[list="history"] .session-toolbar .session-selector .history {
+	display: block;
+	background: #2D92EB;
+	color: #FFF;
+}
+
+#Session-Sync-Add-on-ReD[auto-save="false"] .session-toolbar .session-selector .button {
+	background: unset;
+	color: #333;
+}
+
+#Session-Sync-Add-on-ReD[auto-save="false"] .session-toolbar .session-selector .history {
+	display: none;
+}
+
+/*
+ * Session info
+ */
+
+#Session-Sync-Add-on-ReD:not([session="restore"]) .session-toolbar .session-date {
+	display: none;	
+} 
+
+#Session-Sync-Add-on-ReD .session-toolbar .session-date {
+	padding: 0.9em 1em;
+	color: #999;
+	text-align: right;
+	display: block;	
+	position: absolute;
+	top: -1px;
+	right: 0;
+	z-index: 10;
 }
 
 /**
  * 	Menu Section
  */
 
-
-#Session-Sync-Add-on-ReD .menu {
-	width: 100%;
-	height: 20px;
-	padding: 5px 0;
-	border-bottom: 1px solid #CCC;
-	background: #F9F9F9;
-	display: none;
-}
-
-#Session-Sync-Add-on-ReD .menu .save,
-#Session-Sync-Add-on-ReD .session-info .description {
-	display: none;
-}
-
-#Session-Sync-Add-on-ReD .menu .button {
+#Session-Sync-Add-on-ReD .session-toolbar .menu-bar {
 	height: 100%;
-	width: 40px;
-	font-size: 14px;
-	color: #555;
+	padding: 0.5em;
+
+	box-sizing: border-box;
+	flex: 1;
+}
+
+#Session-Sync-Add-on-ReD .session-toolbar .menu-bar .button {
+	width: 2.6em;
+	height: 100%;
+	float: left;
+	background: url('images/icons/none.png') no-repeat center;
+	background-size: contain !important;
+
+	filter: saturate(100%);
+}
+
+#Session-Sync-Add-on-ReD .session-toolbar .menu-bar .button:hover {
+	cursor: pointer;
+	filter: saturate(100%);
+	box-shadow: none; 
+}
+
+#Session-Sync-Add-on-ReD .session-toolbar .menu-bar .separator {
+	height: 100%;
+	width: 1px;
+	margin: 0 0.5em;
+	background: #CCC;
 	float: left;
 }
 
-#Session-Sync-Add-on-ReD .menu .button:hover {
-	color: #000;
-	cursor: pointer;
+#Session-Sync-Add-on-ReD .session-toolbar .menu-bar .add {
+	background: url('images/icons/star.png') no-repeat center;
+	filter: saturate(100%);
 }
 
-#Session-Sync-Add-on-ReD .menu .save {
-	width: 100%;
-	padding-left: 30px;
-	background: url('images/add-bookmark.png') no-repeat 10px center;
+#Session-Sync-Add-on-ReD .session-toolbar .menu-bar .save {
+	background: url('images/icons/heart.png') no-repeat center;
+	filter: saturate(100%);
+}
+
+#Session-Sync-Add-on-ReD .session-toolbar .menu-bar .merge-sessions {
+	background: url('images/icons/merge.png') no-repeat center;
+}
+
+#Session-Sync-Add-on-ReD .session-toolbar .menu-bar .replace-session {
+	background: url('images/icons/recycle.png') no-repeat center;
+}
+
+#Session-Sync-Add-on-ReD .session-toolbar .menu-bar .restore {
+	background: url('images/icons/stack.png') no-repeat center;
+}
+
+#Session-Sync-Add-on-ReD .session-toolbar .menu-bar .restore-new-win {
+	background: url('images/icons/polaroids.png') no-repeat center;
+}
+
+/*
+ * Menu state
+ */
+
+#Session-Sync-Add-on-ReD[session="current"] .session-toolbar .menu-bar > * {
+	display: none;
+}
+
+#Session-Sync-Add-on-ReD[session="current"] .session-toolbar .menu-bar .save {
+	display: block;
+}
+
+#Session-Sync-Add-on-ReD[session="restore"] .session-toolbar .menu-bar .save {
+	display: none;
+}
+
+#Session-Sync-Add-on-ReD[session="history"] .session-toolbar .menu-bar > * {
+	display: none;
+}
+
+#Session-Sync-Add-on-ReD[session="history"] .session-toolbar .menu-bar .save,
+#Session-Sync-Add-on-ReD[session="history"] .session-toolbar .menu-bar .restore {
+	display: block;
+}
+
+/*
+ * Save configuration
+ */
+
+#Session-Sync-Add-on-ReD .session-toolbar .menu-bar .save-config {
+	height: 100%;
+	display: block;
+}
+
+#Session-Sync-Add-on-ReD .session-toolbar .menu-bar .save-config .comp-toggle-switch {
+	opacity: 1;
+	transition: opacity 0.2s ease-out; 
+}
+
+#Session-Sync-Add-on-ReD .session-toolbar .menu-bar:hover .save-config .comp-toggle-switch {
+	opacity: 1;
+}
+
+#Session-Sync-Add-on-ReD[session="restore"] .session-toolbar .menu-bar .save-config {
+	display: none;
+}
+
+#Session-Sync-Add-on-ReD[session="history"] .session-toolbar .menu-bar .save-config .comp-toggle-switch[windows] {
+	display: none;
+}
+
+#Session-Sync-Add-on-ReD .session-toolbar .menu-bar .save-config .comp-toggle-switch {
+	height: 100%;
+	width: 4em;
+	margin: 0;
+	float: right;
+}
+
+#Session-Sync-Add-on-ReD .session-toolbar .menu-bar .save-config .comp-toggle-switch .label {
+	display: none;
+}
+
+#Session-Sync-Add-on-ReD .session-toolbar .menu-bar .save-config .comp-toggle-switch .switch {
+	width: 2.6em;
+	height: 100%;
+	background-color: #33A033;
+	background-color: #40B740;
+	background-image: url('images/icons/gear.png');
+	background-size: 1.6em;
+	background-repeat: no-repeat;
+	background-position: center right 0.2em;
+	border-radius: 2em; 
+	display: block;
+
 	box-sizing: border-box;
 }
 
-#Session-Sync-Add-on-ReD .menu .add {
-	background: url('images/add-tab-grey.png') no-repeat center;
+#Session-Sync-Add-on-ReD .session-toolbar .menu-bar .save-config .comp-toggle-switch .switch[state="false"] {
+	background-color: #BBB;
+	background-position: center left 0.2em;
 }
 
-#Session-Sync-Add-on-ReD .menu .add:hover {
-	background: url('images/add-tab.png') no-repeat center;
+#Session-Sync-Add-on-ReD .session-toolbar .menu-bar .save-config .comp-toggle-switch[pin] .switch {
+	background-image: url('images/icons/pin.png');
 }
 
-#Session-Sync-Add-on-ReD .menu .restore {
-	background: url('images/restore-grey.png') no-repeat center;
+#Session-Sync-Add-on-ReD .session-toolbar .menu-bar .save-config .comp-toggle-switch[pin-state] .switch {
+	background-image: url('images/icons/pin2.png');
 }
 
-#Session-Sync-Add-on-ReD .menu .restore:hover {
-	background: url('images/restore.png') no-repeat center;
-}
-
-#Session-Sync-Add-on-ReD .menu .restore.new-w {
-	background: url('images/restoreW-grey.png') no-repeat center;
-}
-
-#Session-Sync-Add-on-ReD .menu .restore.new-w:hover {
-	background: url('images/restoreW.png') no-repeat center;
+#Session-Sync-Add-on-ReD .session-toolbar .menu-bar .save-config .comp-toggle-switch[windows] .switch {
+	background-image: url('images/icons/stack.png');
 }
 
 /*
- * Tooltips
+ * Sorting method
  */
 
-#Session-Sync-Add-on-ReD .menu .add .tooltip {
-	width: 110px;
-	left: -35px;
+#Session-Sync-Add-on-ReD .session-toolbar .sorting-method {
+	width: 30px;
+	height: 30px;
+	padding: 0;
+	font-size: 12px;
+	display: flex;
+
+	background-image: url("images/sort.png");
+	background-size: 20px;
+	background-repeat: no-repeat;
+	background-position: center center;
+
+	position: fixed;
+	bottom: -1px;
+	left: -31px;
+
+	opacity: 0.1;
+	transition: all 0.1s;
+	box-sizing: border-box;
 }
 
-#Session-Sync-Add-on-ReD .menu .restore .tooltip {
-	width: 80px;
-	left: -20px;
+#Session-Sync-Add-on-ReD[list="history"] .session-toolbar .sorting-method {
+	display: none;
 }
 
-#Session-Sync-Add-on-ReD .menu .restore.new-w .tooltip {
-	width: 100px;
-	left: -30px;
-	margin-top: -45px;
+#Session-Sync-Add-on-ReD .session-toolbar .sorting-method:hover {
+	cursor: pointer;
+	background-color: #FFF;
+	border-bottom: 1px solid #CCC;
+	opacity: 1;
 }
-/*
- * Display lsit of all Sessions
+
+#Session-Sync-Add-on-ReD .session-toolbar .sorting-method:hover .title {
+	display: block;
+	background: #FFF;
+}
+
+#Session-Sync-Add-on-ReD .session-toolbar .sorting-method:hover .dropdown {
+	display: block;
+}
+
+#Session-Sync-Add-on-ReD .session-toolbar .sorting-method .title {
+	width: 40px;
+	padding: 0 10px;
+	height: 100%;
+	line-height: 26px;
+	text-align: left;
+	color: #333;
+
+	border-bottom: 1px solid #CCC;
+	border-left: 1px solid #CCC;
+
+	display: none;
+	position: absolute;
+	bottom: -1px;
+	right: 30px;
+}
+
+#Session-Sync-Add-on-ReD .session-toolbar .sorting-method .dropdown {
+	width: 90px;
+	margin: 0;
+	padding: 0;
+
+	color: #333;
+	line-height: 1.8em;
+	text-align: left;
+	display: none;
+
+	position: absolute;
+	bottom: 29px;
+	right: 0px;
+
+	flex: 1;
+	box-sizing: border-box;	
+}
+
+#Session-Sync-Add-on-ReD .session-toolbar .sorting-method .dropdown:hover {
+	cursor: pointer;
+}
+
+#Session-Sync-Add-on-ReD .session-toolbar .sorting-method .dropdown:hover .option-list {
+	display: block;
+} 
+
+#Session-Sync-Add-on-ReD .session-toolbar .sorting-method .dropdown .option-list {
+	width: 100%;
+
+	border: 1px solid #CCC;
+	background: #FFF;
+	display: block;
+
+	position: absolute;
+	bottom: 0;
+	left: -1px;
+	z-index: 1;
+	box-sizing: content-box;
+}
+
+#Session-Sync-Add-on-ReD .session-toolbar .sorting-method .dropdown .option-list .option {
+	width: 100%;
+	padding: 3px 10px;
+	text-align: left;
+	box-sizing: border-box;
+	transition-property: left, top, color, background;
+	transition-duration: 0.2s;
+
+}
+
+#Session-Sync-Add-on-ReD .session-toolbar .sorting-method .dropdown .option-list .option:hover {
+	background: #EEE;
+	border-color: #CCC;
+	cursor: pointer;
+	transition-property: left, top;
+}
+
+#Session-Sync-Add-on-ReD .session-toolbar .sorting-method .dropdown .option-list .option[active] {
+	color: #FFF;
+	background: #2D92EB;
+}
+
+
+/**
+ * Display lsit of all sessions
  */
 
 #Session-Sync-Add-on-ReD .sessions {
-	width: 250px;
+	width: 160px;
+	min-width: 160px;
+	max-width: 60%;
 	height: 100%;
 	padding: 0px;
-	/*border: 1px solid #CCC;*/
+
 	border-width: 0 1px 0 0;
 	border-style: solid;
 	border-color: #CCC;
 	background: hsla(0, 0%, 100%, 0.95);
+	background: #FEFEFE;
 	float: left;
-	overflow: hidden;
+
+	overflow-x: hidden;
 	position: relative;
 
-	/*CSS3*/
 	display: flex;
 	flex-direction: column;
 
-	-moz-box-sizing: border-box;
+	/*CSS3*/
 	box-sizing: border-box;
 }
 
-#Session-Sync-Add-on-ReD[state='pinned-right'] .sessions {
-	float: right;
-	border-right: 1px solid #CCC;
-	border-width: 0 0 0 1px;
-}
+/*
+ * List resize
+ */
 
-#Session-Sync-Add-on-ReD .search {
-	width: calc(100% - 20px);
+#Session-Sync-Add-on-ReD .sessions .resize-handle
+{
+	content: " ";
+	width: 4px;
 	height: 24px;
-	margin: 10px;
-	padding: 0 10px;
-	color: #555;
+	margin-top: -12px;
+	position: absolute;
+	background: #DDD;
+	top: 50%;
+	border: unset;
+	right: 0px;
+	cursor: w-resize;
+	z-index: 10;
+}
 
-	-moz-box-sizing: border-box;
+#Session-Sync-Add-on-ReD .sessions .resize-handle:hover
+{
+	background: #1AB61A;
+}
+
+#Session-Sync-Add-on-ReD .sessions .resize-handle[resizing]
+{
+	background: #2D92EB !important;
+}
+
+/*
+ * History list
+ */
+
+#Session-Sync-Add-on-ReD[list="history"] .sessions .history-list {
+	flex: 1;
+}
+
+#Session-Sync-Add-on-ReD .sessions .history-list {
+	width: calc(100% + 12px);
+	margin: 0 0 0 0;
+
+	position: relative;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	display: block;
+
+	transition-property: width, margin, flex;
+	transition-duration: 0.2s;
 	box-sizing: border-box;
+	flex: 0;
 }
 
-#Session-Sync-Add-on-ReD .sessions .category {
-	margin: 0 0 2px 0;
-	padding: 6px;
-	border-bottom: 1px solid #CCC;
+#Session-Sync-Add-on-ReD .sessions .history-node {
+	width: 100%;
+	height: 2.5em;
+	padding: 0 0 0 10px;
+	
+	line-height: 2.4em;
+	word-break: break-all;
+
+	overflow: hidden;
+
+	box-sizing: border-box;
+	transition-property: left, top, color, background;
+	transition-duration: 0.2s;	
 }
 
-#Session-Sync-Add-on-ReD .sessions .category .title {
-	padding: 2px 10px 2px 0;
-	border: none;
-	text-align: center;
-	color: #999;
+#Session-Sync-Add-on-ReD .sessions .history-node:hover {
+	background: #EEE;
+	cursor: pointer;
+	transition-property: left, top;
+}
+
+#Session-Sync-Add-on-ReD .sessions .history-node[active="true"] {
+	background: #2D92EB;
+	color: #FFF;
+}
+
+/*
+ * Session list
+ */
+
+#Session-Sync-Add-on-ReD[list="history"] .sessions .list {
+	flex: 0;
 }
 
 #Session-Sync-Add-on-ReD .sessions .list {
-	width: 100%;
-	padding: 0 6px;
-	margin: 4px 0 4px 0;
-	overflow: auto;
-	position: relative;
-	overflow: hidden;
+	width: calc(100% + 12px);
+	margin: 0 0 0 0;
 
-	-moz-box-sizing: border-box;
+	position: relative;
+	overflow-x: hidden;
+	overflow-y: scroll;
+
+	transition-property: width, margin, flex;
+	transition-duration: 0.2s;
 	box-sizing: border-box;
 	flex: 1;
-	transition: width 0.2s;
-}
-
-#Session-Sync-Add-on-ReD .sessions .list:hover {
-	overflow: auto;
-}
-
-#Session-Sync-Add-on-ReD .sessions .list > div {
-	margin: 0 0 2px 0;
-}
-
-#Session-Sync-Add-on-ReD .sessions .list .date {
-	padding: 2px 10px 2px 0;
-	border-top: 1px solid #999;
-	text-align: right;
-	color: #999;
-}
-
-#Session-Sync-Add-on-ReD .sessions .date:first-child {
-	border-top: none;
-}
-
-#Session-Sync-Add-on-ReD .sessions .date[filter="true"] {
-	display: none;
 }
 
 /*
@@ -536,104 +2069,253 @@
  */
 
 #Session-Sync-Add-on-ReD .sessions .folder {
-	height: 30px;
+	width: 100%;
+	height: 2.5em;
 	padding: 0 0 0 10px;
-	line-height: 30px;
-	word-break: keep-all;
+	
+	line-height: 2.4em;
+	word-break: break-all;
+
 	overflow: hidden;
+	position: absolute;
+	left: 0;
+	top: 0;
 
-	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-}
-
-#Session-Sync-Add-on-ReD .sessions .folder.drag {
-	background: #FBD4B0;
+	transition-property: left, top, color, background;
+	transition-duration: 0.2s;
 }
 
 #Session-Sync-Add-on-ReD .sessions .folder:hover {
 	background: #EEE;
 	cursor: pointer;
+	transition-property: left, top;
+}
+
+/*
+#Session-Sync-Add-on-ReD .sessions .folder:hover:before {
+	content:" ";
+	width: 100%;
+	height: 2px;
+	background: red;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	z-index: 10000;
+}
+*/
+
+#Session-Sync-Add-on-ReD .sessions .folder[dragging] {
+	width: 200px;
+	margin: 1px 0 0 1px;
+	background: #4396E9 !important;
+	color: #FFF;
+	opacity: 0.9;
+
+	transition: none;
+	position: fixed;
+	z-index: 1000;
+}
+
+#Session-Sync-Add-on-ReD .sessions .folder[dragging]:hover {
+	cursor: default;
+}
+
+#Session-Sync-Add-on-ReD .sessions .folder[dragging="drop"] {
+	background: #4396E9 !important;
+	color: #FFF;
+	opacity: 0.9;
+	transition: none;
+	position: absolute;
+
+	z-index: 1000;
 }
 
 #Session-Sync-Add-on-ReD .sessions .folder[active="true"] {
-	background: #629BD4;
+	background: #2D92EB;
 	color: #FFF;
 }
 
-#Session-Sync-Add-on-ReD .sessions .folder[filter="true"] {
-	display: none;
+#Session-Sync-Add-on-ReD .sessions .folder[filter] {
+	top: 0 !important;
+	left: -100% !important;
 }
 
-#Session-Sync-Add-on-ReD .tooltip {
-	width: 100px;
-	padding: 5px;
-	margin: -25px 0 0 -5px;
+/**
+ * Tooltip System
+ */
 
-	color: #333;
+#Session-Sync-Add-on-ReD .tooltip-system {
+	padding: 10px 15px;
+	margin: -16px 0 0 0;
+
+	color: #555;
 	background: #FFF;
 	text-align: center;
 	line-height: 20px;
-	border: 1px solid #AAA;
+	border: 1px solid #CCC;
+	border-radius: 5px;
 
-	visibility: hidden;
-	opacity: 0;
-
-	/*display: none;*/
-	position: absolute;
-	top: -100%;
+	display: none;
+	position: fixed;
+	top: 1px;
 	left: 0;
-	z-index: 1000;
+	z-index: 10000;
 
-	transition: 0.1s all ease-out;
-	transition-delay: 0.3s;
+	box-shadow: 0 5px 7px 1px #CCC;
+	box-sizing: border-box;
 }
 
-#Session-Sync-Add-on-ReD .tooltip:after {
+#Session-Sync-Add-on-ReD .tooltip-system:after {
 	content: " ";
 	width: 16px;
 	height: 16px;
-	margin: 17px 0 0 -8px;
+	margin: -8px 0 0 -8px;
 
 	background: #FFF;
 	border-style: solid;
-	border-color: #AAA;
+	border-color: #BBB;
 	border-width: 0 1px 1px 0;
 
 	position: absolute;
 	left: 50%;
+	top: 100%;
 
 	transform: rotate(45deg);
 	z-index: -100;
 }
 
-#Session-Sync-Add-on-ReD .tooltip-parent {
-	position: relative;
-	z-index: 1001;
+#Session-Sync-Add-on-ReD .tooltip-system[active] {
+	display: block;
 }
 
-#Session-Sync-Add-on-ReD .tooltip-parent:hover .tooltip {
-	opacity: 1;
-	visibility: visible;
-	/*display: block;*/
-}
-
-/*
- * Display info about a Session
+/**
+ * Trash-can
  */
 
-#Session-Sync-Add-on-ReD .session-info .bookmark-url {
+#Session-Sync-Add-on-ReD .trash-can {
+	width: 8em;
+	height: 8em;
+
+	background-image: url("images/trash-can.png");
+	background-position: top 1.5em left 1.5em;
+	background-repeat: no-repeat;
+	background-size: 50%;
+	background-color: #FFF;
+
+	border-bottom-right-radius: 8em;
+
+	font-size: 12px;
+
+	border: 1px solid #CCC;
+	border-top: none;
+	border-left: none;
+
+	box-shadow: 0 0 5px 0 #FFF;
+
+	opacity: 0;
+
+	position: absolute;
+	top: 1px;
+	z-index: 1;
+
+	box-sizing: border-box;
+	transition: all 0.2s ease-out;
+}
+
+#Session-Sync-Add-on-ReD[show='true'] .trash-can {
+	display: block;
+}
+
+#Session-Sync-Add-on-ReD[show='false'] .trash-can {
+	display: none;
+}
+
+#Session-Sync-Add-on-ReD .trash-can[action='enter'] {
+	opacity: 1;
+	cursor: pointer;
+}
+
+#Session-Sync-Add-on-ReD .trash-can:not([items="0"]) {
+	opacity: 1;
+}
+
+#Session-Sync-Add-on-ReD .trash-can[dismiss] {
+	opacity: 0;
+}
+
+#Session-Sync-Add-on-ReD .trash-can:hover {
+	cursor: pointer;
+	font-size: 16px;
+	opacity: 1; 
+}
+
+#Session-Sync-Add-on-ReD .count {
+	width: 2em;
+	height: 2em;
+
+	background: #E54828;
+	text-align: center;
+	line-height: 1.9em;
+	color: #FFF;
+	border-radius: 100%;
+	opacity: 1;
+
+	position: absolute;
+	top: 3.7em;
+	left: 1.5em;
+	z-index: 1;
+	box-sizing: border-box;
+	transition: background 0.5s ease-out;
+}
+
+#Session-Sync-Add-on-ReD .trash-can[items="0"] .count {
+	background: #1AB61A;
+}
+
+#Session-Sync-Add-on-ReD .trash-can[items="0"] .dismiss {
+	display: none;
+}
+
+#Session-Sync-Add-on-ReD .trash-can .dismiss {
+	display: block;
+	right: 0.5em;
+}
+
+#Session-Sync-Add-on-ReD .trash-can[dismiss] {
+	opacity: 0;
+}
+
+#Session-Sync-Add-on-ReD .trash-can[dismiss] .dismiss {
+	display: none;
+}
+
+#Session-Sync-Add-on-ReD .trash-can[dismiss]:hover {
+	opacity: 1;
+}
+
+/**
+ * URL Bar
+ */
+
+#Session-Sync-Add-on-ReD .url-bar {
 	width: 100%;
-	height: 28px;
+	height: 2em;
 	margin: 0;
 	padding: 0;
 
 	background: #629BD4;
-	color: #FFF;
-	line-height: 26px;
+	background: #2D92EB;
 	border: 1px solid #CCC;
+
+	color: #FFF;
+	font-size: 14px;
+	line-height: 26px;
 
 	opacity: 0;
 
+	line-height: 1.8em;
+	
 	position: absolute;
 	overflow: hidden;
 	left: -1px;
@@ -644,40 +2326,223 @@
 	z-index: -1;
 }
 
-#Session-Sync-Add-on-ReD .session-info .bookmark-url .url {
-	padding: 0 40px;
-	white-space: nowrap;
-}
-
-#Session-Sync-Add-on-ReD .session-info .bookmark-url .arrow {
-	width: 20px;
+#Session-Sync-Add-on-ReD .url-bar .arrow {
+	width: 2em;
 	height: 100%;
 
 	background: #FFF;
 	text-align: right;
 	color: #777;
-
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 0;
+	float: left;
 }
 
-#Session-Sync-Add-on-ReD .session-info .bookmark-url .arrow:after {
+#Session-Sync-Add-on-ReD .url-bar .arrow:after {
 	content: " ";
-	width: 22px;
-	height: 22px;
+	width: 2em;
+	height: 2em;
 	margin: 2px 0;
 	background: inherit;
 
 	position: absolute;
-	right: 0;
+	left: 0;
 	z-index: -2;
-	transform:  translate(11px, 1px) rotate(45deg);
+	transform:  translate(1em, -0.1em) rotate(45deg);
 }
 
-#Session-Sync-Add-on-ReD .session-info .bookmark-url[data-active="true"] {
-	height: 28px;
-	opacity: 1;
-	bottom: -40px;
+#Session-Sync-Add-on-ReD .url-bar .url {
+	padding: 0 0 0 4em;
+	white-space: nowrap;
 }
+
+#Session-Sync-Add-on-ReD .url-bar[data-active="true"] {
+	opacity: 1;
+	bottom: calc(-2em - 10px);
+}
+
+#Session-Sync-Add-on-ReD .url-bar .copy-feedback {
+	width: 5em;
+	height: 100%;
+
+	background: #38B751;
+	color: #FFF;
+	text-align: center;
+
+	position: absolute;
+	top: 0;
+	right: -5em;
+
+	transition: all 0.2s;
+}
+
+#Session-Sync-Add-on-ReD .url-bar .copy-feedback[active] {
+	right: 0;
+}
+
+/** 
+ * Session-Sync-Add-on-ReD is a XUL element
+ */
+#Session-Sync-Add-on-ReD {
+	width: 100%;
+	
+	font-size: 12px;
+	font-family: "Open Sans", "Segoe UI", Arial, Helvetica, sans-serif;
+
+	color: #000 !important;
+	text-shadow: none !important;
+
+	position: fixed;
+	z-index: 100;
+}
+
+#Session-Sync-Add-on-ReD[show="true"] {
+	width: 100%;
+	height: 100%;
+	left: 0;
+}
+
+#Session-Sync-Add-on-ReD[config] {
+	height: 100%;
+}
+
+#Session-Sync-Add-on-ReD[show="false"] {
+	height: 0;
+	left: -3px;
+}
+
+/*
+ * Only DOM nodes from here
+ */
+
+/*
+ * Panel Body
+ */
+
+#Session-Sync-Add-on-ReD .body {
+	width: 100%;
+	height: 100%;
+	background: rgba(255, 255, 255, 0.5);
+	transition: all 0.3s ease-in;
+	/* 
+	background-image: url("images/kanade.jpg");
+	background-size: contain;
+	*/
+}
+
+#Session-Sync-Add-on-ReD[config] .body {
+	background-color: rgba(255, 255, 255, 0.95);
+}
+
+#Session-Sync-Add-on-ReD .sessions-area {
+	width: 750px;
+	height: 500px;
+	min-width: 500px;
+	min-height: 400px;
+	max-width: 90%;
+	max-height: 80%;
+	
+	border: 1px solid #BBB;
+	position: absolute;
+	top: 125px;
+
+	box-shadow: 0px 5px 15px 0px #CCC;
+	box-sizing: border-box;
+
+	transition: all 0.2s;
+	transform-style: preserve-3d;
+
+	z-index: 1000;
+	display: flex;
+	flex-direction: column;
+}
+
+#Session-Sync-Add-on-ReD[show="false"] .sessions-area {
+	display: none;
+}
+
+#Session-Sync-Add-on-ReD[state="pin"] .sessions-area {
+	top: 0;
+	right: 0;
+	margin: 0;
+	transform: translate(0);
+}
+
+#Session-Sync-Add-on-ReD[state="centered"] .sessions-area {
+	top: calc(50% - 50px);
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+#Session-Sync-Add-on-ReD[config] .sessions-area {
+	left: 400px;
+	top: 20%;	
+	transform: translate(0);
+}
+
+#Session-Sync-Add-on-ReD .sessions-area-body {
+	width: 100%;
+	overflow: hidden;
+
+	flex: 1;
+	display: flex;
+	flex-direction: row;
+}
+
+/*
+ * Container resize
+ */
+
+#Session-Sync-Add-on-ReD[resize] {
+	width: 100%;
+	height: 100%;
+}
+
+#Session-Sync-Add-on-ReD[resize] .body {
+	background: rgba(255, 255, 255, 0.95) !important;
+	cursor: se-resize;
+}
+
+#Session-Sync-Add-on-ReD[resize] .sessions-area {
+	transition: none;
+}
+
+#Session-Sync-Add-on-ReD .sessions-area .panel-resize-handle
+{
+	content: " ";
+	width: 12px;
+	height: 12px;
+	margin-top: -12px;
+	background: url("images/resize.png") center no-repeat !important;
+	position: absolute;
+	background: #DDD;
+	bottom: 0;
+	right: 0px;
+	cursor: se-resize;
+	z-index: 10;
+}
+
+#Session-Sync-Add-on-ReD .sessions-area .panel-resize-handle:hover
+{
+	background: #1AB61A;
+}
+
+#Session-Sync-Add-on-ReD .sessions-area .panel-resize-handle[resizing]
+{
+	background: #2D92EB;
+}
+
+/*
+ * Media Queries
+ */
+/*
+@media (max-height: 900px) {
+	#Session-Sync-Add-on-ReD[state='centered'] .sessions-area {
+		top: 125px;
+	}
+}
+
+@media (max-height: 700px) {
+	#Session-Sync-Add-on-ReD[state='centered'] .sessions-area {
+		top: 60px;
+	}
+}
+*/

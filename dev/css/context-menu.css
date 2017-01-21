@@ -1,5 +1,9 @@
+/**
+ * Context Menu
+ */
+
 #Session-Sync-Add-on-ReD .context-menu {
-	width: 135px;
+	width: 145px;
 	padding: 5px;
 	background: #FFF;
 	border: 1px #CCC solid;
@@ -9,23 +13,74 @@
 	left: 0;
 	top: 0;
 
-	box-shadow: 3px 3px 5px 0 #CCC;
+	box-shadow: 0px 0px 5px 0 #CCC;
 	transform: translateX(5px);
-	z-index: 2;
+	z-index: 1000;
 }
 
 #Session-Sync-Add-on-ReD .context-menu[data-active="true"] {
 	display: block;
 }
 
+#Session-Sync-Add-on-ReD .context-menu .separator {
+	width: 100%;
+	height: 1px;
+	margin: 3px 0;
+	background: #CCC;
+}
+
+
 #Session-Sync-Add-on-ReD .context-menu .button {
 	width: 100%;
-	padding: 5px;
+	padding: 5px 5px 5px 30px;
 
+	background-image: url("images/icons/cloud.png");
+	background-size: 20px;
+	background-repeat: no-repeat;
+	background-position: 3px 3px;
 	box-sizing: border-box;
 }
 
 #Session-Sync-Add-on-ReD .context-menu .button:hover {
-	background: #EEE;
+	background-color: #EEE;
 	cursor: pointer;
 }
+
+#Session-Sync-Add-on-ReD .context-menu .button[icon="new-tab"] {
+	background-image: url("images/icons/ribbon.png");
+}
+
+#Session-Sync-Add-on-ReD .context-menu .button[icon="same-tab"] {
+	background-image: url("images/icons/recycle.png");
+}
+
+#Session-Sync-Add-on-ReD .context-menu .button[icon="new-window"] {
+	background-image: url("images/icons/polaroids.png");
+}
+
+#Session-Sync-Add-on-ReD .context-menu .button[icon="copy"] {
+	background-image: url("images/icons/clipboard.png");
+}
+
+#Session-Sync-Add-on-ReD .context-menu .button[icon="edit"] {
+	background-image: url("images/icons/document.png");
+}
+
+#Session-Sync-Add-on-ReD .context-menu .button[icon="delete"] {
+	background-image: url("images/icons/denied.png");
+}
+
+#Session-Sync-Add-on-ReD .context-menu .button[icon="same-window"] {
+	background-image: url("images/icons/stack.png");
+}
+
+#Session-Sync-Add-on-ReD .context-menu .button[icon="new-session"] {
+	background-image: url("images/icons/star.png");
+}
+
+#Session-Sync-Add-on-ReD .context-menu[icons="no"] .button
+{
+	padding: 5px;
+	background-image: unset;
+}
+

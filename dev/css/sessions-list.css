@@ -1,93 +1,129 @@
-/*
- * Display lsit of all Sessions
+/**
+ * Display lsit of all sessions
  */
 
 #Session-Sync-Add-on-ReD .sessions {
-	width: 250px;
+	width: 160px;
+	min-width: 160px;
+	max-width: 60%;
 	height: 100%;
 	padding: 0px;
-	/*border: 1px solid #CCC;*/
+
 	border-width: 0 1px 0 0;
 	border-style: solid;
 	border-color: #CCC;
 	background: hsla(0, 0%, 100%, 0.95);
+	background: #FEFEFE;
 	float: left;
-	overflow: hidden;
+
+	overflow-x: hidden;
 	position: relative;
 
-	/*CSS3*/
 	display: flex;
 	flex-direction: column;
 
-	-moz-box-sizing: border-box;
+	/*CSS3*/
 	box-sizing: border-box;
 }
 
-#Session-Sync-Add-on-ReD[state='pinned-right'] .sessions {
-	float: right;
-	border-right: 1px solid #CCC;
-	border-width: 0 0 0 1px;
-}
+/*
+ * List resize
+ */
 
-#Session-Sync-Add-on-ReD .search {
-	width: calc(100% - 20px);
+#Session-Sync-Add-on-ReD .sessions .resize-handle
+{
+	content: " ";
+	width: 4px;
 	height: 24px;
-	margin: 10px;
-	padding: 0 10px;
-	color: #555;
+	margin-top: -12px;
+	position: absolute;
+	background: #DDD;
+	top: 50%;
+	border: unset;
+	right: 0px;
+	cursor: w-resize;
+	z-index: 10;
+}
 
-	-moz-box-sizing: border-box;
+#Session-Sync-Add-on-ReD .sessions .resize-handle:hover
+{
+	background: #1AB61A;
+}
+
+#Session-Sync-Add-on-ReD .sessions .resize-handle[resizing]
+{
+	background: #2D92EB !important;
+}
+
+/*
+ * History list
+ */
+
+#Session-Sync-Add-on-ReD[list="history"] .sessions .history-list {
+	flex: 1;
+}
+
+#Session-Sync-Add-on-ReD .sessions .history-list {
+	width: calc(100% + 12px);
+	margin: 0 0 0 0;
+
+	position: relative;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	display: block;
+
+	transition-property: width, margin, flex;
+	transition-duration: 0.2s;
 	box-sizing: border-box;
+	flex: 0;
 }
 
-#Session-Sync-Add-on-ReD .sessions .category {
-	margin: 0 0 2px 0;
-	padding: 6px;
-	border-bottom: 1px solid #CCC;
+#Session-Sync-Add-on-ReD .sessions .history-node {
+	width: 100%;
+	height: 2.5em;
+	padding: 0 0 0 10px;
+	
+	line-height: 2.4em;
+	word-break: break-all;
+
+	overflow: hidden;
+
+	box-sizing: border-box;
+	transition-property: left, top, color, background;
+	transition-duration: 0.2s;	
 }
 
-#Session-Sync-Add-on-ReD .sessions .category .title {
-	padding: 2px 10px 2px 0;
-	border: none;
-	text-align: center;
-	color: #999;
+#Session-Sync-Add-on-ReD .sessions .history-node:hover {
+	background: #EEE;
+	cursor: pointer;
+	transition-property: left, top;
+}
+
+#Session-Sync-Add-on-ReD .sessions .history-node[active="true"] {
+	background: #2D92EB;
+	color: #FFF;
+}
+
+/*
+ * Session list
+ */
+
+#Session-Sync-Add-on-ReD[list="history"] .sessions .list {
+	flex: 0;
 }
 
 #Session-Sync-Add-on-ReD .sessions .list {
-	width: 100%;
-	padding: 0 6px;
-	margin: 4px 0 4px 0;
-	overflow: auto;
-	position: relative;
-	overflow: hidden;
+	width: calc(100% + 12px);
+	margin: 0 0 0 0;
 
-	-moz-box-sizing: border-box;
+	position: relative;
+	overflow-x: hidden;
+	overflow-y: scroll;
+
+	transition-property: width, margin, flex;
+	transition-duration: 0.2s;
 	box-sizing: border-box;
 	flex: 1;
-	transition: width 0.2s;
-}
-
-#Session-Sync-Add-on-ReD .sessions .list:hover {
-	overflow: auto;
-}
-
-#Session-Sync-Add-on-ReD .sessions .list > div {
-	margin: 0 0 2px 0;
-}
-
-#Session-Sync-Add-on-ReD .sessions .list .date {
-	padding: 2px 10px 2px 0;
-	border-top: 1px solid #999;
-	text-align: right;
-	color: #999;
-}
-
-#Session-Sync-Add-on-ReD .sessions .date:first-child {
-	border-top: none;
-}
-
-#Session-Sync-Add-on-ReD .sessions .date[filter="true"] {
-	display: none;
 }
 
 /*
@@ -95,30 +131,74 @@
  */
 
 #Session-Sync-Add-on-ReD .sessions .folder {
-	height: 30px;
+	width: 100%;
+	height: 2.5em;
 	padding: 0 0 0 10px;
-	line-height: 30px;
-	word-break: keep-all;
+	
+	line-height: 2.4em;
+	word-break: break-all;
+
 	overflow: hidden;
+	position: absolute;
+	left: 0;
+	top: 0;
 
-	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-}
-
-#Session-Sync-Add-on-ReD .sessions .folder.drag {
-	background: #FBD4B0;
+	transition-property: left, top, color, background;
+	transition-duration: 0.2s;
 }
 
 #Session-Sync-Add-on-ReD .sessions .folder:hover {
 	background: #EEE;
 	cursor: pointer;
+	transition-property: left, top;
+}
+
+/*
+#Session-Sync-Add-on-ReD .sessions .folder:hover:before {
+	content:" ";
+	width: 100%;
+	height: 2px;
+	background: red;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	z-index: 10000;
+}
+*/
+
+#Session-Sync-Add-on-ReD .sessions .folder[dragging] {
+	width: 200px;
+	margin: 1px 0 0 1px;
+	background: #4396E9 !important;
+	color: #FFF;
+	opacity: 0.9;
+
+	transition: none;
+	position: fixed;
+	z-index: 1000;
+}
+
+#Session-Sync-Add-on-ReD .sessions .folder[dragging]:hover {
+	cursor: default;
+}
+
+#Session-Sync-Add-on-ReD .sessions .folder[dragging="drop"] {
+	background: #4396E9 !important;
+	color: #FFF;
+	opacity: 0.9;
+	transition: none;
+	position: absolute;
+
+	z-index: 1000;
 }
 
 #Session-Sync-Add-on-ReD .sessions .folder[active="true"] {
-	background: #629BD4;
+	background: #2D92EB;
 	color: #FFF;
 }
 
-#Session-Sync-Add-on-ReD .sessions .folder[filter="true"] {
-	display: none;
+#Session-Sync-Add-on-ReD .sessions .folder[filter] {
+	top: 0 !important;
+	left: -100% !important;
 }

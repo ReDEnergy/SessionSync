@@ -1,0 +1,149 @@
+Improvements:
+
+---------------------------------------
+DONE
+---------------------------------------
+	- Features
+		- touch support
+		- search bar for sessions
+			- 3 methods for session sorting - name/position/date
+		- pin tabs
+			- added support through bookmark annotations
+			- added config for saving/restore state
+		- auto-saving sessions
+			- not saved as bookmarks, but can be saved
+			- not synced across browsers
+				- need to be saved as bookmarks, otherwise they are just simple
+
+		- private mode settings
+			- default mode
+				- ignore private windows
+			- private windows
+				- show only tabs from current window
+				
+	- Management
+		- support for drag & drop commands
+			- move bookmarks from a folder session to another one
+			- sorting bookmarks (position)
+		- merge current session with the selected one
+		- replace selected session with the current one
+		- duplicate tabs ignored when a session is saved
+		- prevent saving of the same tab into the current session
+		- support multi-window sessions saving
+			- each window is saved as a separate folder
+
+	- Performance
+		- improved startup lookup by caching root folderID
+		- improved bookmark storage caching in addon
+			- internal bookmark and addon storage are kept in sync
+			- fast UI updates based on the differences not full UI update
+		- improved event management
+			- added event delegation instead of per DOM instance events
+		- improved session restore performance
+			- pages will not be loaded until the corespondent tab is activated by the user
+	
+	- UI improvements:
+		- new icon set
+		- improve overall addon styling
+	
+	- UX improvements:
+		- nice animation + transitions
+		- real-time ordering session/bookmark (updates Firefox interal model)
+			- should be safe - UI updates after interal update is done
+			
+		- Addon panel configuration
+			- addon shortcuts
+
+		- auto-open session edit panel for changing name/description
+			- new session saved
+			- empty session crated
+
+		- focus "title" text field when edditing a bookmark
+		- keyboard mode
+			- search sessions: CTRL + F
+			
+		- UI styling
+			- session-list custom width (resize using mouse)
+			- context-menu icons
+			- highlight pinned tabs info
+
+		- UI scalling
+			- sessions folders
+			- bookmark lists
+			- header-bar area
+			- toolbar area
+			- custom panel-size (drag and drop)
+
+		- trigger copy feedback info when user clicks on the URL bar
+
+		- double click
+			- edits session/bookmark
+			- [BUG] bookmark is opened 2 times
+			
+		- bookmark custom click action
+
+		- addon-bar buttons [#4]
+
+---------------------------------------
+TODO
+---------------------------------------
+
+	- Prevents release
+		- "no sessions" container in list / container
+		- keep ui opened (not really required)
+		- add panel-snap-top, fixed offset, center configuration
+		- show/hide addon bar
+		- complete help-page with new instructions
+
+	- what's new in Session Sync v2.0.0
+		- show in addon-page
+		
+	- Investigate
+		- multiple sorting options
+
+	- Architecture
+		- extend DOMComponent to ConfigComponent
+			- should listen for a certain event and update itself
+		- move general events to logic modules
+			- tab events => trigger update to active session
+		- general storage
+			- config
+				- persistent global storage
+			- local window storage
+				- app/UI state
+			- trigger onChange listeners for each setting
+				- do not use WindowEvents
+		
+	- Perfromance
+		- lazy init
+		- cache objects
+			- better cache DOM instances and not bookmark information
+			- when triggering session updates
+		- improve update events
+			- trigger session update less often
+		- SessionSyncDOMModel
+			- DOM objects need to be released when deleting an object
+			
+	- Features
+		- add session filtering with tags
+			- filter management using annotation - posponed
+			
+		- super-swap feature
+			- save current session and swap with the selected one
+		- merge 2 sessions
+			- drag and drop over a certain area (show a small merge button)
+
+		- extend history commands/events
+
+	- UX
+		- Session management
+		- highlight active tab in bookmark-list if present
+		- search session
+			- no session - button to create that specific session
+
+	- UI
+		- context menu
+			- use background-size contain, aling left
+			- left padding should equal to height in em to make it dynamic
+			- context menus should use the same scaling mode as bookmarks
+

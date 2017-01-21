@@ -1,217 +1,44 @@
 {
-	"id": "session-sync@gabrielivanica.com",
-	"name": "session-sync",
-	"title": "Session Sync",
-	"fullName": "Session Sync",
-	"author": "Gabriel Ivanica",
-	"description": "Save sessions as bookmarks and sync them through Firefox Sync.\nManage, edit, save, restore.\nSession-Sync will automatically update sessions across multiple machines",
-	"homepage": "https://github.com/ReDEnergy/SessionSync",
-
-	"version": "1.0.0",
-	"main": "lib/main.js",
-
-	"icon" : "data/images/icon48.png",
-	"icon64" : "data/images/icon64.png",
-
-	"license": "MPL 2.0",
-	"permissions": {
-		"private-browsing": true
-	},
-	
-	"preferences": [
-		{
-			"type": "control",
-			"label": "Open",
-			"name": "Instructions",
-			"title": "Add-on page"
-		},
-		{
-			"name": "hotkey_special",
-			"type": "radio",
-			"title": "Hotkey Special",
-			"value": "accel-shift",
-			"options": [
-				{
-					"value": "accel",
-					"label": "Ctrl"
-				},
-				{
-					"value": "alt",
-					"label": "Alt"
-				},
-				{
-					"value": "shift",
-					"label": "Shift"
-				},
-				{
-					"value": "accel-shift",
-					"label": "Ctrl + Shift"
-				},
-				{
-					"value": "accel-alt",
-					"label": "Ctrl + Alt"
-				},
-				{
-					"value": "alt-shift",
-					"label": "Alt + Shift"
-				},
-				{
-					"value": "accel-alt-shift",
-					"label": "Ctrl + Alt + Shift"
-				}
-			]
-		},
-		{
-			"name": "hotkey_key",
-			"type": "menulist",
-			"title": "Shortcut Key",
-			"value": 115,
-			"options":[
-				{
-					"value":"97",
-					"label":"A"
-				},
-				{
-					"value":"98",
-					"label":"B"
-				},
-				{
-					"value":"99",
-					"label":"C"
-				},
-				{
-					"value":"100",
-					"label":"D"
-				},
-				{
-					"value":"101",
-					"label":"E"
-				},
-				{
-					"value":"102",
-					"label":"F"
-				},
-				{
-					"value":"103",
-					"label":"G"
-				},
-				{
-					"value":"104",
-					"label":"H"
-				},
-				{
-					"value":"105",
-					"label":"I"
-				},
-				{
-					"value":"106",
-					"label":"J"
-				},
-				{
-					"value":"107",
-					"label":"K"
-				},
-				{
-					"value":"108",
-					"label":"L"
-				},
-				{
-					"value":"109",
-					"label":"M"
-				},
-				{
-					"value":"110",
-					"label":"N"
-				},
-				{
-					"value":"111",
-					"label":"O"
-				},
-				{
-					"value":"112",
-					"label":"P"
-				},
-				{
-					"value":"113",
-					"label":"Q"
-				},
-				{
-					"value":"114",
-					"label":"R"
-				},
-				{
-					"value":"115",
-					"label":"S"
-				},
-				{
-					"value":"116",
-					"label":"T"
-				},
-				{
-					"value":"117",
-					"label":"U"
-				},
-				{
-					"value":"118",
-					"label":"V"
-				},
-				{
-					"value":"119",
-					"label":"W"
-				},
-				{
-					"value":"120",
-					"label":"X"
-				},
-				{
-					"value":"121",
-					"label":"Y"
-				},
-				{
-					"value":"122",
-					"label":"Z"
-				},
-				{
-					"value":"48",
-					"label":"0"
-				},
-				{
-					"value":"49",
-					"label":"1"
-				},
-				{
-					"value":"50",
-					"label":"2"
-				},
-				{
-					"value":"51",
-					"label":"3"
-				},
-				{
-					"value":"52",
-					"label":"4"
-				},
-				{
-					"value":"53",
-					"label":"5"
-				},
-				{
-					"value":"54",
-					"label":"6"
-				},
-				{
-					"value":"55",
-					"label":"7"
-				},
-				{
-					"value":"56",
-					"label":"8"
-				},
-				{
-					"value":"57",
-					"label":"9"
-				}
-			]
-		}		
-	]
+  "id": "session-sync@gabrielivanica.com",
+  "name": "session-sync",
+  "title": "Session Sync",
+  "version": "2.0.0",
+  "author": "Gabriel Ivanica",
+  "description": "Save sessions as bookmarks and sync them through Firefox Sync.\nManage, edit, save, restore.\nSession-Sync will automatically update sessions across multiple machines",
+  "homepage": "https://github.com/ReDEnergy/SessionSync",
+  "main": "lib/main.js",
+  "icon": "data/images/icon48.png",
+  "license": "MPL-2.0",
+  "permissions": {
+    "private-browsing": true,
+    "multiprocess:": true
+  },
+  "preferences": [
+    {
+      "type": "control",
+      "label": "Open",
+      "name": "open-instructions",
+      "title": "Add-on instructions"
+    },
+    {
+      "type": "control",
+      "label": "Config",
+      "name": "open-configuration",
+      "title": "Add-on config"
+    }
+  ],
+  "devDependencies": {
+    "connect-livereload": "^0.5.3",
+    "express": "^4.13.1",
+    "gulp": "^3.9.0",
+    "gulp-callback": "0.0.3",
+    "gulp-concat": "^2.6.0",
+    "gulp-open": "^1.0.0",
+    "gulp-plumber": "^1.0.1",
+    "gulp-util": "^3.0.6",
+    "gulp-watch": "^4.3.3",
+    "serve-index": "^1.7.1",
+    "socket.io": "^1.4.8",
+    "tiny-lr": "^0.1.6"
+  }
 }

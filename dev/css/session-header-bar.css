@@ -1,0 +1,199 @@
+/**
+ * Header Bar
+ */
+
+#Session-Sync-Add-on-ReD .header-bar {
+	width: 100%;
+	height: calc(2.5em);
+
+	background: #F5F5F5;
+	border-bottom: 1px solid #DDD; 
+	line-height: 2.4em;
+	font-size: 18px;
+	position: relative;
+
+	box-sizing: border-box;
+}
+
+/**
+ * Active session button
+ */
+
+#Session-Sync-Add-on-ReD .header-bar .active-session-btn {
+	width: 2.5em;
+	background: url('images/icons/globe.png') no-repeat center;
+	background-size: 1em;
+	height: 60%;
+	opacity: 0.5;
+	border: 1px solid red;
+	border: unset;
+	position: absolute;
+	top: 0.5em;
+	left: 0;
+	transition: all 0.2s ease-out;
+	box-sizing: border-box;
+}
+
+#Session-Sync-Add-on-ReD[session="current"] .header-bar .active-session-btn,
+#Session-Sync-Add-on-ReD .header-bar .active-session-btn:hover {
+	background-size: 1.2em;
+	cursor: pointer;
+	opacity: 1;
+}
+
+/**
+ * Active session description
+ */
+
+#Session-Sync-Add-on-ReD .header-bar .description {
+	width: 100%;
+	height: 100%;
+
+	text-align: center;
+	white-space: nowrap;
+	overflow: hidden;
+	color: #555;
+
+	box-sizing: border-box;
+}
+
+/**
+ * Config button
+ */
+
+#Session-Sync-Add-on-ReD .header-bar .addon-config {
+	width: 1.8em;
+	height: 1.8em;
+	background-image: url("images/menu.png");
+	background-size: 55%;
+	background-repeat: no-repeat;
+	background-position: center center;
+	border: 1px solid rgba(0, 0, 0, 0);
+	position: absolute;
+	top: 0.3em;
+	right: 0.3em;
+	z-index: 2;
+	opacity: 0.4;
+	box-sizing: border-box;
+	display: none;
+}
+
+#Session-Sync-Add-on-ReD .header-bar .addon-config:hover {
+	cursor: pointer;
+	background-color: #EEE;
+	border: 1px solid #CCC;
+	opacity: 1;
+}
+
+/**
+ * Header Menu
+ */
+
+#Session-Sync-Add-on-ReD .header-bar .header-menu {
+	width: 1.8em;
+	height: 1.8em;
+	background-image: url("images/menu.png");
+	background-size: 55%;
+	background-repeat: no-repeat;
+	background-position: center center;
+	border: 1px solid rgba(0, 0, 0, 0);
+	position: absolute;
+	top: 0.3em;
+	right: 0.3em;
+	z-index: 2;
+	opacity: 0.4;
+	box-sizing: border-box;
+}
+
+
+#Session-Sync-Add-on-ReD .header-bar .header-menu:hover {
+	cursor: pointer;
+	background-color: #EEE;
+	border: 1px solid #CCC;
+	opacity: 1;
+}
+
+#Session-Sync-Add-on-ReD .header-bar .header-menu[active='1'] {
+	opacity: 1;
+}
+
+#Session-Sync-Add-on-ReD .header-bar .header-menu .menu-area {
+	width: 14em;
+	height: 0;
+	margin: 0;
+	padding: 0;
+	background: #FFF;
+	font-size: 0.75em;
+	border: 1px solid rgba(0, 0, 0, 0);
+	position: absolute;
+	top: 100%;
+	right: -1px;
+	overflow: hidden;
+
+	opacity: 0;
+	display: flex;
+	flex-direction: row;
+	
+	transition-property: height, padding, opacity;
+	transition-duration: 0.2s;
+	transition-timing-function: ease-out;
+}
+
+#Session-Sync-Add-on-ReD .header-bar .header-menu[active='1'] .menu-area {
+	display: flex;
+	height: 3.8em;
+	padding: 1em;
+	border: 1px solid #CCC;
+	opacity: 1;
+}
+
+#Session-Sync-Add-on-ReD .header-bar .header-menu .menu-area:hover {
+	cursor: default;
+}
+
+#Session-Sync-Add-on-ReD .header-bar .header-menu .menu-button {
+	border: 1px solid #FFF;
+	padding: 0.3em 0;
+	flex: 1;
+}
+
+#Session-Sync-Add-on-ReD .header-bar .header-menu .menu-button:hover {
+	cursor: pointer;
+	background-color: #F5F5F5;
+	border-color: #DDD;
+}
+
+#Session-Sync-Add-on-ReD .header-bar .header-menu .menu-button .icon {
+	height: 2em;
+	background-image: url("images/icons/power.png");
+	background-size: contain !important;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+#Session-Sync-Add-on-ReD .header-bar .header-menu .menu-button[id="help"] .icon {
+	background-image: url("images/icons/brightness.png");
+}
+
+#Session-Sync-Add-on-ReD .header-bar .header-menu .menu-button[id="config"] .icon {
+	background-image: url("images/icons/gear.png");
+}
+
+#Session-Sync-Add-on-ReD .header-bar .header-menu .menu-button[id="help"] {
+	margin: 0 0.75em;
+}
+
+#Session-Sync-Add-on-ReD .header-bar .header-menu .menu-button[id="close"] .icon {
+	background-image: url("images/icons/power.png");
+}
+
+#Session-Sync-Add-on-ReD .header-bar .header-menu .menu-button .title {
+	height: 1em;
+	margin-top: 0.25em;
+	color: #555;
+	font-size: 0.8em;
+	line-height: 100%;
+	text-align: center;
+}
+
+

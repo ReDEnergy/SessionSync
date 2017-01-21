@@ -1,86 +1,37 @@
-@charset "utf-8";
-/* CSS Document */
-
-/* Panel Style */
-/* TODO inspect if possible to append UI relative to btn */
+/** 
+ * Session-Sync-Add-on-ReD is a XUL element
+ */
 #Session-Sync-Add-on-ReD {
-	width: 700px;
-	height: 400px;
-
-	background: #FFF;
-	border: 1px solid #BBB;
-	border-radius: 3px;
+	width: 100%;
+	
 	font-size: 12px;
 	font-family: "Open Sans", "Segoe UI", Arial, Helvetica, sans-serif;
 
-	position: fixed;
-	z-index: 100;
 	color: #000 !important;
 	text-shadow: none !important;
 
-	/*transition: all 0.2s;*/
-	box-shadow: 0px 0px 5px 0px #CCC;
+	position: fixed;
+	z-index: 100;
 }
 
-#Session-Sync-Add-on-ReD[state='centered'] {
-	margin: -200px -350px;
-	top: 50%;
-	left: 50%;
+#Session-Sync-Add-on-ReD[show="true"] {
+	width: 100%;
+	height: 100%;
+	left: 0;
 }
 
-#Session-Sync-Add-on-ReD[state='pinned-right'] {
-	width: 600px;
-	margin: 0 0 0 -565px;
+#Session-Sync-Add-on-ReD[config] {
+	height: 100%;
 }
 
-#Session-Sync-Add-on-ReD[state='pinned-left'] {
-	margin: 0 0 0 -35px;
-}
-
-#Session-Sync-Add-on-ReD[show='true'] {
-	display: block;
-}
-
-#Session-Sync-Add-on-ReD[show='false'] {
-	display: none;
+#Session-Sync-Add-on-ReD[show="false"] {
+	height: 0;
+	left: -3px;
 }
 
 /*
- * Media Queries
+ * Only DOM nodes from here
  */
-@media (min-width: 600px) and (max-width: 700px) {
-	#Session-Sync-Add-on-ReD {
-		width: 600px;
-	}
-	#Session-Sync-Add-on-ReD[state='centered'] {
-		margin: -200px -300px;
-	}
-}
-
-@media (max-width: 600px) {
-	#Session-Sync-Add-on-ReD {
-		width: 500px;
-	}
-	#Session-Sync-Add-on-ReD[state='centered'] {
-		margin: -200px -250px;
-	}
-	#Session-Sync-Add-on-ReD[state='pinned-right'] {
-		margin: 0 0 0 -465px;
-	}
-}
-
-#Session-Sync-Add-on-ReD .group {
-	width: 100%;
-	clear: both;
-}
-
-#Session-Sync-Add-on-ReD .content {
-	width: 100%;
-	height: 100%;
-
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
 
 /*
  * Panel Body
@@ -89,22 +40,129 @@
 #Session-Sync-Add-on-ReD .body {
 	width: 100%;
 	height: 100%;
-	border-radius: 3px;
+	background: rgba(255, 255, 255, 0.5);
+	transition: all 0.3s ease-in;
+	/* 
+	background-image: url("images/kanade.jpg");
+	background-size: contain;
+	*/
 }
 
-/*
- * Session Info States
- */
-#Session-Sync-Add-on-ReD[session="current"] .session-info .menu > * {
+#Session-Sync-Add-on-ReD[config] .body {
+	background-color: rgba(255, 255, 255, 0.95);
+}
+
+#Session-Sync-Add-on-ReD .sessions-area {
+	width: 750px;
+	height: 500px;
+	min-width: 500px;
+	min-height: 400px;
+	max-width: 90%;
+	max-height: 80%;
+	
+	border: 1px solid #BBB;
+	position: absolute;
+	top: 125px;
+
+	box-shadow: 0px 5px 15px 0px #CCC;
+	box-sizing: border-box;
+
+	transition: all 0.2s;
+	transform-style: preserve-3d;
+
+	z-index: 1000;
+	display: flex;
+	flex-direction: column;
+}
+
+#Session-Sync-Add-on-ReD[show="false"] .sessions-area {
 	display: none;
 }
 
-#Session-Sync-Add-on-ReD[session="current"] .session-info .menu,
-#Session-Sync-Add-on-ReD[session="current"] .session-info .save {
-	display: block;
+#Session-Sync-Add-on-ReD[state="pin"] .sessions-area {
+	top: 0;
+	right: 0;
+	margin: 0;
+	transform: translate(0);
 }
 
-#Session-Sync-Add-on-ReD[session="restore"] .session-info .description,
-#Session-Sync-Add-on-ReD[session="restore"] .session-info .menu {
-	display: block;
+#Session-Sync-Add-on-ReD[state="centered"] .sessions-area {
+	top: calc(50% - 50px);
+	left: 50%;
+	transform: translate(-50%, -50%);
 }
+
+#Session-Sync-Add-on-ReD[config] .sessions-area {
+	left: 400px;
+	top: 20%;	
+	transform: translate(0);
+}
+
+#Session-Sync-Add-on-ReD .sessions-area-body {
+	width: 100%;
+	overflow: hidden;
+
+	flex: 1;
+	display: flex;
+	flex-direction: row;
+}
+
+/*
+ * Container resize
+ */
+
+#Session-Sync-Add-on-ReD[resize] {
+	width: 100%;
+	height: 100%;
+}
+
+#Session-Sync-Add-on-ReD[resize] .body {
+	background: rgba(255, 255, 255, 0.95) !important;
+	cursor: se-resize;
+}
+
+#Session-Sync-Add-on-ReD[resize] .sessions-area {
+	transition: none;
+}
+
+#Session-Sync-Add-on-ReD .sessions-area .panel-resize-handle
+{
+	content: " ";
+	width: 12px;
+	height: 12px;
+	margin-top: -12px;
+	background: url("images/resize.png") center no-repeat !important;
+	position: absolute;
+	background: #DDD;
+	bottom: 0;
+	right: 0px;
+	cursor: se-resize;
+	z-index: 10;
+}
+
+#Session-Sync-Add-on-ReD .sessions-area .panel-resize-handle:hover
+{
+	background: #1AB61A;
+}
+
+#Session-Sync-Add-on-ReD .sessions-area .panel-resize-handle[resizing]
+{
+	background: #2D92EB;
+}
+
+/*
+ * Media Queries
+ */
+/*
+@media (max-height: 900px) {
+	#Session-Sync-Add-on-ReD[state='centered'] .sessions-area {
+		top: 125px;
+	}
+}
+
+@media (max-height: 700px) {
+	#Session-Sync-Add-on-ReD[state='centered'] .sessions-area {
+		top: 60px;
+	}
+}
+*/

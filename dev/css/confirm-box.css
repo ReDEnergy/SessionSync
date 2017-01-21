@@ -1,7 +1,11 @@
+/**
+ * Confirm Box
+ */
+
 #Session-Sync-Add-on-ReD .confirm-box {
-	width: 160px;
-	padding: 10px;
-	margin: -50px 0 0 -95px;
+	width: auto;
+	padding: 15px;
+	margin: -40px 0 0 0;
 	background: #FFF;
 	border: 1px #CCC solid;
 
@@ -10,23 +14,35 @@
 	left: 0;
 	top: 0;
 	overflow: auto;
-
+	
 	box-shadow: 3px 3px 5px 0 #CCC;
-	transform: translateX(5px);
+	transform: translate(-50%, 0);
 	z-index: 1;
 }
 
 #Session-Sync-Add-on-ReD .confirm-box[data-active="true"] {
 	display: block;
+	z-index: 1001;
 }
 
 #Session-Sync-Add-on-ReD .confirm-box .info {
 	width: 100%;
 	margin: 0 0 5px 0;
-	padding: 5px 0;
+	padding: 5px 0; 
 	color: #333;
 	text-align: center;
 	font-size: 16px;
+}
+
+#Session-Sync-Add-on-ReD .confirm-box .controls {
+	padding: 10px 0 0 0;
+	border-top: 1px solid #DDD;
+	overflow: hidden;
+	display: flex;
+}
+
+#Session-Sync-Add-on-ReD .confirm-box .controls .flex {
+	flex: 1;
 }
 
 #Session-Sync-Add-on-ReD .confirm-box .ok {

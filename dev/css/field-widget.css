@@ -7,53 +7,81 @@
 	background: #FFF;
 	border: 1px solid #CCC;
 
-	visibility: hidden;
 	opacity: 0;
 
 	position: absolute;
-	top: 0;
 
 	box-sizing: border-box;
 	box-shadow: 0px 0px 5px 0px #CCC;
 
+	bottom: 0;
+	left: 0;
+	z-index: -1;
 	transition: 0.2s all ease-out;
 }
 
 #Session-Sync-Add-on-ReD .field-edit-widget[data-active] {
-	top: -100px;
 	opacity: 1;
-	visibility: visible;
 	z-index: 1000;
 }
 
-#Session-Sync-Add-on-ReD[state='pinned-right'] .field-edit-widget[data-active] {
-	top: 100px;
-}
-
 #Session-Sync-Add-on-ReD .field-edit-widget .group {
+	width: 100%;
+	height: 2.4em;
 	margin: 3px 0;
+	line-height: 2.0em;
 	float: left;
+	display: flex;
 }
 
 #Session-Sync-Add-on-ReD .field-edit-widget label {
 	width: 80px;
-	float: left;
+	padding: 0 20px 0 0;
+	text-decoration: underline;
+	font-size: 1.2em;
+	text-align: right;
 }
 
 #Session-Sync-Add-on-ReD .field-edit-widget input {
-	width: calc(100% - 100px);
-	float: left;
+	height: 100%;
+	padding: 0 1em 0.2em 1em !important;
+	color: #333;
+	box-sizing: border-box; 
+	border-radius: 1.2em !important;
+	flex: 1;
+}
+
+#Session-Sync-Add-on-ReD .field-edit-widget input:focus {
+	border-color: #2D92EB !important;
+	box-shadow: 0 0 3px 0 rgba(0, 131, 255, 0.5) inset !important;	
 }
 
 #Session-Sync-Add-on-ReD .field-edit-widget .button {
-	padding: 0 10px;
+	height: 2em;
+	padding: 0 1.5em;
+	line-height: 1.8em;
+	margin: 3px 0 0 10px;
+
 	font-size: 14px;
 	text-align: center;
-	color: #555;
+	color: #FFF;
+	border: unset;
+	border-radius: 1em; 
+	background: #999;
+	
+	transition: all 0.2s;
 	float: right;
 }
 
 #Session-Sync-Add-on-ReD .field-edit-widget .button:hover {
-	color: #000;
+	color: #FFF;
 	cursor: pointer;
+}
+
+#Session-Sync-Add-on-ReD .field-edit-widget .button.save:hover {
+	background: #23A823;
+}
+
+#Session-Sync-Add-on-ReD .field-edit-widget .button.cancel:hover {
+	background: #DC462C;
 }

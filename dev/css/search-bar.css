@@ -1,0 +1,86 @@
+/**
+ * Control Panel
+ */
+
+#Session-Sync-Add-on-ReD .search-bar {
+	width: calc(100% + 2px);
+	padding: 1px;
+	font-size: 16px;
+	background: hsla(0, 0%, 100%, 0.5);
+	
+	color: #000;	
+	position: absolute;
+	overflow: visible;
+	top: 0;
+	left: -1px;
+	z-index: -1;
+	opacity: 0;	
+	border-radius: 2em;
+
+	transition: all 0.25s;	box-sizing: border-box;
+}
+
+#Session-Sync-Add-on-ReD .search-bar[active="true"]
+{
+	top: -50px;
+	opacity: 100;
+}
+
+#Session-Sync-Add-on-ReD .search-bar:hover
+{
+	opacity: 100;
+} 
+
+#Session-Sync-Add-on-ReD .search-bar .search {
+	width: 100%;
+	height: 2.2em;
+	padding: 0 0.8em 0.2em 0.8em !important;
+	background: hsla(0, 0%, 100%, 0.95);
+	border-width: 2px !important;
+	border-radius: 1.2em !important;
+	color: #333; 
+	box-sizing: border-box;
+}
+
+#Session-Sync-Add-on-ReD .search-bar .search:focus {
+	border-color: #2D92EB !important; /* In Firefox Addon must be set from JavaScript */
+}
+
+#Session-Sync-Add-on-ReD .search-bar .close {
+	width: 2em;
+	height: 2em;
+	background: #FFF;
+	font-size: 12px;
+	border-radius: 2em;
+	position: absolute;
+	top: 3px;
+	right: 10px;
+	z-index: 0;
+	opacity: 0.75;
+	box-sizing: border-box;
+}
+
+#Session-Sync-Add-on-ReD .search-bar .close:hover {
+	cursor: pointer;
+}
+
+#Session-Sync-Add-on-ReD .search-bar .close:hover::after,
+#Session-Sync-Add-on-ReD .search-bar .close:hover::before {
+	background: #333;
+}
+
+#Session-Sync-Add-on-ReD .search-bar .close:after,
+#Session-Sync-Add-on-ReD .search-bar .close:before {
+	content: "";
+	width: 60%;
+	height: 16%;
+	background: #AAA;
+	position: absolute;
+	top: 42%;
+	left: 20%;
+	transform: rotate(45deg);
+}
+
+#Session-Sync-Add-on-ReD .search-bar .close:after {
+	transform: rotate(-45deg);
+}

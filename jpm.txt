@@ -1,0 +1,5 @@
+cls; jpm run -b $env:firefox_dev -p $env:p --no-copy
+cls; jpm run -b $env:firefox_dev -p $env:p --no-copy --profile-memory
+cls; jpm run -b $env:firefox_dev -p $env:p --no-copy --check-memory
+
+jpm xpi

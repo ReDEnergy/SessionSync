@@ -86,21 +86,51 @@ body {
 	position: relative;
 }
 
+#container .bullets {
+	width: auto;
+	margin-left: 50%;
+	height: auto;
+	overflow: hidden;
+	background: rgba(255, 255, 255, 0);
+	position: absolute;
+	top: 0;  
+	z-index: 1;
+	transform: translateX(-50%);
+}
+
+#container .bullet {
+	width: 1em;
+	height: 1em;
+	padding: 0.2em;
+	margin: 0.5em;
+	border-radius: 1em;
+	background: #CCC;
+	float: left;
+}
+
+#container .bullet:hover {
+	background: #2D92EB;
+	cursor: pointer;
+}
+
 #container .carousel {
-	width: 1000%;
+	width: 2000%;
 	height: 100%;
 	position: absolute;
 	left: 0;
 	transition: 1.0s left ease;
 }
 
+#container .helpers {
+	display: block;
+}
+
 #container .box {
-	width: 10%;
+	width: 5%;
 	height: auto;
 	margin: 20px auto;
 	display: table;
 
-	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	float: left;
 }
@@ -135,14 +165,16 @@ body {
 	font-size: 30px;
 	border-bottom: 2px solid #FFF;
 	text-align: center;
+	box-sizing: border-box;
 }
 
 #container .tutorial-image {
 	width: 100%;
 	height: 520px;
 	margin: 0 auto;
-	background-repeat: no-repeat;
-	background-position: center center;
+	background-repeat: no-repeat !important;
+	background-size: contain !important;
+	background-position: center center !important;
 }
 
 #container .info {
@@ -152,40 +184,11 @@ body {
 	text-align: center;
 }
 
+#container .highlight {
+	color: #DF5600
+}
+
 .tutorial-image:hover {
-}
-
-/************
- *	Help Zone
- ************/
-
-
-.add-tab {
-	background-image: url("../images/tutorial/add-tab.png");
-}
-
-.context-menu {
-	background-image: url("../images/tutorial/context-menu.png");
-}
-
-.context-menu2 {
-	background-image: url("../images/tutorial/context-menu2.png");
-}
-
-.current-session {
-	background-image: url("../images/tutorial/current-session.png");
-}
-
-.edit {
-	background-image: url("../images/tutorial/edit.png");
-}
-
-.new-session {
-	background-image: url("../images/tutorial/new-session.png");
-}
-
-.pin-mode {
-	background-image: url("../images/tutorial/pin-mode.png");
 }
 
 /**************
