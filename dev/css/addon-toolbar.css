@@ -32,16 +32,16 @@
 	display: none;
 }
 
-#Session-Sync-Add-on-ReD[show='true'] .addon-toolbar {
+#Session-Sync-Add-on-ReD[show="true"] .addon-toolbar {
 	top: 1px;
 	opacity: 1;
 }
 
-#Session-Sync-Add-on-ReD[show='true'] .addon-toolbar:hover {
+#Session-Sync-Add-on-ReD[show="true"] .addon-toolbar:hover {
 	opacity: 1;
 }
 
-#Session-Sync-Add-on-ReD[show='false'] .addon-toolbar {
+#Session-Sync-Add-on-ReD[show="false"] .addon-toolbar {
 	top: -150px;
 	opacity: 0;
 }
@@ -94,7 +94,7 @@
 
 #Session-Sync-Add-on-ReD .addon-toolbar .style-reload {
 	background: url("images/icons/paintbrush2.png") no-repeat center;
-	display: block;
+	display: none;
 }
 
 /*
@@ -103,7 +103,7 @@
 
 #Session-Sync-Add-on-ReD .addon-toolbar .dom-inspector {
 	background: url("images/icons/bolt.png") no-repeat center;
-	display: block;
+	display: none;
 }
 
 #Session-Sync-Add-on-ReD .addon-toolbar .dom-inspector[active] {
@@ -114,4 +114,14 @@
 #Session-Sync-Add-on-ReD .dom-inspector:hover {
 	cursor: pointer;
 }
+
+/*
+ * Development mode
+ */
+
+#Session-Sync-Add-on-ReD[dev] .addon-toolbar .style-reload,
+#Session-Sync-Add-on-ReD[dev] .addon-toolbar .dom-inspector {
+	display: block;
+}
+
 

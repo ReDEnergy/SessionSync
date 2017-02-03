@@ -221,16 +221,16 @@
 	cursor: pointer;
 }
 
-#Session-Sync-Add-on-ReD .config-panel .comp-toggle-button .button[state='true'] {
+#Session-Sync-Add-on-ReD .config-panel .comp-toggle-button .button[state="true"] {
 	background: #38B751;
 }
 
-#Session-Sync-Add-on-ReD .config-panel .comp-toggle-button .button[state='false'] {
+#Session-Sync-Add-on-ReD .config-panel .comp-toggle-button .button[state="false"] {
 	background: #66AAEF;
 	background: #CCC;
 }
 
-#Session-Sync-Add-on-ReD .config-panel .comp-toggle-button .button[state='disable'] {
+#Session-Sync-Add-on-ReD .config-panel .comp-toggle-button .button[state="disable"] {
 	background: #66AAEF;
 	background: #CCC;
 }
@@ -298,7 +298,7 @@
 	width: 100%;
 }
 
-#Session-Sync-Add-on-ReD .config-panel .section-container[id='auto-save'] {
+#Session-Sync-Add-on-ReD .config-panel .section-container[id="auto-save"] {
 	display: block;
 }
 
@@ -306,11 +306,11 @@
  * Custom states
  */
 
-#Session-Sync-Add-on-ReD[auto-save="false"] .config-panel .section-container[id='auto-save'] .comp-range-control {
+#Session-Sync-Add-on-ReD[auto-save="false"] .config-panel .section-container[id="auto-save"] .comp-range-control {
 	display: none;
 }
 
-#Session-Sync-Add-on-ReD[hotkey="false"] .config-panel .section-container[id='hotkey'] .comp-dropdown {
+#Session-Sync-Add-on-ReD[hotkey="false"] .config-panel .section-container[id="hotkey"] .comp-dropdown {
 	display: none;
 }
 

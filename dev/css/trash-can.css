@@ -32,15 +32,19 @@
 	transition: all 0.2s ease-out;
 }
 
-#Session-Sync-Add-on-ReD[show='true'] .trash-can {
+#Session-Sync-Add-on-ReD[show="true"] .trash-can {
 	display: block;
 }
 
-#Session-Sync-Add-on-ReD[show='false'] .trash-can {
+#Session-Sync-Add-on-ReD[show="false"] .trash-can {
 	display: none;
 }
 
-#Session-Sync-Add-on-ReD .trash-can[action='enter'] {
+#Session-Sync-Add-on-ReD .trash-can[droppable="true"] {
+	opacity: 1 !important;
+}
+
+#Session-Sync-Add-on-ReD .trash-can[action="enter"] {
 	opacity: 1;
 	cursor: pointer;
 }

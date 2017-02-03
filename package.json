@@ -2,16 +2,16 @@
   "id": "session-sync@gabrielivanica.com",
   "name": "session-sync",
   "title": "Session Sync",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "author": "Gabriel Ivanica",
-  "description": "Save sessions as bookmarks and sync them through Firefox Sync.\nManage, edit, save, restore.\nSession-Sync will automatically update sessions across multiple machines",
+  "description": "Save sessions as bookmarks and sync them through any sync engine.\nManage sessions, edit, save, restore.\nSession-Sync will automatically update sessions across multiple machines",
   "homepage": "https://github.com/ReDEnergy/SessionSync",
   "main": "lib/main.js",
   "icon": "data/images/icon48.png",
   "license": "MPL-2.0",
   "permissions": {
     "private-browsing": true,
-    "multiprocess:": true
+    "multiprocess": true
   },
   "preferences": [
     {

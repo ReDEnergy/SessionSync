@@ -36,40 +36,156 @@ body {
 
 
 #identity {
-	width: 100%;
+	width: auto;
+	height: 120px;
 	text-align: center;
 	font-family: "Open Sans Light", "Open Sans", Arial, Helvetica, sans-serif;
-	font-weight: 400;
-}
-
-#identity .logo {
-	margin: 30px auto 0;
-	width: 140px;
-	height: 140px;
-	background-image: url("../images/logo.png");
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: contain;
 	position: relative;
 }
 
 #identity .title {
-	height: 70px;
+	width: auto;
+	height: auto;
 	font-size: 60px;
 	color: #DF5600;
-	overflow: hidden;
+	overflow: visible;
+	text-align: left;
+
+	position: absolute;
+	top: 30px;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+#identity .logo {
+	margin: 0 auto 0;
+	width: 80px;
+	height: 80px;
+	background-image: url("../images/logo.png");
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: contain;
+	position: absolute;
+	left: -100px;
+	top: -5px;
+}
+
+/**************
+ *	About Addon
+ **************/
+
+#github {
+	width: 150px;
+	height: 50px;
+	color: #FFF;
+	text-decoration: none;
+	display: block;
+	position: absolute;
+	background-image: url("../images/github.png"), url("../images/github-logo.png");
+	background-repeat: no-repeat;
+	background-position: center right, center left;
+	opacity: 0.3;
+	top: 20px;
+	right: 0;
+}
+
+#github:hover {
+	opacity: 0.7;
+}
+
+#github a {
+	width: 100%;
+	height: 100%;
 	position: absolute;
 }
 
-#identity .titleA {
-	top: 35px;
-	left: -235px;
+
+#feedback {
+	width: 50px;
+	height: 50px;
+	color: #FFF;
+	text-decoration: none;
+	display: block;
+	position: absolute;
+	background-image: url("../images/mail50.png");
+	background-repeat: no-repeat;
+	background-position: center right, center left;
+	opacity: 0.3;
+	top: 60px;
+	right: 0px;
 }
 
-#identity .titleB {
+#feedback:hover {
+	opacity: 0.7;
+}
+
+#feedback:hover .tooltip {
+	opacity: 1;
+}
+
+#feedback a {
+	width: 100%;
+	height: 100%;
 	position: absolute;
-	top: 35px;
-	left: 160px;
+}
+
+#feedback .tooltip {
+	width: 150px;
+	color: #333;
+	position: absolute;
+	left: 100%;
+	font-size: 20px;
+	top: 80%;
+	left: -40px;
+	opacity: 0;
+}
+
+#tooltip {
+	width: auto;
+	font-size: 14px;
+	padding: 10px;
+	margin: -25px 0 0 0;
+	color: #333;
+	transform: translate(-50%, -30px);
+	
+	background: rgba(255, 255, 255, 1);
+	text-align: center;
+	line-height: 20px;
+	border: 1px solid #CCC;
+	border-radius: 5px;
+
+	display: none;
+	position: fixed;
+	top: 1px;
+	left: 0;
+	z-index: 1;
+	opacity: 0.85;
+
+	box-shadow: 0 2px 4px 0px #999;
+	box-sizing: border-box;	
+}
+
+#tooltip:before {
+	content: " ";
+	width: 16px;
+	height: 16px;
+	margin: -8px 0 0 -8px;
+
+	background: #FFF;
+	border-style: solid;
+	border-color: #BBB;
+	border-width: 0 1px 1px 0;
+
+	position: absolute;
+	left: 50%;
+	top: 100%;
+
+	transform: rotate(45deg);
+	z-index: -1;
+}
+
+#tooltip[active] {
+	display: block;
 }
 
 
@@ -80,7 +196,7 @@ body {
 #container {
 	width: 100%;
 	height: 700px;
-	margin: 10px auto;
+	margin: 20px auto;
 	color: #333;
 	overflow: hidden;
 	position: relative;
@@ -91,7 +207,7 @@ body {
 	margin-left: 50%;
 	height: auto;
 	overflow: hidden;
-	background: rgba(255, 255, 255, 0);
+	background: rgba(255, 255, 255, );
 	position: absolute;
 	top: 0;  
 	z-index: 1;
@@ -99,8 +215,8 @@ body {
 }
 
 #container .bullet {
-	width: 1em;
-	height: 1em;
+	width: 1.1em;
+	height: 1.1em;
 	padding: 0.2em;
 	margin: 0.5em;
 	border-radius: 1em;
@@ -108,9 +224,18 @@ body {
 	float: left;
 }
 
+#container .bullet[active] {
+	background: #2D92EB;
+	cursor: pointer;
+}
+
 #container .bullet:hover {
 	background: #2D92EB;
 	cursor: pointer;
+}
+
+#container .preview {
+	
 }
 
 #container .carousel {
@@ -128,7 +253,7 @@ body {
 #container .box {
 	width: 5%;
 	height: auto;
-	margin: 20px auto;
+	margin: 30px auto 0;
 	display: table;
 
 	box-sizing: border-box;
@@ -186,77 +311,4 @@ body {
 
 #container .highlight {
 	color: #DF5600
-}
-
-.tutorial-image:hover {
-}
-
-/**************
- *	About Addon
- **************/
-
-#github {
-	width: 150px;
-	height: 50px;
-	color: #FFF;
-	text-decoration: none;
-	display: block;
-	position: absolute;
-	background-image: url("../images/github.png"), url("../images/github-logo.png");
-	background-repeat: no-repeat;
-	background-position: center right, center left;
-	opacity: 0.3;
-	top: -20px;
-	right: 0;
-}
-
-#github:hover {
-	opacity: 0.7;
-}
-
-#github a {
-	width: 100%;
-	height: 100%;
-	position: absolute;
-}
-
-
-#feedback {
-	width: 50px;
-	height: 50px;
-	color: #FFF;
-	text-decoration: none;
-	display: block;
-	position: absolute;
-	background-image: url("../images/mail50.png");
-	background-repeat: no-repeat;
-	background-position: center right, center left;
-	opacity: 0.3;
-	top: 20px;
-	right: 0px;
-}
-
-#feedback:hover {
-	opacity: 0.7;
-}
-
-#feedback:hover .tooltip {
-	opacity: 1;
-}
-
-#feedback a {
-	width: 100%;
-	height: 100%;
-	position: absolute;
-}
-
-#feedback .tooltip {
-	width: 150px;
-	color: #333;
-	position: absolute;
-	left: 100%;
-	font-size: 20px;
-	top: 80%;
-	left: -40px;
-	opacity: 0;
 }

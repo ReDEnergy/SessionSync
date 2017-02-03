@@ -18,3 +18,7 @@ README.md
 # Ignore any zip or xpi files
 *.zip
 *.xpi
+
+# Ignore special files
+/lib/3rd/protocol
+/data/socket.io

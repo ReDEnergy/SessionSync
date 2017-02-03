@@ -104,7 +104,7 @@
 	width: 2.6em;
 	height: 100%;
 	float: left;
-	background: url('images/icons/none.png') no-repeat center;
+	background: url("images/icons/none.png") no-repeat center;
 	background-size: contain !important;
 
 	filter: saturate(100%);
@@ -125,29 +125,29 @@
 }
 
 #Session-Sync-Add-on-ReD .session-toolbar .menu-bar .add {
-	background: url('images/icons/star.png') no-repeat center;
+	background: url("images/icons/star.png") no-repeat center;
 	filter: saturate(100%);
 }
 
 #Session-Sync-Add-on-ReD .session-toolbar .menu-bar .save {
-	background: url('images/icons/heart.png') no-repeat center;
+	background: url("images/icons/heart.png") no-repeat center;
 	filter: saturate(100%);
 }
 
 #Session-Sync-Add-on-ReD .session-toolbar .menu-bar .merge-sessions {
-	background: url('images/icons/merge.png') no-repeat center;
+	background: url("images/icons/merge.png") no-repeat center;
 }
 
 #Session-Sync-Add-on-ReD .session-toolbar .menu-bar .replace-session {
-	background: url('images/icons/recycle.png') no-repeat center;
+	background: url("images/icons/recycle.png") no-repeat center;
 }
 
 #Session-Sync-Add-on-ReD .session-toolbar .menu-bar .restore {
-	background: url('images/icons/stack.png') no-repeat center;
+	background: url("images/icons/stack.png") no-repeat center;
 }
 
 #Session-Sync-Add-on-ReD .session-toolbar .menu-bar .restore-new-win {
-	background: url('images/icons/polaroids.png') no-repeat center;
+	background: url("images/icons/polaroids.png") no-repeat center;
 }
 
 /*
@@ -217,7 +217,7 @@
 	height: 100%;
 	background-color: #33A033;
 	background-color: #40B740;
-	background-image: url('images/icons/gear.png');
+	background-image: url("images/icons/gear.png");
 	background-size: 1.6em;
 	background-repeat: no-repeat;
 	background-position: center right 0.2em;
@@ -233,15 +233,15 @@
 }
 
 #Session-Sync-Add-on-ReD .session-toolbar .menu-bar .save-config .comp-toggle-switch[pin] .switch {
-	background-image: url('images/icons/pin.png');
+	background-image: url("images/icons/pin.png");
 }
 
 #Session-Sync-Add-on-ReD .session-toolbar .menu-bar .save-config .comp-toggle-switch[pin-state] .switch {
-	background-image: url('images/icons/pin2.png');
+	background-image: url("images/icons/pin2.png");
 }
 
 #Session-Sync-Add-on-ReD .session-toolbar .menu-bar .save-config .comp-toggle-switch[windows] .switch {
-	background-image: url('images/icons/stack.png');
+	background-image: url("images/icons/stack.png");
 }
 
 /*

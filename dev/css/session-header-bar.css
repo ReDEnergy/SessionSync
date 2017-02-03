@@ -21,7 +21,7 @@
 
 #Session-Sync-Add-on-ReD .header-bar .active-session-btn {
 	width: 2.5em;
-	background: url('images/icons/globe.png') no-repeat center;
+	background: url("images/icons/globe.png") no-repeat center;
 	background-size: 1em;
 	height: 60%;
 	opacity: 0.5;
@@ -113,7 +113,7 @@
 	opacity: 1;
 }
 
-#Session-Sync-Add-on-ReD .header-bar .header-menu[active='1'] {
+#Session-Sync-Add-on-ReD .header-bar .header-menu[active="1"] {
 	opacity: 1;
 }
 
@@ -139,7 +139,7 @@
 	transition-timing-function: ease-out;
 }
 
-#Session-Sync-Add-on-ReD .header-bar .header-menu[active='1'] .menu-area {
+#Session-Sync-Add-on-ReD .header-bar .header-menu[active="1"] .menu-area {
 	display: flex;
 	height: 3.8em;
 	padding: 1em;

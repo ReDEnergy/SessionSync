@@ -102,7 +102,7 @@ gulp.task('css', function(event) {
 // Watch + LiveReload
  
 gulp.task('watch', ['livereload'], function() {
-	watch(lr_files, notifyLivereload);
+	//watch(lr_files, notifyLivereload);
 	watch('./dev/css/**/*.css', function(events, done) {
 		gulp.start('css', function() {
 			broadcast();

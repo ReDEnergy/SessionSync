@@ -32,16 +32,16 @@
 	display: none;
 }
 
-#Session-Sync-Add-on-ReD[show='true'] .addon-toolbar {
+#Session-Sync-Add-on-ReD[show="true"] .addon-toolbar {
 	top: 1px;
 	opacity: 1;
 }
 
-#Session-Sync-Add-on-ReD[show='true'] .addon-toolbar:hover {
+#Session-Sync-Add-on-ReD[show="true"] .addon-toolbar:hover {
 	opacity: 1;
 }
 
-#Session-Sync-Add-on-ReD[show='false'] .addon-toolbar {
+#Session-Sync-Add-on-ReD[show="false"] .addon-toolbar {
 	top: -150px;
 	opacity: 0;
 }
@@ -94,7 +94,7 @@
 
 #Session-Sync-Add-on-ReD .addon-toolbar .style-reload {
 	background: url("images/icons/paintbrush2.png") no-repeat center;
-	display: block;
+	display: none;
 }
 
 /*
@@ -103,7 +103,7 @@
 
 #Session-Sync-Add-on-ReD .addon-toolbar .dom-inspector {
 	background: url("images/icons/bolt.png") no-repeat center;
-	display: block;
+	display: none;
 }
 
 #Session-Sync-Add-on-ReD .addon-toolbar .dom-inspector[active] {
@@ -114,6 +114,16 @@
 #Session-Sync-Add-on-ReD .dom-inspector:hover {
 	cursor: pointer;
 }
+
+/*
+ * Development mode
+ */
+
+#Session-Sync-Add-on-ReD[dev] .addon-toolbar .style-reload,
+#Session-Sync-Add-on-ReD[dev] .addon-toolbar .dom-inspector {
+	display: block;
+}
+
 
 
 /**
@@ -457,16 +467,16 @@
 	cursor: pointer;
 }
 
-#Session-Sync-Add-on-ReD .config-panel .comp-toggle-button .button[state='true'] {
+#Session-Sync-Add-on-ReD .config-panel .comp-toggle-button .button[state="true"] {
 	background: #38B751;
 }
 
-#Session-Sync-Add-on-ReD .config-panel .comp-toggle-button .button[state='false'] {
+#Session-Sync-Add-on-ReD .config-panel .comp-toggle-button .button[state="false"] {
 	background: #66AAEF;
 	background: #CCC;
 }
 
-#Session-Sync-Add-on-ReD .config-panel .comp-toggle-button .button[state='disable'] {
+#Session-Sync-Add-on-ReD .config-panel .comp-toggle-button .button[state="disable"] {
 	background: #66AAEF;
 	background: #CCC;
 }
@@ -534,7 +544,7 @@
 	width: 100%;
 }
 
-#Session-Sync-Add-on-ReD .config-panel .section-container[id='auto-save'] {
+#Session-Sync-Add-on-ReD .config-panel .section-container[id="auto-save"] {
 	display: block;
 }
 
@@ -542,11 +552,11 @@
  * Custom states
  */
 
-#Session-Sync-Add-on-ReD[auto-save="false"] .config-panel .section-container[id='auto-save'] .comp-range-control {
+#Session-Sync-Add-on-ReD[auto-save="false"] .config-panel .section-container[id="auto-save"] .comp-range-control {
 	display: none;
 }
 
-#Session-Sync-Add-on-ReD[hotkey="false"] .config-panel .section-container[id='hotkey'] .comp-dropdown {
+#Session-Sync-Add-on-ReD[hotkey="false"] .config-panel .section-container[id="hotkey"] .comp-dropdown {
 	display: none;
 }
 
@@ -1085,6 +1095,7 @@
 	z-index: -1;
 	opacity: 0;	
 	border-radius: 2em;
+	overflow: hidden;
 
 	transition: all 0.25s;	box-sizing: border-box;
 }
@@ -1108,11 +1119,51 @@
 	border-width: 2px !important;
 	border-radius: 1.2em !important;
 	color: #333; 
+
 	box-sizing: border-box;
+	transition: all 0.2s ease-out;
 }
 
 #Session-Sync-Add-on-ReD .search-bar .search:focus {
 	border-color: #2D92EB !important; /* In Firefox Addon must be set from JavaScript */
+}
+
+#Session-Sync-Add-on-ReD .search-bar .create-session {
+	width: 19px;
+	height: 19px;
+	font-size: 12px;
+	background-image: url("images/icons/star.png");
+	background-size: 100%;
+	background-repeat: none;
+	background-position: center;
+	text-align: center;
+	color: #FFF;
+	opacity: 0;
+
+	position: absolute;
+	top: 6px !important;
+	right: -21px;
+	z-index: 0;
+
+	filter: saturate(0%);
+	transition: all 0.2s ease-out;
+	box-sizing: border-box;
+}
+
+#Session-Sync-Add-on-ReD .search-bar .create-session {
+}
+
+#Session-Sync-Add-on-ReD .search-bar[content="true"] .create-session {
+	opacity: 0.6;
+	display: block;
+	right: 3em;
+}
+
+
+#Session-Sync-Add-on-ReD .search-bar .create-session:hover {
+	filter: saturate(100%);
+	cursor: pointer;
+	opacity: 1;
 }
 
 #Session-Sync-Add-on-ReD .search-bar .close {
@@ -1121,11 +1172,13 @@
 	background: #FFF;
 	font-size: 12px;
 	border-radius: 2em;
+	opacity: 0.75;
+
 	position: absolute;
 	top: 3px;
-	right: 10px;
+	right: 6px;
 	z-index: 0;
-	opacity: 0.75;
+
 	box-sizing: border-box;
 }
 
@@ -1388,7 +1441,7 @@
 
 #Session-Sync-Add-on-ReD .header-bar .active-session-btn {
 	width: 2.5em;
-	background: url('images/icons/globe.png') no-repeat center;
+	background: url("images/icons/globe.png") no-repeat center;
 	background-size: 1em;
 	height: 60%;
 	opacity: 0.5;
@@ -1480,7 +1533,7 @@
 	opacity: 1;
 }
 
-#Session-Sync-Add-on-ReD .header-bar .header-menu[active='1'] {
+#Session-Sync-Add-on-ReD .header-bar .header-menu[active="1"] {
 	opacity: 1;
 }
 
@@ -1506,7 +1559,7 @@
 	transition-timing-function: ease-out;
 }
 
-#Session-Sync-Add-on-ReD .header-bar .header-menu[active='1'] .menu-area {
+#Session-Sync-Add-on-ReD .header-bar .header-menu[active="1"] .menu-area {
 	display: flex;
 	height: 3.8em;
 	padding: 1em;
@@ -1671,7 +1724,7 @@
 	width: 2.6em;
 	height: 100%;
 	float: left;
-	background: url('images/icons/none.png') no-repeat center;
+	background: url("images/icons/none.png") no-repeat center;
 	background-size: contain !important;
 
 	filter: saturate(100%);
@@ -1692,29 +1745,29 @@
 }
 
 #Session-Sync-Add-on-ReD .session-toolbar .menu-bar .add {
-	background: url('images/icons/star.png') no-repeat center;
+	background: url("images/icons/star.png") no-repeat center;
 	filter: saturate(100%);
 }
 
 #Session-Sync-Add-on-ReD .session-toolbar .menu-bar .save {
-	background: url('images/icons/heart.png') no-repeat center;
+	background: url("images/icons/heart.png") no-repeat center;
 	filter: saturate(100%);
 }
 
 #Session-Sync-Add-on-ReD .session-toolbar .menu-bar .merge-sessions {
-	background: url('images/icons/merge.png') no-repeat center;
+	background: url("images/icons/merge.png") no-repeat center;
 }
 
 #Session-Sync-Add-on-ReD .session-toolbar .menu-bar .replace-session {
-	background: url('images/icons/recycle.png') no-repeat center;
+	background: url("images/icons/recycle.png") no-repeat center;
 }
 
 #Session-Sync-Add-on-ReD .session-toolbar .menu-bar .restore {
-	background: url('images/icons/stack.png') no-repeat center;
+	background: url("images/icons/stack.png") no-repeat center;
 }
 
 #Session-Sync-Add-on-ReD .session-toolbar .menu-bar .restore-new-win {
-	background: url('images/icons/polaroids.png') no-repeat center;
+	background: url("images/icons/polaroids.png") no-repeat center;
 }
 
 /*
@@ -1784,7 +1837,7 @@
 	height: 100%;
 	background-color: #33A033;
 	background-color: #40B740;
-	background-image: url('images/icons/gear.png');
+	background-image: url("images/icons/gear.png");
 	background-size: 1.6em;
 	background-repeat: no-repeat;
 	background-position: center right 0.2em;
@@ -1800,15 +1853,15 @@
 }
 
 #Session-Sync-Add-on-ReD .session-toolbar .menu-bar .save-config .comp-toggle-switch[pin] .switch {
-	background-image: url('images/icons/pin.png');
+	background-image: url("images/icons/pin.png");
 }
 
 #Session-Sync-Add-on-ReD .session-toolbar .menu-bar .save-config .comp-toggle-switch[pin-state] .switch {
-	background-image: url('images/icons/pin2.png');
+	background-image: url("images/icons/pin2.png");
 }
 
 #Session-Sync-Add-on-ReD .session-toolbar .menu-bar .save-config .comp-toggle-switch[windows] .switch {
-	background-image: url('images/icons/stack.png');
+	background-image: url("images/icons/stack.png");
 }
 
 /*
@@ -2170,7 +2223,7 @@
 	content: " ";
 	width: 16px;
 	height: 16px;
-	margin: -8px 0 0 -8px;
+	margin: -8px 0 0 -9px;
 
 	background: #FFF;
 	border-style: solid;
@@ -2223,15 +2276,19 @@
 	transition: all 0.2s ease-out;
 }
 
-#Session-Sync-Add-on-ReD[show='true'] .trash-can {
+#Session-Sync-Add-on-ReD[show="true"] .trash-can {
 	display: block;
 }
 
-#Session-Sync-Add-on-ReD[show='false'] .trash-can {
+#Session-Sync-Add-on-ReD[show="false"] .trash-can {
 	display: none;
 }
 
-#Session-Sync-Add-on-ReD .trash-can[action='enter'] {
+#Session-Sync-Add-on-ReD .trash-can[droppable="true"] {
+	opacity: 1 !important;
+}
+
+#Session-Sync-Add-on-ReD .trash-can[action="enter"] {
 	opacity: 1;
 	cursor: pointer;
 }
@@ -2535,13 +2592,13 @@
  */
 /*
 @media (max-height: 900px) {
-	#Session-Sync-Add-on-ReD[state='centered'] .sessions-area {
+	#Session-Sync-Add-on-ReD[state="centered"] .sessions-area {
 		top: 125px;
 	}
 }
 
 @media (max-height: 700px) {
-	#Session-Sync-Add-on-ReD[state='centered'] .sessions-area {
+	#Session-Sync-Add-on-ReD[state="centered"] .sessions-area {
 		top: 60px;
 	}
 }

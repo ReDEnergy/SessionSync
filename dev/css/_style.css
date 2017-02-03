@@ -155,13 +155,13 @@
  */
 /*
 @media (max-height: 900px) {
-	#Session-Sync-Add-on-ReD[state='centered'] .sessions-area {
+	#Session-Sync-Add-on-ReD[state="centered"] .sessions-area {
 		top: 125px;
 	}
 }
 
 @media (max-height: 700px) {
-	#Session-Sync-Add-on-ReD[state='centered'] .sessions-area {
+	#Session-Sync-Add-on-ReD[state="centered"] .sessions-area {
 		top: 60px;
 	}
 }
