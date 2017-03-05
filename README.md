@@ -15,7 +15,8 @@ Session-Sync provides a rich interface for sessions management
   - use auto-save feature to inspect history sessions 
 
 #### Development Status
-Version 2.0.1 Pending release on AMO (https://addons.mozilla.org/)
+Version 2.0.1 released
+WebExtension: port planned
 
 #### Version 2
 
