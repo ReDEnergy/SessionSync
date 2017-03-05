@@ -1,4 +1,4 @@
-SessionSync
+SessionSync [![Session Sync](/data/images/icon32.png)](https://addons.mozilla.org/en-US/firefox/addon/session-sync/)
 ===========
 
 ##### Firefox Add-on for storing browser sessions into bookmarks and sync them across multiple devices
