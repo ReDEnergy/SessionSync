@@ -2,7 +2,7 @@
   "id": "session-sync@gabrielivanica.com",
   "name": "session-sync",
   "title": "Session Sync",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "author": "Gabriel Ivanica",
   "description": "Save sessions as bookmarks and sync them through any sync engine.\nManage sessions, edit, save, restore.\nSession-Sync will automatically update sessions across multiple machines",
   "homepage": "https://github.com/ReDEnergy/SessionSync",
