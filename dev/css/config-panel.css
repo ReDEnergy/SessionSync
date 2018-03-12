@@ -2,10 +2,9 @@
  * Configuration button
  */
 
-#Session-Sync-Add-on-ReD .config-panel {
-	width: 350px;
-	height: unset;
-	min-height: 100%;
+#session-sync .config-panel {
+	width: 300px;
+	padding: 30px 0 0 0;
 	font-size: 12px;
 	border-right: 1px solid #CCC;
 	background: #F5F5F5;
@@ -14,28 +13,29 @@
 
 	position: absolute;
 	top: 1px;
-	left: -355px;
-	z-index: 100;
-	box-shadow: 0 0 3px 0 #CCC;
-	
-	transition: all 0.3s ease-out;
+	bottom: 1px;
+	right: -305px;
+	z-index: 2000;
+	box-shadow: 0 0 10px 0 #CCC;
+
+	transition: all 0.25s ease-out;
 	opacity: 0.5;
 }
 
-#Session-Sync-Add-on-ReD[config] .config-panel {
-	left: 0;
+#session-sync[config] .config-panel {
+	right: 0;
 	opacity: 1;
 }
 
-#Session-Sync-Add-on-ReD[show="false"] .config-panel {
-	left: -355px !important;
+#session-sync[show="false"] .config-panel {
+	right: -305px !important;
 }
 
 /*
  * Close button
  */
 
-#Session-Sync-Add-on-ReD .config-panel .css-close-button {
+#session-sync .config-panel .css-close-button {
 	width: 2.4em;
 	height: 2.4em;
 	top: .5em;
@@ -44,7 +44,7 @@
 	transition: all 0.2s ease-out;
 }
 
-#Session-Sync-Add-on-ReD .config-panel .css-close-button:hover {
+#session-sync .config-panel .css-close-button:hover {
 	cursor: pointer;
 	opacity: 0.7 !important;
 }
@@ -53,7 +53,7 @@
  * Logo
  */
 
-#Session-Sync-Add-on-ReD .config-panel .logo {
+#session-sync .config-panel .logo {
 	width: 100px;
 	height: 64px;
 	margin: 2em auto;
@@ -62,24 +62,25 @@
 	background: url("images/icon64.png") center top no-repeat;
 }
 
-#Session-Sync-Add-on-ReD .config-panel .logo:hover {
-	cursor: pointer;	
+#session-sync .config-panel .logo:hover {
+	cursor: pointer;
 }
 
 /*
  * Sctions
  */
 
-#Session-Sync-Add-on-ReD .config-panel .section-container {
+#session-sync .config-panel .section-container {
 	height: auto;
 	padding: 1em 0 0 0;
 	border-bottom: 1px dashed #CCC;
 	border: none;
+	position: relative;
 }
 
-#Session-Sync-Add-on-ReD .config-panel .section-container .section-title {
-	padding: 0 1em;
+#session-sync .config-panel .section-container .section-title {
 	margin: 0 0 1em 0;
+	padding: 0;
 	font-weight: 600;
 	text-align: left;
 	color: #333;
@@ -88,24 +89,38 @@
 	font-size: 14px;
 }
 
-#Session-Sync-Add-on-ReD .config-panel .section-container .section-title:hover {
+#session-sync .config-panel .section-container .section-title:hover {
 	cursor: pointer;
 }
 
-#Session-Sync-Add-on-ReD .config-panel .section-container .section-body {
+#session-sync .config-panel .section-container .section-body {
 	transition: all 0.2s ease-out;
 }
 
-#Session-Sync-Add-on-ReD .config-panel .section-container[collapsed] .section-body {
+#session-sync .config-panel .section-container[collapsed] .section-body {
 	overflow: hidden;
 	height: 0px !important;
+}
+
+#session-sync .config-panel .section-container .drop-icon {
+	width: 1.5em;
+	height: 1.5em;
+	margin: 0 0.5em;
+	background-image: url("images/arrow-up.png");
+	background-size: contain;
+	float: left;
+}
+
+#session-sync .config-panel .section-container[collapsed] .drop-icon {
+	background-image: url("images/arrow-down.png");
+	background-size: contain;
 }
 
 /*
  * Range control
  */
 
-#Session-Sync-Add-on-ReD .config-panel .comp-range-control {
+#session-sync .config-panel .comp-range-control {
 	width: 100%;
 	height: 2em;
 	margin: 0.5em 0;
@@ -118,7 +133,7 @@
 	box-sizing: border-box;
 }
 
-#Session-Sync-Add-on-ReD .config-panel .comp-range-control .label
+#session-sync .config-panel .comp-range-control .label
 {
 	height: 100%;
 	font-size: 1em;
@@ -133,59 +148,65 @@
 }
 
 
-#Session-Sync-Add-on-ReD .config-panel .comp-range-control .range-input {
+#session-sync .config-panel .comp-range-control .range-input {
 	width: 8em;
 	margin: 0 1em 0 0;
 	height: 100%;
-	text-align: center; 
 	box-sizing: border-box;
 	float: left;
 	display: flex;
 }
 
-#Session-Sync-Add-on-ReD .config-panel .comp-range-control .range-input > * 
-{
+#session-sync .config-panel .comp-range-control .range-input > * {
 	float: left;
 }
 
-#Session-Sync-Add-on-ReD .config-panel .comp-range-control .button {
+#session-sync .config-panel .comp-range-control .range-input input {
+	text-align: center !important;
+}
+
+#session-sync .config-panel .comp-range-control .button {
 	width: 2em;
 	height: 100%;
 	filter: opacity(50%);
 	transition: 0.2s all;
 }
 
-#Session-Sync-Add-on-ReD .config-panel .comp-range-control .button:hover {
+#session-sync .config-panel .comp-range-control .button:hover {
 	cursor: pointer;
 	filter: opacity(100%);
 }
 
-#Session-Sync-Add-on-ReD .config-panel .comp-range-control .button.inc {
+#session-sync .config-panel .comp-range-control .button.inc {
 	background: url("images/arrow-right.png") center top no-repeat;
 	background-size: 100%;
 }
 
-#Session-Sync-Add-on-ReD .config-panel .comp-range-control .button.dec
+#session-sync .config-panel .comp-range-control .button.dec
 {
 	background: url("images/arrow-left.png") center top no-repeat;
 	background-size: 100%;
 }
 
-#Session-Sync-Add-on-ReD .config-panel .comp-range-control .value {
+#session-sync .config-panel .comp-range-control .value {
+	width: 2.8em;
 	margin: 0 0.2em;
-	width: 2.8em !important;
+	padding: 0;
+
 	background: #FFF;
+	border: 1px solid #CCC;
+
+	font-size: 1.1em;
 	text-align: center;
 	line-height: 1.8em;
 	color: #2D92EB;
-	font-size: 1.1em;
 }
 
 /*
  * Toggle control
  */
 
-#Session-Sync-Add-on-ReD .config-panel .comp-toggle-button {
+#session-sync .config-panel .comp-toggle-button {
 	width: 100%;
 	height: 2em;
 	margin: 5px 0;
@@ -195,7 +216,7 @@
 	box-sizing: border-box;
 }
 
-#Session-Sync-Add-on-ReD .config-panel .comp-toggle-button .label {
+#session-sync .config-panel .comp-toggle-button .label {
 	height: 100%;
 	color: #555;
 	word-break: break-all;
@@ -206,7 +227,7 @@
 	box-sizing: border-box;
 }
 
-#Session-Sync-Add-on-ReD .config-panel .comp-toggle-button .button {
+#session-sync .config-panel .comp-toggle-button .button {
 	width: 8em;
 	height: 100%;
 	margin: 0 1em 0 0;
@@ -217,22 +238,20 @@
 	float: left;
 }
 
-#Session-Sync-Add-on-ReD .config-panel .comp-toggle-button .button:hover {
+#session-sync .config-panel .comp-toggle-button .button:hover {
 	cursor: pointer;
 }
 
-#Session-Sync-Add-on-ReD .config-panel .comp-toggle-button .button[state="true"] {
+#session-sync .config-panel .comp-toggle-button .button[state="true"] {
 	background: #38B751;
 }
 
-#Session-Sync-Add-on-ReD .config-panel .comp-toggle-button .button[state="false"] {
+#session-sync .config-panel .comp-toggle-button .button[state="false"] {
 	background: #66AAEF;
-	background: #CCC;
 }
 
-#Session-Sync-Add-on-ReD .config-panel .comp-toggle-button .button[state="disable"] {
+#session-sync .config-panel .comp-toggle-button .button[state="disable"] {
 	background: #66AAEF;
-	background: #CCC;
 }
 
 
@@ -240,17 +259,17 @@
  * Dropdown Component
  */
 
-#Session-Sync-Add-on-ReD .config-panel .comp-dropdown {
+#session-sync .config-panel .comp-dropdown {
 	width: 100%;
 	height: 2em;
 	margin: 5px 0;
 	padding: 0 1em 0 2em;
 	line-height: 1.8em;
 	display: flex;
-	box-sizing: border-box;	
+	box-sizing: border-box;
 }
 
-#Session-Sync-Add-on-ReD .config-panel .comp-dropdown .label {
+#session-sync .config-panel .comp-dropdown .label {
 	height: 100%;
 	color: #555;
 	text-align: left;
@@ -262,7 +281,7 @@
 	box-sizing: border-box;
 }
 
-#Session-Sync-Add-on-ReD .config-panel .comp-dropdown .select {
+#session-sync .config-panel .comp-dropdown .select {
 	width: 8em;
 	height: 100%;
 	margin: 0 1em 0 0;
@@ -272,45 +291,28 @@
 	color: white;
 	text-align: center;
 	float: left;
-	
+
 	transition: all 0.2s ease-out;
 }
 
-#Session-Sync-Add-on-ReD .config-panel .comp-dropdown .select:hover {
+#session-sync .config-panel .comp-dropdown .select:hover {
 	cursor: pointer;
 	background: #66AAEF;
 }
 
-#Session-Sync-Add-on-ReD .config-panel .comp-dropdown .drop-list {
+#session-sync .config-panel .comp-dropdown .drop-list {
 	width: 14em;
 	top: calc(100% + 0px);
 }
 
-#Session-Sync-Add-on-ReD .config-panel .comp-dropdown .drop-list .option {
+#session-sync .config-panel .comp-dropdown .drop-list .option {
 	width: 16.6%;
-}
-
-#Session-Sync-Add-on-ReD .config-panel .comp-dropdown[id="SpecialKey"] .drop-list {
-	width: 8em;
-}
-
-#Session-Sync-Add-on-ReD .config-panel .comp-dropdown[id="SpecialKey"] .option {
-	width: 100%;
-}
-
-#Session-Sync-Add-on-ReD .config-panel .section-container[id="auto-save"] {
-	display: block;
 }
 
 /*
  * Custom states
  */
 
-#Session-Sync-Add-on-ReD[auto-save="false"] .config-panel .section-container[id="auto-save"] .comp-range-control {
+#session-sync[history="false"] .config-panel .section-container[id="history-config"] .comp-range-control {
 	display: none;
 }
-
-#Session-Sync-Add-on-ReD[hotkey="false"] .config-panel .section-container[id="hotkey"] .comp-dropdown {
-	display: none;
-}
-

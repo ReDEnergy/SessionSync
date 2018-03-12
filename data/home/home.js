@@ -7,36 +7,30 @@ var bullets;
 var activeBullet;
 var tooltip;
 
-//console.log('script loaded');
-
-var intervalID = window.setInterval(load, 10);
 window.addEventListener('load', load);
 
 function load() {
-	
+
 	//console.log('logic loaded');
 
 	Carousel = document.getElementById("carousel");
 	bullets = document.getElementById("bullets");
 	tooltip = document.getElementById("tooltip");
-	
+
 	bullets.addEventListener('mouseleave', function(e) {
 		tooltip.removeAttribute('active');
-	});	
+	});
 
 	initTutorial();
-	
-	//window.clearInterval(intervalID);
-	
-};
+}
 
 var initTutorial = function initTutorial() {
 
 	if (inited)
 		return;
-		
+
 	inited = true;
-	
+
 	Carousel.textContent = '';
 	bullets.textContent = '';
 
@@ -44,7 +38,7 @@ var initTutorial = function initTutorial() {
 
 	initCarousel();
 	updateActiveBullet(bullets.firstElementChild);
-	
+
 };
 
 function updateActiveBullet(node) {
@@ -59,7 +53,7 @@ function setCarouselTo(index)
 {
 	if (index < 0 || index > (size - 1)) {
 		return;
-	} 
+	}
 
 	Carousel.style.left = -index * 100 + '%';
 	Carousel.setAttribute('advance', index * 100);
@@ -68,7 +62,7 @@ function setCarouselTo(index)
 function advanceCarousel(offset)
 {
 	var position = Carousel.getAttribute('advance') | 0;
-	position += offset; 
+	position += offset;
 	if (position < 0 || position > (size - 1) * 100) {
 		return;
 	}
@@ -76,12 +70,12 @@ function advanceCarousel(offset)
 	Carousel.setAttribute('advance', position);
 	updateActiveBullet(offset > 0 ? activeBullet.nextElementSibling : activeBullet.previousElementSibling);
 };
-	
+
 function initCarousel()
 {
 	var moveLeft = document.getElementById("scroll-left");
 	var moveRight = document.getElementById("scroll-right");
-	
+
 	moveLeft.addEventListener('click', advanceCarousel.bind(null, -100));
 	moveRight.addEventListener('click', advanceCarousel.bind(null, 100));
 }
@@ -107,13 +101,13 @@ function HelpEntry(options)
 	var visual = document.createElement('div');
 	visual.className = 'tutorial-image';
 	visual.style.backgroundImage = 'url("../images/tutorial/' + options.info + '.png")';
-	
+
 	box.appendChild(title);
 	box.appendChild(info);
 	box.appendChild(visual);
-	
+
 	// Bullet
-	
+
 	var bullet = document.createElement('div');
 	bullet.className = 'bullet';
 	bullet.setAttribute('left', options.index);
@@ -138,8 +132,8 @@ function CreateHelpPage()
 {
 	var helper_list = [
 		{
-			title: 'General instructions',
-			info: 'active-session'
+			title: 'Addon overview',
+			info: 'overview'
 		},
 		{
 			title: 'Session menu',
@@ -171,7 +165,7 @@ function CreateHelpPage()
 		},
 		{
 			title: 'Trash bin',
-			info: 'trash-bin-location'
+			info: 'delete-item'
 		},
 		{
 			title: 'Configuration panel',
@@ -186,18 +180,18 @@ function CreateHelpPage()
 			info: 'resize-sessions'
 		},
 		{
-			title: 'Addon Toolbar',
-			info: 'addon-toolbar'
-		},
+			title : 'Session history',
+			info: 'history-list'
+		}
 	];
-	
+
 	var index = 0;
 	helper_list.forEach(function(helper) {
-		helper.index = index;  
+		helper.index = index;
 		var entry = new HelpEntry(helper);
 		Carousel.appendChild(entry);
 		index++;
 	});
-	
+
 	return helper_list.length;
 };

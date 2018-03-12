@@ -4,10 +4,9 @@ var open	= require('gulp-open');
 var watch	= require('gulp-watch');
 var concat	= require('gulp-concat');
 var plumber = require('gulp-plumber');
-var gcallback = require('gulp-callback');
 
 var sys		= require('sys');
-var exec	= require('child_process').exec;
+// var exec	= require('child_process').exec;
 var express = require('express');
 var tiny_lr	= require('tiny-lr')();
 var serve_index 		= require('serve-index');
@@ -32,12 +31,11 @@ var lr_files = [
 function shellCmd(error, stdout, stderr) { sys.puts(stdout); }
 
 var io;
-var clients = 0;
-function broadcast()
-{
-	console.log('Trigger Firefox Addon CSS Update!');
-	io.sockets.emit('update');
-}
+// function broadcast()
+// {
+// 	console.log('Trigger Firefox Addon CSS Update!');
+// 	io.sockets.emit('update');
+// }
 
 // ----------------------------------------------------------------------------
 // Gulp tasks
@@ -48,22 +46,21 @@ gulp.task('socket-io', function() {
 	var app = require('express')();
 	var server = require('http').Server(app);
 	io = require('socket.io')(server);
-	
+
 	server.listen(8888);
-	
-	app.use(express.static(__dirname + '/data/socket.io'));	
+
+	app.use(express.static(__dirname + '/data/socket.io'));
 	app.get('/', function (req, res) {
 		res.sendFile(__dirname + '/index.html');
 	});
 
 	io.on('connection', function (socket) {
-		
+
 		console.log('connected', socket.id);
 
 		socket.on('request', function (data) {
 			socket.emit('update');
 		});
-
 	});
 });
 
@@ -72,9 +69,10 @@ gulp.task('server', function() {
 
 	app.use(connect_livereload({
 		port: LIVERELOAD_PORT
-  	}));
-  	// TODO inspect how to list files from directories
-  	app.use(serve_index(__dirname + '/' + APP_ROOT, {'icons': true}));
+	}));
+
+	// TODO inspect how to list files from directories
+	app.use(serve_index(__dirname + '/' + APP_ROOT, {'icons': true}));
 	app.use(express.static(__dirname + '/' + APP_ROOT));
 	app.listen(EXPRESS_PORT);
 });
@@ -93,19 +91,20 @@ gulp.task('open', function() {
 gulp.task('css', function(event) {
 	var stream = gulp.src('dev/css/**/*.css')
 		.pipe(plumber())
-		.pipe(concat('overlay.css'))
+		.pipe(concat('session-sync.css'))
 		.pipe(gulp.dest(APP_ROOT + '/data'));
 	return stream;
 });
 
 // ----------------------------------------------------------------------------
 // Watch + LiveReload
- 
+
 gulp.task('watch', ['livereload'], function() {
-	//watch(lr_files, notifyLivereload);
+	watch(lr_files, notifyLivereload);
 	watch('./dev/css/**/*.css', function(events, done) {
+		console.log('Message', done);
 		gulp.start('css', function() {
-			broadcast();
+			// broadcast();
 		});
 	});
 });

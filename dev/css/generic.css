@@ -3,7 +3,7 @@
  */
 
 
-#Session-Sync-Add-on-ReD .css-close-button {
+#session-sync .css-close-button {
 	width: 2em;
 	height: 2em;
 	font-size: 12px;
@@ -15,18 +15,18 @@
 	box-sizing: border-box;
 }
 
-#Session-Sync-Add-on-ReD .css-close-button:hover {
+#session-sync .css-close-button:hover {
 	cursor: pointer;
 	opacity: 1;
 }
 
-#Session-Sync-Add-on-ReD .css-close-button:hover::after,
-#Session-Sync-Add-on-ReD .css-close-button:hover::before {
+#session-sync .css-close-button:hover::after,
+#session-sync .css-close-button:hover::before {
 	background: #333;
 }
 
-#Session-Sync-Add-on-ReD .css-close-button:after,
-#Session-Sync-Add-on-ReD .css-close-button:before {
+#session-sync .css-close-button:after,
+#session-sync .css-close-button:before {
 	content: "";
 	width: 60%;
 	height: 16%;
@@ -37,6 +37,6 @@
 	transform: rotate(45deg);
 }
 
-#Session-Sync-Add-on-ReD .css-close-button:after {
+#session-sync .css-close-button:after {
 	transform: rotate(-45deg);
 }

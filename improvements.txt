@@ -92,8 +92,6 @@ TODO
 		- "no sessions" container in list / container
 		- keep ui opened (not really required)
 		- add panel-snap-top, fixed offset, center configuration
-		- show/hide addon bar
-		- complete help-page with new instructions
 
 	- what's new in Session Sync v2.0.0
 		- show in addon-page
@@ -114,7 +112,7 @@ TODO
 			- trigger onChange listeners for each setting
 				- do not use WindowEvents
 		
-	- Perfromance
+	- Performance
 		- lazy init
 		- cache objects
 			- better cache DOM instances and not bookmark information
@@ -134,6 +132,9 @@ TODO
 			- drag and drop over a certain area (show a small merge button)
 
 		- extend history commands/events
+		
+		- add export feature to session
+			- export bookmarks to file/html page/copy to clipboard
 
 	- UX
 		- Session management

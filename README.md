@@ -15,8 +15,8 @@ Session-Sync provides a rich interface for sessions management
   - use auto-save feature to inspect history sessions 
 
 #### Development Status
-Version 2.0.1 released
-WebExtension: port planned
+WebExtensions port ready - beta version available in /releases  
+AMO full release: 20 March 2018
 
 #### Version 2
 

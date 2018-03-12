@@ -1,32 +1,17 @@
-/** 
+/**
  * Session-Sync-Add-on-ReD is a XUL element
  */
-#Session-Sync-Add-on-ReD {
-	width: 100%;
-	
+#session-sync {
+	width: 800px;
+	height: 600px;
+
 	font-size: 12px;
 	font-family: "Open Sans", "Segoe UI", Arial, Helvetica, sans-serif;
 
 	color: #000 !important;
-	text-shadow: none !important;
+	overflow: hidden;
 
-	position: fixed;
-	z-index: 100;
-}
-
-#Session-Sync-Add-on-ReD[show="true"] {
-	width: 100%;
-	height: 100%;
-	left: 0;
-}
-
-#Session-Sync-Add-on-ReD[config] {
-	height: 100%;
-}
-
-#Session-Sync-Add-on-ReD[show="false"] {
-	height: 0;
-	left: -3px;
+	/* transition: all 0.3s ease-in; */
 }
 
 /*
@@ -37,34 +22,20 @@
  * Panel Body
  */
 
-#Session-Sync-Add-on-ReD .body {
-	width: 100%;
-	height: 100%;
-	background: rgba(255, 255, 255, 0.5);
-	transition: all 0.3s ease-in;
-	/* 
-	background-image: url("images/kanade.jpg");
-	background-size: contain;
-	*/
-}
+ #session-sync #body {
+	 height: 100%;
+ }
 
-#Session-Sync-Add-on-ReD[config] .body {
+#session-sync[config] .body {
 	background-color: rgba(255, 255, 255, 0.95);
 }
 
-#Session-Sync-Add-on-ReD .sessions-area {
-	width: 750px;
-	height: 500px;
-	min-width: 500px;
-	min-height: 400px;
-	max-width: 90%;
-	max-height: 80%;
-	
-	border: 1px solid #BBB;
-	position: absolute;
-	top: 125px;
+#session-sync .sessions-area {
+	width: 100%;
+	height: 100%;
 
-	box-shadow: 0px 5px 15px 0px #CCC;
+	border: 1px solid #BBB;
+	/* box-shadow: 0px 5px 15px 0px #CCC; */
 	box-sizing: border-box;
 
 	transition: all 0.2s;
@@ -73,32 +44,34 @@
 	z-index: 1000;
 	display: flex;
 	flex-direction: column;
+
+	float: right;
 }
 
-#Session-Sync-Add-on-ReD[show="false"] .sessions-area {
+#session-sync[show="false"] .sessions-area {
 	display: none;
 }
 
-#Session-Sync-Add-on-ReD[state="pin"] .sessions-area {
+#session-sync[state="pin"] .sessions-area {
 	top: 0;
 	right: 0;
 	margin: 0;
 	transform: translate(0);
 }
 
-#Session-Sync-Add-on-ReD[state="centered"] .sessions-area {
+#session-sync[state="centered"] .sessions-area {
 	top: calc(50% - 50px);
 	left: 50%;
 	transform: translate(-50%, -50%);
 }
 
-#Session-Sync-Add-on-ReD[config] .sessions-area {
+#session-sync[config] .sessions-area {
 	left: 400px;
-	top: 20%;	
+	top: 20%;
 	transform: translate(0);
 }
 
-#Session-Sync-Add-on-ReD .sessions-area-body {
+#session-sync .sessions-area-body {
 	width: 100%;
 	overflow: hidden;
 
@@ -111,21 +84,16 @@
  * Container resize
  */
 
-#Session-Sync-Add-on-ReD[resize] {
-	width: 100%;
-	height: 100%;
-}
-
-#Session-Sync-Add-on-ReD[resize] .body {
+#session-sync[resize] .body {
 	background: rgba(255, 255, 255, 0.95) !important;
 	cursor: se-resize;
 }
 
-#Session-Sync-Add-on-ReD[resize] .sessions-area {
+#session-sync[resize] .sessions-area {
 	transition: none;
 }
 
-#Session-Sync-Add-on-ReD .sessions-area .panel-resize-handle
+#session-sync .sessions-area .panel-resize-handle
 {
 	content: " ";
 	width: 12px;
@@ -135,34 +103,25 @@
 	position: absolute;
 	background: #DDD;
 	bottom: 0;
-	right: 0px;
-	cursor: se-resize;
+	left: 0px;
+	cursor: sw-resize;
 	z-index: 10;
+
+	transform: rotate(90deg);
 }
 
-#Session-Sync-Add-on-ReD .sessions-area .panel-resize-handle:hover
+#session-sync .sessions-area .panel-resize-handle:hover
 {
 	background: #1AB61A;
 }
 
-#Session-Sync-Add-on-ReD .sessions-area .panel-resize-handle[resizing]
+#session-sync .sessions-area .panel-resize-handle[resizing]
 {
 	background: #2D92EB;
 }
 
-/*
- * Media Queries
- */
-/*
-@media (max-height: 900px) {
-	#Session-Sync-Add-on-ReD[state="centered"] .sessions-area {
-		top: 125px;
-	}
+#clipboard {
+	position: absolute;
+	top: -100px;
+	z-index: -100;
 }
-
-@media (max-height: 700px) {
-	#Session-Sync-Add-on-ReD[state="centered"] .sessions-area {
-		top: 60px;
-	}
-}
-*/

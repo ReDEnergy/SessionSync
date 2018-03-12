@@ -1,7 +1,7 @@
 /**
  * 	Edit Session Section
  */
-#Session-Sync-Add-on-ReD .field-edit-widget {
+#session-sync .field-edit-widget {
 	width: 100%;
 	padding: 10px;
 	background: #FFF;
@@ -20,12 +20,12 @@
 	transition: 0.2s all ease-out;
 }
 
-#Session-Sync-Add-on-ReD .field-edit-widget[data-active] {
+#session-sync .field-edit-widget[data-active] {
 	opacity: 1;
 	z-index: 1000;
 }
 
-#Session-Sync-Add-on-ReD .field-edit-widget .group {
+#session-sync .field-edit-widget .group {
 	width: 100%;
 	height: 2.4em;
 	margin: 3px 0;
@@ -34,7 +34,7 @@
 	display: flex;
 }
 
-#Session-Sync-Add-on-ReD .field-edit-widget label {
+#session-sync .field-edit-widget label {
 	width: 80px;
 	padding: 0 20px 0 0;
 	text-decoration: underline;
@@ -42,21 +42,22 @@
 	text-align: right;
 }
 
-#Session-Sync-Add-on-ReD .field-edit-widget input {
+#session-sync .field-edit-widget input {
 	height: 100%;
 	padding: 0 1em 0.2em 1em !important;
 	color: #333;
-	box-sizing: border-box; 
+	box-sizing: border-box;
+	border: 1px solid #CCC;
 	border-radius: 1.2em !important;
 	flex: 1;
 }
 
-#Session-Sync-Add-on-ReD .field-edit-widget input:focus {
+#session-sync .field-edit-widget input:focus {
 	border-color: #2D92EB !important;
-	box-shadow: 0 0 3px 0 rgba(0, 131, 255, 0.5) inset !important;	
+	box-shadow: 0 0 3px 0 rgba(0, 131, 255, 0.5) inset !important;
 }
 
-#Session-Sync-Add-on-ReD .field-edit-widget .button {
+#session-sync .field-edit-widget .button {
 	height: 2em;
 	padding: 0 1.5em;
 	line-height: 1.8em;
@@ -66,22 +67,22 @@
 	text-align: center;
 	color: #FFF;
 	border: unset;
-	border-radius: 1em; 
+	border-radius: 1em;
 	background: #999;
-	
+
 	transition: all 0.2s;
 	float: right;
 }
 
-#Session-Sync-Add-on-ReD .field-edit-widget .button:hover {
+#session-sync .field-edit-widget .button:hover {
 	color: #FFF;
 	cursor: pointer;
 }
 
-#Session-Sync-Add-on-ReD .field-edit-widget .button.save:hover {
+#session-sync .field-edit-widget .button.save:hover {
 	background: #23A823;
 }
 
-#Session-Sync-Add-on-ReD .field-edit-widget .button.cancel:hover {
+#session-sync .field-edit-widget .button.cancel:hover {
 	background: #DC462C;
 }

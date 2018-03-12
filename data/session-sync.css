@@ -1,0 +1,2597 @@
+/**
+ * Configuration button
+ */
+
+#session-sync .addon-toolbar {
+	width: auto;
+	height: 3.1em;
+	padding: 0.5em;
+	font-size: 12px;
+
+	background: rgba(255, 255, 255, 0.9);
+	border-bottom-left-radius: 1.5em;
+	border-bottom-right-radius: 1.5em;
+	border: 1px solid #CCC;
+	border-top: unset;
+	position: absolute;
+	top: 1px;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 1000;
+
+	transition: opacity, transform, right;
+	transition-duration: 0.2s;
+	box-sizing: border-box;
+}
+
+#session-sync[addon-toolbar="true"] .addon-toolbar {
+	display: block;
+}
+
+#session-sync[addon-toolbar="false"] .addon-toolbar {
+	display: none;
+}
+
+#session-sync[show="true"] .addon-toolbar {
+	top: 1px;
+	opacity: 1;
+}
+
+#session-sync[show="true"] .addon-toolbar:hover {
+	opacity: 1;
+}
+
+#session-sync[show="false"] .addon-toolbar {
+	top: -150px;
+	opacity: 0;
+}
+
+
+#session-sync .addon-toolbar .button {
+	width: 3em;
+	height: 100%;
+
+	background: url("images/icons/brightness.png") no-repeat center;
+	background-size: contain !important;
+
+	opacity: 0.75;
+
+	filter: saturate(0%);
+	transition: opacity 0.25s ease-out;
+	float: left;
+}
+
+#session-sync .addon-toolbar .button:hover {
+	opacity: 1;
+	cursor: pointer;
+	filter: saturate(100%);
+}
+
+/*
+ * Toolbar buttons
+ */
+
+#session-sync .addon-toolbar .instructions {
+	background: url("images/icons/brightness.png") no-repeat center;
+}
+
+#session-sync .addon-toolbar .config {
+	background: url("images/icons/gear.png") no-repeat center;
+}
+
+#session-sync[config="on"] .addon-toolbar .config {
+	opacity: 1 !important;
+	filter: saturate(100%) !important;
+}
+
+#session-sync .addon-toolbar .close {
+	background: url("images/icons/power.png") no-repeat center;
+}
+
+/*
+ * Style Reload
+ */
+
+#session-sync .addon-toolbar .style-reload {
+	background: url("images/icons/paintbrush2.png") no-repeat center;
+	display: none;
+}
+
+/*
+ * DOM inspector
+ */
+
+#session-sync .addon-toolbar .dom-inspector {
+	background: url("images/icons/bolt.png") no-repeat center;
+	display: none;
+}
+
+#session-sync .addon-toolbar .dom-inspector[active] {
+	opacity: 1;
+	filter: saturate(100%);
+}
+
+#session-sync .dom-inspector:hover {
+	cursor: pointer;
+}
+
+/*
+ * Development mode
+ */
+
+#session-sync[dev] .addon-toolbar .style-reload,
+#session-sync[dev] .addon-toolbar .dom-inspector {
+	display: block;
+}
+
+
+
+/**
+ * Dom Components
+ */
+
+/**
+ * Toggle Switch
+ */
+
+#session-sync .comp-toggle-switch {
+	width: 100%;
+	color: #333;
+	display: flex;
+}
+
+#session-sync .comp-toggle-switch:first-child {
+	margin-top: 0;
+}
+
+#session-sync .comp-toggle-switch:hover {
+	cursor: pointer;
+	color: #4C91D6;
+}
+
+#session-sync .comp-toggle-switch .label {
+	width: 8em;
+	line-height: 1.3em;
+	float: left;
+}
+
+#session-sync .comp-toggle-switch .switch {
+	margin-left: 0.4em;
+	padding: 0 0 0.25em 0;
+	border-radius: 0.3em;
+	text-align: center;
+	color: #FFF;
+	line-height: 1.3em;
+	text-transform: lowercase;
+	float: left;
+
+	flex: 1;
+	transition: all 0.3s;
+}
+
+#session-sync .comp-toggle-switch .switch[state="true"] {
+	background: #208020;
+}
+
+#session-sync .comp-toggle-switch .switch[state="false"] {
+	background: #CB4D4D;
+}
+
+/**
+ * Toggle Switch
+ */
+
+#session-sync .comp-dropdown {
+	width: 100%;
+	height: 2em;
+	color: #555;
+	display: flex;
+	text-align: center;
+}
+
+#session-sync .comp-dropdown .label {
+	width: 50%;
+}
+
+#session-sync .comp-dropdown .select {
+	width: 50%;
+	background: #38B751;
+	position: relative;
+}
+
+#session-sync .comp-dropdown .select-value {
+	width: 100%;
+	height: 100%;
+}
+
+#session-sync .comp-dropdown .drop-list {
+	width: 100%;
+	min-height: 100%;
+	background: #FFF;
+	color: #333;
+	border: 1px solid #208020;
+
+	display: block;
+	position: absolute;
+	z-index: 100;
+	top: 100%;
+	left: 0;
+
+	box-sizing: border-box;
+}
+
+#session-sync .comp-dropdown .drop-list[visible="true"] {
+	display: block;
+}
+
+#session-sync .comp-dropdown .drop-list[visible="false"] {
+	display: none;
+}
+
+#session-sync .comp-dropdown .drop-list .option {
+	width: 50%;
+	transition: all 0.2s;
+	float: left;
+}
+
+#session-sync .comp-dropdown .drop-list .option:hover {
+	transition: none;
+	background: #EEE;
+}
+
+#session-sync .comp-dropdown .drop-list .option[selected] {
+	background: #38B751;
+	color: #FFF;
+}
+
+/**
+ * Configuration button
+ */
+
+#session-sync .config-panel {
+	width: 300px;
+	padding: 30px 0 0 0;
+	font-size: 12px;
+	border-right: 1px solid #CCC;
+	background: #F5F5F5;
+	opacity: 0.95;
+	color: #000;
+
+	position: absolute;
+	top: 1px;
+	bottom: 1px;
+	right: -305px;
+	z-index: 2000;
+	box-shadow: 0 0 10px 0 #CCC;
+
+	transition: all 0.25s ease-out;
+	opacity: 0.5;
+}
+
+#session-sync[config] .config-panel {
+	right: 0;
+	opacity: 1;
+}
+
+#session-sync[show="false"] .config-panel {
+	right: -305px !important;
+}
+
+/*
+ * Close button
+ */
+
+#session-sync .config-panel .css-close-button {
+	width: 2.4em;
+	height: 2.4em;
+	top: .5em;
+	right: .5em;
+	opacity: 0.85 !important;
+	transition: all 0.2s ease-out;
+}
+
+#session-sync .config-panel .css-close-button:hover {
+	cursor: pointer;
+	opacity: 0.7 !important;
+}
+
+/*
+ * Logo
+ */
+
+#session-sync .config-panel .logo {
+	width: 100px;
+	height: 64px;
+	margin: 2em auto;
+	padding: 0;
+	border: none;
+	background: url("images/icon64.png") center top no-repeat;
+}
+
+#session-sync .config-panel .logo:hover {
+	cursor: pointer;
+}
+
+/*
+ * Sctions
+ */
+
+#session-sync .config-panel .section-container {
+	height: auto;
+	padding: 1em 0 0 0;
+	border-bottom: 1px dashed #CCC;
+	border: none;
+	position: relative;
+}
+
+#session-sync .config-panel .section-container .section-title {
+	margin: 0 0 1em 0;
+	padding: 0;
+	font-weight: 600;
+	text-align: left;
+	color: #333;
+	border-bottom: 1px solid #DDD;
+	border-top: none;
+	font-size: 14px;
+}
+
+#session-sync .config-panel .section-container .section-title:hover {
+	cursor: pointer;
+}
+
+#session-sync .config-panel .section-container .section-body {
+	transition: all 0.2s ease-out;
+}
+
+#session-sync .config-panel .section-container[collapsed] .section-body {
+	overflow: hidden;
+	height: 0px !important;
+}
+
+#session-sync .config-panel .section-container .drop-icon {
+	width: 1.5em;
+	height: 1.5em;
+	margin: 0 0.5em;
+	background-image: url("images/arrow-up.png");
+	background-size: contain;
+	float: left;
+}
+
+#session-sync .config-panel .section-container[collapsed] .drop-icon {
+	background-image: url("images/arrow-down.png");
+	background-size: contain;
+}
+
+/*
+ * Range control
+ */
+
+#session-sync .config-panel .comp-range-control {
+	width: 100%;
+	height: 2em;
+	margin: 0.5em 0;
+	padding: 0 1em 0 2em;
+	line-height: 1.8em;
+	overflow: hidden;
+	border: none;
+
+	display: flex;
+	box-sizing: border-box;
+}
+
+#session-sync .config-panel .comp-range-control .label
+{
+	height: 100%;
+	font-size: 1em;
+	color: #555;
+	border: none;
+	word-break: break-all;
+	float: left;
+	font-size: 1.1em;
+
+	flex: 1;
+	box-sizing: border-box;
+}
+
+
+#session-sync .config-panel .comp-range-control .range-input {
+	width: 8em;
+	margin: 0 1em 0 0;
+	height: 100%;
+	box-sizing: border-box;
+	float: left;
+	display: flex;
+}
+
+#session-sync .config-panel .comp-range-control .range-input > * {
+	float: left;
+}
+
+#session-sync .config-panel .comp-range-control .range-input input {
+	text-align: center !important;
+}
+
+#session-sync .config-panel .comp-range-control .button {
+	width: 2em;
+	height: 100%;
+	filter: opacity(50%);
+	transition: 0.2s all;
+}
+
+#session-sync .config-panel .comp-range-control .button:hover {
+	cursor: pointer;
+	filter: opacity(100%);
+}
+
+#session-sync .config-panel .comp-range-control .button.inc {
+	background: url("images/arrow-right.png") center top no-repeat;
+	background-size: 100%;
+}
+
+#session-sync .config-panel .comp-range-control .button.dec
+{
+	background: url("images/arrow-left.png") center top no-repeat;
+	background-size: 100%;
+}
+
+#session-sync .config-panel .comp-range-control .value {
+	width: 2.8em;
+	margin: 0 0.2em;
+	padding: 0;
+
+	background: #FFF;
+	border: 1px solid #CCC;
+
+	font-size: 1.1em;
+	text-align: center;
+	line-height: 1.8em;
+	color: #2D92EB;
+}
+
+/*
+ * Toggle control
+ */
+
+#session-sync .config-panel .comp-toggle-button {
+	width: 100%;
+	height: 2em;
+	margin: 5px 0;
+	padding: 0 1em 0 2em;
+	line-height: 1.8em;
+	display: flex;
+	box-sizing: border-box;
+}
+
+#session-sync .config-panel .comp-toggle-button .label {
+	height: 100%;
+	color: #555;
+	word-break: break-all;
+	font-size: 1.1em;
+	float: left;
+
+	flex: 1;
+	box-sizing: border-box;
+}
+
+#session-sync .config-panel .comp-toggle-button .button {
+	width: 8em;
+	height: 100%;
+	margin: 0 1em 0 0;
+	border-radius: 1em;
+	line-height: 1.9em;
+	color: white;
+	text-align: center;
+	float: left;
+}
+
+#session-sync .config-panel .comp-toggle-button .button:hover {
+	cursor: pointer;
+}
+
+#session-sync .config-panel .comp-toggle-button .button[state="true"] {
+	background: #38B751;
+}
+
+#session-sync .config-panel .comp-toggle-button .button[state="false"] {
+	background: #66AAEF;
+}
+
+#session-sync .config-panel .comp-toggle-button .button[state="disable"] {
+	background: #66AAEF;
+}
+
+
+/*
+ * Dropdown Component
+ */
+
+#session-sync .config-panel .comp-dropdown {
+	width: 100%;
+	height: 2em;
+	margin: 5px 0;
+	padding: 0 1em 0 2em;
+	line-height: 1.8em;
+	display: flex;
+	box-sizing: border-box;
+}
+
+#session-sync .config-panel .comp-dropdown .label {
+	height: 100%;
+	color: #555;
+	text-align: left;
+	word-break: break-all;
+	font-size: 1.1em;
+	float: left;
+
+	flex: 1;
+	box-sizing: border-box;
+}
+
+#session-sync .config-panel .comp-dropdown .select {
+	width: 8em;
+	height: 100%;
+	margin: 0 1em 0 0;
+	background: #38B751;
+	border-radius: 1em;
+	line-height: 1.9em;
+	color: white;
+	text-align: center;
+	float: left;
+
+	transition: all 0.2s ease-out;
+}
+
+#session-sync .config-panel .comp-dropdown .select:hover {
+	cursor: pointer;
+	background: #66AAEF;
+}
+
+#session-sync .config-panel .comp-dropdown .drop-list {
+	width: 14em;
+	top: calc(100% + 0px);
+}
+
+#session-sync .config-panel .comp-dropdown .drop-list .option {
+	width: 16.6%;
+}
+
+/*
+ * Custom states
+ */
+
+#session-sync[history="false"] .config-panel .section-container[id="history-config"] .comp-range-control {
+	display: none;
+}
+
+/**
+ * Confirm Box
+ */
+
+#session-sync .confirm-box {
+	width: auto;
+	padding: 15px;
+	margin: -40px 0 0 0;
+	background: #FFF;
+	border: 1px #CCC solid;
+
+	display: none;
+	position: fixed;
+	left: 0;
+	top: 0;
+	overflow: auto;
+
+	box-shadow: 3px 3px 5px 0 #CCC;
+	transform: translate(-50%, 0);
+	z-index: 1;
+
+	/* display: block;
+	z-index: 1001;
+	top: 120px;
+	left: 321px; */
+}
+
+#session-sync .confirm-box[data-active="true"] {
+	display: block;
+	z-index: 1001;
+}
+
+#session-sync .confirm-box .info {
+	width: 100%;
+	margin: 0 0 5px 0;
+	padding: 5px 0;
+	color: #333;
+	text-align: center;
+	font-size: 16px;
+}
+
+#session-sync .confirm-box .controls {
+	padding: 10px 0 0 0;
+	border-top: 1px solid #DDD;
+	overflow: hidden;
+	display: flex;
+}
+
+#session-sync .confirm-box .controls .flex {
+	flex: 1;
+}
+
+#session-sync .confirm-box .ok {
+	margin: 0 10px 0 0;
+	color: #FFF;
+	background: #E86A5C; /*#EA5F4D;*/
+}
+
+#session-sync .confirm-box .ok:hover {
+	background: #DC462C;
+}
+
+#session-sync .confirm-box .cancel {
+	color: #FFF;
+	background: #999;
+}
+
+#session-sync .confirm-box .cancel:hover {
+	background: #777;
+}
+
+#session-sync .confirm-box .button {
+	width: 75px;
+	padding: 5px 0;
+	text-align: center;
+	float: left;
+
+	box-sizing: border-box;
+}
+
+#session-sync .confirm-box .button:hover {
+	cursor: pointer;
+}
+
+/**
+ * Context Menu
+ */
+
+#session-sync .context-menu {
+	width: 155px;
+	padding: 5px;
+	background: #FFF;
+	border: 1px #CCC solid;
+
+	display: none;
+	position: fixed;
+	left: 0;
+	top: 0;
+
+	box-shadow: 0px 0px 5px 0 #CCC;
+	transform: translateX(5px);
+	z-index: 1000;
+}
+
+#session-sync .context-menu[data-active="true"] {
+	display: block;
+}
+
+#session-sync .context-menu .separator {
+	width: 100%;
+	height: 1px;
+	margin: 3px 0;
+	background: #CCC;
+}
+
+
+#session-sync .context-menu .button {
+	width: 100%;
+	padding: 5px 5px 5px 30px;
+
+	background-image: url("images/icons/cloud.png");
+	background-size: 20px;
+	background-repeat: no-repeat;
+	background-position: 3px 3px;
+	box-sizing: border-box;
+}
+
+#session-sync .context-menu .button:hover {
+	background-color: #EEE;
+	cursor: pointer;
+}
+
+#session-sync .context-menu .button[icon="save"] {
+	background-image: url("images/icons/heart.png");
+}
+
+#session-sync .context-menu .button[icon="new-tab"] {
+	background-image: url("images/icons/ribbon.png");
+}
+
+#session-sync .context-menu .button[icon="same-tab"] {
+	background-image: url("images/icons/recycle.png");
+}
+
+#session-sync .context-menu .button[icon="new-window"] {
+	background-image: url("images/icons/polaroids.png");
+}
+
+#session-sync .context-menu .button[icon="copy"] {
+	background-image: url("images/icons/clipboard.png");
+}
+
+#session-sync .context-menu .button[icon="edit"] {
+	background-image: url("images/icons/document.png");
+}
+
+#session-sync .context-menu .button[icon="delete"] {
+	background-image: url("images/icons/denied.png");
+}
+
+#session-sync .context-menu .button[icon="same-window"] {
+	background-image: url("images/icons/stack.png");
+}
+
+#session-sync .context-menu .button[icon="new-session"] {
+	background-image: url("images/icons/star.png");
+}
+
+#session-sync .context-menu[icons="no"] .button
+{
+	padding: 5px;
+	background-image: unset;
+}
+
+
+/**
+ * 	Edit Session Section
+ */
+#session-sync .field-edit-widget {
+	width: 100%;
+	padding: 10px;
+	background: #FFF;
+	border: 1px solid #CCC;
+
+	opacity: 0;
+
+	position: absolute;
+
+	box-sizing: border-box;
+	box-shadow: 0px 0px 5px 0px #CCC;
+
+	bottom: 0;
+	left: 0;
+	z-index: -1;
+	transition: 0.2s all ease-out;
+}
+
+#session-sync .field-edit-widget[data-active] {
+	opacity: 1;
+	z-index: 1000;
+}
+
+#session-sync .field-edit-widget .group {
+	width: 100%;
+	height: 2.4em;
+	margin: 3px 0;
+	line-height: 2.0em;
+	float: left;
+	display: flex;
+}
+
+#session-sync .field-edit-widget label {
+	width: 80px;
+	padding: 0 20px 0 0;
+	text-decoration: underline;
+	font-size: 1.2em;
+	text-align: right;
+}
+
+#session-sync .field-edit-widget input {
+	height: 100%;
+	padding: 0 1em 0.2em 1em !important;
+	color: #333;
+	box-sizing: border-box;
+	border: 1px solid #CCC;
+	border-radius: 1.2em !important;
+	flex: 1;
+}
+
+#session-sync .field-edit-widget input:focus {
+	border-color: #2D92EB !important;
+	box-shadow: 0 0 3px 0 rgba(0, 131, 255, 0.5) inset !important;
+}
+
+#session-sync .field-edit-widget .button {
+	height: 2em;
+	padding: 0 1.5em;
+	line-height: 1.8em;
+	margin: 3px 0 0 10px;
+
+	font-size: 14px;
+	text-align: center;
+	color: #FFF;
+	border: unset;
+	border-radius: 1em;
+	background: #999;
+
+	transition: all 0.2s;
+	float: right;
+}
+
+#session-sync .field-edit-widget .button:hover {
+	color: #FFF;
+	cursor: pointer;
+}
+
+#session-sync .field-edit-widget .button.save:hover {
+	background: #23A823;
+}
+
+#session-sync .field-edit-widget .button.cancel:hover {
+	background: #DC462C;
+}
+
+/**
+ * Filter Menu
+ */
+
+#session-sync .filter-panel {
+	width: 150px;
+	height: 100%;
+	min-height: 10000px;
+	font-size: 16px;
+	border-right: 1px solid #DDD;
+	background: #F5F5F5;
+	opacity: 0.95;
+	color: #000;
+
+	position: absolute;
+	top: 1px;
+	z-index: 100;
+	display: none;
+
+	transition: all 0.3s;
+}
+
+#session-sync[show="true"] .filter-panel {
+	left: 0px;
+}
+
+#session-sync[show="false"] .filter-panel {
+	left: -151px;
+}
+
+#session-sync .filter-panel:hover {
+	width: 200px;
+}
+
+#session-sync .filter-panel .logo {
+	margin: 10px 0;
+	height: 64px;
+	width: 100%;
+	background: url("images/icon64.png") center top no-repeat;
+}
+
+#session-sync .filter-panel .separator {
+	margin: 5px 0;
+	border-bottom: 1px solid #DDD;
+}
+
+
+#session-sync .filter-panel .session-box {
+	padding: 5px 0;
+	color: #555;
+	text-align: center;
+}
+
+#session-sync .filter-panel .session-box:hover {
+	background: #DDD;
+	cursor: pointer;
+}
+
+#session-sync .filter-panel .session-box[active] {
+	background: #2D92EB;
+	color: #FFF;
+}
+
+#session-sync .filter-panel .filters {
+}
+
+#session-sync .filter-panel .filters .title {
+	margin: 10px 0;
+	padding: 10px 0;
+	text-align: center;
+}
+
+#session-sync .filter-panel .label {
+	height: 24px;
+	padding: 3px 0;
+	text-align: center;
+	font-size: 12px;
+	line-height: 22px;
+	word-break: break-all;
+
+	display: flex;
+	position: relative;
+	transition: background 0.2s;
+}
+
+#session-sync .filter-panel .label[edit-mode] div {
+	display: none;
+}
+
+#session-sync .filter-panel .label[edit-mode] input {
+	display: block;
+}
+
+
+#session-sync .filter-panel .label:hover {
+	cursor: pointer;
+	background: #FFF;
+	transition: none;
+}
+
+#session-sync .filter-panel .name {
+	width: 80%;
+	padding: 0 10px;
+	text-align: right;
+	overflow: hidden;
+
+	flex: 1;
+}
+
+#session-sync .filter-panel .count {
+	width: 30px;
+	height: 12px;
+	margin: 3px 10px 3px 0;
+	padding: 3px 0;
+	background: #DDD;
+	border-radius: 3px;
+	text-align: center;
+	line-height: 100%;
+	color: #333;
+}
+
+#session-sync .filter-panel .label input {
+	margin: 0 10px;
+	color: #333;
+	display: none;
+}
+
+#session-sync .filter-panel .label[active] {
+	background: #FFF;
+}
+
+#session-sync .filter-panel .label[active] .name {
+	color: #4C91D6;
+	font-weight: bold;
+}
+
+#session-sync .filter-panel .label[active] .count {
+	background: #23A823;
+	color: #FFF;
+}
+
+#session-sync .filter-panel .label[active]:after {
+	content: " ";
+	width: 3px;
+	height: 100%;
+	position: absolute;
+	right: 0;
+	top: 0;
+	background: #1AB61A;
+}
+
+#session-sync .filter-panel .add-label {
+	margin: 0 auto;
+	font-size: 12px;
+	padding: 4px 20px;
+	color: #555;
+	text-align: center;
+}
+
+#session-sync .filter-panel .add-label:hover {
+	cursor: pointer;
+	background: #2D92EB;
+	color: #FFF;
+}
+
+
+/**
+ * Generic CSS
+ */
+
+
+#session-sync .css-close-button {
+	width: 2em;
+	height: 2em;
+	font-size: 12px;
+	border-radius: 2em;
+	position: absolute;
+	top: 0;
+	z-index: 0;
+	opacity: 0.75;
+	box-sizing: border-box;
+}
+
+#session-sync .css-close-button:hover {
+	cursor: pointer;
+	opacity: 1;
+}
+
+#session-sync .css-close-button:hover::after,
+#session-sync .css-close-button:hover::before {
+	background: #333;
+}
+
+#session-sync .css-close-button:after,
+#session-sync .css-close-button:before {
+	content: "";
+	width: 60%;
+	height: 16%;
+	background: #AAA;
+	position: absolute;
+	top: 42%;
+	left: 20%;
+	transform: rotate(45deg);
+}
+
+#session-sync .css-close-button:after {
+	transform: rotate(-45deg);
+}
+/**
+ * Notification System
+ */
+
+#session-sync .notification-system {
+	width: 100%;
+	height: 0px;
+	font-size: 16px;
+
+	position: absolute;
+	top: 1px;
+	left: 50%;
+	z-index: 3000;
+	transform: translateX(-50%);
+}
+
+#session-sync .notification-system .info
+{
+	width: 100%;
+	padding: 0.5em 2em;
+	padding-left: 3.5em;
+	background: #2D92EB;
+	color: #FFF;
+	/* background: #F5F5F5; */
+	/* color: #333; */
+	word-break: break-all;
+	text-align: center;
+
+	position: absolute;
+	top: -150px;
+
+	opacity: 0;
+	transition: all 0.2s ease-out;
+	box-sizing: border-box;
+	transform: translateX(0);
+}
+
+#session-sync .notification-system .info[active]
+{
+	opacity: 1;
+	top: -1px;
+	border: 1px solid #CCC;
+}
+
+#session-sync .notification-system .info:after {
+	content: " ";
+	width: 24px;
+	height: 24px;
+	background: url("images/logo.png") center no-repeat;
+	background-size: contain;
+	top: 50%;
+	left: 20px;
+	position: absolute;
+	transform: translateY(-50%);
+}
+/**
+ * Control Panel
+ */
+
+#session-sync .search-bar {
+	width: 5em;
+	height: 1.5em;
+	margin: 0;
+	padding: 0;
+
+	background: hsla(0, 0%, 100%, 0.5);
+	border-radius: 1.5em;
+
+	overflow: hidden;
+	opacity: 1;
+
+	line-height: 1em;
+
+	position: absolute;
+	top: 0.5em;
+	left: 0.5em;
+	z-index: 2;
+
+	transition: all 0.2s ease-out;
+}
+
+#session-sync .search-bar[content="false"] {
+	width: 5em !important;
+}
+
+#session-sync .search-bar[content="false"] .search {
+	text-align: center;
+}
+
+#session-sync .search-bar[active="true"] {
+	width: 25%;
+	opacity: 1;
+}
+
+#session-sync .search-bar:hover {
+	opacity: 1;
+}
+
+#session-sync .search-bar .search {
+	width: 100%;
+	height: 100%;
+	padding: 0 0.75em !important;
+	background: hsla(0, 0%, 100%, 0.95);
+	border: 1px solid #CCC;
+	border-radius: 1em;
+	color: #333;
+	font-size: 0.75em;
+
+	box-sizing: border-box;
+	transition: all 0.2s ease-out;
+}
+
+#session-sync .search-bar .search:focus {
+	border-color: #2D92EB !important;
+}
+
+#session-sync .search-bar[match="true"][content="true"] .search {
+	color: green;
+}
+
+#session-sync .search-bar .create-session {
+	width: 1em;
+	height: 1em;
+	background-image: url("images/icons/star.png");
+	background-size: 100%;
+	background-repeat: none;
+	background-position: center;
+	text-align: center;
+	color: #FFF;
+	opacity: 0;
+
+	position: absolute;
+	top: 0.25em;
+	right: -2.5em;
+	z-index: 0;
+
+	filter: saturate(0%);
+	transition: all 0.2s ease-out;
+	box-sizing: border-box;
+}
+
+#session-sync .search-bar[match="false"][content="true"] .create-session {
+	opacity: 0.6;
+	display: block;
+	right: 1.6em;
+}
+
+#session-sync .search-bar .create-session:hover {
+	filter: saturate(100%);
+	cursor: pointer;
+	opacity: 1;
+}
+
+#session-sync .search-bar .close {
+	width: 1.2em;
+	height: 1.2em;
+	background: #FFF;
+	border-radius: 2em;
+	opacity: 1;
+
+	position: absolute;
+	top: 0.15em;
+	right: -2em;
+	z-index: 0;
+
+	box-sizing: border-box;
+	transition: opacity 0.2s  ease-out;
+}
+
+#session-sync .search-bar[active="true"][content="true"] .close {
+	opacity: 0.75;
+	right: 0.3em;
+}
+
+#session-sync .search-bar .close:hover {
+	cursor: pointer;
+}
+
+#session-sync .search-bar .close:hover::after,
+#session-sync .search-bar .close:hover::before {
+	background: #333;
+}
+
+#session-sync .search-bar .close:after,
+#session-sync .search-bar .close:before {
+	content: "";
+	width: 60%;
+	height: 16%;
+	background: #AAA;
+	position: absolute;
+	top: 42%;
+	left: 20%;
+	transform: rotate(45deg);
+}
+
+#session-sync .search-bar .close:after {
+	transform: rotate(-45deg);
+}
+
+/**
+ * Display info about a Session
+ */
+
+#session-sync .session-container {
+	height: 100%;
+	background: #FEFEFE;
+
+	font-size: 14px;
+	float: right;
+	overflow: hidden;
+
+	/*CSS3*/
+	box-sizing: border-box;
+	position: relative;
+
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+}
+
+/*
+ * Save button - not used for the moment
+ */
+
+#session-sync[session] .session-container .save-session {
+	display: none;
+}
+
+#session-sync .session-container .save-session {
+	height: 3.4em;
+	width: 3.4em;
+
+	background: url("images/icons/heart.png") no-repeat;
+	background-size: 2em;
+	background-position: 1em 0.4em;
+	background-color: #F5F5F5;
+
+	border-radius: 0 0 0 100%;
+	border-left: 1px solid #CCC;
+	border-bottom: 1px solid #CCC;
+
+	position: absolute;
+	z-index: 1;
+	top: 0;
+	right: -1px;
+
+	filter: saturate(75%);
+}
+
+#session-sync .session-container .save-session:hover {
+	cursor: pointer;
+	background-color: #FFF;
+	filter: saturate(100%);
+}
+
+/*
+ * Style Tabs
+ */
+
+#session-sync .session-container .bookmarks {
+	width: calc(100% + 10px);
+	margin: 2px 0 2px 2px;
+
+	overflow-x: hidden;
+	overflow-y: scroll;
+	position: relative;
+
+	/*CSS3*/
+	box-sizing: border-box;
+	flex: 1;
+}
+
+#session-sync .session-container .bookmarks:hover {
+	overflow-y: scroll;
+}
+
+#session-sync .session-container .window-separator {
+	width: 100%;
+	height: 2em;
+	background: #F8F8F8;
+	color: #555;
+
+	line-height: 1.9em;
+	position: absolute;
+	transition: all 0.2s;
+}
+
+#session-sync .session-container .window-separator .text {
+	text-align: center;
+}
+
+#session-sync .session-container .window-separator:hover {
+	cursor: pointer;
+	text-decoration: underline;
+	color: #333;
+}
+
+#session-sync .session-container .window-separator:hover:after {
+	content: "(switch to)";
+	position: absolute;
+	font-size: 0.8em;
+	top: 0;
+	margin-left: 40px;
+	left: 50%;
+}
+
+#session-sync .session-container .bookmark {
+	width: 100%;
+	height: 2em;
+	padding: 0 4px;
+
+	line-height: 1.9em;
+	word-break: keep-all;
+
+	overflow: hidden;
+	position: absolute;
+	left: 0;
+	top: 0;
+
+	/*CSS3*/
+	box-sizing: border-box;
+	transition-property: left, top, background, color;
+	transition-duration: 0.2s;
+	display: flex;
+	flex: 1;
+}
+
+#session-sync .session-container .bookmark:hover {
+	background: #EEE;
+	cursor: pointer;
+	transition-property: left, top;
+}
+
+#session-sync .session-container .bookmark[highlight] {
+	background: #4396E9 !important;
+	color: #FFF;
+}
+
+#session-sync .session-container .bookmark[dragging] {
+	width: 400px;
+	margin: 1px 0 0 1px;
+	background-color: #FBD4B0;
+	background: #4396E9 !important;
+	color: #FFF;
+	opacity: 0.9;
+
+	transition: none;
+	position: fixed;
+	z-index: 1000;
+}
+
+#session-sync .session-container .bookmark[dragging="drop"] {
+	background: #4396E9 !important;
+	color: #FFF;
+	opacity: 0.9;
+	transition: none;
+	position: absolute;
+
+	z-index: 1000;
+}
+
+#session-sync .session-container .bookmark[dragging]:hover {
+	cursor: default;
+}
+
+#session-sync .session-container .bookmark[pinned='true']:before {
+	content: "";
+	width: 1.5em;
+	height: 100%;
+	background-image: url("images/icons/pin.png");
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center center;
+	color: green;
+	position: absolute;
+	top: 0;
+	right: 0.35em;
+	z-index: 0;
+	opacity: 0.85;
+}
+
+#session-sync .session-container .bookmark * {
+	float: left;
+}
+
+#session-sync .session-container .bookmark .favicon {
+	width: 1.33em;
+	height: 100%;
+	background: url("images/icons/globe.png");
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+#session-sync .session-container .bookmark .text {
+	height: 100%;
+	padding: 0 5px;
+	word-break: keep-all;
+	white-space: nowrap;
+	overflow: hidden;
+
+	box-sizing: border-box;
+	flex: 1;
+}
+
+/*
+ * History Style
+ */
+
+#session-sync .session-container .history-window-separator {
+	width: 100%;
+	height: 2em;
+	line-height: 1.9em;
+	text-align: center;
+	background: #F8F8F8;
+	color: #555;
+	position: absolute;
+	transition: all 0.2s;
+}
+/**
+ * Header Bar
+ */
+
+#session-sync .header-bar {
+	width: 100%;
+	height: 2.5em;
+
+	background: #F5F5F5;
+	border-bottom: 1px solid #DDD;
+	line-height: 2.4em;
+	font-size: 18px;
+	position: relative;
+
+	box-sizing: border-box;
+}
+
+/**
+ * Active session button
+ */
+
+#session-sync .header-bar .active-session-btn {
+	width: 2.5em;
+	background: url("images/icon128.png") no-repeat center;
+	background-size: 1em;
+	height: 60%;
+	opacity: 0.5;
+	border: 1px solid red;
+	border: unset;
+	position: absolute;
+	top: 0.5em;
+	left: 0;
+	transition: all 0.2s ease-out;
+	box-sizing: border-box;
+	display: none;
+}
+
+#session-sync[session="current"] .header-bar .active-session-btn,
+#session-sync .header-bar .active-session-btn:hover {
+	background-size: 1.2em;
+	cursor: pointer;
+	opacity: 1;
+}
+
+/**
+ * Active session description
+ */
+
+#session-sync .header-bar .description {
+	width: 100%;
+	height: 100%;
+
+	text-align: center;
+	white-space: nowrap;
+	overflow: hidden;
+	color: #555;
+
+	box-sizing: border-box;
+}
+
+/**
+ * Config button
+ */
+
+#session-sync .header-bar .addon-config {
+	width: 1.8em;
+	height: 1.8em;
+	background-image: url("images/menu.png");
+	background-size: 55%;
+	background-repeat: no-repeat;
+	background-position: center center;
+	border: 1px solid rgba(0, 0, 0, 0);
+	position: absolute;
+	top: 0.3em;
+	right: 0.3em;
+	z-index: 2;
+	opacity: 0.4;
+	box-sizing: border-box;
+	display: none;
+}
+
+#session-sync .header-bar .addon-config:hover {
+	cursor: pointer;
+	background-color: #EEE;
+	border: 1px solid #CCC;
+	opacity: 1;
+}
+
+/**
+ * Header Menu
+ */
+
+#session-sync .header-bar .header-menu {
+	width: 1.8em;
+	height: 1.8em;
+	background-image: url("images/menu.png");
+	background-size: 55%;
+	background-repeat: no-repeat;
+	background-position: center center;
+	border: 1px solid rgba(0, 0, 0, 0);
+	position: absolute;
+	top: 0.3em;
+	right: 0.3em;
+	z-index: 2;
+	opacity: 0.4;
+	box-sizing: border-box;
+}
+
+
+#session-sync .header-bar .header-menu:hover {
+	cursor: pointer;
+	background-color: #EEE;
+	border: 1px solid #CCC;
+	opacity: 1;
+}
+
+#session-sync .header-bar .header-menu[active="1"] {
+	opacity: 1;
+}
+
+#session-sync .header-bar .header-menu .menu-area {
+	width: 11em;
+	height: 0;
+	margin: 0;
+	padding: 0;
+	background: #FFF;
+	font-size: 0.75em;
+	border: 1px solid rgba(0, 0, 0, 0);
+	position: absolute;
+	top: 100%;
+	right: -1px;
+	overflow: hidden;
+
+	opacity: 0;
+	display: flex;
+	flex-direction: row;
+	box-sizing: initial;
+
+	transition-property: width, height, padding, opacity;
+	transition-duration: 0.2s;
+	transition-timing-function: ease-out;
+}
+
+#session-sync .header-bar .header-menu[active="1"] .menu-area {
+	display: flex;
+	height: 3.8em;
+	padding: 1em;
+	border: 1px solid #CCC;
+	opacity: 1;
+}
+
+#session-sync .header-bar .header-menu .menu-area:hover {
+	cursor: default;
+}
+
+#session-sync .header-bar .header-menu .menu-button {
+	height: 3.2em;
+	padding: 0.3em 0;
+	border: 1px solid #FFF;
+
+	box-sizing: content-box;
+	flex: 1;
+}
+
+#session-sync .header-bar .header-menu .menu-button:hover {
+	cursor: pointer;
+	background-color: #F5F5F5;
+	border-color: #DDD;
+}
+
+#session-sync .header-bar .header-menu .menu-button .icon {
+	height: 2em;
+	background-image: url("images/icons/power.png");
+	background-size: contain !important;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+#session-sync .header-bar .header-menu .menu-button[id="help"] .icon {
+	background-image: url("images/icons/brightness.png");
+}
+
+#session-sync .header-bar .header-menu .menu-button[id="config"] .icon {
+	background-image: url("images/icons/gear.png");
+}
+
+#session-sync .header-bar .header-menu .menu-button[id="help"] {
+	margin: 0 0 0 0.75em;
+}
+
+#session-sync .header-bar .header-menu .menu-button[id="close"] .icon {
+	background-image: url("images/icons/power.png");
+}
+
+#session-sync .header-bar .header-menu .menu-button .title {
+	height: 1em;
+	margin-top: 0.25em;
+	color: #555;
+	font-size: 0.8em;
+	line-height: 100%;
+	text-align: center;
+}
+
+
+
+/*
+ * Sorting method
+ */
+
+#session-sync .sorting-method {
+	width: 2.5em;
+	height: 2.5em;
+	padding: 0;
+	display: flex;
+
+	background-image: url("images/sort.png");
+	background-size: 20px;
+	background-repeat: no-repeat;
+	background-position: center center;
+
+	position: absolute;
+	bottom: 0px;
+	right: 4px;
+
+	opacity: 0.1;
+	transition: all 0.1s ease-out;
+	box-sizing: border-box;
+}
+
+#session-sync[list="history"] .sorting-method {
+	display: none;
+}
+
+#session-sync .sorting-method:hover {
+	cursor: pointer;
+	opacity: 1;
+}
+
+#session-sync .sorting-method[active="true"] .dropdown {
+	display: block;
+	background: #FFF;
+}
+
+#session-sync .sorting-method .dropdown {
+	width: 8em;
+	margin: 0;
+	padding: 0;
+
+	color: #333;
+	line-height: 1.8em;
+	text-align: left;
+	display: none;
+
+	position: absolute;
+	bottom: 0;
+	left: -8em;
+
+	flex: 1;
+	box-sizing: border-box;
+}
+
+#session-sync .sorting-method .dropdown .option-list {
+	width: 100%;
+
+	border: 1px solid #CCC;
+	border-bottom: none;
+	background: #FFF;
+
+	position: absolute;
+	bottom: 0;
+	left: -1px;
+	z-index: 1;
+	box-sizing: content-box;
+}
+
+#session-sync .sorting-method .dropdown .option-list .option {
+	width: 100%;
+	padding: 3px 10px;
+	text-align: left;
+	box-sizing: border-box;
+	transition-property: left, top, color, background;
+	transition-duration: 0.2s;
+
+}
+
+#session-sync .sorting-method .dropdown .option-list .option:hover {
+	background: #EEE;
+	border-color: #CCC;
+	cursor: pointer;
+	transition-property: left, top;
+}
+
+#session-sync .sorting-method .dropdown .option-list .option[active] {
+	color: #FFF;
+	background: #2D92EB;
+}
+
+
+/**
+ * Control Panel
+ */
+
+#session-sync .session-toolbar {
+	width: 100%;
+	height: 3em;
+
+	background: #FFF;
+	color: #000;
+	display: flex;
+	font-size: 12px;
+
+	position: relative;
+	opacity: 100;
+	border-bottom: 1px solid #CCC;
+	box-shadow: 0px 0px 3px 0px #CCC;
+	z-index: 1;
+
+	transition: all 0.15s;
+}
+
+#session-sync .session-toolbar .session-selector {
+	width: 220px;
+	min-width: 160px;
+	max-width: 60%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	border-right: 1px solid #DDD;
+
+	line-height: 3em;
+	word-break: break-all;
+	text-align: center;
+	color: #555;
+
+	display: flex;
+	box-sizing: border-box;
+}
+
+#session-sync .session-toolbar .session-selector .button {
+	text-align: center;
+	display: block;
+	color: #333;
+	flex: 1;
+}
+
+#session-sync .session-toolbar .session-selector .button:hover {
+	cursor: pointer;
+}
+
+#session-sync .session-toolbar .session-selector .active-session {
+	background-image: url("images/icon128.png");
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: 1.8em;
+	background-color: #FFF;
+}
+
+#session-sync[list="none"] .session-toolbar .session-selector .active-session,
+#session-sync[list="sync"] .session-toolbar .session-selector .sync,
+#session-sync[list="history"] .session-toolbar .session-selector .history {
+	display: block;
+	background-color: #2D92EB;
+	color: #FFF;
+}
+
+#session-sync[history="false"] .session-toolbar .session-selector .history {
+	display: none;
+}
+
+/*
+ * Session info
+ */
+
+#session-sync:not([session="restore"]) .session-toolbar .session-date {
+	display: none;
+}
+
+#session-sync .session-toolbar .session-date {
+	padding: 0.9em 1em;
+	color: #999;
+	text-align: right;
+	display: block;
+	position: absolute;
+	top: -1px;
+	right: 0;
+	z-index: 10;
+}
+
+/**
+ * 	Menu Section
+ */
+
+#session-sync .session-toolbar .menu-bar {
+	height: 100%;
+	padding: 0.5em;
+
+	box-sizing: border-box;
+	flex: 1;
+}
+
+#session-sync .session-toolbar .menu-bar .button {
+	width: 2.6em;
+	height: 100%;
+	float: left;
+	background: url("images/icons/none.png") no-repeat center;
+	background-size: contain !important;
+
+	filter: saturate(100%);
+}
+
+#session-sync .session-toolbar .menu-bar .button:hover {
+	cursor: pointer;
+	filter: saturate(100%);
+	box-shadow: none;
+}
+
+#session-sync .session-toolbar .menu-bar .separator {
+	height: 100%;
+	width: 1px;
+	margin: 0 0.5em;
+	background: #CCC;
+	float: left;
+}
+
+#session-sync .session-toolbar .menu-bar .add {
+	background: url("images/icons/star.png") no-repeat center;
+	filter: saturate(100%);
+}
+
+#session-sync .session-toolbar .menu-bar .save {
+	background: url("images/icons/heart.png") no-repeat center;
+	filter: saturate(100%);
+}
+
+#session-sync .session-toolbar .menu-bar .merge-sessions {
+	background: url("images/icons/merge.png") no-repeat center;
+}
+
+#session-sync .session-toolbar .menu-bar .replace-session {
+	background: url("images/icons/recycle.png") no-repeat center;
+}
+
+#session-sync .session-toolbar .menu-bar .restore {
+	background: url("images/icons/stack.png") no-repeat center;
+}
+
+#session-sync .session-toolbar .menu-bar .restore-new-win {
+	background: url("images/icons/polaroids.png") no-repeat center;
+}
+
+/*
+ * Menu state
+ */
+
+#session-sync[session="current"] .session-toolbar .menu-bar > * {
+	display: none;
+}
+
+#session-sync[session="current"] .session-toolbar .menu-bar .save {
+	display: block;
+}
+
+#session-sync[session="restore"] .session-toolbar .menu-bar .save {
+	display: none;
+}
+
+#session-sync[session="history"] .session-toolbar .menu-bar > * {
+	display: none;
+}
+
+#session-sync[session="history"] .session-toolbar .menu-bar .save,
+#session-sync[session="history"] .session-toolbar .menu-bar .restore {
+	display: block;
+}
+
+/*
+ * Save configuration
+ */
+
+#session-sync .session-toolbar .menu-bar .save-config {
+	height: 100%;
+	padding: 0 40px 0 0;
+	display: block;
+}
+
+#session-sync .session-toolbar .menu-bar .save-config .comp-toggle-switch {
+	opacity: 1;
+	transition: opacity 0.2s ease-out;
+}
+
+#session-sync .session-toolbar .menu-bar:hover .save-config .comp-toggle-switch {
+	opacity: 1;
+}
+
+#session-sync[session="restore"] .session-toolbar .menu-bar .save-config {
+	display: none;
+}
+
+#session-sync[session="history"] .session-toolbar .menu-bar .save-config .comp-toggle-switch[windows] {
+	display: none;
+}
+
+#session-sync .session-toolbar .menu-bar .save-config .comp-toggle-switch {
+	height: 100%;
+	width: 4em;
+	margin: 0;
+	float: right;
+}
+
+#session-sync .session-toolbar .menu-bar .save-config .comp-toggle-switch .label {
+	display: none;
+}
+
+#session-sync .session-toolbar .menu-bar .save-config .comp-toggle-switch .switch {
+	width: 2.6em;
+	height: 100%;
+	background-color: #33A033;
+	background-color: #40B740;
+	background-image: url("images/icons/gear.png");
+	background-size: 1.6em;
+	background-repeat: no-repeat;
+	background-position: center right 0.2em;
+	border-radius: 2em;
+	display: block;
+
+	box-sizing: border-box;
+}
+
+#session-sync .session-toolbar .menu-bar .save-config .comp-toggle-switch .switch[state="false"] {
+	background-color: #BBB;
+	background-position: center left 0.2em;
+}
+
+#session-sync .session-toolbar .menu-bar .save-config .comp-toggle-switch[pin] .switch {
+	background-image: url("images/icons/pin.png");
+}
+
+#session-sync .session-toolbar .menu-bar .save-config .comp-toggle-switch[pin-state] .switch {
+	background-image: url("images/icons/pin2.png");
+}
+
+#session-sync .session-toolbar .menu-bar .save-config .comp-toggle-switch[windows] .switch {
+	background-image: url("images/icons/stack.png");
+}
+
+/**
+ * Display lsit of all sessions
+ */
+
+#session-sync .sessions {
+	width: 200px;
+	min-width: 160px;
+	max-width: 60%;
+	height: 100%;
+	padding: 0px;
+
+	border-width: 0 1px 0 0;
+	border-style: solid;
+	border-color: #CCC;
+	background: hsla(0, 0%, 100%, 0.95);
+	background: #FEFEFE;
+	float: left;
+
+	overflow-x: hidden;
+	position: relative;
+
+	display: flex;
+	flex-direction: column;
+
+	/*CSS3*/
+	box-sizing: border-box;
+}
+
+/*
+ * List resize
+ */
+
+#session-sync .sessions .resize-handle
+{
+	content: " ";
+	width: 4px;
+	height: 24px;
+	margin-top: -12px;
+	position: absolute;
+	background: #DDD;
+	top: 50%;
+	border: unset;
+	right: 0px;
+	cursor: w-resize;
+	z-index: 10;
+}
+
+#session-sync .sessions .resize-handle:hover
+{
+	background: #1AB61A;
+}
+
+#session-sync .sessions .resize-handle[resizing]
+{
+	background: #2D92EB !important;
+}
+
+/*
+ * History list
+ */
+
+#session-sync[list="history"] .sessions .history-list {
+	flex: 1;
+}
+
+#session-sync .sessions .history-list {
+	width: calc(100% + 12px);
+	margin: 0 0 0 0;
+
+	position: relative;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	display: block;
+
+	transition-property: width, margin, flex;
+	transition-duration: 0.2s;
+	box-sizing: border-box;
+	flex: 0;
+}
+
+#session-sync .sessions .history-node {
+	width: 100%;
+	height: 2.5em;
+	margin: 0.2em;
+	padding: 0 0 0 10px;
+
+	line-height: 2.4em;
+	word-break: break-all;
+
+	overflow: hidden;
+
+	box-sizing: border-box;
+	transition-property: left, top, color, background;
+	transition-duration: 0.2s;
+}
+
+#session-sync .sessions .history-node:hover {
+	background: #EEE;
+	cursor: pointer;
+	transition-property: left, top;
+}
+
+#session-sync .sessions .history-node[active="true"] {
+	background: #2D92EB;
+	color: #FFF;
+}
+
+/*
+ * Session list
+ */
+
+#session-sync[list="history"] .sessions .list {
+	flex: 0;
+}
+
+#session-sync .sessions .list {
+	width: calc(100% + 12px);
+	margin: 0 0 0 0;
+
+	position: relative;
+	overflow-x: hidden;
+	overflow-y: scroll;
+
+	transition-property: width, margin, flex;
+	transition-duration: 0.2s;
+	box-sizing: border-box;
+	flex: 1;
+}
+
+/*
+ * Style Folder Session
+ */
+
+#session-sync .sessions .folder {
+	width: 100%;
+	height: 2.5em;
+	padding: 0 0 0 10px;
+
+	line-height: 2.4em;
+	word-break: break-all;
+
+	overflow: hidden;
+	position: absolute;
+	left: 0;
+	top: 0;
+
+	box-sizing: border-box;
+	transition-property: left, top, color, background;
+	transition-duration: 0.2s;
+}
+
+#session-sync .sessions .folder:hover {
+	background: #EEE;
+	cursor: pointer;
+	transition-property: left, top;
+}
+
+#session-sync .sessions .folder[dragging] {
+	width: 200px;
+	margin: 1px 0 0 1px;
+	background: #4396E9 !important;
+	color: #FFF;
+	opacity: 0.9;
+
+	transition: none;
+	position: fixed;
+	z-index: 1000;
+}
+
+#session-sync .sessions .folder[dragging]:hover {
+	cursor: default;
+}
+
+#session-sync .sessions .folder[dragging="drop"] {
+	background: #4396E9 !important;
+	color: #FFF;
+	opacity: 0.9;
+	transition: none;
+	position: absolute;
+
+	z-index: 1000;
+}
+
+#session-sync .sessions .folder[active="true"] {
+	background: #2D92EB;
+	color: #FFF;
+}
+
+#session-sync .sessions .folder[filter] {
+	top: 0 !important;
+	left: -100% !important;
+}
+
+#session-sync .sessions .folder[type='separator']:after {
+	content: " ";
+	width: 100%;
+	height: 2px;
+	margin: -1px 0 0 0;
+	background: #CCC;
+	position: absolute;
+	box-sizing: border-box;
+	top: 50%;
+	left: 1px;
+}
+
+#session-sync .sessions .folder[active="true"][type='separator']:after {
+	background: #FFF;
+}
+
+#session-sync .sessions .folder[type='bookmark'] {
+	text-decoration: underline;
+}
+
+
+/**
+ * Tooltip System
+ */
+
+#session-sync .tooltip-system {
+	padding: 5px 10px;
+	margin: -16px 0 0 0;
+
+	color: #555;
+	background: #FFF;
+	text-align: center;
+	line-height: 20px;
+	border: 1px solid #CCC;
+	border-radius: 5px;
+
+	display: none;
+	position: fixed;
+	top: 1px;
+	left: 0;
+	z-index: 2000;
+
+	box-shadow: 0 5px 7px 1px #CCC;
+	box-sizing: border-box;
+}
+
+#session-sync .tooltip-system:after {
+	content: " ";
+	width: 16px;
+	height: 16px;
+	margin: -8px 0 0 -9px;
+
+	background: #FFF;
+	border-style: solid;
+	border-color: #BBB;
+	border-width: 0 1px 1px 0;
+
+	position: absolute;
+	left: 50%;
+	top: 100%;
+
+	transform: rotate(45deg);
+	z-index: -100;
+}
+
+#session-sync .tooltip-system[active] {
+	display: block;
+}
+
+/**
+ * Trash-can
+ */
+
+#session-sync .trash-can {
+	width: 8em;
+	height: 8em;
+
+	background-image: url("images/trash-can.png");
+	background-position: bottom 1.5em right 1.5em;
+	background-repeat: no-repeat;
+	background-size: 50%;
+	background-color: #FFF;
+
+	border-top-left-radius: 8em;
+
+	font-size: 12px;
+
+	border: 1px solid #CCC;
+	border-bottom: none;
+	border-right: none;
+
+	box-shadow: 0 0 5px 0 #FFF;
+
+	opacity: 0;
+
+	position: absolute;
+	bottom: 1px;
+	right: 0;
+	z-index: 100;
+
+	box-sizing: border-box;
+	transition: all 0.2s ease-out;
+}
+
+#session-sync[show="true"] .trash-can {
+	display: block;
+}
+
+#session-sync[show="false"] .trash-can {
+	display: none;
+}
+
+#session-sync .trash-can[droppable="true"] {
+	opacity: 1 !important;
+}
+
+#session-sync .trash-can[action="enter"] {
+	opacity: 1;
+	cursor: pointer;
+}
+
+#session-sync .trash-can:not([items="0"]) {
+	opacity: 1;
+}
+
+#session-sync .trash-can[dismiss] {
+	opacity: 0;
+}
+
+#session-sync .trash-can:hover {
+	cursor: pointer;
+	font-size: 16px;
+	opacity: 1;
+}
+
+#session-sync .count {
+	width: 2em;
+	height: 2em;
+
+	background: #E54828;
+	text-align: center;
+	line-height: 1.9em;
+	color: #FFF;
+	border-radius: 100%;
+	opacity: 1;
+
+	position: absolute;
+	top: 3.7em;
+	left: 1.75em;
+	z-index: 1;
+	box-sizing: border-box;
+	transition: background 0.5s ease-out;
+}
+
+#session-sync .trash-can[items="0"] .count {
+	background: #1AB61A;
+}
+
+#session-sync .trash-can[items="0"] .dismiss {
+	display: none;
+}
+
+#session-sync .trash-can .dismiss {
+	display: block;
+	right: 0.5em;
+}
+
+#session-sync .trash-can[dismiss] {
+	opacity: 0;
+}
+
+#session-sync .trash-can[dismiss] .dismiss {
+	display: none;
+}
+
+#session-sync .trash-can[dismiss]:hover {
+	opacity: 1;
+}
+
+/**
+ * URL Bar
+ */
+
+#session-sync .url-bar {
+	width: calc(100% - 3em);
+	height: 1.5em;
+	margin: 0;
+	padding: 0;
+
+	/* background: #2D92EB; */
+	/* border: 1px solid #FFF; */
+	border-radius: 1em;
+
+	overflow: hidden;
+	opacity: 0;
+
+	color: #FFF;
+
+	position: absolute;
+	top: 0.5em;
+	left: 0.5em;
+	z-index: 1;
+
+	box-sizing: content-box;
+	transition: all 0.2s ease-out;
+}
+
+#session-sync .url-bar .arrow {
+	width: 2em;
+	height: 100%;
+	display: none;
+
+	background: #FFF;
+	text-align: right;
+	color: #777;
+	float: left;
+}
+
+#session-sync .url-bar .arrow:after {
+	content: " ";
+	width: 2em;
+	height: 2em;
+	margin: 2px 0;
+	background: inherit;
+
+	position: absolute;
+	left: 0;
+	z-index: -2;
+	transform:  translate(1em, -0.1em) rotate(45deg);
+}
+
+#session-sync .url-bar .url {
+	height: 100%;
+	padding-left: 8em;
+	background: #2D92EB;
+	font-size: 0.75em;
+	line-height: 2em;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+#session-sync[search-box-content="true"] .url {
+	padding-left: calc(25% + 2.5em);
+}
+
+#session-sync .url-bar[data-active="true"] {
+	opacity: 1;
+	bottom: -1px;
+}
+
+#session-sync .url-bar .copy-input {
+	position: absolute;
+	top: -5em;
+}
+
+#session-sync .url-bar .copy-feedback {
+	width: 5em;
+	height: 100%;
+
+	background: #38B751;
+	color: #FFF;
+	text-align: center;
+	font-size: 0.75em;
+	line-height: 2em;
+
+	position: absolute;
+	top: 0;
+	right: -5em;
+
+	transition: all 0.2s;
+}
+
+#session-sync .url-bar .copy-feedback[active] {
+	right: 0;
+}
+
+/**
+ * Session-Sync-Add-on-ReD is a XUL element
+ */
+#session-sync {
+	width: 800px;
+	height: 600px;
+
+	font-size: 12px;
+	font-family: "Open Sans", "Segoe UI", Arial, Helvetica, sans-serif;
+
+	color: #000 !important;
+	overflow: hidden;
+
+	/* transition: all 0.3s ease-in; */
+}
+
+/*
+ * Only DOM nodes from here
+ */
+
+/*
+ * Panel Body
+ */
+
+ #session-sync #body {
+	 height: 100%;
+ }
+
+#session-sync[config] .body {
+	background-color: rgba(255, 255, 255, 0.95);
+}
+
+#session-sync .sessions-area {
+	width: 100%;
+	height: 100%;
+
+	border: 1px solid #BBB;
+	/* box-shadow: 0px 5px 15px 0px #CCC; */
+	box-sizing: border-box;
+
+	transition: all 0.2s;
+	transform-style: preserve-3d;
+
+	z-index: 1000;
+	display: flex;
+	flex-direction: column;
+
+	float: right;
+}
+
+#session-sync[show="false"] .sessions-area {
+	display: none;
+}
+
+#session-sync[state="pin"] .sessions-area {
+	top: 0;
+	right: 0;
+	margin: 0;
+	transform: translate(0);
+}
+
+#session-sync[state="centered"] .sessions-area {
+	top: calc(50% - 50px);
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+#session-sync[config] .sessions-area {
+	left: 400px;
+	top: 20%;
+	transform: translate(0);
+}
+
+#session-sync .sessions-area-body {
+	width: 100%;
+	overflow: hidden;
+
+	flex: 1;
+	display: flex;
+	flex-direction: row;
+}
+
+/*
+ * Container resize
+ */
+
+#session-sync[resize] .body {
+	background: rgba(255, 255, 255, 0.95) !important;
+	cursor: se-resize;
+}
+
+#session-sync[resize] .sessions-area {
+	transition: none;
+}
+
+#session-sync .sessions-area .panel-resize-handle
+{
+	content: " ";
+	width: 12px;
+	height: 12px;
+	margin-top: -12px;
+	background: url("images/resize.png") center no-repeat !important;
+	position: absolute;
+	background: #DDD;
+	bottom: 0;
+	left: 0px;
+	cursor: sw-resize;
+	z-index: 10;
+
+	transform: rotate(90deg);
+}
+
+#session-sync .sessions-area .panel-resize-handle:hover
+{
+	background: #1AB61A;
+}
+
+#session-sync .sessions-area .panel-resize-handle[resizing]
+{
+	background: #2D92EB;
+}
+
+#clipboard {
+	position: absolute;
+	top: -100px;
+	z-index: -100;
+}

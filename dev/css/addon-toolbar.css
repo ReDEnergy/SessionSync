@@ -2,7 +2,7 @@
  * Configuration button
  */
 
-#Session-Sync-Add-on-ReD .addon-toolbar {
+#session-sync .addon-toolbar {
 	width: auto;
 	height: 3.1em;
 	padding: 0.5em;
@@ -24,30 +24,30 @@
 	box-sizing: border-box;
 }
 
-#Session-Sync-Add-on-ReD[addon-toolbar="true"] .addon-toolbar {
+#session-sync[addon-toolbar="true"] .addon-toolbar {
 	display: block;
 }
 
-#Session-Sync-Add-on-ReD[addon-toolbar="false"] .addon-toolbar {
+#session-sync[addon-toolbar="false"] .addon-toolbar {
 	display: none;
 }
 
-#Session-Sync-Add-on-ReD[show="true"] .addon-toolbar {
+#session-sync[show="true"] .addon-toolbar {
 	top: 1px;
 	opacity: 1;
 }
 
-#Session-Sync-Add-on-ReD[show="true"] .addon-toolbar:hover {
+#session-sync[show="true"] .addon-toolbar:hover {
 	opacity: 1;
 }
 
-#Session-Sync-Add-on-ReD[show="false"] .addon-toolbar {
+#session-sync[show="false"] .addon-toolbar {
 	top: -150px;
 	opacity: 0;
 }
 
 
-#Session-Sync-Add-on-ReD .addon-toolbar .button {
+#session-sync .addon-toolbar .button {
 	width: 3em;
 	height: 100%;
 
@@ -61,7 +61,7 @@
 	float: left;
 }
 
-#Session-Sync-Add-on-ReD .addon-toolbar .button:hover {
+#session-sync .addon-toolbar .button:hover {
 	opacity: 1;
 	cursor: pointer;
 	filter: saturate(100%);
@@ -71,20 +71,20 @@
  * Toolbar buttons
  */
 
-#Session-Sync-Add-on-ReD .addon-toolbar .instructions {
+#session-sync .addon-toolbar .instructions {
 	background: url("images/icons/brightness.png") no-repeat center;
 }
 
-#Session-Sync-Add-on-ReD .addon-toolbar .config {
+#session-sync .addon-toolbar .config {
 	background: url("images/icons/gear.png") no-repeat center;
 }
 
-#Session-Sync-Add-on-ReD[config="on"] .addon-toolbar .config {
+#session-sync[config="on"] .addon-toolbar .config {
 	opacity: 1 !important;
 	filter: saturate(100%) !important;
 }
 
-#Session-Sync-Add-on-ReD .addon-toolbar .close {
+#session-sync .addon-toolbar .close {
 	background: url("images/icons/power.png") no-repeat center;
 }
 
@@ -92,7 +92,7 @@
  * Style Reload
  */
 
-#Session-Sync-Add-on-ReD .addon-toolbar .style-reload {
+#session-sync .addon-toolbar .style-reload {
 	background: url("images/icons/paintbrush2.png") no-repeat center;
 	display: none;
 }
@@ -101,17 +101,17 @@
  * DOM inspector
  */
 
-#Session-Sync-Add-on-ReD .addon-toolbar .dom-inspector {
+#session-sync .addon-toolbar .dom-inspector {
 	background: url("images/icons/bolt.png") no-repeat center;
 	display: none;
 }
 
-#Session-Sync-Add-on-ReD .addon-toolbar .dom-inspector[active] {
+#session-sync .addon-toolbar .dom-inspector[active] {
 	opacity: 1;
 	filter: saturate(100%);
 }
 
-#Session-Sync-Add-on-ReD .dom-inspector:hover {
+#session-sync .dom-inspector:hover {
 	cursor: pointer;
 }
 
@@ -119,8 +119,8 @@
  * Development mode
  */
 
-#Session-Sync-Add-on-ReD[dev] .addon-toolbar .style-reload,
-#Session-Sync-Add-on-ReD[dev] .addon-toolbar .dom-inspector {
+#session-sync[dev] .addon-toolbar .style-reload,
+#session-sync[dev] .addon-toolbar .dom-inspector {
 	display: block;
 }
 

@@ -1,0 +1,92 @@
+/*
+ * Sorting method
+ */
+
+#session-sync .sorting-method {
+	width: 2.5em;
+	height: 2.5em;
+	padding: 0;
+	display: flex;
+
+	background-image: url("images/sort.png");
+	background-size: 20px;
+	background-repeat: no-repeat;
+	background-position: center center;
+
+	position: absolute;
+	bottom: 0px;
+	right: 4px;
+
+	opacity: 0.1;
+	transition: all 0.1s ease-out;
+	box-sizing: border-box;
+}
+
+#session-sync[list="history"] .sorting-method {
+	display: none;
+}
+
+#session-sync .sorting-method:hover {
+	cursor: pointer;
+	opacity: 1;
+}
+
+#session-sync .sorting-method[active="true"] .dropdown {
+	display: block;
+	background: #FFF;
+}
+
+#session-sync .sorting-method .dropdown {
+	width: 8em;
+	margin: 0;
+	padding: 0;
+
+	color: #333;
+	line-height: 1.8em;
+	text-align: left;
+	display: none;
+
+	position: absolute;
+	bottom: 0;
+	left: -8em;
+
+	flex: 1;
+	box-sizing: border-box;
+}
+
+#session-sync .sorting-method .dropdown .option-list {
+	width: 100%;
+
+	border: 1px solid #CCC;
+	border-bottom: none;
+	background: #FFF;
+
+	position: absolute;
+	bottom: 0;
+	left: -1px;
+	z-index: 1;
+	box-sizing: content-box;
+}
+
+#session-sync .sorting-method .dropdown .option-list .option {
+	width: 100%;
+	padding: 3px 10px;
+	text-align: left;
+	box-sizing: border-box;
+	transition-property: left, top, color, background;
+	transition-duration: 0.2s;
+
+}
+
+#session-sync .sorting-method .dropdown .option-list .option:hover {
+	background: #EEE;
+	border-color: #CCC;
+	cursor: pointer;
+	transition-property: left, top;
+}
+
+#session-sync .sorting-method .dropdown .option-list .option[active] {
+	color: #FFF;
+	background: #2D92EB;
+}
+

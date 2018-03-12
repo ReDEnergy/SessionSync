@@ -2,8 +2,8 @@
  * Display lsit of all sessions
  */
 
-#Session-Sync-Add-on-ReD .sessions {
-	width: 160px;
+#session-sync .sessions {
+	width: 200px;
 	min-width: 160px;
 	max-width: 60%;
 	height: 100%;
@@ -30,7 +30,7 @@
  * List resize
  */
 
-#Session-Sync-Add-on-ReD .sessions .resize-handle
+#session-sync .sessions .resize-handle
 {
 	content: " ";
 	width: 4px;
@@ -45,12 +45,12 @@
 	z-index: 10;
 }
 
-#Session-Sync-Add-on-ReD .sessions .resize-handle:hover
+#session-sync .sessions .resize-handle:hover
 {
 	background: #1AB61A;
 }
 
-#Session-Sync-Add-on-ReD .sessions .resize-handle[resizing]
+#session-sync .sessions .resize-handle[resizing]
 {
 	background: #2D92EB !important;
 }
@@ -59,11 +59,11 @@
  * History list
  */
 
-#Session-Sync-Add-on-ReD[list="history"] .sessions .history-list {
+#session-sync[list="history"] .sessions .history-list {
 	flex: 1;
 }
 
-#Session-Sync-Add-on-ReD .sessions .history-list {
+#session-sync .sessions .history-list {
 	width: calc(100% + 12px);
 	margin: 0 0 0 0;
 
@@ -78,11 +78,12 @@
 	flex: 0;
 }
 
-#Session-Sync-Add-on-ReD .sessions .history-node {
+#session-sync .sessions .history-node {
 	width: 100%;
 	height: 2.5em;
+	margin: 0.2em;
 	padding: 0 0 0 10px;
-	
+
 	line-height: 2.4em;
 	word-break: break-all;
 
@@ -90,16 +91,16 @@
 
 	box-sizing: border-box;
 	transition-property: left, top, color, background;
-	transition-duration: 0.2s;	
+	transition-duration: 0.2s;
 }
 
-#Session-Sync-Add-on-ReD .sessions .history-node:hover {
+#session-sync .sessions .history-node:hover {
 	background: #EEE;
 	cursor: pointer;
 	transition-property: left, top;
 }
 
-#Session-Sync-Add-on-ReD .sessions .history-node[active="true"] {
+#session-sync .sessions .history-node[active="true"] {
 	background: #2D92EB;
 	color: #FFF;
 }
@@ -108,11 +109,11 @@
  * Session list
  */
 
-#Session-Sync-Add-on-ReD[list="history"] .sessions .list {
+#session-sync[list="history"] .sessions .list {
 	flex: 0;
 }
 
-#Session-Sync-Add-on-ReD .sessions .list {
+#session-sync .sessions .list {
 	width: calc(100% + 12px);
 	margin: 0 0 0 0;
 
@@ -130,11 +131,11 @@
  * Style Folder Session
  */
 
-#Session-Sync-Add-on-ReD .sessions .folder {
+#session-sync .sessions .folder {
 	width: 100%;
 	height: 2.5em;
 	padding: 0 0 0 10px;
-	
+
 	line-height: 2.4em;
 	word-break: break-all;
 
@@ -148,26 +149,13 @@
 	transition-duration: 0.2s;
 }
 
-#Session-Sync-Add-on-ReD .sessions .folder:hover {
+#session-sync .sessions .folder:hover {
 	background: #EEE;
 	cursor: pointer;
 	transition-property: left, top;
 }
 
-/*
-#Session-Sync-Add-on-ReD .sessions .folder:hover:before {
-	content:" ";
-	width: 100%;
-	height: 2px;
-	background: red;
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	z-index: 10000;
-}
-*/
-
-#Session-Sync-Add-on-ReD .sessions .folder[dragging] {
+#session-sync .sessions .folder[dragging] {
 	width: 200px;
 	margin: 1px 0 0 1px;
 	background: #4396E9 !important;
@@ -179,11 +167,11 @@
 	z-index: 1000;
 }
 
-#Session-Sync-Add-on-ReD .sessions .folder[dragging]:hover {
+#session-sync .sessions .folder[dragging]:hover {
 	cursor: default;
 }
 
-#Session-Sync-Add-on-ReD .sessions .folder[dragging="drop"] {
+#session-sync .sessions .folder[dragging="drop"] {
 	background: #4396E9 !important;
 	color: #FFF;
 	opacity: 0.9;
@@ -193,12 +181,33 @@
 	z-index: 1000;
 }
 
-#Session-Sync-Add-on-ReD .sessions .folder[active="true"] {
+#session-sync .sessions .folder[active="true"] {
 	background: #2D92EB;
 	color: #FFF;
 }
 
-#Session-Sync-Add-on-ReD .sessions .folder[filter] {
+#session-sync .sessions .folder[filter] {
 	top: 0 !important;
 	left: -100% !important;
 }
+
+#session-sync .sessions .folder[type='separator']:after {
+	content: " ";
+	width: 100%;
+	height: 2px;
+	margin: -1px 0 0 0;
+	background: #CCC;
+	position: absolute;
+	box-sizing: border-box;
+	top: 50%;
+	left: 1px;
+}
+
+#session-sync .sessions .folder[active="true"][type='separator']:after {
+	background: #FFF;
+}
+
+#session-sync .sessions .folder[type='bookmark'] {
+	text-decoration: underline;
+}
+

@@ -2,68 +2,69 @@
  * Trash-can
  */
 
-#Session-Sync-Add-on-ReD .trash-can {
+#session-sync .trash-can {
 	width: 8em;
 	height: 8em;
 
 	background-image: url("images/trash-can.png");
-	background-position: top 1.5em left 1.5em;
+	background-position: bottom 1.5em right 1.5em;
 	background-repeat: no-repeat;
 	background-size: 50%;
 	background-color: #FFF;
 
-	border-bottom-right-radius: 8em;
+	border-top-left-radius: 8em;
 
 	font-size: 12px;
 
 	border: 1px solid #CCC;
-	border-top: none;
-	border-left: none;
+	border-bottom: none;
+	border-right: none;
 
 	box-shadow: 0 0 5px 0 #FFF;
 
 	opacity: 0;
 
 	position: absolute;
-	top: 1px;
-	z-index: 1;
+	bottom: 1px;
+	right: 0;
+	z-index: 100;
 
 	box-sizing: border-box;
 	transition: all 0.2s ease-out;
 }
 
-#Session-Sync-Add-on-ReD[show="true"] .trash-can {
+#session-sync[show="true"] .trash-can {
 	display: block;
 }
 
-#Session-Sync-Add-on-ReD[show="false"] .trash-can {
+#session-sync[show="false"] .trash-can {
 	display: none;
 }
 
-#Session-Sync-Add-on-ReD .trash-can[droppable="true"] {
+#session-sync .trash-can[droppable="true"] {
 	opacity: 1 !important;
 }
 
-#Session-Sync-Add-on-ReD .trash-can[action="enter"] {
+#session-sync .trash-can[action="enter"] {
 	opacity: 1;
 	cursor: pointer;
 }
 
-#Session-Sync-Add-on-ReD .trash-can:not([items="0"]) {
+#session-sync .trash-can:not([items="0"]) {
 	opacity: 1;
 }
 
-#Session-Sync-Add-on-ReD .trash-can[dismiss] {
+#session-sync .trash-can[dismiss] {
 	opacity: 0;
 }
 
-#Session-Sync-Add-on-ReD .trash-can:hover {
+#session-sync .trash-can:hover {
 	cursor: pointer;
 	font-size: 16px;
-	opacity: 1; 
+	opacity: 1;
 }
 
-#Session-Sync-Add-on-ReD .count {
+#session-sync .count {
 	width: 2em;
 	height: 2em;
 
@@ -76,33 +77,33 @@
 
 	position: absolute;
 	top: 3.7em;
-	left: 1.5em;
+	left: 1.75em;
 	z-index: 1;
 	box-sizing: border-box;
 	transition: background 0.5s ease-out;
 }
 
-#Session-Sync-Add-on-ReD .trash-can[items="0"] .count {
+#session-sync .trash-can[items="0"] .count {
 	background: #1AB61A;
 }
 
-#Session-Sync-Add-on-ReD .trash-can[items="0"] .dismiss {
+#session-sync .trash-can[items="0"] .dismiss {
 	display: none;
 }
 
-#Session-Sync-Add-on-ReD .trash-can .dismiss {
+#session-sync .trash-can .dismiss {
 	display: block;
 	right: 0.5em;
 }
 
-#Session-Sync-Add-on-ReD .trash-can[dismiss] {
+#session-sync .trash-can[dismiss] {
 	opacity: 0;
 }
 
-#Session-Sync-Add-on-ReD .trash-can[dismiss] .dismiss {
+#session-sync .trash-can[dismiss] .dismiss {
 	display: none;
 }
 
-#Session-Sync-Add-on-ReD .trash-can[dismiss]:hover {
+#session-sync .trash-can[dismiss]:hover {
 	opacity: 1;
 }

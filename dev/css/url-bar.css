@@ -2,37 +2,34 @@
  * URL Bar
  */
 
-#Session-Sync-Add-on-ReD .url-bar {
-	width: 100%;
-	height: 2em;
+#session-sync .url-bar {
+	width: calc(100% - 3em);
+	height: 1.5em;
 	margin: 0;
 	padding: 0;
 
-	background: #629BD4;
-	background: #2D92EB;
-	border: 1px solid #CCC;
+	/* background: #2D92EB; */
+	/* border: 1px solid #FFF; */
+	border-radius: 1em;
 
-	color: #FFF;
-	font-size: 14px;
-	line-height: 26px;
-
+	overflow: hidden;
 	opacity: 0;
 
-	line-height: 1.8em;
-	
+	color: #FFF;
+
 	position: absolute;
-	overflow: hidden;
-	left: -1px;
-	bottom: 0;
+	top: 0.5em;
+	left: 0.5em;
+	z-index: 1;
 
 	box-sizing: content-box;
-	transition: all 0.2s  ease-out;
-	z-index: -1;
+	transition: all 0.2s ease-out;
 }
 
-#Session-Sync-Add-on-ReD .url-bar .arrow {
+#session-sync .url-bar .arrow {
 	width: 2em;
 	height: 100%;
+	display: none;
 
 	background: #FFF;
 	text-align: right;
@@ -40,7 +37,7 @@
 	float: left;
 }
 
-#Session-Sync-Add-on-ReD .url-bar .arrow:after {
+#session-sync .url-bar .arrow:after {
 	content: " ";
 	width: 2em;
 	height: 2em;
@@ -53,23 +50,39 @@
 	transform:  translate(1em, -0.1em) rotate(45deg);
 }
 
-#Session-Sync-Add-on-ReD .url-bar .url {
-	padding: 0 0 0 4em;
+#session-sync .url-bar .url {
+	height: 100%;
+	padding-left: 8em;
+	background: #2D92EB;
+	font-size: 0.75em;
+	line-height: 2em;
 	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 
-#Session-Sync-Add-on-ReD .url-bar[data-active="true"] {
+#session-sync[search-box-content="true"] .url {
+	padding-left: calc(25% + 2.5em);
+}
+
+#session-sync .url-bar[data-active="true"] {
 	opacity: 1;
-	bottom: calc(-2em - 10px);
+	bottom: -1px;
 }
 
-#Session-Sync-Add-on-ReD .url-bar .copy-feedback {
+#session-sync .url-bar .copy-input {
+	position: absolute;
+	top: -5em;
+}
+
+#session-sync .url-bar .copy-feedback {
 	width: 5em;
 	height: 100%;
 
 	background: #38B751;
 	color: #FFF;
 	text-align: center;
+	font-size: 0.75em;
+	line-height: 2em;
 
 	position: absolute;
 	top: 0;
@@ -78,6 +91,6 @@
 	transition: all 0.2s;
 }
 
-#Session-Sync-Add-on-ReD .url-bar .copy-feedback[active] {
+#session-sync .url-bar .copy-feedback[active] {
 	right: 0;
 }

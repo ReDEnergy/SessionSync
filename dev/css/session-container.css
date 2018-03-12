@@ -2,11 +2,11 @@
  * Display info about a Session
  */
 
-#Session-Sync-Add-on-ReD .session-container {
+#session-sync .session-container {
 	height: 100%;
 	background: #FEFEFE;
 
-	font-size: 12px;
+	font-size: 14px;
 	float: right;
 	overflow: hidden;
 
@@ -23,11 +23,11 @@
  * Save button - not used for the moment
  */
 
-#Session-Sync-Add-on-ReD[session] .session-container .save-session {
+#session-sync[session] .session-container .save-session {
 	display: none;
 }
 
-#Session-Sync-Add-on-ReD .session-container .save-session {
+#session-sync .session-container .save-session {
 	height: 3.4em;
 	width: 3.4em;
 
@@ -35,7 +35,7 @@
 	background-size: 2em;
 	background-position: 1em 0.4em;
 	background-color: #F5F5F5;
-	
+
 	border-radius: 0 0 0 100%;
 	border-left: 1px solid #CCC;
 	border-bottom: 1px solid #CCC;
@@ -45,20 +45,20 @@
 	top: 0;
 	right: -1px;
 
-	filter: saturate(75%);	
+	filter: saturate(75%);
 }
 
-#Session-Sync-Add-on-ReD .session-container .save-session:hover {
+#session-sync .session-container .save-session:hover {
 	cursor: pointer;
 	background-color: #FFF;
-	filter: saturate(100%);	
+	filter: saturate(100%);
 }
 
 /*
  * Style Tabs
  */
 
-#Session-Sync-Add-on-ReD .session-container .bookmarks {
+#session-sync .session-container .bookmarks {
 	width: calc(100% + 10px);
 	margin: 2px 0 2px 2px;
 
@@ -71,28 +71,32 @@
 	flex: 1;
 }
 
-#Session-Sync-Add-on-ReD .session-container .bookmarks:hover {
+#session-sync .session-container .bookmarks:hover {
 	overflow-y: scroll;
 }
 
-#Session-Sync-Add-on-ReD .session-container .window-separator {
+#session-sync .session-container .window-separator {
 	width: 100%;
 	height: 2em;
-	line-height: 1.9em;
-	text-align: center;
 	background: #F8F8F8;
 	color: #555;
+
+	line-height: 1.9em;
 	position: absolute;
-	transition: all 0.2s;	
+	transition: all 0.2s;
 }
 
-#Session-Sync-Add-on-ReD .session-container .window-separator:hover {
+#session-sync .session-container .window-separator .text {
+	text-align: center;
+}
+
+#session-sync .session-container .window-separator:hover {
 	cursor: pointer;
 	text-decoration: underline;
 	color: #333;
 }
 
-#Session-Sync-Add-on-ReD .session-container .window-separator:hover:after {
+#session-sync .session-container .window-separator:hover:after {
 	content: "(switch to)";
 	position: absolute;
 	font-size: 0.8em;
@@ -101,14 +105,14 @@
 	left: 50%;
 }
 
-#Session-Sync-Add-on-ReD .session-container .bookmark {
+#session-sync .session-container .bookmark {
 	width: 100%;
 	height: 2em;
 	padding: 0 4px;
 
 	line-height: 1.9em;
 	word-break: keep-all;
-	
+
 	overflow: hidden;
 	position: absolute;
 	left: 0;
@@ -116,19 +120,24 @@
 
 	/*CSS3*/
 	box-sizing: border-box;
-	transition-property: left, top, background;
-	transition-duration: 0.2s;	
+	transition-property: left, top, background, color;
+	transition-duration: 0.2s;
 	display: flex;
 	flex: 1;
 }
 
-#Session-Sync-Add-on-ReD .session-container .bookmark:hover {
+#session-sync .session-container .bookmark:hover {
 	background: #EEE;
 	cursor: pointer;
 	transition-property: left, top;
 }
 
-#Session-Sync-Add-on-ReD .session-container .bookmark[dragging] {
+#session-sync .session-container .bookmark[highlight] {
+	background: #4396E9 !important;
+	color: #FFF;
+}
+
+#session-sync .session-container .bookmark[dragging] {
 	width: 400px;
 	margin: 1px 0 0 1px;
 	background-color: #FBD4B0;
@@ -141,7 +150,7 @@
 	z-index: 1000;
 }
 
-#Session-Sync-Add-on-ReD .session-container .bookmark[dragging="drop"] {
+#session-sync .session-container .bookmark[dragging="drop"] {
 	background: #4396E9 !important;
 	color: #FFF;
 	opacity: 0.9;
@@ -151,11 +160,11 @@
 	z-index: 1000;
 }
 
-#Session-Sync-Add-on-ReD .session-container .bookmark[dragging]:hover {
-	cursor: default;	
+#session-sync .session-container .bookmark[dragging]:hover {
+	cursor: default;
 }
 
-#Session-Sync-Add-on-ReD .session-container .bookmark[pinned]:before {
+#session-sync .session-container .bookmark[pinned='true']:before {
 	content: "";
 	width: 1.5em;
 	height: 100%;
@@ -171,11 +180,11 @@
 	opacity: 0.85;
 }
 
-#Session-Sync-Add-on-ReD .session-container .bookmark * {
+#session-sync .session-container .bookmark * {
 	float: left;
 }
 
-#Session-Sync-Add-on-ReD .session-container .bookmark .favicon {
+#session-sync .session-container .bookmark .favicon {
 	width: 1.33em;
 	height: 100%;
 	background: url("images/icons/globe.png");
@@ -184,7 +193,7 @@
 	background-position: center center;
 }
 
-#Session-Sync-Add-on-ReD .session-container .bookmark .text {
+#session-sync .session-container .bookmark .text {
 	height: 100%;
 	padding: 0 5px;
 	word-break: keep-all;
@@ -199,7 +208,7 @@
  * History Style
  */
 
-#Session-Sync-Add-on-ReD .session-container .history-window-separator {
+#session-sync .session-container .history-window-separator {
 	width: 100%;
 	height: 2em;
 	line-height: 1.9em;
@@ -207,5 +216,5 @@
 	background: #F8F8F8;
 	color: #555;
 	position: absolute;
-	transition: all 0.2s;	
+	transition: all 0.2s;
 }

@@ -2,7 +2,7 @@
  * Confirm Box
  */
 
-#Session-Sync-Add-on-ReD .confirm-box {
+#session-sync .confirm-box {
 	width: auto;
 	padding: 15px;
 	margin: -40px 0 0 0;
@@ -14,57 +14,62 @@
 	left: 0;
 	top: 0;
 	overflow: auto;
-	
+
 	box-shadow: 3px 3px 5px 0 #CCC;
 	transform: translate(-50%, 0);
 	z-index: 1;
+
+	/* display: block;
+	z-index: 1001;
+	top: 120px;
+	left: 321px; */
 }
 
-#Session-Sync-Add-on-ReD .confirm-box[data-active="true"] {
+#session-sync .confirm-box[data-active="true"] {
 	display: block;
 	z-index: 1001;
 }
 
-#Session-Sync-Add-on-ReD .confirm-box .info {
+#session-sync .confirm-box .info {
 	width: 100%;
 	margin: 0 0 5px 0;
-	padding: 5px 0; 
+	padding: 5px 0;
 	color: #333;
 	text-align: center;
 	font-size: 16px;
 }
 
-#Session-Sync-Add-on-ReD .confirm-box .controls {
+#session-sync .confirm-box .controls {
 	padding: 10px 0 0 0;
 	border-top: 1px solid #DDD;
 	overflow: hidden;
 	display: flex;
 }
 
-#Session-Sync-Add-on-ReD .confirm-box .controls .flex {
+#session-sync .confirm-box .controls .flex {
 	flex: 1;
 }
 
-#Session-Sync-Add-on-ReD .confirm-box .ok {
+#session-sync .confirm-box .ok {
 	margin: 0 10px 0 0;
 	color: #FFF;
 	background: #E86A5C; /*#EA5F4D;*/
 }
 
-#Session-Sync-Add-on-ReD .confirm-box .ok:hover {
+#session-sync .confirm-box .ok:hover {
 	background: #DC462C;
 }
 
-#Session-Sync-Add-on-ReD .confirm-box .cancel {
+#session-sync .confirm-box .cancel {
 	color: #FFF;
 	background: #999;
 }
 
-#Session-Sync-Add-on-ReD .confirm-box .cancel:hover {
+#session-sync .confirm-box .cancel:hover {
 	background: #777;
 }
 
-#Session-Sync-Add-on-ReD .confirm-box .button {
+#session-sync .confirm-box .button {
 	width: 75px;
 	padding: 5px 0;
 	text-align: center;
@@ -73,6 +78,6 @@
 	box-sizing: border-box;
 }
 
-#Session-Sync-Add-on-ReD .confirm-box .button:hover {
+#session-sync .confirm-box .button:hover {
 	cursor: pointer;
 }

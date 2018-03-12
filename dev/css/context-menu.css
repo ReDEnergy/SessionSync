@@ -2,8 +2,8 @@
  * Context Menu
  */
 
-#Session-Sync-Add-on-ReD .context-menu {
-	width: 145px;
+#session-sync .context-menu {
+	width: 155px;
 	padding: 5px;
 	background: #FFF;
 	border: 1px #CCC solid;
@@ -18,11 +18,11 @@
 	z-index: 1000;
 }
 
-#Session-Sync-Add-on-ReD .context-menu[data-active="true"] {
+#session-sync .context-menu[data-active="true"] {
 	display: block;
 }
 
-#Session-Sync-Add-on-ReD .context-menu .separator {
+#session-sync .context-menu .separator {
 	width: 100%;
 	height: 1px;
 	margin: 3px 0;
@@ -30,7 +30,7 @@
 }
 
 
-#Session-Sync-Add-on-ReD .context-menu .button {
+#session-sync .context-menu .button {
 	width: 100%;
 	padding: 5px 5px 5px 30px;
 
@@ -41,44 +41,48 @@
 	box-sizing: border-box;
 }
 
-#Session-Sync-Add-on-ReD .context-menu .button:hover {
+#session-sync .context-menu .button:hover {
 	background-color: #EEE;
 	cursor: pointer;
 }
 
-#Session-Sync-Add-on-ReD .context-menu .button[icon="new-tab"] {
+#session-sync .context-menu .button[icon="save"] {
+	background-image: url("images/icons/heart.png");
+}
+
+#session-sync .context-menu .button[icon="new-tab"] {
 	background-image: url("images/icons/ribbon.png");
 }
 
-#Session-Sync-Add-on-ReD .context-menu .button[icon="same-tab"] {
+#session-sync .context-menu .button[icon="same-tab"] {
 	background-image: url("images/icons/recycle.png");
 }
 
-#Session-Sync-Add-on-ReD .context-menu .button[icon="new-window"] {
+#session-sync .context-menu .button[icon="new-window"] {
 	background-image: url("images/icons/polaroids.png");
 }
 
-#Session-Sync-Add-on-ReD .context-menu .button[icon="copy"] {
+#session-sync .context-menu .button[icon="copy"] {
 	background-image: url("images/icons/clipboard.png");
 }
 
-#Session-Sync-Add-on-ReD .context-menu .button[icon="edit"] {
+#session-sync .context-menu .button[icon="edit"] {
 	background-image: url("images/icons/document.png");
 }
 
-#Session-Sync-Add-on-ReD .context-menu .button[icon="delete"] {
+#session-sync .context-menu .button[icon="delete"] {
 	background-image: url("images/icons/denied.png");
 }
 
-#Session-Sync-Add-on-ReD .context-menu .button[icon="same-window"] {
+#session-sync .context-menu .button[icon="same-window"] {
 	background-image: url("images/icons/stack.png");
 }
 
-#Session-Sync-Add-on-ReD .context-menu .button[icon="new-session"] {
+#session-sync .context-menu .button[icon="new-session"] {
 	background-image: url("images/icons/star.png");
 }
 
-#Session-Sync-Add-on-ReD .context-menu[icons="no"] .button
+#session-sync .context-menu[icons="no"] .button
 {
 	padding: 5px;
 	background-image: unset;

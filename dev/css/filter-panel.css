@@ -2,7 +2,7 @@
  * Filter Menu
  */
 
-#Session-Sync-Add-on-ReD .filter-panel {
+#session-sync .filter-panel {
 	width: 150px;
 	height: 100%;
 	min-height: 10000px;
@@ -11,66 +11,66 @@
 	background: #F5F5F5;
 	opacity: 0.95;
 	color: #000;
-	
+
 	position: absolute;
 	top: 1px;
 	z-index: 100;
 	display: none;
-	
+
 	transition: all 0.3s;
 }
 
-#Session-Sync-Add-on-ReD[show="true"] .filter-panel {
+#session-sync[show="true"] .filter-panel {
 	left: 0px;
 }
 
-#Session-Sync-Add-on-ReD[show="false"] .filter-panel {
+#session-sync[show="false"] .filter-panel {
 	left: -151px;
 }
 
-#Session-Sync-Add-on-ReD .filter-panel:hover {
+#session-sync .filter-panel:hover {
 	width: 200px;
 }
 
-#Session-Sync-Add-on-ReD .filter-panel .logo {
+#session-sync .filter-panel .logo {
 	margin: 10px 0;
 	height: 64px;
 	width: 100%;
 	background: url("images/icon64.png") center top no-repeat;
 }
 
-#Session-Sync-Add-on-ReD .filter-panel .separator {
-	margin: 5px 0; 
+#session-sync .filter-panel .separator {
+	margin: 5px 0;
 	border-bottom: 1px solid #DDD;
 }
 
 
-#Session-Sync-Add-on-ReD .filter-panel .session-box {
+#session-sync .filter-panel .session-box {
 	padding: 5px 0;
 	color: #555;
 	text-align: center;
 }
 
-#Session-Sync-Add-on-ReD .filter-panel .session-box:hover {
+#session-sync .filter-panel .session-box:hover {
 	background: #DDD;
 	cursor: pointer;
 }
 
-#Session-Sync-Add-on-ReD .filter-panel .session-box[active] {
+#session-sync .filter-panel .session-box[active] {
 	background: #2D92EB;
 	color: #FFF;
 }
 
-#Session-Sync-Add-on-ReD .filter-panel .filters {
+#session-sync .filter-panel .filters {
 }
 
-#Session-Sync-Add-on-ReD .filter-panel .filters .title {
+#session-sync .filter-panel .filters .title {
 	margin: 10px 0;
 	padding: 10px 0;
 	text-align: center;
 }
 
-#Session-Sync-Add-on-ReD .filter-panel .label {
+#session-sync .filter-panel .label {
 	height: 24px;
 	padding: 3px 0;
 	text-align: center;
@@ -83,31 +83,31 @@
 	transition: background 0.2s;
 }
 
-#Session-Sync-Add-on-ReD .filter-panel .label[edit-mode] div {
+#session-sync .filter-panel .label[edit-mode] div {
 	display: none;
 }
 
-#Session-Sync-Add-on-ReD .filter-panel .label[edit-mode] input {
+#session-sync .filter-panel .label[edit-mode] input {
 	display: block;
 }
 
 
-#Session-Sync-Add-on-ReD .filter-panel .label:hover {
+#session-sync .filter-panel .label:hover {
 	cursor: pointer;
 	background: #FFF;
 	transition: none;
 }
 
-#Session-Sync-Add-on-ReD .filter-panel .name {
+#session-sync .filter-panel .name {
 	width: 80%;
 	padding: 0 10px;
 	text-align: right;
 	overflow: hidden;
-	
+
 	flex: 1;
 }
 
-#Session-Sync-Add-on-ReD .filter-panel .count {
+#session-sync .filter-panel .count {
 	width: 30px;
 	height: 12px;
 	margin: 3px 10px 3px 0;
@@ -115,31 +115,31 @@
 	background: #DDD;
 	border-radius: 3px;
 	text-align: center;
-	line-height: 100%; 
+	line-height: 100%;
 	color: #333;
 }
 
-#Session-Sync-Add-on-ReD .filter-panel .label input {
+#session-sync .filter-panel .label input {
 	margin: 0 10px;
 	color: #333;
 	display: none;
 }
 
-#Session-Sync-Add-on-ReD .filter-panel .label[active] {
+#session-sync .filter-panel .label[active] {
 	background: #FFF;
 }
 
-#Session-Sync-Add-on-ReD .filter-panel .label[active] .name {
+#session-sync .filter-panel .label[active] .name {
 	color: #4C91D6;
 	font-weight: bold;
 }
 
-#Session-Sync-Add-on-ReD .filter-panel .label[active] .count {
+#session-sync .filter-panel .label[active] .count {
 	background: #23A823;
 	color: #FFF;
 }
 
-#Session-Sync-Add-on-ReD .filter-panel .label[active]:after {
+#session-sync .filter-panel .label[active]:after {
 	content: " ";
 	width: 3px;
 	height: 100%;
@@ -149,7 +149,7 @@
 	background: #1AB61A;
 }
 
-#Session-Sync-Add-on-ReD .filter-panel .add-label {
+#session-sync .filter-panel .add-label {
 	margin: 0 auto;
 	font-size: 12px;
 	padding: 4px 20px;
@@ -157,7 +157,7 @@
 	text-align: center;
 }
 
-#Session-Sync-Add-on-ReD .filter-panel .add-label:hover {
+#session-sync .filter-panel .add-label:hover {
 	cursor: pointer;
 	background: #2D92EB;
 	color: #FFF;

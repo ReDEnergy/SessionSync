@@ -6,28 +6,28 @@
  * Toggle Switch
  */
 
-#Session-Sync-Add-on-ReD .comp-toggle-switch {
+#session-sync .comp-toggle-switch {
 	width: 100%;
 	color: #333;
-	display: flex; 
+	display: flex;
 }
 
-#Session-Sync-Add-on-ReD .comp-toggle-switch:first-child {
+#session-sync .comp-toggle-switch:first-child {
 	margin-top: 0;
 }
 
-#Session-Sync-Add-on-ReD .comp-toggle-switch:hover {
+#session-sync .comp-toggle-switch:hover {
 	cursor: pointer;
 	color: #4C91D6;
 }
 
-#Session-Sync-Add-on-ReD .comp-toggle-switch .label {
+#session-sync .comp-toggle-switch .label {
 	width: 8em;
 	line-height: 1.3em;
 	float: left;
 }
 
-#Session-Sync-Add-on-ReD .comp-toggle-switch .switch {
+#session-sync .comp-toggle-switch .switch {
 	margin-left: 0.4em;
 	padding: 0 0 0.25em 0;
 	border-radius: 0.3em;
@@ -38,14 +38,14 @@
 	float: left;
 
 	flex: 1;
-	transition: all 0.3s; 
+	transition: all 0.3s;
 }
 
-#Session-Sync-Add-on-ReD .comp-toggle-switch .switch[state="true"] {
+#session-sync .comp-toggle-switch .switch[state="true"] {
 	background: #208020;
 }
 
-#Session-Sync-Add-on-ReD .comp-toggle-switch .switch[state="false"] {
+#session-sync .comp-toggle-switch .switch[state="false"] {
 	background: #CB4D4D;
 }
 
@@ -53,30 +53,30 @@
  * Toggle Switch
  */
 
-#Session-Sync-Add-on-ReD .comp-dropdown {
+#session-sync .comp-dropdown {
 	width: 100%;
 	height: 2em;
 	color: #555;
-	display: flex; 
+	display: flex;
 	text-align: center;
 }
 
-#Session-Sync-Add-on-ReD .comp-dropdown .label {
+#session-sync .comp-dropdown .label {
 	width: 50%;
 }
 
-#Session-Sync-Add-on-ReD .comp-dropdown .select {
+#session-sync .comp-dropdown .select {
 	width: 50%;
 	background: #38B751;
 	position: relative;
 }
 
-#Session-Sync-Add-on-ReD .comp-dropdown .select-value {
+#session-sync .comp-dropdown .select-value {
 	width: 100%;
 	height: 100%;
 }
 
-#Session-Sync-Add-on-ReD .comp-dropdown .drop-list {
+#session-sync .comp-dropdown .drop-list {
 	width: 100%;
 	min-height: 100%;
 	background: #FFF;
@@ -92,26 +92,26 @@
 	box-sizing: border-box;
 }
 
-#Session-Sync-Add-on-ReD .comp-dropdown .drop-list[visible="true"] {
+#session-sync .comp-dropdown .drop-list[visible="true"] {
 	display: block;
 }
 
-#Session-Sync-Add-on-ReD .comp-dropdown .drop-list[visible="false"] {
+#session-sync .comp-dropdown .drop-list[visible="false"] {
 	display: none;
 }
 
-#Session-Sync-Add-on-ReD .comp-dropdown .drop-list .option {
+#session-sync .comp-dropdown .drop-list .option {
 	width: 50%;
 	transition: all 0.2s;
 	float: left;
 }
 
-#Session-Sync-Add-on-ReD .comp-dropdown .drop-list .option:hover {
+#session-sync .comp-dropdown .drop-list .option:hover {
 	transition: none;
 	background: #EEE;
 }
 
-#Session-Sync-Add-on-ReD .comp-dropdown .drop-list .option[selected] {
+#session-sync .comp-dropdown .drop-list .option[selected] {
 	background: #38B751;
 	color: #FFF;
 }
