@@ -18,6 +18,12 @@ Session-Sync provides a rich interface for sessions management
 WebExtensions port ready - beta version available in /releases  
 AMO full release: 20 March 2018
 
+##### Install WebExtensions Beta Version
+ * [Download WebExtensions](https://github.com/ReDEnergy/SessionSync/raw/master/releases/WebExtensions/session_sync-2.1.0.xpi)
+ * Open Addon Manager
+ * Drag-n-drop the downloaded file into over the Addon Manager page
+ * Accept and install the addon
+
 #### Version 2
 
 Version 2 brings many new features as well as huge improvements in user experience, performance, stability and great set of customization options.
