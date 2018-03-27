@@ -1,7 +1,5 @@
 'use strict';
 
-console.log('Session History');
-
 var BrowserSession = function BrowserSession()
 {
 	this.timer;
@@ -53,7 +51,7 @@ BrowserSession.prototype.update = function update()
 		this.windows = sessions;
 		this.onUpdate();
 
-		console.log(this);
+		// console.log(this);
 
 	}.bind(this));
 };
@@ -124,8 +122,6 @@ BrowserSession.prototype.resetInterval = function resetInterval(updateInterval)
 			if (obj[sessionsKey]) {
 				sessions = obj[sessionsKey];
 			}
-
-			console.log('sessions', sessions);
 
 			updateStorage();
 

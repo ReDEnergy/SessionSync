@@ -11,6 +11,7 @@
 	opacity: 0.95;
 	color: #000;
 
+	overflow-y: auto;
 	position: absolute;
 	top: 1px;
 	bottom: 1px;
@@ -161,7 +162,7 @@
 	float: left;
 }
 
-#session-sync .config-panel .comp-range-control .range-input input {
+#session-sync .config-panel .comp-range-control .range-input .value {
 	text-align: center !important;
 }
 
@@ -206,7 +207,10 @@
  * Toggle control
  */
 
-#session-sync .config-panel .comp-toggle-button {
+ #session-sync .config-panel .comp-button,
+ #session-sync .config-panel .comp-dropdown,
+ #session-sync .config-panel .comp-toggle-switch,
+ #session-sync .config-panel .comp-toggle-button {
 	width: 100%;
 	height: 2em;
 	margin: 5px 0;
@@ -216,6 +220,9 @@
 	box-sizing: border-box;
 }
 
+#session-sync .config-panel .comp-button .label,
+#session-sync .config-panel .comp-dropdown .label,
+#session-sync .config-panel .comp-toggle-switch .label,
 #session-sync .config-panel .comp-toggle-button .label {
 	height: 100%;
 	color: #555;
@@ -227,6 +234,7 @@
 	box-sizing: border-box;
 }
 
+#session-sync .config-panel .comp-toggle-switch .switch,
 #session-sync .config-panel .comp-toggle-button .button {
 	width: 8em;
 	height: 100%;
@@ -236,6 +244,10 @@
 	color: white;
 	text-align: center;
 	float: left;
+}
+
+#session-sync .config-panel .comp-toggle-switch .switch {
+	flex: unset;
 }
 
 #session-sync .config-panel .comp-toggle-button .button:hover {
@@ -254,32 +266,26 @@
 	background: #66AAEF;
 }
 
+/*
+ * Button Component
+ */
+
+#session-sync .config-panel .comp-button .button {
+	width: 8em;
+	height: 100%;
+	margin: 0 1em 0 0;
+	border-radius: 1em;
+	line-height: 1.9em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	flex: unset;
+	padding: 0 0.75em;
+	box-sizing: border-box;
+}
 
 /*
  * Dropdown Component
  */
-
-#session-sync .config-panel .comp-dropdown {
-	width: 100%;
-	height: 2em;
-	margin: 5px 0;
-	padding: 0 1em 0 2em;
-	line-height: 1.8em;
-	display: flex;
-	box-sizing: border-box;
-}
-
-#session-sync .config-panel .comp-dropdown .label {
-	height: 100%;
-	color: #555;
-	text-align: left;
-	word-break: break-all;
-	font-size: 1.1em;
-	float: left;
-
-	flex: 1;
-	box-sizing: border-box;
-}
 
 #session-sync .config-panel .comp-dropdown .select {
 	width: 8em;
@@ -298,15 +304,6 @@
 #session-sync .config-panel .comp-dropdown .select:hover {
 	cursor: pointer;
 	background: #66AAEF;
-}
-
-#session-sync .config-panel .comp-dropdown .drop-list {
-	width: 14em;
-	top: calc(100% + 0px);
-}
-
-#session-sync .config-panel .comp-dropdown .drop-list .option {
-	width: 16.6%;
 }
 
 /*

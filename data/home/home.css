@@ -147,7 +147,7 @@ body {
 	margin: -25px 0 0 0;
 	color: #333;
 	transform: translate(-50%, -30px);
-	
+
 	background: rgba(255, 255, 255, 1);
 	text-align: center;
 	line-height: 20px;
@@ -162,7 +162,7 @@ body {
 	opacity: 0.85;
 
 	box-shadow: 0 2px 4px 0px #999;
-	box-sizing: border-box;	
+	box-sizing: border-box;
 }
 
 #tooltip:before {
@@ -207,9 +207,8 @@ body {
 	margin-left: 50%;
 	height: auto;
 	overflow: hidden;
-	background: rgba(255, 255, 255, );
 	position: absolute;
-	top: 0;  
+	top: 0;
 	z-index: 1;
 	transform: translateX(-50%);
 }
@@ -235,7 +234,7 @@ body {
 }
 
 #container .preview {
-	
+
 }
 
 #container .carousel {

@@ -17,14 +17,17 @@ define(function(require, exports) {
 
 	// Components
 	const { Clipboard } = require('./components/clipboard');
-	const { SearchBar } = require('./components/search-bar');
 	const { UrlBar } = require('./components/url-bar');
 	const { TrashCan } = require('./components/trash-can');
 	const { TooltipSystem } = require('./components/tooltip-system');
 	const { SessionHotkeys } = require('./components/session-hotkeys');
 	const { NotificationSystem } = require('./components/notification-system');
 	const { ConfigPanel } = require('./components/config-panel');
+	const { OverlaySystem } = require('./components/overlay-system');
+
+	const { SessionHotkeyManager } = require('./components/session-hotkey-manager');
 	const { SessionSorting } = require('./components/session-sorting');
+	const { SessionFiltering } = require('./components/session-filtering');
 
 	const { SessionHeaderBar } = require('./components/session-header-bar');
 	const { SessionList } = require('./components/session-list');
@@ -43,6 +46,7 @@ define(function(require, exports) {
 
 		var DomElem = HTMLCreator(document);
 
+		document.body.setAttribute('panel', AppConfig.isPanel());
 		var content = document.getElementById('body');
 
 		// ------------------------------------------------------------------------
@@ -57,6 +61,13 @@ define(function(require, exports) {
 		var notificationSystem = new NotificationSystem(document);
 		content.appendChild(notificationSystem.DOMRoot);
 
+		var hotekyManager = new SessionHotkeyManager(document);
+		content.appendChild(hotekyManager.DOMRoot);
+
+		var overlaySystem = new OverlaySystem(document);
+		content.appendChild(overlaySystem.DOMRoot);
+
+		// -------------------------------------------------------------
 		// Create the UI
 		var centralArea = DomElem('div', {class: 'sessions-area'});
 
@@ -76,7 +87,7 @@ define(function(require, exports) {
 		var headerBar = new SessionHeaderBar(document);
 		var toolbar = new SessionToolbar(document);
 		var sessionList = new SessionList(document);
-		var searchBar = new SearchBar(document);
+		var searchBar = new SessionFiltering(document);
 		var sessionContainer = new SessionContainer(document);
 		var sessionSorting = new SessionSorting(document);
 
@@ -113,7 +124,9 @@ define(function(require, exports) {
 		// Bookmark Item Context Menu
 		var BM = new ContextMenu(document, {name : 'BookmarkCtxMenu'});
 		BM.addMenuEntry({value: 'Open (new tab)', event: 'OpenInNewTab', icon: 'new-tab'});
-		BM.addMenuEntry({value: 'Open (current tab)', event: 'OpenInActiveTab', icon: 'same-tab'});
+		if (AppConfig.isPanel()) {
+			BM.addMenuEntry({value: 'Open (current tab)', event: 'OpenInActiveTab', icon: 'same-tab'});
+		}
 		BM.addMenuEntry({value: 'Open (new window)', event: 'OpenInNewWindow', icon: 'new-window'});
 		BM.addMenuEntry({value: 'Copy URL', event: 'CopyURL', icon: 'copy'});
 		BM.addMenuEntry({value: 'Copy Title', event: 'CopyTitle', icon: 'copy'});
@@ -168,7 +181,9 @@ define(function(require, exports) {
 		// History Context Menu
 		var HBM = new ContextMenu(document, {name : 'HistoryMarksCtxMenu', width: 155});
 		HBM.addMenuEntry({value: 'Open (new tab)', event: 'OpenInNewTab', icon: 'new-tab'});
-		HBM.addMenuEntry({value: 'Open (current tab)', event: 'OpenInActiveTab', icon: 'same-tab'});
+		if (AppConfig.isPanel()) {
+			HBM.addMenuEntry({value: 'Open (current tab)', event: 'OpenInActiveTab', icon: 'same-tab'});
+		}
 		HBM.addMenuEntry({value: 'Open (new window)', event: 'OpenInNewWindow', icon: 'new-window'});
 		HBM.addMenuEntry({value: 'Copy URL', event: 'CopyURL', icon: 'copy'});
 		content.appendChild(HBM.DOMRoot);
@@ -211,6 +226,10 @@ define(function(require, exports) {
 				url: 'home/home.html',
 				mode: 'newTab',
 			});
+		});
+
+		WindowEvents.on(document, 'open-addon-detached', function() {
+			browser.runtime.sendMessage({event: 'session-sync-detach'});
 		});
 
 		WindowEvents.on(document, 'SetUIState', setUIState);
@@ -281,7 +300,7 @@ define(function(require, exports) {
 
 		WindowEvents.on(document, 'BookmarkCtxMenu-OpenInActiveTab', function (bookmarkID) {
 			BookmarkManager.openBookmark({
-				url: SessionSyncModel.bookmarks[bookmarkID].url,
+				url: SessionSyncModel.bookmarks[bookmarkID].url
 			});
 		});
 
@@ -382,15 +401,33 @@ define(function(require, exports) {
 			document.addEventListener('mousemove', eventMove);
 		};
 
-		GlobalEvents.on('style.panel.width', function (size) {
-			document.body.style.width = size + 'px';
-		});
+		if (AppConfig.isPanel())
+		{
+			GlobalEvents.on('style.panel.width', function (size) {
+				document.body.style.width = size + 'px';
+			});
 
-		GlobalEvents.on('style.panel.height', function (size) {
-			document.body.style.height = size + 'px';
-		});
+			GlobalEvents.on('style.panel.height', function (size) {
+				document.body.style.height = size + 'px';
+			});
 
-		resizeHandle.addEventListener('mousedown', startResize);
+			resizeHandle.addEventListener('mousedown', startResize);
+		}
+		else
+		{
+			window.addEventListener('resize', function () {
+				var newWidth = Math.max(window.innerWidth, 500);
+				var newHeight = Math.max(window.innerHeight, 400);
+
+				browser.storage.local.set({'style.window.detach' : {
+					// left: window.screenX,
+					// top: window.screenY,
+					width: newWidth,
+					height: newHeight
+				}});
+			});
+			document.body.style.minWidth = '500px';
+		}
 
 		function preventDefault(e) {
 			e.preventDefault();
@@ -403,6 +440,12 @@ define(function(require, exports) {
 			if (e.button == 1)
 				preventDefault(e);
 		});
+
+		// ------------------------------------------------------------------------
+		// App Init
+
+		searchBar.init();
+
 	};
 
 	// ************************************************************************

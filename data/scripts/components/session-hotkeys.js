@@ -17,7 +17,7 @@ define(function(require, exports) {
 	function SessionHotkeys(document)
 	{
 		// ------------------------------------------------------------------------
-		// Create UI
+		// Events
 
 		var onKeyDown = function(e)
 		{
@@ -38,7 +38,7 @@ define(function(require, exports) {
 				// Key: F3
 				case 114: {
 					e.preventDefault();
-					WindowEvents.emit(document, 'SearchSessions');
+					WindowEvents.emit(document, 'FocusSessionFilter');
 					break;
 				}
 
@@ -47,7 +47,7 @@ define(function(require, exports) {
 					if (e.ctrlKey == true && e.shiftKey == false && e.altKey == false)
 					{
 						e.preventDefault();
-						WindowEvents.emit(document, 'SearchSessions');
+						WindowEvents.emit(document, 'FocusSessionFilter');
 					}
 					break;
 				}

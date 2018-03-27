@@ -5,6 +5,7 @@ define(function(require, exports) {
 	// Custom Modules
 
 	// App
+	const { AppConfig } = require('../config');
 	const { SessionSyncModel } = require('./session-sync-model');
 
 	// Utils
@@ -124,27 +125,6 @@ define(function(require, exports) {
 		}
 
 		// --------------------------------------------------------------
-		// Session level
-
-		var sessionDblClick = function sessionDblClick(e)
-		{
-			if (bookmarkContext)
-			{
-				var type = e.target.getAttribute('type');
-				switch (type)
-				{
-					case 'folder':
-						WindowEvents.emit(document, 'SessionContextMenu-EditSession', bookmarkContext.bookmarkID);
-						break;
-
-					case 'bookmark':
-						WindowEvents.emit(document, 'BookmarkCtxMenu-EditBookmark', bookmarkContext.bookmarkID);
-						break;
-				}
-			}
-		};
-
-		// --------------------------------------------------------------
 		// Drag Events
 
 		var trackDragging = function _mouseMove(e)
@@ -223,18 +203,23 @@ define(function(require, exports) {
 				var sessionID = getBookmarkID(e);
 
 				// Preview the content if a click event was registered (mouse-up on the same DOM node)
-				if (bookmarkContext.bookmarkID == sessionID) {
+				if (bookmarkContext.bookmarkID == sessionID)
+				{
 					if (!DragContext.hasContext()) {
-						SessionList.setSelectedNode(e.target);
-						WindowEvents.emit(document, 'ViewSession', sessionID);
+						SessionList.selectSession(bookmarkContext, false);
 					}
-				} else {
-					if (SessionList.sortMethod === 'position-asc') {
+				}
+				else
+				{
+					if (AppConfig.get('session.sorting') === 'position-asc')
+					{
 						SessionSyncModel.moveBookmark(bookmarkContext.bookmarkID, sessionID);
-					} else {
+					}
+					else
+					{
 						WindowEvents.emit(document, 'Notification', {
 							message: 'Rearage function available only when items are sorted ascending by position',
-							timeout: 4000,
+							timeout: 3000,
 						});
 					}
 				}
@@ -276,6 +261,24 @@ define(function(require, exports) {
 				context: bookmarkContext.bookmark.id,
 				event: e
 			});
+		};
+
+		var sessionDblClick = function sessionDblClick(e)
+		{
+			if (bookmarkContext)
+			{
+				var type = e.target.getAttribute('type');
+				switch (type)
+				{
+					case 'folder':
+						WindowEvents.emit(document, 'SessionContextMenu-EditSession', bookmarkContext.bookmarkID);
+						break;
+
+					case 'bookmark':
+						WindowEvents.emit(document, 'BookmarkCtxMenu-EditBookmark', bookmarkContext.bookmarkID);
+						break;
+				}
+			}
 		};
 
 		// ------------------------------------------------------------------------

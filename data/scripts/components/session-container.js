@@ -20,7 +20,7 @@ define(function(require, exports) {
 	const { SessionHistory } = require('./session-history');
 
 	// *****************************************************************************
-	// API
+	// APIconst { WindowEvents, GlobalEvents } = require('../utils/global-events');
 
 	/*
 	* SessionContainer UI
@@ -154,7 +154,7 @@ define(function(require, exports) {
 		SessionBookmarkEvents(document, bookmarks);
 
 		// Tab updates tracking
-		if (typeof browser === 'object' ) {
+		if (AppConfig.isAddonContext()) {
 			browser.tabs.onUpdated.addListener(function () {
 				WindowEvents.emit(document, 'SessionContainer-RefreshUI');
 			});
@@ -328,9 +328,17 @@ define(function(require, exports) {
 				url: activeTab.url,
 				parentId: sessionID
 			})
-			.then(function () {
-				WindowEvents.emit(document, 'ViewSession', sessionID);
-			});
+			.then(function (mark) {
+				var bookmark = new SessionBookmark(document, mark);
+
+				SessionSyncModel.bookmarks[mark.id] = mark;
+				this.SyncModel.setBookmark(mark.id, bookmark);
+				this.DOMBookmarks.appendChild(bookmark.DOMRoot);
+
+				bookmark.setVirtualPosition(mark.index);
+				bookmark.highlight();
+
+			}.bind(this));
 
 		}.bind(this));
 	};

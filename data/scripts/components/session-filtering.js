@@ -4,6 +4,7 @@ define(function(require, exports) {
 	// *****************************************************************************
 	// Custom Modules
 
+	const { AppConfig } = require('../config');
 	const { WindowEvents, GlobalEvents } = require('../utils/global-events');
 	const { HTMLCreator } = require('../utils/dom');
 
@@ -11,10 +12,10 @@ define(function(require, exports) {
 	// API
 
 	/*
-	* SearchBar
+	* SessionFiltering
 	*/
 
-	function SearchBar(document)
+	function SessionFiltering(document)
 	{
 		var DomElem = HTMLCreator(document);
 
@@ -70,7 +71,6 @@ define(function(require, exports) {
 		};
 
 		var onFocus = function onFocus() {
-			searchInput.focus();
 			panel.setAttribute('active', true);
 			document.addEventListener('keyup', onKeyDown);
 		};
@@ -111,7 +111,22 @@ define(function(require, exports) {
 			panel.setAttribute('match', isMatch);
 		});
 
-		WindowEvents.on(document, 'SearchSessions', onFocus);
+		WindowEvents.on(document, 'FocusSessionFilter', function () {
+			searchInput.focus();
+		});
+
+		// ------------------------------------------------------------------------
+		// Init state
+
+		this.init = function init()
+		{
+			var activeFilter = AppConfig.get('session.active.filter');
+			if (activeFilter && activeFilter.length > 0) {
+				searchInput.value = activeFilter;
+				panel.setAttribute('active', true);
+				onKeyDown();
+			}
+		};
 
 		// ------------------------------------------------------------------------
 		// Public properties
@@ -120,5 +135,5 @@ define(function(require, exports) {
 	}
 
 	// Public API
-	exports.SearchBar = SearchBar;
+	exports.SessionFiltering = SessionFiltering;
 });

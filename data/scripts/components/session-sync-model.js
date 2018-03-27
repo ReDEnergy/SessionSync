@@ -195,6 +195,12 @@ define(function(require, exports) {
 		// all items must have the same parent
 		var deleteBookmarkList = function deleteBookmarkList(bookmarkIDs, parentID, callback)
 		{
+			if (bookmarkIDs.length == 0)
+			{
+				callback();
+				return;
+			}
+
 			var reorderList = [];
 
 			// Get position ordered list of all bookmarks from the parrentID folder
@@ -307,14 +313,7 @@ define(function(require, exports) {
 				GlobalEvents.emit('TrashCan-Items', undoEvents.length);
 
 				// Trigger reordering
-				if (isSession(parentID))
-				{
-					GlobalEvents.emit('update-sessions');
-				}
-				else
-				{
-					WindowEvents.broadcast('BookmarksPositionChanged', indices);
-				}
+				WindowEvents.broadcast('BookmarksPositionChanged', indices);
 			}
 		};
 

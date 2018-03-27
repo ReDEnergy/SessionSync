@@ -63,6 +63,101 @@ define(function(require, exports) {
 		this.DOMRoot = entry;
 	}
 
+	function ToggleButton(document, options)
+	{
+		var DomElem = HTMLCreator(document);
+
+		// ------------------------------------------------------------------------
+		// Create UI
+
+		var state = options.state;
+		var callback = JSUtils.getValidFunction(options.callback);
+
+		var container = DomElem('div', {class: 'comp-toggle-button'});
+		var info = DomElem('div', {class: 'label'});
+		info.textContent = options.description;
+
+		var button = DomElem('div', {class: 'button'});
+		button.setAttribute('state', state);
+		button.textContent = state ? options.onState : options.offState;
+
+		container.appendChild(info);
+		container.appendChild(button);
+
+		// ------------------------------------------------------------------------
+		// Events
+
+		var toggle = function toggle() {
+			setValue(!state, true);
+		};
+
+		var setValue = function setValue(value, trigger) {
+			if (value != state) {
+				state = value;
+				button.setAttribute('state', state);
+				button.textContent = state ? options.onState : options.offState;
+				if (trigger) {
+					callback(state);
+				}
+			}
+		};
+
+		button.addEventListener('click', toggle);
+
+		// ------------------------------------------------------------------------
+		// Public properties
+
+		this.toggle = toggle;
+		this.setValue = setValue;
+		this.DOMRoot = container;
+	}
+
+	/*
+	* Action Button
+	*/
+
+	function ActionButton(document, options)
+	{
+		var DomElem = HTMLCreator(document);
+
+		var entry = DomElem('div', {class: 'comp-button'});
+		var title = DomElem('div', {class: 'label'});
+
+		if (options.description) {
+			title.textContent = options.description;
+		}
+
+		var button = DomElem('div', {class: 'button'});
+		button.textContent = options.value;
+
+		if (options.tooltip) {
+			entry.setAttribute('tooltip', options.tooltip);
+			title.setAttribute('tooltip', options.tooltip);
+			button.setAttribute('tooltip', options.tooltip);
+		}
+
+		entry.appendChild(title);
+		entry.appendChild(button);
+
+		function setValue(value)
+		{
+			button.textContent = value;
+		}
+
+		function getValue()
+		{
+			return button.textContent;
+		}
+
+		button.addEventListener('click', function() {
+			options.callback();
+		});
+
+		this.setValue = setValue;
+		this.getValue = getValue;
+		this.DOMRoot = entry;
+	}
+
 	/*
 	* RageControl
 	*/
@@ -150,55 +245,6 @@ define(function(require, exports) {
 		this.setValue = setValue;
 	}
 
-	function ToggleButton(document, options)
-	{
-		var DomElem = HTMLCreator(document);
-
-		// ------------------------------------------------------------------------
-		// Create UI
-
-		var state = options.state;
-		var callback = JSUtils.getValidFunction(options.callback);
-
-		var container = DomElem('div', {class: 'comp-toggle-button'});
-		var info = DomElem('div', {class: 'label'});
-		info.textContent = options.description;
-
-		var button = DomElem('div', {class: 'button'});
-		button.setAttribute('state', state);
-		button.textContent = state ? options.onState : options.offState;
-
-		container.appendChild(info);
-		container.appendChild(button);
-
-		// ------------------------------------------------------------------------
-		// Events
-
-		var toggle = function toggle() {
-			setValue(!state, true);
-		};
-
-		var setValue = function setValue(value, trigger) {
-			if (value != state) {
-				state = value;
-				button.setAttribute('state', state);
-				button.textContent = state ? options.onState : options.offState;
-				if (trigger) {
-					callback(state);
-				}
-			}
-		};
-
-		button.addEventListener('click', toggle);
-
-		// ------------------------------------------------------------------------
-		// Public properties
-
-		this.toggle = toggle;
-		this.setValue = setValue;
-		this.DOMRoot = container;
-	}
-
 	function DropDown(document, options)
 	{
 		var DomElem = HTMLCreator(document);
@@ -225,14 +271,23 @@ define(function(require, exports) {
 		select.appendChild(selectValue);
 		select.appendChild(dropList);
 
-		function addOption(label, value, selected) {
+		function addOption(label, options) {
+			if (options == undefined)
+				options = {};
+
 			var option = DomElem('div', {class: 'option'});
 			option.textContent = label;
-			option.setAttribute('value', value);
-			dropList.appendChild(option);
-			if (selected === true) {
+			option.setAttribute('value', (options.value != undefined) ? options.value : label);
+
+			if (options.property) {
+				option.setAttribute(options.property, '');
+			}
+
+			if (options.selected === true) {
 				setSelected(option);
 			}
+
+			dropList.appendChild(option);
 		}
 
 		// ------------------------------------------------------------------------
@@ -243,12 +298,16 @@ define(function(require, exports) {
 		var callback = JSUtils.getValidFunction(options.onChange);
 
 		var setValue = function(value, trigger) {
-			for (var i=0; i<dropList.children.length; i++) {
+			for (var i = 0; i < dropList.children.length; i++) {
 				if (dropList.children[i].getAttribute('value') == value) {
 					setSelected(dropList.children[i], trigger);
 					return;
 				}
 			}
+		};
+
+		var getValue = function() {
+			return selectedOption.getAttribute('value');
 		};
 
 		var setSelected = function setSelected(node, trigger) {
@@ -258,8 +317,8 @@ define(function(require, exports) {
 			selectedOption = node;
 
 			if (selectedOption) {
-				var value = node.getAttribute('value');
-				selectValue.textContent = node.textContent;
+				var value = selectedOption.getAttribute('value');
+				selectValue.textContent = selectedOption.textContent;
 				container.setAttribute('value', value);
 				selectedOption.setAttribute('selected', '');
 				if (trigger) {
@@ -295,12 +354,14 @@ define(function(require, exports) {
 		this.container = container;
 		this.addOption = addOption;
 		this.setValue = setValue;
+		this.getValue = getValue;
 	}
 
 	// *****************************************************************************
 	// Public API
 
 	exports.DropDown = DropDown;
+	exports.ActionButton = ActionButton;
 	exports.ToggleSwitch = ToggleSwitch;
 	exports.RangeControl = RangeControl;
 	exports.ToggleButton = ToggleButton;

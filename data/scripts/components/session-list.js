@@ -86,13 +86,10 @@ define(function(require, exports) {
 		}.bind(this));
 
 		WindowEvents.on(document, 'FilterSessions', this.filterSessions.bind(this));
-
-		WindowEvents.on(document, 'SortSessionsBy', function(method) {
-			this.sortSessionsBy(method);
-		}.bind(this));
+		WindowEvents.on(document, 'SortSessionsBy', this.sortSessionsBy.bind(this));
 
 		WindowEvents.on(document, 'SessionsPositionChanged', function(indices) {
-			if (this.sortMethod == 'position-asc' && this.filterExpression.length == 0)
+			if (AppConfig.get('session.sorting') == 'position-asc' && AppConfig.get('session.active.filter').length == 0)
 			{
 				var len = indices.length;
 				for (var i = 0; i < len; i++) {
@@ -104,12 +101,22 @@ define(function(require, exports) {
 
 		WindowEvents.on(document, 'ShowCurrentSession', function() {
 			WindowEvents.emit(document, 'SetUIState', {	list: 'none' });
+			AppConfig.set('session.selected', undefined);
 			this.setSelectedNode(undefined);
 		}.bind(this));
 
 		WindowEvents.on(document, 'ShowSyncList', function(options) {
-			if (this.sessions.length && this.promiseInfo.sessionID == 0) {
-				this.selectSession(this.sessions[0]);
+			// Select first visible session
+			if (this.promiseInfo.sessionID == undefined)
+			{
+				for (var i=0; i < this.sessions.length; i++)
+				{
+					if (this.sessions[i].isVisible())
+					{
+						this.selectSession(this.sessions[i], true, false);
+						break;
+					}
+				}
 			}
 			WindowEvents.emit(document, 'SetUIState', {	list: 'sync' });
 			if (options.update == true) {
@@ -122,7 +129,7 @@ define(function(require, exports) {
 		});
 
 		WindowEvents.on(document, 'SessionDescriptionChanged', function() {
-			this.sortSessionsBy(this.sortMethod);
+			this.sortSessionsBy(AppConfig.get('session.sorting'));
 			this.scrollToSelected();
 		}.bind(this));
 
@@ -136,9 +143,7 @@ define(function(require, exports) {
 		// Public data
 
 		this.sessions = [];
-		this.filterExpression = '';
-		this.promiseInfo = { sessionID: 0 };
-		this.sortMethod = 'position-asc';
+		this.promiseInfo = { sessionID: AppConfig.get('session.selected') };
 		this.DOMList = list;
 		this.DOMRoot = root;
 		this.document = document;
@@ -148,7 +153,6 @@ define(function(require, exports) {
 
 	SessionList.prototype.createHistoryList = function createHistoryList(document)
 	{
-
 		var DomElem = HTMLCreator(document);
 
 		// ------------------------------------------------------------------------
@@ -222,7 +226,7 @@ define(function(require, exports) {
 		return historyList;
 	};
 
-	SessionList.prototype.setSessions = function setSessions()
+	SessionList.prototype.setSessions = function setSessions(jump)
 	{
 		this.sessions = [];
 		this.DOMList.textContent = '';
@@ -253,7 +257,7 @@ define(function(require, exports) {
 				selectedSession = sessionFolder;
 			}
 
-			if (this.filterExpression.length) {
+			if (AppConfig.get('session.active.filter').length) {
 				if (sessionFolder.match(this.filter)) {
 					sessionFolder.setVirtualPosition(position);
 					position++;
@@ -265,17 +269,17 @@ define(function(require, exports) {
 
 		}.bind(this));
 
-		if (this.filterExpression.length) {
-			this.filterSessions(this.filterExpression);
+		var filterExpression = AppConfig.get('session.active.filter');
+		if (filterExpression.length > 0) {
+			this.filterSessions(filterExpression);
 		}
 
-		// By default bookmarks are sorted ascending by internal position
-		this.sortSessionsBy(this.sortMethod);
+		this.sortSessionsBy(AppConfig.get('session.sorting'));
 
 		// Preview the selected session
 		if (selectedSession)
 		{
-			this.selectSession(selectedSession);
+			this.selectSession(selectedSession, true, jump);
 		}
 		else
 		{
@@ -283,13 +287,21 @@ define(function(require, exports) {
 		}
 	};
 
-	SessionList.prototype.scrollToSelected = function scrollToSelected()
+	SessionList.prototype.scrollToSelected = function scrollToSelected(snap)
 	{
 		if (this.selectedNode == undefined)
 			return;
 
 		var offset = this.selectedNode.offsetTop - this.DOMList.clientHeight / 2 + this.selectedNode.clientHeight;
-		AutoScroll.scrollTo(this.DOMList, offset, 0.25);
+
+		if (snap === true)
+		{
+			this.DOMList.scrollTop = offset;
+		}
+		else
+		{
+			AutoScroll.scrollTo(this.DOMList, offset, 0.25);
+		}
 	};
 
 	SessionList.prototype.setSelectedNode = function setSelectedNode(node)
@@ -305,21 +317,25 @@ define(function(require, exports) {
 		}
 	};
 
-	SessionList.prototype.selectSession = function selectSession(selectedSession)
+	SessionList.prototype.selectSession = function selectSession(selectedSession, scrollTo, snap)
 	{
+		AppConfig.set('session.selected', selectedSession.bookmarkID);
 		this.setSelectedNode(selectedSession.DOMRoot);
+
 		WindowEvents.emit(this.document, 'ViewSession', selectedSession.bookmarkID);
 		if (this.promiseInfo.edit == true) {
 			WindowEvents.emit(this.document, 'SessionContextMenu-EditSession', selectedSession.bookmarkID);
 		}
 
 		// auto-scroll to the selected node
-		this.scrollToSelected();
+		if (scrollTo) {
+			this.scrollToSelected(snap);
+		}
 	};
 
 	SessionList.prototype.filterSessions = function filterSessions(expression)
 	{
-		this.filterExpression = expression;
+		AppConfig.set('session.active.filter', expression);
 
 		if (expression.length)
 		{
@@ -347,13 +363,13 @@ define(function(require, exports) {
 			this.sessions.forEach(function(session) {
 				session.setVisible();
 			});
-			this.sortSessionsBy(this.sortMethod);
+			this.sortSessionsBy(AppConfig.get('session.sorting'));
 		}
 	};
 
 	SessionList.prototype.sortSessionsBy = function sortSessionsBy(method)
 	{
-		this.sortMethod = method;
+		AppConfig.set('session.sorting', method);
 		this.sessions.sort(SessionFolderSortBy[method]);
 		var position = 0;
 		this.sessions.forEach(function(session) {
@@ -363,12 +379,6 @@ define(function(require, exports) {
 			}
 		});
 	};
-
-	// ------------------------------------------------------------------------
-	// Events
-
-	// ------------------------------------------------------------------------
-	// Init
 
 	// ------------------------------------------------------------------------
 	// Module exports

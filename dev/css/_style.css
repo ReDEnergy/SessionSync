@@ -1,9 +1,11 @@
 /**
- * Session-Sync-Add-on-ReD is a XUL element
+ * Session-Sync
  */
 #session-sync {
-	width: 800px;
-	height: 600px;
+	width: 100%;
+	height: 100%;
+	min-height: 400px;
+	margin: 0;
 
 	font-size: 12px;
 	font-family: "Open Sans", "Segoe UI", Arial, Helvetica, sans-serif;
@@ -11,12 +13,38 @@
 	color: #000 !important;
 	overflow: hidden;
 
-	/* transition: all 0.3s ease-in; */
+	-moz-user-select: none;
+}
+
+#session-sync[panel="false"] {
+	position: absolute;
+}
+
+#session-sync[panel="false"] .sessions-area .panel-resize-handle {
+	display: none;
 }
 
 /*
  * Only DOM nodes from here
  */
+
+#session-sync #overlay {
+	width: 100%;
+	height: 100%;
+
+	background: rgba(255, 255, 255, 0.01);
+
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 2500;
+
+	display: none;
+}
+
+#session-sync #overlay[state="true"] {
+	display: block;
+}
 
 /*
  * Panel Body
@@ -34,18 +62,12 @@
 	width: 100%;
 	height: 100%;
 
-	border: 1px solid #BBB;
-	/* box-shadow: 0px 5px 15px 0px #CCC; */
 	box-sizing: border-box;
 
 	transition: all 0.2s;
-	transform-style: preserve-3d;
 
-	z-index: 1000;
 	display: flex;
 	flex-direction: column;
-
-	float: right;
 }
 
 #session-sync[show="false"] .sessions-area {

@@ -15,7 +15,7 @@ define(function(require, exports) {
 
 		function setContext(ctx) {
 			context = ctx;
-			WindowEvents.emitLocal('TrashCan-Droppable', ctx != null);
+			WindowEvents.emit(document, 'TrashCan-Droppable', ctx != null);
 		}
 
 		function getContext() {
@@ -27,7 +27,7 @@ define(function(require, exports) {
 		}
 
 		function clearContext() {
-			context = null;
+			setContext(null);
 		}
 
 		return {

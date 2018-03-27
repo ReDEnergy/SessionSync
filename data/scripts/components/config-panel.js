@@ -59,7 +59,10 @@ define(function(require, exports) {
 
 		function ToggleOptionConfig(options)
 		{
-			var toggleBtn = new DOMComponent.ToggleButton(document, {
+			var isSwitch = (options.type === 'switch');
+			var Toggle = isSwitch ? DOMComponent.ToggleSwitch : DOMComponent.ToggleButton;
+
+			var toggleBtn = new Toggle(document, {
 				state: AppConfig.get(options.key),
 				description: options.name,
 				onState: options.onState,
@@ -73,7 +76,14 @@ define(function(require, exports) {
 			});
 			options.parent.addItem(toggleBtn.DOMRoot);
 			GlobalEvents.on(options.key, function(value) {
-				toggleBtn.setValue(value, false);
+				if (isSwitch)
+				{
+					toggleBtn.setState(value);
+				}
+				else
+				{
+					toggleBtn.setValue(value, false);
+				}
 			});
 		}
 
@@ -122,8 +132,11 @@ define(function(require, exports) {
 			var section = new ConfigSection(document, { title: 'UI Scaling' });
 			panel.appendChild(section.container);
 
-			RangeOptionConfig({ parent: section, name: 'Panel width (px)', key: 'style.panel.width', minValue: 500, maxValue: 800, step: 5});
-			RangeOptionConfig({ parent: section, name: 'Panel height (px)', key: 'style.panel.height', minValue: 400, maxValue: 600, step: 5});
+			if (AppConfig.isPanel())
+			{
+				RangeOptionConfig({ parent: section, name: 'Panel width (px)', key: 'style.panel.width', minValue: 500, maxValue: 800, step: 5});
+				RangeOptionConfig({ parent: section, name: 'Panel height (px)', key: 'style.panel.height', minValue: 400, maxValue: 600, step: 5});
+			}
 			RangeOptionConfig({ parent: section, name: 'Header bar', key: 'style.scale.header', minValue: 10, maxValue: 50});
 			RangeOptionConfig({ parent: section, name: 'Toolbar', key: 'style.scale.toolbar', minValue: 10, maxValue: 50});
 			RangeOptionConfig({ parent: section, name: 'Session list', key: 'style.scale.sessions', minValue: 10, maxValue: 50});
@@ -149,10 +162,63 @@ define(function(require, exports) {
 
 			ToggleOptionConfig({
 				parent: section,
+				type: 'switch',
 				name: 'Context menu icons',
 				key: 'context.menu.icons',
 				onState: 'Show',
 				offState: 'Disabled',
+			});
+
+			ToggleOptionConfig({
+				parent: section,
+				name: 'Detach method',
+				key: 'detach.window',
+				onState: 'Window',
+				offState: 'New tab',
+			});
+
+		})();
+
+		// ------------------------
+		// Section: Hotkeys
+
+		(function() {
+
+			if (!AppConfig.isAddonContext())
+				return;
+
+			if (typeof browser === 'object' && browser.commands.update == undefined)
+				return;
+
+			var section = new ConfigSection(document, { title: 'Hotkeys' });
+			panel.appendChild(section.container);
+
+			function HotkeyOptionConfig(command)
+			{
+				var button = new DOMComponent.ActionButton(document, {
+					value: command.shortcut,
+					description: command.description,
+					callback: function() {
+						WindowEvents.emit(document, 'ChangeHotkey', {
+							title: command.description,
+							shortcut: button.getValue(),
+							callback: function (value) {
+								button.setValue(value);
+								command.shortcut = value;
+								GlobalEvents.emit('hotkey.update', command);
+							}
+						});
+					},
+				});
+
+				return button.DOMRoot;
+			}
+
+			GlobalEvents.on('config.hotkey.init', function(commands) {
+				commands.forEach(function (command) {
+					var action = HotkeyOptionConfig(command);
+					section.addItem(action);
+				});
 			});
 		})();
 
@@ -167,7 +233,7 @@ define(function(require, exports) {
 			SessionHistory.getConfig(function (historyConfig) {
 
 				// Context menu icons
-				var contextMenuIconsTB = new DOMComponent.ToggleButton(document, {
+				var contextMenuIconsTB = new DOMComponent.ToggleSwitch(document, {
 					state: historyConfig.enabled,
 					description: 'Auto-save sessions',
 					onState: 'Enabled',

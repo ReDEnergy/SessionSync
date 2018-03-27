@@ -4,6 +4,7 @@ define(function(require, exports) {
 	// *****************************************************************************
 	// Custom Modules
 
+	const { AppConfig } = require('../config');
 	const { WindowEvents, GlobalEvents } = require('../utils/global-events');
 
 	// *****************************************************************************
@@ -16,7 +17,7 @@ define(function(require, exports) {
 
 		var getHistory = function getHistory(callback)
 		{
-			if (typeof browser === 'object' ) {
+			if (AppConfig.isAddonContext()) {
 				browser.storage.local.get(sessionsKey).then(function (obj) {
 					if(obj[sessionsKey]) {
 						callback(obj[sessionsKey]);
@@ -27,7 +28,7 @@ define(function(require, exports) {
 
 		var getConfig = function getConfig(callback)
 		{
-			if (typeof browser === 'object' ) {
+			if (AppConfig.isAddonContext()) {
 				browser.storage.local.get(configKey).then(function (obj) {
 					callback(obj[configKey]);
 				});

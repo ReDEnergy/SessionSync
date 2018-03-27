@@ -133,6 +133,7 @@
 }
 
 #session-sync .session-container .bookmark[highlight] {
+	transition-duration: 0.5s;
 	background: #4396E9 !important;
 	color: #FFF;
 }

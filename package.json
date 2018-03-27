@@ -1,32 +1,10 @@
 {
-  "id": "session-sync@gabrielivanica.com",
   "name": "session-sync",
-  "title": "Session Sync",
-  "version": "2.0.2",
   "author": "Gabriel Ivanica",
+  "url": "https://github.com/ReDEnergy/SessionSync",
+  "version": "3.0.0",
   "description": "Save sessions as bookmarks and sync them through any sync engine.\nManage sessions, edit, save, restore.\nSession-Sync will automatically update sessions across multiple machines",
-  "homepage": "https://github.com/ReDEnergy/SessionSync",
-  "main": "lib/main.js",
-  "icon": "data/images/icon48.png",
   "license": "MPL-2.0",
-  "permissions": {
-    "private-browsing": true,
-    "multiprocess": true
-  },
-  "preferences": [
-    {
-      "type": "control",
-      "label": "Open",
-      "name": "open-instructions",
-      "title": "Add-on instructions"
-    },
-    {
-      "type": "control",
-      "label": "Config",
-      "name": "open-configuration",
-      "title": "Add-on config"
-    }
-  ],
   "devDependencies": {
     "connect-livereload": "^0.5.3",
     "express": "^4.13.1",

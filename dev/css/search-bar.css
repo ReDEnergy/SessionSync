@@ -68,7 +68,7 @@
 	height: 1em;
 	background-image: url("images/icons/star.png");
 	background-size: 100%;
-	background-repeat: none;
+	background-repeat: no-repeat;
 	background-position: center;
 	text-align: center;
 	color: #FFF;

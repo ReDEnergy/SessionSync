@@ -22,7 +22,7 @@ define(function(require, exports) {
 			function success(bookmarks) {
 				if (bookmarks.length == 0)
 				{
-					BookmarkManager.searchBookmarks({ title: 'Bookmarks Menu 3'})
+					BookmarkManager.searchBookmarks({ title: 'Bookmarks Menu'})
 					.then(function (menus) {
 						BookmarkManager.createBookmark({
 							title: 'SessionSync',
@@ -40,11 +40,11 @@ define(function(require, exports) {
 		);
 	};
 
-	var listSessions = function listSessions()
+	var listSessions = function listSessions(fastMode)
 	{
 		BookmarkManager.getFolderBookmarks(AppConfig.get('storageID'), function(sessions) {
 			SessionSyncModel.sessions = sessions;
-			WindowEvents.emit(document, 'ListSessions');
+			WindowEvents.emit(document, 'ListSessions', fastMode);
 		});
 	};
 
@@ -54,13 +54,13 @@ define(function(require, exports) {
 
 		findSessionSync(function(bookmark) {
 			AppConfig.set('storageID', bookmark.id, function() {
-				listSessions();
+				listSessions(true);
 			});
 		});
 
 		AppConfig.init();
 
-		GlobalEvents.on('update-sessions', listSessions.bind(null, false));
+		GlobalEvents.on('update-sessions', listSessions.bind(null, false, false));
 	};
 
 	// ------------------------------------------------------------------------

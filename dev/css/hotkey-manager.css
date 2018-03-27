@@ -1,0 +1,173 @@
+/**
+ * Session Hotkey Manager
+ */
+
+ #session-sync .hotkey-overlay {
+	position: absolute;
+	background: rgba(0, 0, 0, 0.85);
+	width: 100%;
+	height: 100%;
+	z-index: 3000;
+	display: none;
+ }
+
+ #session-sync .hotkey-overlay[state="true"] {
+	display: block;
+ }
+
+#session-sync .hotkey-manager {
+	width: 300px;
+	padding: 10px;
+	font-size: 12px;
+	border: 1px solid #CCC;
+	background: #FFF;
+	color: #000;
+
+	position: absolute;
+	top: 30%;
+	left: 50%;
+	z-index: 1;
+	transform: translate(-50%, -50%);
+
+	transition: all 0.25s ease-out;
+	box-sizing: content-box;
+}
+
+#session-sync .hotkey-manager .header {
+	padding: 0.5em 10px;
+	margin: 0 0 0.5em 0;
+	font-size: 1.4em;
+	text-align: center;
+	background: #F5F5F5;
+	color: #555;
+}
+
+#session-sync .hotkey-manager .info-box {
+	text-align: center;
+}
+
+#session-sync .hotkey-manager .info-box .message {
+	color: #DC462C;
+	text-align: center;
+	font-weight: bold;
+}
+
+#session-sync .hotkey-manager .info-box .link {
+	color: #509AE5;
+	text-align: center;
+	font-weight: bold;
+}
+
+#session-sync .hotkey-manager .info-box .link:hover {
+	cursor: pointer;
+}
+
+#session-sync .hotkey-manager .hotkey-info {
+	width: 100%;
+	margin: 10px auto;
+	border: 1px solid #DDD;
+
+	text-align: center;
+	color: #555;
+	overflow: hidden;
+}
+
+#session-sync .hotkey-manager .hotkey-info > div {
+	float: left;
+	padding: 0.5em 0;
+	text-align: center;
+}
+
+#session-sync .hotkey-manager .hotkey-info .title {
+	width: 30%;
+	background: #38B751;
+	background: #999;
+	color: #FFF;
+}
+
+#session-sync .hotkey-manager .hotkey-info .value {
+	width: 70%;
+}
+
+#session-sync .hotkey-manager .comp-dropdown {
+	width: 30%;
+	float: left;
+}
+
+#session-sync .hotkey-manager .comp-dropdown .select {
+	width: 100%;
+}
+
+#session-sync .hotkey-manager .comp-dropdown .label {
+	display: none;
+}
+
+#session-sync .hotkey-manager .plus {
+	width: 5%;
+	height: 2.4em;
+	line-height: 2.4em;
+	text-align: center;
+	float: left;
+}
+
+#session-sync #shortcut-key.comp-dropdown .drop-list {
+	width: 300px;
+	left: unset;
+	right: 0;
+}
+
+#session-sync #shortcut-key.comp-dropdown .option {
+	width: 10%;
+}
+
+#session-sync #shortcut-key.comp-dropdown .option[wide] {
+	width: 25%;
+}
+
+#session-sync .hotkey-manager .shortcut-config,
+#session-sync .hotkey-manager .action-bar {
+	width: 100%;
+	height: 2.4em;
+	margin: 10px 0 0 0;
+	display: flex;
+}
+
+#session-sync .hotkey-manager .action-bar {
+	margin: 20px 0 0 0;
+}
+
+#session-sync .hotkey-manager .action-bar .flex {
+	flex: 1;
+}
+
+#session-sync .hotkey-manager .action-bar .ok {
+	margin: 0 10px 0 0;
+	color: #FFF;
+	background: #E86A5C; /*#EA5F4D;*/
+}
+
+#session-sync .hotkey-manager .action-bar .ok:hover {
+	background: #DC462C;
+}
+
+#session-sync .hotkey-manager .action-bar .cancel {
+	color: #FFF;
+	background: #999;
+}
+
+#session-sync .hotkey-manager .action-bar .cancel:hover {
+	background: #777;
+}
+
+#session-sync .hotkey-manager .action-bar .button {
+	width: 75px;
+	padding: 5px 0;
+	text-align: center;
+	float: left;
+
+	box-sizing: border-box;
+}
+
+#session-sync .hotkey-manager .action-bar .button:hover {
+	cursor: pointer;
+}

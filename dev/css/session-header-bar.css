@@ -119,7 +119,6 @@
 }
 
 #session-sync .header-bar .header-menu .menu-area {
-	width: 11em;
 	height: 0;
 	margin: 0;
 	padding: 0;
@@ -142,10 +141,11 @@
 }
 
 #session-sync .header-bar .header-menu[active="1"] .menu-area {
-	display: flex;
 	height: 3.8em;
 	padding: 1em;
 	border: 1px solid #CCC;
+
+	display: flex;
 	opacity: 1;
 }
 
@@ -154,12 +154,18 @@
 }
 
 #session-sync .header-bar .header-menu .menu-button {
+	width: 4em;
 	height: 3.2em;
+	margin: 0 0 0 0.6em;
 	padding: 0.3em 0;
 	border: 1px solid #FFF;
 
 	box-sizing: content-box;
 	flex: 1;
+}
+
+#session-sync .header-bar .header-menu .menu-button:first-child {
+	margin: 0;
 }
 
 #session-sync .header-bar .header-menu .menu-button:hover {
@@ -184,12 +190,12 @@
 	background-image: url("images/icons/gear.png");
 }
 
-#session-sync .header-bar .header-menu .menu-button[id="help"] {
-	margin: 0 0 0 0.75em;
-}
-
 #session-sync .header-bar .header-menu .menu-button[id="close"] .icon {
 	background-image: url("images/icons/power.png");
+}
+
+#session-sync .header-bar .header-menu .menu-button[id="detach"] .icon {
+	background-image: url("images/icons/focus.png");
 }
 
 #session-sync .header-bar .header-menu .menu-button .title {

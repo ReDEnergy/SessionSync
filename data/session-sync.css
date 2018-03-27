@@ -131,6 +131,31 @@
  */
 
 /**
+ * Action Button
+ */
+
+ #session-sync .comp-button {
+	width: 100%;
+	color: #333;
+	display: flex;
+}
+
+#session-sync .comp-button .label {
+	flex: 1;
+}
+
+#session-sync .comp-button .button {
+	text-align: center;
+	background: #38B751;
+	color: #FFF;
+	flex: 1;
+}
+
+#session-sync .comp-button .button:hover {
+	cursor: pointer;
+}
+
+/**
  * Toggle Switch
  */
 
@@ -150,31 +175,61 @@
 }
 
 #session-sync .comp-toggle-switch .label {
-	width: 8em;
-	line-height: 1.3em;
 	float: left;
 }
 
 #session-sync .comp-toggle-switch .switch {
 	margin-left: 0.4em;
 	padding: 0 0 0.25em 0;
-	border-radius: 0.3em;
+
+	background-color: #40B740;
+	background-size: 1.6em;
+	background-repeat: no-repeat;
+	background-position: center right 0.2em;
+	border-radius: 2em;
+
 	text-align: center;
 	color: #FFF;
-	line-height: 1.3em;
-	text-transform: lowercase;
 	float: left;
 
 	flex: 1;
 	transition: all 0.3s;
+	position: relative;
+
+	box-sizing: border-box;
 }
 
+#session-sync .comp-toggle-switch .switch:after {
+	content: " ";
+	width: 1.4em;
+	height: 1.4em;
+	margin: 0.3em 0 0 0.3em;
+	background: #444;
+	border-radius: 100%;
+	position: absolute;
+	transition-property: left, background;
+	transition-duration: 0.25s;
+	transition-timing-function: ease-out;
+}
+
+
 #session-sync .comp-toggle-switch .switch[state="true"] {
-	background: #208020;
+	background-color: #40B740;
+}
+
+#session-sync .comp-toggle-switch .switch[state="true"]:after {
+	left: calc(100% - 1.7em);
+	margin-left: 0;
+}
+
+#session-sync .comp-toggle-switch .switch[state="false"]:after {
+	background: #E01616;
+	left: 0;
 }
 
 #session-sync .comp-toggle-switch .switch[state="false"] {
-	background: #CB4D4D;
+	background-color: #999;
+	background-position: center left 0.2em;
 }
 
 /**
@@ -183,7 +238,7 @@
 
 #session-sync .comp-dropdown {
 	width: 100%;
-	height: 2em;
+	height: 2.4em;
 	color: #555;
 	display: flex;
 	text-align: center;
@@ -191,17 +246,40 @@
 
 #session-sync .comp-dropdown .label {
 	width: 50%;
+	height: 100%;
+	line-height: 2.4em;
+	background: #F5F5F5;
 }
 
 #session-sync .comp-dropdown .select {
+	height: 100%;
+	line-height: 2.4em;
 	width: 50%;
 	background: #38B751;
 	position: relative;
 }
 
+#session-sync .comp-dropdown .select:hover {
+	background: #349E47;
+}
+
 #session-sync .comp-dropdown .select-value {
-	width: 100%;
 	height: 100%;
+	color: #FFF;
+	text-align: center;
+}
+
+#session-sync .comp-dropdown .select-value:hover {
+	background: #349E47;
+	cursor: pointer;
+}
+
+#session-sync .comp-dropdown .option {
+	height: 2.4em;
+}
+
+#session-sync .comp-dropdown .option:hover {
+	cursor: pointer;
 }
 
 #session-sync .comp-dropdown .drop-list {
@@ -229,8 +307,9 @@
 }
 
 #session-sync .comp-dropdown .drop-list .option {
-	width: 50%;
+	width: 100%;
 	transition: all 0.2s;
+	text-align: center;
 	float: left;
 }
 
@@ -241,6 +320,7 @@
 
 #session-sync .comp-dropdown .drop-list .option[selected] {
 	background: #38B751;
+	background: #66AAEF;
 	color: #FFF;
 }
 
@@ -257,6 +337,7 @@
 	opacity: 0.95;
 	color: #000;
 
+	overflow-y: auto;
 	position: absolute;
 	top: 1px;
 	bottom: 1px;
@@ -407,7 +488,7 @@
 	float: left;
 }
 
-#session-sync .config-panel .comp-range-control .range-input input {
+#session-sync .config-panel .comp-range-control .range-input .value {
 	text-align: center !important;
 }
 
@@ -452,7 +533,10 @@
  * Toggle control
  */
 
-#session-sync .config-panel .comp-toggle-button {
+ #session-sync .config-panel .comp-button,
+ #session-sync .config-panel .comp-dropdown,
+ #session-sync .config-panel .comp-toggle-switch,
+ #session-sync .config-panel .comp-toggle-button {
 	width: 100%;
 	height: 2em;
 	margin: 5px 0;
@@ -462,6 +546,9 @@
 	box-sizing: border-box;
 }
 
+#session-sync .config-panel .comp-button .label,
+#session-sync .config-panel .comp-dropdown .label,
+#session-sync .config-panel .comp-toggle-switch .label,
 #session-sync .config-panel .comp-toggle-button .label {
 	height: 100%;
 	color: #555;
@@ -473,6 +560,7 @@
 	box-sizing: border-box;
 }
 
+#session-sync .config-panel .comp-toggle-switch .switch,
 #session-sync .config-panel .comp-toggle-button .button {
 	width: 8em;
 	height: 100%;
@@ -482,6 +570,10 @@
 	color: white;
 	text-align: center;
 	float: left;
+}
+
+#session-sync .config-panel .comp-toggle-switch .switch {
+	flex: unset;
 }
 
 #session-sync .config-panel .comp-toggle-button .button:hover {
@@ -500,32 +592,26 @@
 	background: #66AAEF;
 }
 
+/*
+ * Button Component
+ */
+
+#session-sync .config-panel .comp-button .button {
+	width: 8em;
+	height: 100%;
+	margin: 0 1em 0 0;
+	border-radius: 1em;
+	line-height: 1.9em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	flex: unset;
+	padding: 0 0.75em;
+	box-sizing: border-box;
+}
 
 /*
  * Dropdown Component
  */
-
-#session-sync .config-panel .comp-dropdown {
-	width: 100%;
-	height: 2em;
-	margin: 5px 0;
-	padding: 0 1em 0 2em;
-	line-height: 1.8em;
-	display: flex;
-	box-sizing: border-box;
-}
-
-#session-sync .config-panel .comp-dropdown .label {
-	height: 100%;
-	color: #555;
-	text-align: left;
-	word-break: break-all;
-	font-size: 1.1em;
-	float: left;
-
-	flex: 1;
-	box-sizing: border-box;
-}
 
 #session-sync .config-panel .comp-dropdown .select {
 	width: 8em;
@@ -544,15 +630,6 @@
 #session-sync .config-panel .comp-dropdown .select:hover {
 	cursor: pointer;
 	background: #66AAEF;
-}
-
-#session-sync .config-panel .comp-dropdown .drop-list {
-	width: 14em;
-	top: calc(100% + 0px);
-}
-
-#session-sync .config-panel .comp-dropdown .drop-list .option {
-	width: 16.6%;
 }
 
 /*
@@ -664,7 +741,7 @@
 
 	box-shadow: 0px 0px 5px 0 #CCC;
 	transform: translateX(5px);
-	z-index: 1000;
+	z-index: 3000;
 }
 
 #session-sync .context-menu[data-active="true"] {
@@ -708,7 +785,7 @@
 }
 
 #session-sync .context-menu .button[icon="new-window"] {
-	background-image: url("images/icons/polaroids.png");
+	background-image: url("images/icons/frames.png");
 }
 
 #session-sync .context-menu .button[icon="copy"] {
@@ -1036,6 +1113,179 @@
 	transform: rotate(-45deg);
 }
 /**
+ * Session Hotkey Manager
+ */
+
+ #session-sync .hotkey-overlay {
+	position: absolute;
+	background: rgba(0, 0, 0, 0.85);
+	width: 100%;
+	height: 100%;
+	z-index: 3000;
+	display: none;
+ }
+
+ #session-sync .hotkey-overlay[state="true"] {
+	display: block;
+ }
+
+#session-sync .hotkey-manager {
+	width: 300px;
+	padding: 10px;
+	font-size: 12px;
+	border: 1px solid #CCC;
+	background: #FFF;
+	color: #000;
+
+	position: absolute;
+	top: 30%;
+	left: 50%;
+	z-index: 1;
+	transform: translate(-50%, -50%);
+
+	transition: all 0.25s ease-out;
+	box-sizing: content-box;
+}
+
+#session-sync .hotkey-manager .header {
+	padding: 0.5em 10px;
+	margin: 0 0 0.5em 0;
+	font-size: 1.4em;
+	text-align: center;
+	background: #F5F5F5;
+	color: #555;
+}
+
+#session-sync .hotkey-manager .info-box {
+	text-align: center;
+}
+
+#session-sync .hotkey-manager .info-box .message {
+	color: #DC462C;
+	text-align: center;
+	font-weight: bold;
+}
+
+#session-sync .hotkey-manager .info-box .link {
+	color: #509AE5;
+	text-align: center;
+	font-weight: bold;
+}
+
+#session-sync .hotkey-manager .info-box .link:hover {
+	cursor: pointer;
+}
+
+#session-sync .hotkey-manager .hotkey-info {
+	width: 100%;
+	margin: 10px auto;
+	border: 1px solid #DDD;
+
+	text-align: center;
+	color: #555;
+	overflow: hidden;
+}
+
+#session-sync .hotkey-manager .hotkey-info > div {
+	float: left;
+	padding: 0.5em 0;
+	text-align: center;
+}
+
+#session-sync .hotkey-manager .hotkey-info .title {
+	width: 30%;
+	background: #38B751;
+	background: #999;
+	color: #FFF;
+}
+
+#session-sync .hotkey-manager .hotkey-info .value {
+	width: 70%;
+}
+
+#session-sync .hotkey-manager .comp-dropdown {
+	width: 30%;
+	float: left;
+}
+
+#session-sync .hotkey-manager .comp-dropdown .select {
+	width: 100%;
+}
+
+#session-sync .hotkey-manager .comp-dropdown .label {
+	display: none;
+}
+
+#session-sync .hotkey-manager .plus {
+	width: 5%;
+	height: 2.4em;
+	line-height: 2.4em;
+	text-align: center;
+	float: left;
+}
+
+#session-sync #shortcut-key.comp-dropdown .drop-list {
+	width: 300px;
+	left: unset;
+	right: 0;
+}
+
+#session-sync #shortcut-key.comp-dropdown .option {
+	width: 10%;
+}
+
+#session-sync #shortcut-key.comp-dropdown .option[wide] {
+	width: 25%;
+}
+
+#session-sync .hotkey-manager .shortcut-config,
+#session-sync .hotkey-manager .action-bar {
+	width: 100%;
+	height: 2.4em;
+	margin: 10px 0 0 0;
+	display: flex;
+}
+
+#session-sync .hotkey-manager .action-bar {
+	margin: 20px 0 0 0;
+}
+
+#session-sync .hotkey-manager .action-bar .flex {
+	flex: 1;
+}
+
+#session-sync .hotkey-manager .action-bar .ok {
+	margin: 0 10px 0 0;
+	color: #FFF;
+	background: #E86A5C; /*#EA5F4D;*/
+}
+
+#session-sync .hotkey-manager .action-bar .ok:hover {
+	background: #DC462C;
+}
+
+#session-sync .hotkey-manager .action-bar .cancel {
+	color: #FFF;
+	background: #999;
+}
+
+#session-sync .hotkey-manager .action-bar .cancel:hover {
+	background: #777;
+}
+
+#session-sync .hotkey-manager .action-bar .button {
+	width: 75px;
+	padding: 5px 0;
+	text-align: center;
+	float: left;
+
+	box-sizing: border-box;
+}
+
+#session-sync .hotkey-manager .action-bar .button:hover {
+	cursor: pointer;
+}
+/**
  * Notification System
  */
 
@@ -1160,7 +1410,7 @@
 	height: 1em;
 	background-image: url("images/icons/star.png");
 	background-size: 100%;
-	background-repeat: none;
+	background-repeat: no-repeat;
 	background-position: center;
 	text-align: center;
 	color: #FFF;
@@ -1369,6 +1619,7 @@
 }
 
 #session-sync .session-container .bookmark[highlight] {
+	transition-duration: 0.5s;
 	background: #4396E9 !important;
 	color: #FFF;
 }
@@ -1575,7 +1826,6 @@
 }
 
 #session-sync .header-bar .header-menu .menu-area {
-	width: 11em;
 	height: 0;
 	margin: 0;
 	padding: 0;
@@ -1598,10 +1848,11 @@
 }
 
 #session-sync .header-bar .header-menu[active="1"] .menu-area {
-	display: flex;
 	height: 3.8em;
 	padding: 1em;
 	border: 1px solid #CCC;
+
+	display: flex;
 	opacity: 1;
 }
 
@@ -1610,12 +1861,18 @@
 }
 
 #session-sync .header-bar .header-menu .menu-button {
+	width: 4em;
 	height: 3.2em;
+	margin: 0 0 0 0.6em;
 	padding: 0.3em 0;
 	border: 1px solid #FFF;
 
 	box-sizing: content-box;
 	flex: 1;
+}
+
+#session-sync .header-bar .header-menu .menu-button:first-child {
+	margin: 0;
 }
 
 #session-sync .header-bar .header-menu .menu-button:hover {
@@ -1640,12 +1897,12 @@
 	background-image: url("images/icons/gear.png");
 }
 
-#session-sync .header-bar .header-menu .menu-button[id="help"] {
-	margin: 0 0 0 0.75em;
-}
-
 #session-sync .header-bar .header-menu .menu-button[id="close"] .icon {
 	background-image: url("images/icons/power.png");
+}
+
+#session-sync .header-bar .header-menu .menu-button[id="detach"] .icon {
+	background-image: url("images/icons/focus.png");
 }
 
 #session-sync .header-bar .header-menu .menu-button .title {
@@ -1677,8 +1934,8 @@
 	position: absolute;
 	bottom: 0px;
 	right: 4px;
-
 	opacity: 0.1;
+
 	transition: all 0.1s ease-out;
 	box-sizing: border-box;
 }
@@ -1689,6 +1946,10 @@
 
 #session-sync .sorting-method:hover {
 	cursor: pointer;
+	opacity: 1;
+}
+
+#session-sync .sorting-method[active="true"] {
 	opacity: 1;
 }
 
@@ -1901,7 +2162,7 @@
 }
 
 #session-sync .session-toolbar .menu-bar .restore-new-win {
-	background: url("images/icons/polaroids.png") no-repeat center;
+	background: url("images/icons/frames.png") no-repeat center;
 }
 
 /*
@@ -1970,7 +2231,6 @@
 #session-sync .session-toolbar .menu-bar .save-config .comp-toggle-switch .switch {
 	width: 2.6em;
 	height: 100%;
-	background-color: #33A033;
 	background-color: #40B740;
 	background-image: url("images/icons/gear.png");
 	background-size: 1.6em;
@@ -1980,6 +2240,10 @@
 	display: block;
 
 	box-sizing: border-box;
+}
+
+#session-sync .session-toolbar .menu-bar .save-config .comp-toggle-switch .switch:after {
+	display: none;
 }
 
 #session-sync .session-toolbar .menu-bar .save-config .comp-toggle-switch .switch[state="false"] {
@@ -2469,11 +2733,13 @@
 }
 
 /**
- * Session-Sync-Add-on-ReD is a XUL element
+ * Session-Sync
  */
 #session-sync {
-	width: 800px;
-	height: 600px;
+	width: 100%;
+	height: 100%;
+	min-height: 400px;
+	margin: 0;
 
 	font-size: 12px;
 	font-family: "Open Sans", "Segoe UI", Arial, Helvetica, sans-serif;
@@ -2481,12 +2747,38 @@
 	color: #000 !important;
 	overflow: hidden;
 
-	/* transition: all 0.3s ease-in; */
+	-moz-user-select: none;
+}
+
+#session-sync[panel="false"] {
+	position: absolute;
+}
+
+#session-sync[panel="false"] .sessions-area .panel-resize-handle {
+	display: none;
 }
 
 /*
  * Only DOM nodes from here
  */
+
+#session-sync #overlay {
+	width: 100%;
+	height: 100%;
+
+	background: rgba(255, 255, 255, 0.01);
+
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 2500;
+
+	display: none;
+}
+
+#session-sync #overlay[state="true"] {
+	display: block;
+}
 
 /*
  * Panel Body
@@ -2504,18 +2796,12 @@
 	width: 100%;
 	height: 100%;
 
-	border: 1px solid #BBB;
-	/* box-shadow: 0px 5px 15px 0px #CCC; */
 	box-sizing: border-box;
 
 	transition: all 0.2s;
-	transform-style: preserve-3d;
 
-	z-index: 1000;
 	display: flex;
 	flex-direction: column;
-
-	float: right;
 }
 
 #session-sync[show="false"] .sessions-area {

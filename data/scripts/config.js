@@ -13,22 +13,7 @@ define(function(require, exports) {
 	var Config = (function() {
 
 		var localSettings = {};
-
-		// ------------------------------------------------------------------------
-		// Run default addon configuration
-
-		var initConfig = function initConfig()
-		{
-			console.log('');
-			console.log('------------------------------------------');
-
-			var manifest = browser.runtime.getManifest();
-			console.log(manifest);
-			console.log(manifest.name + ' v' + manifest.version);
-			console.log('------------------------------------------');
-
-			setupConfig();
-		};
+		var isPanelUI = (document.body.clientWidth == 0);
 
 		// ------------------------------------------------------------------------
 		// API
@@ -50,6 +35,7 @@ define(function(require, exports) {
 
 		var setupConfig = function setupConfig()
 		{
+			// Styling
 			getConfigValue('style.panel.width', 800);
 			getConfigValue('style.panel.height', 600);
 			getConfigValue('style.sessions.list.width', 220);
@@ -65,10 +51,16 @@ define(function(require, exports) {
 				allWindows: false
 			});
 
+			// Management configuration
+			getConfigValue('session.sorting', 'position-asc');
+			getConfigValue('session.active.filter', '');
+			getConfigValue('session.selected', undefined);
+
 			// Bookmarks configuration
 			getConfigValue('bookmark.click.new.tab', false);
 
 			// General settings
+			getConfigValue('detach.window', true);
 			getConfigValue('context.menu.icons', true);
 			getConfigValue('storageID');
 
@@ -98,17 +90,51 @@ define(function(require, exports) {
 			return localSettings[key];
 		};
 
-		function init()
+		var isPanel = function isPanel()
 		{
-			setupConfig();
-			console.log(localSettings);
-		}
+			return isPanelUI;
+		};
+
+		var isAddonContext = function isAddonContext()
+		{
+			return typeof browser === 'object';
+		};
 
 		// ------------------------------------------------------------------------
 		// Startup
 
-		if (typeof browser === 'object' ) {
-			initConfig();
+		var init = function init()
+		{
+			setupConfig();
+
+			if (isAddonContext()) {
+				browser.commands.getAll().
+				then(function (commands) {
+					GlobalEvents.emit('config.hotkey.init', commands);
+				});
+			}
+
+			// console.log(localSettings);
+		};
+
+		if (isAddonContext()) {
+
+			// console.log('');
+			// console.log('------------------------------------------');
+
+			// var manifest = browser.runtime.getManifest();
+			// console.log(manifest);
+			// console.log(manifest.name + ' v' + manifest.version);
+			// console.log('------------------------------------------');
+
+			setupConfig();
+
+			GlobalEvents.on('hotkey.update', function (command) {
+				browser.commands.update({
+					name: command.name,
+					shortcut: command.shortcut
+				});
+			});
 		}
 
 		// ------------------------------------------------------------------------
@@ -117,7 +143,9 @@ define(function(require, exports) {
 		return {
 			set: set,
 			get: get,
-			init : init
+			init : init,
+			isPanel: isPanel,
+			isAddonContext: isAddonContext
 		};
 	})();
 

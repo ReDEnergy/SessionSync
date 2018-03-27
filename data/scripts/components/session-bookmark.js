@@ -187,7 +187,7 @@ define(function(require, exports) {
 			if (SyncModel.state.session == 'restore')
 			{
 				var bookmarkID = getBookmarkID(e);
-				if (bookmarkID != 0) {
+				if (bookmarkID != null) {
 					WindowEvents.emit(document, 'BookmarkCtxMenu-EditBookmark', bookmarkID);
 				}
 			}
@@ -365,7 +365,7 @@ define(function(require, exports) {
 				// if restore session preview
 				case 'restore': {
 					var bookmarkID = getBookmarkID(e);
-					if (bookmarkID == 0) {
+					if (bookmarkID == null) {
 						return;
 					}
 
@@ -432,6 +432,8 @@ define(function(require, exports) {
 			if (SyncModel.state.session == 'restore')
 			{
 				var bookmarkID = getBookmarkID(e);
+				if (bookmarkID == null)
+					return;
 
 				WindowEvents.emit(document, 'BookmarkCtxMenu-Open', {
 					context: bookmarkID,

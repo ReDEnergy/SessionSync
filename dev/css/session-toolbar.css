@@ -147,7 +147,7 @@
 }
 
 #session-sync .session-toolbar .menu-bar .restore-new-win {
-	background: url("images/icons/polaroids.png") no-repeat center;
+	background: url("images/icons/frames.png") no-repeat center;
 }
 
 /*
@@ -216,7 +216,6 @@
 #session-sync .session-toolbar .menu-bar .save-config .comp-toggle-switch .switch {
 	width: 2.6em;
 	height: 100%;
-	background-color: #33A033;
 	background-color: #40B740;
 	background-image: url("images/icons/gear.png");
 	background-size: 1.6em;
@@ -226,6 +225,10 @@
 	display: block;
 
 	box-sizing: border-box;
+}
+
+#session-sync .session-toolbar .menu-bar .save-config .comp-toggle-switch .switch:after {
+	display: none;
 }
 
 #session-sync .session-toolbar .menu-bar .save-config .comp-toggle-switch .switch[state="false"] {

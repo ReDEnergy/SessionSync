@@ -118,7 +118,6 @@ define(function(require, exports) {
 				WindowEvents.emit(document, 'SetUIState', { config : state});
 			}
 		});
-		menuArea.appendChild(buttonCfg);
 
 		var buttonHelp = MenuButton({
 			id: 'help',
@@ -128,16 +127,18 @@ define(function(require, exports) {
 				WindowEvents.emit(document, 'CloseUI');
 			}
 		});
-		menuArea.appendChild(buttonHelp);
 
-		// var buttonClose = MenuButton({
-		// 	id: 'close',
-		// 	title: 'Close',
-		// 	callback: function () {
-		// 		WindowEvents.emit(document, 'CloseUI');
-		// 	}
-		// });
-		// menuArea.appendChild(buttonClose);
+		var buttonDetach = MenuButton({
+			id: 'detach',
+			title: 'Detach',
+			callback: function () {
+				WindowEvents.emit(document, 'open-addon-detached');
+			}
+		});
+
+		menuArea.appendChild(buttonCfg);
+		menuArea.appendChild(buttonHelp);
+		menuArea.appendChild(buttonDetach);
 
 		// ------------------------------------------------------------------------
 		// Events

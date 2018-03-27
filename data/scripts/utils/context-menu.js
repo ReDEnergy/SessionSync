@@ -31,8 +31,8 @@ define(function(require, exports) {
 		// ------------------------------------------------------------------------
 		// Events
 
-		var openMenu = function openMenu(event) {
-
+		var openMenu = function openMenu(event)
+		{
 			if (previousContextMenu && previousContextMenu != this) {
 				previousContextMenu.hideMenu();
 			}
@@ -48,10 +48,11 @@ define(function(require, exports) {
 			WindowEvents.emit(document, 'ConfimBox-Hide');
 		}.bind(this);
 
-		var hideMenu = function hideMenu(e) {
-
+		var hideMenu = function hideMenu(e)
+		{
 			menu.removeAttribute('data-active');
 			document.removeEventListener('mousedown', blurMenu);
+			WindowEvents.emit(document, 'OverlaySystem', { state: false });
 		};
 
 		var blurMenu = function hideWhenClickOutside(e) {
@@ -114,6 +115,7 @@ define(function(require, exports) {
 			// menu.setAttribute('icons', options.showIcons ? 'yes' : 'no');
 			openMenu(options.event);
 			context = options.context;
+			WindowEvents.emit(document, 'OverlaySystem', { state: true });
 		});
 
 		GlobalEvents.on('context.menu.icons', function(value) {

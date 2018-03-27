@@ -4,6 +4,7 @@ define(function(require, exports) {
 	// ************************************************************************
 	// Modules
 
+	const { AppConfig } = require('../config');
 	const { GlobalEvents } = require('../utils/global-events');
 
 	// ************************************************************************
@@ -33,6 +34,16 @@ define(function(require, exports) {
 		{
 			var mode = options.mode;
 			delete options.mode;
+
+			if (AppConfig.isPanel() == false)
+			{
+				if (mode != 'newWindow')
+				{
+					options.active = AppConfig.get('detach.window') ? options.active : false;
+					return browser.tabs.create(options);
+				}
+			}
+
 			switch (mode)
 			{
 				case 'newTab': {

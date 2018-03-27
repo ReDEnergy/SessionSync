@@ -16,8 +16,8 @@
 	position: absolute;
 	bottom: 0px;
 	right: 4px;
-
 	opacity: 0.1;
+
 	transition: all 0.1s ease-out;
 	box-sizing: border-box;
 }
@@ -28,6 +28,10 @@
 
 #session-sync .sorting-method:hover {
 	cursor: pointer;
+	opacity: 1;
+}
+
+#session-sync .sorting-method[active="true"] {
 	opacity: 1;
 }
 

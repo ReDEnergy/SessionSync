@@ -136,6 +136,10 @@ function CreateHelpPage()
 			info: 'overview'
 		},
 		{
+			title : 'Session history',
+			info: 'history-list'
+		},
+		{
 			title: 'Session menu',
 			info: 'session-menu'
 		},
@@ -180,8 +184,8 @@ function CreateHelpPage()
 			info: 'resize-sessions'
 		},
 		{
-			title : 'Session history',
-			info: 'history-list'
+			title : 'Detach mode',
+			info: 'detach-mode'
 		}
 	];
 
@@ -194,4 +198,14 @@ function CreateHelpPage()
 	});
 
 	return helper_list.length;
-};
+}
+
+browser.commands.getAll().
+then(function (commands) {
+	commands.forEach(function (command) {
+		var shortcut = document.getElementById('hotkey-'+ command.name);
+		if (shortcut) {
+			shortcut.textContent = command.shortcut;
+		}
+	});
+});

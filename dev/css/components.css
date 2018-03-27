@@ -3,6 +3,31 @@
  */
 
 /**
+ * Action Button
+ */
+
+ #session-sync .comp-button {
+	width: 100%;
+	color: #333;
+	display: flex;
+}
+
+#session-sync .comp-button .label {
+	flex: 1;
+}
+
+#session-sync .comp-button .button {
+	text-align: center;
+	background: #38B751;
+	color: #FFF;
+	flex: 1;
+}
+
+#session-sync .comp-button .button:hover {
+	cursor: pointer;
+}
+
+/**
  * Toggle Switch
  */
 
@@ -22,31 +47,61 @@
 }
 
 #session-sync .comp-toggle-switch .label {
-	width: 8em;
-	line-height: 1.3em;
 	float: left;
 }
 
 #session-sync .comp-toggle-switch .switch {
 	margin-left: 0.4em;
 	padding: 0 0 0.25em 0;
-	border-radius: 0.3em;
+
+	background-color: #40B740;
+	background-size: 1.6em;
+	background-repeat: no-repeat;
+	background-position: center right 0.2em;
+	border-radius: 2em;
+
 	text-align: center;
 	color: #FFF;
-	line-height: 1.3em;
-	text-transform: lowercase;
 	float: left;
 
 	flex: 1;
 	transition: all 0.3s;
+	position: relative;
+
+	box-sizing: border-box;
 }
 
+#session-sync .comp-toggle-switch .switch:after {
+	content: " ";
+	width: 1.4em;
+	height: 1.4em;
+	margin: 0.3em 0 0 0.3em;
+	background: #444;
+	border-radius: 100%;
+	position: absolute;
+	transition-property: left, background;
+	transition-duration: 0.25s;
+	transition-timing-function: ease-out;
+}
+
+
 #session-sync .comp-toggle-switch .switch[state="true"] {
-	background: #208020;
+	background-color: #40B740;
+}
+
+#session-sync .comp-toggle-switch .switch[state="true"]:after {
+	left: calc(100% - 1.7em);
+	margin-left: 0;
+}
+
+#session-sync .comp-toggle-switch .switch[state="false"]:after {
+	background: #E01616;
+	left: 0;
 }
 
 #session-sync .comp-toggle-switch .switch[state="false"] {
-	background: #CB4D4D;
+	background-color: #999;
+	background-position: center left 0.2em;
 }
 
 /**
@@ -55,7 +110,7 @@
 
 #session-sync .comp-dropdown {
 	width: 100%;
-	height: 2em;
+	height: 2.4em;
 	color: #555;
 	display: flex;
 	text-align: center;
@@ -63,17 +118,40 @@
 
 #session-sync .comp-dropdown .label {
 	width: 50%;
+	height: 100%;
+	line-height: 2.4em;
+	background: #F5F5F5;
 }
 
 #session-sync .comp-dropdown .select {
+	height: 100%;
+	line-height: 2.4em;
 	width: 50%;
 	background: #38B751;
 	position: relative;
 }
 
+#session-sync .comp-dropdown .select:hover {
+	background: #349E47;
+}
+
 #session-sync .comp-dropdown .select-value {
-	width: 100%;
 	height: 100%;
+	color: #FFF;
+	text-align: center;
+}
+
+#session-sync .comp-dropdown .select-value:hover {
+	background: #349E47;
+	cursor: pointer;
+}
+
+#session-sync .comp-dropdown .option {
+	height: 2.4em;
+}
+
+#session-sync .comp-dropdown .option:hover {
+	cursor: pointer;
 }
 
 #session-sync .comp-dropdown .drop-list {
@@ -101,8 +179,9 @@
 }
 
 #session-sync .comp-dropdown .drop-list .option {
-	width: 50%;
+	width: 100%;
 	transition: all 0.2s;
+	text-align: center;
 	float: left;
 }
 
@@ -113,5 +192,6 @@
 
 #session-sync .comp-dropdown .drop-list .option[selected] {
 	background: #38B751;
+	background: #66AAEF;
 	color: #FFF;
 }

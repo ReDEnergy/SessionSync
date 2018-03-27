@@ -5,6 +5,7 @@ define(function(require, exports) {
 	// Custom Modules
 
 	// Utils
+	const { AppConfig } = require('../config');
 	const { HTMLCreator } = require('../utils/dom');
 	const { WindowEvents } = require('../utils/global-events');
 
@@ -25,21 +26,32 @@ define(function(require, exports) {
 		// Sorting dropdown
 		var optionList = DomElem('div', {class: 'option-list'});
 
-		var options = ['name-asc', 'name-desc', 'position-asc', 'position-desc', 'date-asc', 'date-desc'];
-		var optionsDescription = ['name ↑', 'name ↓', 'position ↑', 'position ↓', 'date ↑', 'date ↓'];
-		for (var i = 0; i < options.length; i++)
+		var options = {
+			'name-asc' : { description: 'name ↑', index: 0 },
+			'name-desc' : { description: 'name ↓', index: 1 },
+			'position-asc' : { description: 'position ↑', index: 2 },
+			'position-desc' : { description: 'position ↓', index: 3 },
+			'date-asc' : { description: 'date ↑', index: 4 },
+			'date-desc' : { description: 'date ↓', index: 5 }
+		};
+
+		for (var key in options)
 		{
-			var option = DomElem('div', {class: 'option', value: options[i]});
-			option.textContent =  optionsDescription[i];
+			var option = DomElem('div', {class: 'option', value: key});
+			option.textContent =  options[key].description;
 			optionList.appendChild(option);
+
 		}
 
 		var dropdown = DomElem('div', {class: 'dropdown'});
 		dropdown.appendChild(optionList);
 		sortControl.appendChild(dropdown);
 
-		var activeButton = optionList.children[2];
-		activeButton.setAttribute('active', '');
+		var sortMethod = AppConfig.get('session.sorting');
+		if (options[sortMethod]) {
+			var activeButton = optionList.children[options[sortMethod].index];
+			activeButton.setAttribute('active', '');
+		}
 
 		// ------------------------------------------------------------------------
 		// Events
@@ -60,9 +72,8 @@ define(function(require, exports) {
 		var toggleState = function toggleState() {
 			state = !state;
 			sortControl.setAttribute('active', state);
+			WindowEvents.emit(document, 'OverlaySystem', { state: state, zIndex: 1 });
 		};
-
-		// sortControl.addEventListener('click', toggleState);
 
 		document.addEventListener('click', function(e) {
 			if (e.target.className == 'sorting-method') {
