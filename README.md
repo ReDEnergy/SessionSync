@@ -12,23 +12,16 @@ Session-Sync will automatically detect updates and display updated sessions acro
 Session-Sync provides a rich interface for sessions management
   - edit sessions and bookmarks (save, delete, restore, merge, replace, etc)
   - order sessions and book using drag-n-drop actions
-  - use auto-save feature to inspect history sessions 
+  - use auto-save feature to inspect history sessions
 
-#### Development Status
-WebExtensions port ready - beta version available in /releases  
-AMO full release: 20 March 2018
+#### Version 3 - WebExtensions
 
-##### Install WebExtensions Beta Version
- * [Download WebExtensions](https://github.com/ReDEnergy/SessionSync/raw/master/releases/WebExtensions/session_sync-2.1.0.xpi)
- * Open Addon Manager
- * Drag-n-drop the downloaded file into over the Addon Manager page
- * Accept and install the addon
+ - improved UI support for widget based interaction
+ - multiple UI/UX improvements
+ - added optional Tab/Window Detach mode
 
-#### Version 2
+#### General Features - Advanced UI and Management Features
 
-Version 2 brings many new features as well as huge improvements in user experience, performance, stability and great set of customization options.
-
-##### General features
   - improved bookmark management
     - added support for pinned tabs and other features such as merge, replace,
     - session auto-saving
@@ -37,14 +30,13 @@ Version 2 brings many new features as well as huge improvements in user experien
   - speed improvement and bookmark cache optimizations
 
 ##### UI/UX
-  - new resizable UI
-  - new icon set and tooltip system
+  - resizable UI
+  - icon set and tooltip system
   - advance UI scaling for individual UI areas (session list, bookmark list, session header and toolbar)
   - customization panel
   - support for touch input
   - session sorting by name/position/date
   - session filtering
-  - advanced drag-n-drop UI with animations
-  - improved access to help page and improved general usage information (tutorial)
-
+  - advanced drag-n-drop support with fluid animations
+  
 
