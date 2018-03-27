@@ -13,6 +13,8 @@ Session-Sync provides a rich interface for sessions management
   - edit sessions and bookmarks (save, delete, restore, merge, replace, etc)
   - order sessions and book using drag-n-drop actions
   - use auto-save feature to inspect history sessions
+  
+[![Session Sync](/data/images/tutorial/session-menu.png)](https://addons.mozilla.org/en-US/firefox/addon/session-sync/)
 
 #### Version 3 - WebExtensions
 
