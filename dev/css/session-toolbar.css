@@ -171,7 +171,7 @@
 }
 
 #session-sync[session="history"] .session-toolbar .menu-bar .save,
-#session-sync[session="history"] .session-toolbar .menu-bar .restore {
+#session-sync[session="history"] .session-toolbar .menu-bar .restore-new-win {
 	display: block;
 }
 

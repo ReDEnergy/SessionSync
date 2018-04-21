@@ -174,7 +174,7 @@ define(function(require, exports) {
 
 		var HSM = new ContextMenu(document, {name : 'HistorySessionCtxMenu', width: 155});
 		HSM.addMenuEntry({value: 'Save', event: 'Save', icon: 'heart'});
-		HSM.addMenuEntry({value: 'Restore', event: 'Restore', icon: 'new-window'});
+		HSM.addMenuEntry({value: 'Restore (new window)', event: 'Restore', icon: 'new-window'});
 		HSM.addMenuEntry({value: 'Delete', callback: confirmDeleteOne, icon: 'delete', separator: 'top'});
 		content.appendChild(HSM.DOMRoot);
 
