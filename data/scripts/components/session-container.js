@@ -50,27 +50,36 @@ define(function(require, exports) {
 					SessionSyncModel.bookmarks[ID].parentId == AppConfig.get('storageID'));
 		}
 
-		WindowEvents.on(document, 'HistorySessionSave', function (historySessionID) {
-			this.saveHistorySession(historySessionID);
-		}.bind(this));
+		WindowEvents.on(document, 'HistorySessionSave', this.saveHistorySession.bind(this));
 
-		WindowEvents.on(document, 'HistorySessionRestore', this.restoreHistorySession.bind(this));
+		WindowEvents.on(document, 'HistorySessionRestore', function (index) {
+
+			console.log('sessionInfo', index);
+			SessionHistory.getHistory(function (historySessions) {
+				historySessions[index].windows.forEach(function (tabs) {
+					SessionManager.loadBookmarksNewWindow(tabs);
+				});
+			});
+
+		}.bind(this));
 
 		WindowEvents.on(document, 'MenuRestoreClick', function() {
 			if (isValidSessionID(this.activeSessionID)) {
 				SessionManager.restoreSession(this.activeSessionID);
 			}
-
-			// history session
-			if (this.activeSessionID === -1) {
-				this.restoreHistorySession();
-			}
-
 		}.bind(this));
 
 		WindowEvents.on(document, 'MenuRestoreNewWindow', function() {
+
 			if (isValidSessionID(this.activeSessionID)) {
 				SessionManager.restoreNewWindow(this.activeSessionID);
+			}
+
+			// history session
+			if (this.SyncModel.state.session === 'history') {
+				this.activeHistorySession.windows.forEach(function (tabs) {
+					SessionManager.loadBookmarksNewWindow(tabs);
+				});
 			}
 		}.bind(this));
 
@@ -90,9 +99,9 @@ define(function(require, exports) {
 			if (isValidSessionID(this.activeSessionID)) {
 				WindowEvents.emit(document, 'ConfirmBox-Open', {
 					event: e,
-					message: 'Replace selected session with active window session?',
+					message: 'Overwrite the selected session with active window session?',
 					callback: function() {
-						this.replaceSession();
+						this.overwriteSession();
 					}.bind(this)
 				});
 			}
@@ -110,20 +119,21 @@ define(function(require, exports) {
 				return;
 			}
 
-			// active session
-			if (this.activeSessionID === 0) {
-				this.saveActiveSession();
-			}
+			switch(this.SyncModel.state.session)
+			{
+				case 'current':
+					this.saveActiveSession();
+					break;
 
-			// history session
-			if (this.activeSessionID === -1) {
-				this.saveHistorySession();
+				case 'history':
+					this.saveHistorySession();
+					break;
 			}
 
 		}.bind(this));
 
 		WindowEvents.on(document, 'SessionContainer-RefreshUI', function() {
-			if (this.activeSessionID == 0) {
+			if (this.SyncModel.session == 'current') {
 				this.showCurrentSession();
 			}
 		}.bind(this));
@@ -169,9 +179,14 @@ define(function(require, exports) {
 		this.SyncModel = SessionSyncModel.getModel(document);
 	}
 
-	SessionContainer.prototype.clearList = function clearList()
+	SessionContainer.prototype.setUIState = function setUIState(state, headerTitle, sessionID)
 	{
+		WindowEvents.emit(document, 'SetUIState', {'session': state});
+		WindowEvents.emit(document, 'SetSessionDescription', headerTitle);
+
 		this.DOMBookmarks.textContent = '';
+		this.activeSessionID = sessionID;
+		this.activeHistorySession = undefined;
 	};
 
 	SessionContainer.prototype.updateSessionInfo = function updateSessionInfo()
@@ -184,11 +199,7 @@ define(function(require, exports) {
 	SessionContainer.prototype.showCurrentSession = function showCurrentSession()
 	{
 		var DOMBookmarks = this.DOMBookmarks;
-		WindowEvents.emit(document, 'SetUIState', {'session': 'current'});
-
-		this.clearList();
-		this.activeSessionID = 0;
-		WindowEvents.emit(document, 'SetSessionDescription', 'Active session');
+		this.setUIState('current', 'Active session', 0);
 
 		SessionManager.getCurrentWindow(function(mozWindow) {
 
@@ -237,15 +248,11 @@ define(function(require, exports) {
 
 	SessionContainer.prototype.showHistorySession = function showHistorySession(sessionInfo)
 	{
-		WindowEvents.emit(document, 'SetUIState', {'session': 'history'});
-
-		this.clearList();
-		this.activeSessionID = -1;
-		WindowEvents.emit(document, 'SetSessionDescription', (new Date(sessionInfo.lastSave)).toLocaleString());
+		this.setUIState('history', (new Date(sessionInfo.lastSave)).toLocaleString(), -1);
+		this.activeHistorySession = sessionInfo;
 
 		var tabIndex = 0;
 		var windowIndex = 0;
-		SessionSyncModel.getModel(document).state['activeContainer'] = sessionInfo;
 
 		for (let historyTabs of sessionInfo.windows)
 		{
@@ -273,12 +280,7 @@ define(function(require, exports) {
 	SessionContainer.prototype.previewSession = function previewSession(sessionID)
 	{
 		var session = SessionSyncModel.bookmarks[sessionID];
-
-		WindowEvents.emit(document, 'SetUIState', {'session': 'restore'});
-
-		this.activeSessionID = sessionID;
-		this.clearList();
-
+		this.setUIState('restore', '', sessionID);
 
 		BookmarkManager.getFolderBookmarks(session.id, function (marks) {
 
@@ -400,7 +402,7 @@ define(function(require, exports) {
 		});
 	};
 
-	SessionContainer.prototype.replaceSession = function replaceSession()
+	SessionContainer.prototype.overwriteSession = function overwriteSession()
 	{
 		var sessionID = this.activeSessionID;
 
@@ -487,7 +489,7 @@ define(function(require, exports) {
 	{
 		if (sessionIndex == undefined)
 		{
-			save(this.SyncModel.state['activeContainer']);
+			save(this.activeHistorySession);
 		}
 		else
 		{
@@ -518,26 +520,6 @@ define(function(require, exports) {
 				}, onSave);
 			}
 		}
-	};
-
-	SessionContainer.prototype.restoreHistorySession = function restoreHistorySession(index)
-	{
-		SessionHistory.getHistory(function (historySessions) {
-			var sessionInfo;
-
-			if (index && historySessions[index])
-			{
-				sessionInfo = historySessions[index];
-			}
-			else
-			{
-				sessionInfo = SessionSyncModel.getModel(document).state['activeContainer'];
-			}
-
-			sessionInfo.windows.forEach(function (tabs) {
-				SessionManager.loadBookmarksNewWindow(tabs);
-			});
-		});
 	};
 
 	// *****************************************************************************

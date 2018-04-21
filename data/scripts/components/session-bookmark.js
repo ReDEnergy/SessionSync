@@ -429,27 +429,28 @@ define(function(require, exports) {
 
 		var bookmarkContextMenu = function bookmarkContextMenu(e)
 		{
-			if (SyncModel.state.session == 'restore')
+			switch (SyncModel.state.session)
 			{
-				var bookmarkID = getBookmarkID(e);
-				if (bookmarkID == null)
-					return;
+				case 'restore': {
+					var bookmarkID = getBookmarkID(e);
+					if (bookmarkID == null)
+						return;
 
-				WindowEvents.emit(document, 'BookmarkCtxMenu-Open', {
-					context: bookmarkID,
-					event: e
-				});
-				return;
-			}
-
-			if (SyncModel.state.session == 'history')
-			{
-				let url = getTabURL(e);
-				if (url) {
-					WindowEvents.emit(document, 'HistoryMarksCtxMenu-Open', {
-						context: url,
+					WindowEvents.emit(document, 'BookmarkCtxMenu-Open', {
+						context: bookmarkID,
 						event: e
 					});
+					break;
+				}
+
+				case 'history': {
+					let url = getTabURL(e);
+					if (url) {
+						WindowEvents.emit(document, 'HistoryMarksCtxMenu-Open', {
+							context: url,
+							event: e
+						});
+					}
 				}
 			}
 		};
