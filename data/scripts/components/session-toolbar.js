@@ -143,8 +143,8 @@ define(function(require, exports) {
 		var mergeSession = DomElem('div', {class: 'button merge-sessions'});
 		mergeSession.setAttribute('tooltip', 'Merge sessions');
 
-		var replaceSession = DomElem('div', {class: 'button replace-session'});
-		replaceSession.setAttribute('tooltip', 'Replace session');
+		var overwriteSession = DomElem('div', {class: 'button replace-session'});
+		overwriteSession.setAttribute('tooltip', 'Overwrite session');
 
 		var separator1 = DomElem('div', {class: 'separator'});
 		var separator2 = DomElem('div', {class: 'separator'});
@@ -186,7 +186,7 @@ define(function(require, exports) {
 		menu.appendChild(restoreW);
 		menu.appendChild(separator1);
 		menu.appendChild(mergeSession);
-		menu.appendChild(replaceSession);
+		menu.appendChild(overwriteSession);
 		menu.appendChild(separator2);
 		menu.appendChild(add);
 		menu.appendChild(save);
@@ -209,7 +209,7 @@ define(function(require, exports) {
 		});
 
 		// Replace session
-		replaceSession.addEventListener('click', function(e) {
+		overwriteSession.addEventListener('click', function(e) {
 			WindowEvents.emit(document, 'MenuReplaceSession', e);
 		});
 

@@ -46,7 +46,7 @@ define(function(require, exports) {
 			.then(function () {
 				WindowEvents.emit(document, 'ShowHistoryList');
 			});
-		}
+		};
 
 		GlobalEvents.on('HistorySessionDelete', function(index)
 		{

@@ -355,9 +355,7 @@ define(function(require, exports) {
 
 		function updateBookmarkInfo(data)
 		{
-			GlobalEvents.emit('lock-observer');
 			SessionSyncModel.updateBookmarkItem(data.context, data.fields);
-			GlobalEvents.emit('unlock-observer');
 		}
 
 		WindowEvents.on(document, 'SessionFolderEditWidget-Save', updateBookmarkInfo);

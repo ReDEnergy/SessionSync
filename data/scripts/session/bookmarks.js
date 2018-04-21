@@ -86,15 +86,11 @@ define(function(require, exports) {
 
 		var moveItem = function moveItem(itemID, newParentID, index, callback, errorCallback)
 		{
-			GlobalEvents.emit('lock-observer');
-
 			browser.bookmarks.move(itemID, {
 				parentId: newParentID,
 				index: index
 			})
 			.then(callback, errorCallback);
-
-			GlobalEvents.emit('unlock-observer');
 		};
 
 		var deleteItem = function deleteItem(itemID, isFolder, callback, errorCallback)
