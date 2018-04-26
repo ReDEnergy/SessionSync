@@ -11,5 +11,6 @@ DEL %ARCHIVE%
 %ZIP% a -tzip -bt -mx1 %ARCHIVE% ^
 	.\data ^
 	.\scripts ^
+	.\_locales ^
 	.\manifest.json ^
 	.\README.md

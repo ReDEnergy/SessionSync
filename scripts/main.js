@@ -6,14 +6,14 @@ var Commands = {
 };
 
 browser.runtime.onInstalled.addListener(function (startInfo) {
-	if (startInfo.reason === 'update' || startInfo.reason === 'installed') {
+	if (startInfo.reason === 'installed') {
 		browser.tabs.create({
 			url: 'data/home/home.html'
 		});
 	}
 });
 
-browser.runtime.onMessage.addListener(function (message) {
+browser.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 	if (message.event == Commands.detachUI) {
 		SessionSync.openDetached();
 	}
