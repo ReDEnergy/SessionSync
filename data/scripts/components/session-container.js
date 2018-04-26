@@ -12,7 +12,6 @@ define(function(require, exports) {
 	// Utils
 	const { HTMLCreator } = require('../utils/dom');
 	const { WindowEvents, GlobalEvents } = require('../utils/global-events');
-	const { LimitCounter } = require('../utils/general');
 
 	// Components
 	const { BookmarkManager } = require('../session/bookmarks');
@@ -133,7 +132,7 @@ define(function(require, exports) {
 		}.bind(this));
 
 		WindowEvents.on(document, 'SessionContainer-RefreshUI', function() {
-			if (this.SyncModel.session == 'current') {
+			if (this.SyncModel.state.session == 'current') {
 				this.showCurrentSession();
 			}
 		}.bind(this));
@@ -163,11 +162,21 @@ define(function(require, exports) {
 
 		SessionBookmarkEvents(document, bookmarks);
 
+		function updateOnTabEvent(eventType) {
+			if (eventType == 'onRemoved') {
+				setTimeout(function () {
+					updateOnTabEvent('wait onRemoved');
+				}, 500);
+			}
+			WindowEvents.emit(document, 'SessionContainer-RefreshUI');
+		}
+
 		// Tab updates tracking
 		if (AppConfig.isAddonContext()) {
-			browser.tabs.onUpdated.addListener(function () {
-				WindowEvents.emit(document, 'SessionContainer-RefreshUI');
-			});
+			var trackedEvents = ['onUpdated', 'onCreated', 'onDetached', 'onAttached', 'onMoved', 'onRemoved'];
+			trackedEvents.forEach(function (eventType) {
+				browser.tabs[eventType].addListener(updateOnTabEvent.bind(this, eventType));
+			}.bind(this));
 		}
 
 		// ------------------------------------------------------------------------
