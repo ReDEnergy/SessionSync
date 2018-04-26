@@ -90,6 +90,16 @@ define(function(require, exports) {
 			return localSettings[key];
 		};
 
+		var initState = true;
+		var isInitState = function isInitState()
+		{
+			if (initState == true) {
+				initState = false;
+				return true;
+			}
+			return false;
+		};
+
 		var isPanel = function isPanel()
 		{
 			return isPanelUI;
@@ -145,6 +155,7 @@ define(function(require, exports) {
 			get: get,
 			init : init,
 			isPanel: isPanel,
+			isInitState: isInitState,
 			isAddonContext: isAddonContext
 		};
 	})();
