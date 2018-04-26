@@ -133,6 +133,12 @@ define(function(require, exports) {
 			this.scrollToSelected();
 		}.bind(this));
 
+		GlobalEvents.on('BookmarkDeleted', function (itemID) {
+			if (AppConfig.get('session.selected') == itemID) {
+				WindowEvents.emit(this.document, 'ShowCurrentSession');
+			}
+		}.bind(this));
+
 		SessionFolderEvents(document, list, this);
 
 		// ------------------------------------------------------------------------

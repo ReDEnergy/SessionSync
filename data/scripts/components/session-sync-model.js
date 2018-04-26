@@ -311,6 +311,7 @@ define(function(require, exports) {
 
 				AppConfig.set('undo.events', undoEvents);
 				GlobalEvents.emit('TrashCan-Items', undoEvents.length);
+				GlobalEvents.emit('BookmarkDeleted', bookmarkID);
 
 				// Trigger reordering
 				WindowEvents.broadcast('BookmarksPositionChanged', indices);
