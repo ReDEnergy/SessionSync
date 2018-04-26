@@ -52,9 +52,11 @@ define(function(require, exports) {
 			});
 
 			// Management configuration
+			getConfigValue('session.view', undefined);
 			getConfigValue('session.sorting', 'position-asc');
 			getConfigValue('session.active.filter', '');
 			getConfigValue('session.selected', undefined);
+			getConfigValue('session.history.selected', undefined);
 
 			// Bookmarks configuration
 			getConfigValue('bookmark.click.new.tab', false);

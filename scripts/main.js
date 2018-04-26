@@ -143,3 +143,4 @@ var WindowUtils = (function ()
 browser.storage.local.set({'undo.events' : []});
 browser.storage.local.set({'session.active.filter' : ''});
 browser.storage.local.set({'session.selected' : undefined});
+browser.storage.local.set({'session.history.selected' : undefined});

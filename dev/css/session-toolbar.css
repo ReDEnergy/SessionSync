@@ -57,7 +57,7 @@
 	background-color: #FFF;
 }
 
-#session-sync[list="none"] .session-toolbar .session-selector .active-session,
+#session-sync[list="active"] .session-toolbar .session-selector .active-session,
 #session-sync[list="sync"] .session-toolbar .session-selector .sync,
 #session-sync[list="history"] .session-toolbar .session-selector .history {
 	display: block;

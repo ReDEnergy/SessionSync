@@ -100,8 +100,8 @@ define(function(require, exports) {
 		}.bind(this));
 
 		WindowEvents.on(document, 'ShowCurrentSession', function() {
-			WindowEvents.emit(document, 'SetUIState', {	list: 'none' });
 			AppConfig.set('session.selected', undefined);
+			this.setState('active');
 			this.setSelectedNode(undefined);
 		}.bind(this));
 
@@ -118,15 +118,11 @@ define(function(require, exports) {
 					}
 				}
 			}
-			WindowEvents.emit(document, 'SetUIState', {	list: 'sync' });
+			this.setState('sync');
 			if (options.update == true) {
 				GlobalEvents.emit('update-sessions');
 			}
 		}.bind(this));
-
-		WindowEvents.on(document, 'ShowHistoryList', function() {
-			WindowEvents.emit(document, 'SetUIState', { list: 'history' });
-		});
 
 		WindowEvents.on(document, 'SessionDescriptionChanged', function() {
 			this.sortSessionsBy(AppConfig.get('session.sorting'));
@@ -143,13 +139,21 @@ define(function(require, exports) {
 		// Public data
 
 		this.sessions = [];
-		this.promiseInfo = { sessionID: AppConfig.get('session.selected') };
+		this.promiseInfo = {
+			sessionID: AppConfig.get('session.selected')
+		};
 		this.DOMList = list;
 		this.DOMRoot = root;
 		this.document = document;
 
 		this.SyncModel = SessionSyncModel.getModel(document);
 	}
+
+	SessionList.prototype.setState = function setState(state)
+	{
+		AppConfig.set('session.view', state);
+		WindowEvents.emit(document, 'SetUIState', { list: state });
+	};
 
 	SessionList.prototype.createHistoryList = function createHistoryList(document)
 	{
@@ -165,6 +169,9 @@ define(function(require, exports) {
 
 		function createHistoryList()
 		{
+			var snap = AppConfig.isInitState();
+			var selectedIndex = AppConfig.get('session.history.selected');
+
 			historyList.textContent = '';
 			SessionHistory.getHistory(function (historySessions) {
 				for (let i = historySessions.length - 1; i >= 0; i--) {
@@ -177,18 +184,34 @@ define(function(require, exports) {
 						}
 						node.setAttribute('index', i);
 						historyList.appendChild(node);
+
+						if (i == selectedIndex) {
+							selectHistorySession(node);
+							AutoScroll.scrollTo(historyList, node.offsetTop - historyList.parentNode.clientHeight / 2 + node.clientHeight, snap === true ? 0 : 0.25);
+						}
 					}
 				}
 			});
 		}
+
+		var selectHistorySession = function selectHistorySession(node)
+		{
+			this.setSelectedNode(node);
+			var index = node.getAttribute('index') | 0;
+			SessionHistory.getHistory(function (sessions) {
+				AppConfig.set('session.history.selected', index);
+				WindowEvents.emit(document, 'ShowHistorySession', sessions[index]);
+			});
+		}.bind(this);
 
 		GlobalEvents.on('UpdateHistoryList', function() {
 			createHistoryList();
 		});
 
 		WindowEvents.on(document, 'ShowHistoryList', function() {
+			this.setState('history');
 			createHistoryList();
-		});
+		}.bind(this));
 
 		historyList.addEventListener('mousedown', function(e) {
 
@@ -209,14 +232,9 @@ define(function(require, exports) {
 		});
 
 		historyList.addEventListener('click', function(e) {
-			var target = e.target;
-			if (target.className === 'history-node')
+			if (e.target.className === 'history-node')
 			{
-				this.setSelectedNode(e.target);
-				var index = target.getAttribute('index') | 0;
-				SessionHistory.getHistory(function (sessions) {
-					WindowEvents.emit(document, 'ShowHistorySession', sessions[index]);
-				});
+				selectHistorySession(e.target);
 			}
 		}.bind(this));
 
@@ -226,7 +244,7 @@ define(function(require, exports) {
 		return historyList;
 	};
 
-	SessionList.prototype.setSessions = function setSessions(jump)
+	SessionList.prototype.setSessions = function setSessions()
 	{
 		this.sessions = [];
 		this.DOMList.textContent = '';
@@ -276,15 +294,23 @@ define(function(require, exports) {
 
 		this.sortSessionsBy(AppConfig.get('session.sorting'));
 
-		// Preview the selected session
+		// Switch to History View if this was the state before closing the UI
+		if (AppConfig.get('session.view') == 'history')
+		{
+			WindowEvents.emit(document, 'ShowHistoryList');
+			return;
+		}
+
+		// Preview the selected session if available
 		if (selectedSession)
 		{
-			this.selectSession(selectedSession, true, jump);
+			this.selectSession(selectedSession, true, AppConfig.isInitState());
+			return;
 		}
-		else
-		{
-			WindowEvents.emit(this.document, 'ShowCurrentSession');
-		}
+
+		// Otherwise, preview the current session
+		AppConfig.isInitState();
+		WindowEvents.emit(this.document, 'ShowCurrentSession');
 	};
 
 	SessionList.prototype.scrollToSelected = function scrollToSelected(snap)
@@ -294,14 +320,7 @@ define(function(require, exports) {
 
 		var offset = this.selectedNode.offsetTop - this.DOMList.clientHeight / 2 + this.selectedNode.clientHeight;
 
-		if (snap === true)
-		{
-			this.DOMList.scrollTop = offset;
-		}
-		else
-		{
-			AutoScroll.scrollTo(this.DOMList, offset, 0.25);
-		}
+		AutoScroll.scrollTo(this.DOMList, offset, snap === true ? 0 : 0.25);
 	};
 
 	SessionList.prototype.setSelectedNode = function setSelectedNode(node)

@@ -40,11 +40,11 @@ define(function(require, exports) {
 		);
 	};
 
-	var listSessions = function listSessions(fastMode)
+	var listSessions = function listSessions()
 	{
 		BookmarkManager.getFolderBookmarks(AppConfig.get('storageID'), function(sessions) {
 			SessionSyncModel.sessions = sessions;
-			WindowEvents.emit(document, 'ListSessions', fastMode);
+			WindowEvents.emit(document, 'ListSessions');
 		});
 	};
 
