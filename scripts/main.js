@@ -142,5 +142,5 @@ var WindowUtils = (function ()
 // Delete previous undo events
 browser.storage.local.set({'undo.events' : []});
 browser.storage.local.set({'session.active.filter' : ''});
-browser.storage.local.set({'session.selected' : undefined});
-browser.storage.local.set({'session.history.selected' : undefined});
+browser.storage.local.set({'session.selected' : null});
+browser.storage.local.set({'session.history.selected' : null});

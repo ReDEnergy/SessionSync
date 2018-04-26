@@ -470,6 +470,9 @@ define(function(require, exports) {
 		// ------------------------------------------------------------------------
 		// Init Code Events
 
+		container.addEventListener('scroll', function () {
+			AppConfig.set('state.scrollTop.' + SyncModel.state.session, container.scrollTop);
+		});
 		container.addEventListener('contextmenu', bookmarkContextMenu);
 		container.addEventListener('mousedown', bookmarkMouseDown);
 

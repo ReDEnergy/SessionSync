@@ -206,7 +206,7 @@ define(function(require, exports) {
 				if (bookmarkContext.bookmarkID == sessionID)
 				{
 					if (!DragContext.hasContext()) {
-						SessionList.selectSession(bookmarkContext, false);
+						SessionList.selectSyncSession(bookmarkContext, false);
 					}
 				}
 				else

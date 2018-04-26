@@ -45,6 +45,10 @@ define(function(require, exports) {
 			getConfigValue('style.scale.sessions', 12);
 			getConfigValue('style.scale.bookmarks', 14);
 
+			getConfigValue('state.scrollTop.current', 0);
+			getConfigValue('state.scrollTop.restore', 0);
+			getConfigValue('state.scrollTop.history', 0);
+
 			// Session saving settings
 			getConfigValue('session.save', {
 				pinned: false,
@@ -55,8 +59,8 @@ define(function(require, exports) {
 			getConfigValue('session.view', undefined);
 			getConfigValue('session.sorting', 'position-asc');
 			getConfigValue('session.active.filter', '');
-			getConfigValue('session.selected', undefined);
-			getConfigValue('session.history.selected', undefined);
+			getConfigValue('session.selected', null);
+			getConfigValue('session.history.selected', null);
 
 			// Bookmarks configuration
 			getConfigValue('bookmark.click.new.tab', false);
@@ -86,7 +90,7 @@ define(function(require, exports) {
 
 		var get = function get(key)
 		{
-			if (localSettings[key] == undefined) {
+			if (localSettings[key] === undefined) {
 				console.log('[ERROR] Settings key [' + key + '] was not found!');
 			}
 			return localSettings[key];

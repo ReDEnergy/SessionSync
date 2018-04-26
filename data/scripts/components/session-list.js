@@ -100,20 +100,23 @@ define(function(require, exports) {
 		}.bind(this));
 
 		WindowEvents.on(document, 'ShowCurrentSession', function() {
-			AppConfig.set('session.selected', undefined);
+			if (AppConfig.get('session.selected') != null) {
+				AppConfig.set('session.selected', null);
+				AppConfig.set('state.scrollTop.current', 0);
+			}
 			this.setState('active');
 			this.setSelectedNode(undefined);
 		}.bind(this));
 
 		WindowEvents.on(document, 'ShowSyncList', function(options) {
 			// Select first visible session
-			if (this.promiseInfo.sessionID == undefined)
+			if (this.promiseInfo.sessionID == null)
 			{
 				for (var i=0; i < this.sessions.length; i++)
 				{
 					if (this.sessions[i].isVisible())
 					{
-						this.selectSession(this.sessions[i], true, false);
+						this.selectSyncSession(this.sessions[i], true, false);
 						break;
 					}
 				}
@@ -204,8 +207,13 @@ define(function(require, exports) {
 		{
 			this.setSelectedNode(node);
 			var index = node.getAttribute('index') | 0;
+
 			SessionHistory.getHistory(function (sessions) {
-				AppConfig.set('session.history.selected', index);
+				if (AppConfig.get('session.history.selected') != index) {
+					AppConfig.set('session.history.selected', index);
+					AppConfig.set('state.scrollTop.history', 0);
+				}
+
 				WindowEvents.emit(document, 'ShowHistorySession', sessions[index]);
 			});
 		}.bind(this);
@@ -310,7 +318,7 @@ define(function(require, exports) {
 		// Preview the selected session if available
 		if (selectedSession)
 		{
-			this.selectSession(selectedSession, true, AppConfig.isInitState());
+			this.selectSyncSession(selectedSession, true, AppConfig.isInitState());
 			return;
 		}
 
@@ -342,9 +350,14 @@ define(function(require, exports) {
 		}
 	};
 
-	SessionList.prototype.selectSession = function selectSession(selectedSession, scrollTo, snap)
+	SessionList.prototype.selectSyncSession = function selectSyncSession(selectedSession, scrollTo, snap)
 	{
-		AppConfig.set('session.selected', selectedSession.bookmarkID);
+		if (AppConfig.get('session.selected') != selectedSession.bookmarkID)
+		{
+			AppConfig.set('session.selected', selectedSession.bookmarkID);
+			AppConfig.set('state.scrollTop.restore', 0);
+		}
+
 		this.setSelectedNode(selectedSession.DOMRoot);
 
 		WindowEvents.emit(this.document, 'ViewSession', selectedSession.bookmarkID);

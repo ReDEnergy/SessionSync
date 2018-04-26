@@ -219,6 +219,8 @@ define(function(require, exports) {
 					var sessionTab = new SessionTab(document, tab, 0, -1);
 					DOMBookmarks.appendChild(sessionTab.DOMRoot);
 				});
+
+				this.restoreScrollTop('current');
 			}
 			else
 			{
@@ -250,13 +252,17 @@ define(function(require, exports) {
 							windowIndex++;
 						}
 					}
-				});
+
+					this.restoreScrollTop('current');
+				}.bind(this));
 			}
-		});
+		}.bind(this));
 	};
 
 	SessionContainer.prototype.showHistorySession = function showHistorySession(sessionInfo)
 	{
+		var newSession = (this.selectedHistorySession != undefined) && (this.selectedHistorySession != sessionInfo);
+
 		this.setUIState('history', (new Date(sessionInfo.lastSave)).toLocaleString(), -1);
 		this.selectedHistorySession = sessionInfo;
 
@@ -284,6 +290,8 @@ define(function(require, exports) {
 
 			windowIndex++;
 		}
+
+		this.restoreScrollTop('history', newSession ? 0 : undefined);
 	};
 
 	SessionContainer.prototype.previewSession = function previewSession(sessionID)
@@ -307,8 +315,15 @@ define(function(require, exports) {
 			}
 
 			this.updateSessionInfo();
+			this.restoreScrollTop('restore');
 
 		}.bind(this));
+	};
+
+	SessionContainer.prototype.restoreScrollTop = function restoreScrollTop(state, forcedValue)
+	{
+		var scrollTop = AppConfig.get('state.scrollTop.' + state);
+		this.DOMBookmarks.scrollTop = (forcedValue !== undefined) ? forcedValue : scrollTop;
 	};
 
 	SessionContainer.prototype.bookmarkCurrentTab = function bookmarkCurrentTab()
