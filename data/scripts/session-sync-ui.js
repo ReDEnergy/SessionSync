@@ -135,7 +135,7 @@ define(function(require, exports) {
 		content.appendChild(BM.DOMRoot);
 
 		// Session Context Menu
-		var SM = new ContextMenu(document, {name : 'SessionContextMenu', width: 165});
+		var SM = new ContextMenu(document, {name : 'SessionContextMenu'});
 		SM.addMenuEntry({value: 'Restore', event: 'RestoreSession', icon: 'same-window'});
 		SM.addMenuEntry({value: 'Restore (new window)', event: 'RestoreInNewWindow', icon: 'new-window'});
 		SM.addMenuEntry({value: 'Edit', event: 'EditSession', icon: 'edit'});
@@ -155,7 +155,7 @@ define(function(require, exports) {
 			});
 		};
 
-		var HSML = new ContextMenu(document, {name : 'HistoryListCtxMenu', width: 155});
+		var HSML = new ContextMenu(document, {name : 'HistoryListCtxMenu'});
 		HSML.addMenuEntry({value: 'Delete All', callback: confirmDeleteAll, icon: 'delete'});
 		content.appendChild(HSML.DOMRoot);
 
@@ -172,14 +172,14 @@ define(function(require, exports) {
 			});
 		};
 
-		var HSM = new ContextMenu(document, {name : 'HistorySessionCtxMenu', width: 155});
+		var HSM = new ContextMenu(document, {name : 'HistorySessionCtxMenu'});
 		HSM.addMenuEntry({value: 'Save', event: 'Save', icon: 'heart'});
 		HSM.addMenuEntry({value: 'Restore (new window)', event: 'Restore', icon: 'new-window'});
 		HSM.addMenuEntry({value: 'Delete', callback: confirmDeleteOne, icon: 'delete', separator: 'top'});
 		content.appendChild(HSM.DOMRoot);
 
 		// History Context Menu
-		var HBM = new ContextMenu(document, {name : 'HistoryMarksCtxMenu', width: 155});
+		var HBM = new ContextMenu(document, {name : 'HistoryMarksCtxMenu'});
 		HBM.addMenuEntry({value: 'Open (new tab)', event: 'OpenInNewTab', icon: 'new-tab'});
 		if (AppConfig.isPanel()) {
 			HBM.addMenuEntry({value: 'Open (current tab)', event: 'OpenInActiveTab', icon: 'same-tab'});

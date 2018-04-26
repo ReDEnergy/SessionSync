@@ -3,7 +3,7 @@
  */
 
 #session-sync .context-menu {
-	width: 155px;
+	width: 180px;
 	padding: 5px;
 	background: #FFF;
 	border: 1px #CCC solid;
@@ -16,6 +16,8 @@
 	box-shadow: 0px 0px 5px 0 #CCC;
 	transform: translateX(5px);
 	z-index: 3000;
+
+	box-sizing: border-box;
 }
 
 #session-sync .context-menu[data-active="true"] {
