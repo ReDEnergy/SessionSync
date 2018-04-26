@@ -25,7 +25,10 @@ define(function(require, exports) {
 
 		// var self = this;
 		var menu = DomElem('div', { class : 'context-menu' });
-		menu.style.width = options.width + 'px';
+		if (options.width != undefined) {
+			menu.style.width = options.width + 'px';
+		}
+
 		var context = undefined;
 
 		// ------------------------------------------------------------------------

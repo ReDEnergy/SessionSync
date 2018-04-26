@@ -34,7 +34,6 @@ define(function(require, exports) {
 		this.advance = function advance() {
 			counted++;
 			checkLimit();
-			// console.log(counted, limit);
 		}.bind(this);
 
 		this.offsetLimit = function offsetLimit(offset) {

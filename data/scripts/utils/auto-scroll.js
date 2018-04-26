@@ -63,6 +63,11 @@ define(function(require, exports) {
 
 		function scrollTo(node, offset, time)
 		{
+			if (time == 0) {
+				node.scrollTop = offset;
+				return;
+			}
+
 			if (autoScroll == true)
 			{
 				return;
