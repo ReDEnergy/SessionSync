@@ -53,14 +53,16 @@ define(function(require, exports) {
 		WindowEvents.on(document, 'HistorySessionSave', this.saveHistorySession.bind(this));
 
 		WindowEvents.on(document, 'HistorySessionRestore', function (index) {
-
-			console.log('sessionInfo', index);
 			SessionHistory.getHistory(function (historySessions) {
-				historySessions[index].windows.forEach(function (tabs) {
-					SessionManager.loadBookmarksNewWindow(tabs);
-				});
+				SessionManager.loadBookmarksNewWindow(historySessions[index].windows);
 			});
 
+		}.bind(this));
+
+		WindowEvents.on(document, 'HistorySessionRestoreWindow', function (windowID) {
+			if (this.SyncModel.state.session === 'history') {
+				SessionManager.loadBookmarksNewWindow([this.selectedHistorySession.windows[windowID]]);
+			}
 		}.bind(this));
 
 		WindowEvents.on(document, 'MenuRestoreClick', function() {
@@ -77,9 +79,7 @@ define(function(require, exports) {
 
 			// history session
 			if (this.SyncModel.state.session === 'history') {
-				this.activeHistorySession.windows.forEach(function (tabs) {
-					SessionManager.loadBookmarksNewWindow(tabs);
-				});
+				SessionManager.loadBookmarksNewWindow(this.selectedHistorySession.windows);
 			}
 		}.bind(this));
 
@@ -89,7 +89,7 @@ define(function(require, exports) {
 					event: e,
 					message: 'Merge selected session and active window seesion?',
 					callback: function() {
-						this.mergeSessions();
+						SessionManager.mergeSessions(this.activeSessionID);
 					}.bind(this)
 				});
 			}
@@ -101,7 +101,7 @@ define(function(require, exports) {
 					event: e,
 					message: 'Overwrite the selected session with active window session?',
 					callback: function() {
-						this.overwriteSession();
+						SessionManager.overwriteSession(this.activeSessionID);
 					}.bind(this)
 				});
 			}
@@ -122,7 +122,7 @@ define(function(require, exports) {
 			switch(this.SyncModel.state.session)
 			{
 				case 'current':
-					this.saveActiveSession();
+					SessionManager.saveActiveSession();
 					break;
 
 				case 'history':
@@ -186,7 +186,7 @@ define(function(require, exports) {
 
 		this.DOMBookmarks.textContent = '';
 		this.activeSessionID = sessionID;
-		this.activeHistorySession = undefined;
+		this.selectedHistorySession = undefined;
 	};
 
 	SessionContainer.prototype.updateSessionInfo = function updateSessionInfo()
@@ -249,7 +249,7 @@ define(function(require, exports) {
 	SessionContainer.prototype.showHistorySession = function showHistorySession(sessionInfo)
 	{
 		this.setUIState('history', (new Date(sessionInfo.lastSave)).toLocaleString(), -1);
-		this.activeHistorySession = sessionInfo;
+		this.selectedHistorySession = sessionInfo;
 
 		var tabIndex = 0;
 		var windowIndex = 0;
@@ -345,151 +345,11 @@ define(function(require, exports) {
 		}.bind(this));
 	};
 
-	SessionContainer.prototype.saveActiveSession = function saveActiveSession()
-	{
-		SessionManager.getCurrentWindow(function(mozWindow) {
-
-			var sessionID = 0;
-			var sessionCount = 0;
-
-			function updateOnSave()
-			{
-				WindowEvents.emit(document, 'SetPromiseSession', {
-					update: true,
-					sessionID: sessionID,
-					edit: sessionCount == 1,
-				});
-			}
-
-			// Get non-private windows
-			if (mozWindow.incognito == true || AppConfig.get('session.save').allWindows == false)
-			{
-				var sessionTitle = (new Date()).toLocaleString();
-				SessionManager.saveWindowSession(mozWindow, sessionTitle, function onSuccess(folder) {
-					sessionID = folder.id;
-					updateOnSave();
-				});
-			}
-			else
-			{
-				// Get all non private windows
-				SessionManager.getAllWindows(function(windows) {
-					// Save windows as separate sessions
-					var date = new Date();
-
-					windows.forEach(function (mozWindow) {
-						if (mozWindow.incognito == false) {
-							sessionCount++;
-						}
-					});
-
-					var windowID = 0;
-					var updateEvent = new LimitCounter(sessionCount, updateOnSave);
-
-					windows.forEach(function (mozWindow) {
-						if (mozWindow.incognito == false)
-						{
-							windowID++;
-							let sessionTitle = date.toLocaleString() + ((sessionCount > 1) ? (' #' + windowID) : '');
-							SessionManager.saveWindowSession(mozWindow, sessionTitle, function(folder) {
-								sessionID = folder.id;
-								updateEvent.advance();
-							});
-						}
-					});
-				});
-			}
-		});
-	};
-
-	SessionContainer.prototype.overwriteSession = function overwriteSession()
-	{
-		var sessionID = this.activeSessionID;
-
-		var toRemove = [];
-		var bookmarks = SessionSyncModel.bookmarks;
-		for (let i in bookmarks)
-		{
-			// Remove all bookmarks from the current session
-			if (bookmarks[i].parentId == sessionID)
-				toRemove.push(i);
-		}
-
-		SessionSyncModel.deleteBookmarkList(toRemove, sessionID, function () {
-			SessionManager.getCurrentWindow(function(mozWindow) {
-
-				var savedTabs = {};
-				var updateFinish = new LimitCounter(mozWindow.tabs.length, function () {
-					WindowEvents.emit(document, 'ViewSession', sessionID);
-				});
-
-				mozWindow.tabs.forEach(function (tab) {
-					var url = tab.url;
-					if (savedTabs[url] == undefined)
-					{
-						savedTabs[url] = true;
-						BookmarkManager.createBookmark({
-							url: url,
-							title: tab.title,
-							parentId: sessionID
-						})
-						.then(updateFinish.advance, updateFinish.advance);
-					}
-					else
-					{
-						updateFinish.offsetLimit(-1);
-					}
-				});
-			});
-		});
-	};
-
-	SessionContainer.prototype.mergeSessions = function mergeSessions()
-	{
-		var sessionID = this.activeSessionID;
-
-		// Exclude all pages that are already saved
-		SessionManager.getCurrentWindow(function (mozWindow) {
-
-			var toSave = {};
-
-			mozWindow.tabs.forEach(tab => {
-				let url = tab.url;
-				toSave[url] = tab;
-			});
-
-			// Exclude all pages that are already saved
-			var bookmarks = SessionSyncModel.bookmarks;
-			for (let key in bookmarks)
-			{
-				if (bookmarks[key].parentId == sessionID)
-				{
-					delete toSave[bookmarks[key].url];
-				}
-			}
-
-			var updateEvent = new LimitCounter(Object.keys(toSave).length, function () {
-				WindowEvents.emit(document, 'ViewSession', sessionID);
-			});
-
-			for (let key in toSave)
-			{
-				let tab = toSave[key];
-				BookmarkManager.createBookmark({
-					url: tab.url,
-					title: tab.title,
-					parentId: sessionID
-				})
-				.then(updateEvent.advance, updateEvent.advance);
-			}
-		});
-	};
-
 	SessionContainer.prototype.saveHistorySession = function saveHistorySession(sessionIndex)
 	{
 		if (sessionIndex == undefined)
 		{
-			save(this.activeHistorySession);
+			save(this.selectedHistorySession);
 		}
 		else
 		{

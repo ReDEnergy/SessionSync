@@ -213,9 +213,18 @@
 	width: 100%;
 	height: 2em;
 	line-height: 1.9em;
-	text-align: center;
 	background: #F8F8F8;
 	color: #555;
 	position: absolute;
 	transition: all 0.2s;
+}
+
+#session-sync .session-container .history-window-separator .text {
+	text-align: center;
+}
+
+#session-sync .session-container .history-window-separator:hover {
+	cursor: pointer;
+	text-decoration: underline;
+	color: #333;
 }

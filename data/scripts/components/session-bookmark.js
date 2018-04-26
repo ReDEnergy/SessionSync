@@ -282,6 +282,7 @@ define(function(require, exports) {
 		{
 			if (this != window)
 				return;
+
 			var deltaTime = new Date() - trackingTelemetry;
 			if (deltaTime < 16) {
 				return;
@@ -320,7 +321,7 @@ define(function(require, exports) {
 					if (!DragContext.hasContext()) {
 						BookmarkManager.openBookmark({
 							url: SessionSyncModel.bookmarks[bookmarkID].url,
-							mode: AppConfig.get('bookmark.click.new.tab') ? 'newTab' : null
+							mode : BookmarkManager.getOpenMode(0)
 						});
 					}
 				}
@@ -384,7 +385,7 @@ define(function(require, exports) {
 					{
 						BookmarkManager.openBookmark({
 							url: SessionSyncModel.bookmarks[bookmarkID].url,
-							mode : AppConfig.get('bookmark.click.new.tab') ? null : 'newTab'
+							mode : BookmarkManager.getOpenMode(1)
 						});
 						return;
 					}
@@ -408,17 +409,24 @@ define(function(require, exports) {
 
 						switch (e.button)
 						{
-							case 0: {
-								BookmarkManager.openBookmark({ url: url });
-								break;
-							}
-
+							case 0:
 							case 1: {
 								BookmarkManager.openBookmark({
 									url: url,
-									mode : AppConfig.get('bookmark.click.new.tab') ? null : 'newTab'
+									mode : BookmarkManager.getOpenMode(e.button)
 								});
+
 								break;
+							}
+						}
+					}
+					else
+					{
+						if (e.button == 0)
+						{
+							var windowID = getWindowID(e);
+							if (windowID != undefined) {
+								WindowEvents.emit(document, 'HistorySessionRestoreWindow', windowID);
 							}
 						}
 					}
@@ -540,8 +548,10 @@ define(function(require, exports) {
 
 		var box = DomElem('div', {class : 'history-window-separator'});
 		box.style.top = index * bookmarkOffset + 'em';
+		box.setAttribute('windowID', windowID);
 
 		var text = DomElem('div', {class : 'text'});
+		text.setAttribute('windowID', windowID);
 		text.textContent = 'Window ' + windowID;
 
 		box.appendChild(text);

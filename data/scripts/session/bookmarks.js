@@ -30,6 +30,12 @@ define(function(require, exports) {
 			return browser.bookmarks.search(keyword);
 		};
 
+		var getOpenMode = function getOpenMode(button) {
+			var opt1 = (button == 0 ? 'newTab' : null);
+			var opt2 = (button == 0 ? null : 'newTab');
+			return AppConfig.get('bookmark.click.new.tab') ? opt1 : opt2;
+		};
+
 		var openBookmark = function openBookmark(options)
 		{
 			var mode = options.mode;
@@ -108,6 +114,7 @@ define(function(require, exports) {
 		};
 
 		return {
+			getOpenMode: getOpenMode,
 			openBookmark: openBookmark,
 			createBookmark: createBookmark,
 			searchBookmarks: searchBookmarks,

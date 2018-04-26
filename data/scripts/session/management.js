@@ -8,6 +8,7 @@ define(function(require, exports) {
 	const { BookmarkManager } = require('./bookmarks');
 	const { WindowEvents, GlobalEvents } = require('../utils/global-events');
 	const { LimitCounter } = require('../utils/general');
+	const { SessionSyncModel } = require ('../components/session-sync-model');
 
 	// *****************************************************************************
 
@@ -45,6 +46,63 @@ define(function(require, exports) {
 			});
 		};
 
+		var saveActiveSession = function saveActiveSession()
+		{
+			getCurrentWindow(function(mozWindow) {
+
+				var sessionID = 0;
+				var sessionCount = 0;
+
+				function updateOnSave()
+				{
+					WindowEvents.emit(document, 'SetPromiseSession', {
+						update: true,
+						sessionID: sessionID,
+						edit: sessionCount == 1,
+					});
+				}
+
+				// Get non-private windows
+				if (mozWindow.incognito == true || AppConfig.get('session.save').allWindows == false)
+				{
+					var sessionTitle = (new Date()).toLocaleString();
+					saveWindowSession(mozWindow, sessionTitle, function onSuccess(folder) {
+						sessionID = folder.id;
+						updateOnSave();
+					});
+				}
+				else
+				{
+					// Get all non private windows
+					getAllWindows(function(windows) {
+						// Save windows as separate sessions
+						var date = new Date();
+
+						windows.forEach(function (mozWindow) {
+							if (mozWindow.incognito == false) {
+								sessionCount++;
+							}
+						});
+
+						var windowID = 0;
+						var updateEvent = new LimitCounter(sessionCount, updateOnSave);
+
+						windows.forEach(function (mozWindow) {
+							if (mozWindow.incognito == false)
+							{
+								windowID++;
+								let sessionTitle = date.toLocaleString() + ((sessionCount > 1) ? (' #' + windowID) : '');
+								saveWindowSession(mozWindow, sessionTitle, function(folder) {
+									sessionID = folder.id;
+									updateEvent.advance();
+								});
+							}
+						});
+					});
+				}
+			});
+		};
+
 		var saveWindowSession = function saveWindowSession(mozWindow, folderName, callback)
 		{
 			BookmarkManager.createBookmark({
@@ -57,19 +115,19 @@ define(function(require, exports) {
 					callback(folder);
 				});
 
-				var savedTabs = {};
-				var savePinned = AppConfig.get('session.save.pinned.tabs');
-				mozWindow.tabs.forEach(function (tab) {
+				// TODO - add option to discard duplicate tabs
 
-					// prevent duplicate tabs from saving or pinned in case
-					if (savedTabs[tab.url] == true || (tab.pinned && savePinned == false))
+				var savePinned = AppConfig.get('session.save').pinned;
+
+				for (let i = mozWindow.tabs.length - 1; i >= 0; i--)
+				{
+					let tab = mozWindow.tabs[i];
+					if (tab.pinned && savePinned == false)
 					{
 						trackSaving.offsetLimit(-1);
 					}
 					else
 					{
-						savedTabs[tab.url] = true;
-
 						BookmarkManager.createBookmark({
 							url: tab.url,
 							title: tab.title,
@@ -77,6 +135,86 @@ define(function(require, exports) {
 						})
 						.then(trackSaving.advance, trackSaving.advance);
 					}
+				}
+			});
+		};
+
+		var mergeSessions = function mergeSessions(sessionID)
+		{
+			// Exclude all pages that are already saved
+			getCurrentWindow(function (mozWindow) {
+
+				var toSave = {};
+
+				mozWindow.tabs.forEach(tab => {
+					let url = tab.url;
+					toSave[url] = tab;
+				});
+
+				// Exclude all pages that are already saved
+				BookmarkManager.getFolderBookmarks(sessionID, function(bookmarks) {
+					bookmarks.forEach(function (bookmark) {
+						delete toSave[bookmark.url];
+					});
+
+					var updateEvent = new LimitCounter(Object.keys(toSave).length, function () {
+						WindowEvents.emit(document, 'ViewSession', sessionID);
+					});
+
+					// TODO - reverse saving order
+					var savingList = [];
+					for (let key in toSave)
+					{
+						let tab = toSave[key];
+						savingList.push(tab);
+					}
+
+					for (let i = savingList.length - 1; i >= 0; i--)
+					{
+						var tab = savingList[i];
+						BookmarkManager.createBookmark({
+							url: tab.url,
+							title: tab.title,
+							parentId: sessionID
+						})
+						.then(updateEvent.advance, updateEvent.advance);
+					}
+				});
+			});
+		};
+
+		var overwriteSession = function overwriteSession(sessionID)
+		{
+			var toRemove = [];
+
+			BookmarkManager.getFolderBookmarks(sessionID, function(bookmarks) {
+
+				// Remove all bookmarks from the current session
+				bookmarks.forEach(function (bookmark) {
+					toRemove.push(bookmark.id);
+				});
+
+				SessionSyncModel.deleteBookmarkList(toRemove, sessionID, function () {
+					getCurrentWindow(function(mozWindow) {
+
+						var updateFinish = new LimitCounter(mozWindow.tabs.length, function () {
+							WindowEvents.emit(document, 'ViewSession', sessionID);
+						});
+
+						// TODO - add option to discard duplicate tabs and or pinned tabs
+
+						for (let i = mozWindow.tabs.length - 1; i >= 0; i--)
+						{
+							var tab = mozWindow.tabs[i];
+							var url = tab.url;
+							BookmarkManager.createBookmark({
+								url: url,
+								title: tab.title,
+								parentId: sessionID
+							})
+							.then(updateFinish.advance, updateFinish.advance);
+						}
+					});
 				});
 			});
 		};
@@ -93,19 +231,17 @@ define(function(require, exports) {
 					callback(folder);
 				});
 
-				var savedTabs = {};
-				var savePinned = AppConfig.get('session.save').pinnedTabs;
-				sessionInfo.tabs.forEach(function (tab) {
+				var savePinned = AppConfig.get('session.save').pinned;
 
-					// prevent duplicate tabs from saving or pinned in case
-					if (savedTabs[tab.url] == true || (tab.pinned && savePinned == false))
+				for (let i = sessionInfo.tabs.length - 1; i >= 0; i--)
+				{
+					let tab = sessionInfo.tabs[i];
+					if (tab.pinned && savePinned == false)
 					{
 						trackSaving.offsetLimit(-1);
 					}
 					else
 					{
-						savedTabs[tab.url] = true;
-
 						BookmarkManager.createBookmark({
 							url: tab.url,
 							title: tab.title,
@@ -113,7 +249,7 @@ define(function(require, exports) {
 						})
 						.then(trackSaving.advance, trackSaving.advance);
 					}
-				});
+				}
 			});
 		};
 
@@ -144,28 +280,13 @@ define(function(require, exports) {
 		var restoreNewWindow = function restoreNewWindow(folderID)
 		{
 			BookmarkManager.getFolderBookmarks(folderID, function(bookmarks) {
-				loadBookmarksNewWindow(bookmarks);
+				loadBookmarksNewWindow([bookmarks]);
 			});
 		};
 
-		var loadBookmarksNewWindow = function loadBookmarksNewWindow(bookmarks)
+		var loadBookmarksNewWindow = function loadBookmarksNewWindow(windows)
 		{
-			if (bookmarks.length > 0)
-			{
-				browser.windows.create({})
-				.then(function(mozWindow) {
-					var checkValid = new LimitCounter(1, function () {
-						browser.tabs.remove(mozWindow.tabs[0].id);
-					});
-					bookmarks.forEach(function (bookmark) {
-						browser.tabs.create({
-							url: bookmark.url,
-							pinned: bookmark.pinned,
-							windowId: mozWindow.id,
-						}).then(checkValid.advance);
-					});
-				});
-			}
+			browser.runtime.sendMessage({event: 'restore-windows', windows: windows});
 		};
 
 		var createNewSession = function createNewSession() {
@@ -188,6 +309,9 @@ define(function(require, exports) {
 			restoreSession: restoreSession,
 			restoreNewWindow: restoreNewWindow,
 			loadBookmarksNewWindow: loadBookmarksNewWindow,
+			mergeSessions: mergeSessions,
+			overwriteSession: overwriteSession,
+			saveActiveSession: saveActiveSession,
 			saveWindowSession: saveWindowSession,
 			createNewSession: createNewSession,
 			saveHistorySession: saveHistorySession,
