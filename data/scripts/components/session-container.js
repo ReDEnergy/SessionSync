@@ -86,7 +86,7 @@ define(function(require, exports) {
 			if (isValidSessionID(this.activeSessionID)) {
 				WindowEvents.emit(document, 'ConfirmBox-Open', {
 					event: e,
-					message: 'Merge selected session and active window seesion?',
+					message: 'Merge selected session and active window session?',
 					callback: function() {
 						SessionManager.mergeSessions(this.activeSessionID);
 					}.bind(this)
