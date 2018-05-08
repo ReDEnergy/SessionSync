@@ -22,11 +22,12 @@ define(function(require, exports) {
 			function success(bookmarks) {
 				if (bookmarks.length == 0)
 				{
-					BookmarkManager.searchBookmarks({ title: 'Bookmarks Menu'})
-					.then(function (menus) {
+					BookmarkManager.createBookmark({
+						title: 'SessionSync',
+						parentId: 'menu________'
+					}).then(callback, function error() {
 						BookmarkManager.createBookmark({
 							title: 'SessionSync',
-							parentId: menus.length > 0 ? menus[0].id : undefined
 						}).then(callback);
 					});
 				}
