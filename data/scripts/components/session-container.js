@@ -162,20 +162,22 @@ define(function(require, exports) {
 
 		SessionBookmarkEvents(document, bookmarks);
 
-		function updateOnTabEvent(eventType) {
-			if (eventType == 'onRemoved') {
-				setTimeout(function () {
-					updateOnTabEvent('wait onRemoved');
-				}, 500);
+		var updateTimeout = null;
+		function updateOnTabEvent()
+		{
+			if (updateTimeout == null) {
+				updateTimeout = setTimeout(function () {
+					updateTimeout = null;
+					WindowEvents.emit(document, 'SessionContainer-RefreshUI');
+				}, 1000);
 			}
-			WindowEvents.emit(document, 'SessionContainer-RefreshUI');
 		}
 
 		// Tab updates tracking
 		if (AppConfig.isAddonContext()) {
 			var trackedEvents = ['onUpdated', 'onCreated', 'onDetached', 'onAttached', 'onMoved', 'onRemoved'];
 			trackedEvents.forEach(function (eventType) {
-				browser.tabs[eventType].addListener(updateOnTabEvent.bind(this, eventType));
+				browser.tabs[eventType].addListener(updateOnTabEvent);
 			}.bind(this));
 		}
 
