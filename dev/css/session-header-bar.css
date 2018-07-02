@@ -132,7 +132,7 @@
 
 	opacity: 0;
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
 	box-sizing: initial;
 
 	transition-property: width, height, padding, opacity;
@@ -141,11 +141,10 @@
 }
 
 #session-sync .header-bar .header-menu[active="1"] .menu-area {
-	height: 3.8em;
+	height: auto;
 	padding: 1em;
 	border: 1px solid #CCC;
 
-	display: flex;
 	opacity: 1;
 }
 
@@ -153,11 +152,15 @@
 	cursor: default;
 }
 
+#session-sync .header-bar .header-menu .menu-row {
+	display: flex;
+}
+
 #session-sync .header-bar .header-menu .menu-button {
-	width: 4em;
-	height: 3.2em;
+	width: 6em;
+	height: 3.5em;
 	margin: 0 0 0 0.6em;
-	padding: 0.3em 0;
+	padding: 0.5em 0;
 	border: 1px solid #FFF;
 
 	box-sizing: content-box;
@@ -190,21 +193,33 @@
 	background-image: url("images/icons/gear.png");
 }
 
-#session-sync .header-bar .header-menu .menu-button[id="close"] .icon {
-	background-image: url("images/icons/power.png");
+#session-sync .header-bar .header-menu .menu-button[id="window-view"] .icon {
+	background-image: url("images/icons/browser.png");
 }
 
-#session-sync .header-bar .header-menu .menu-button[id="detach"] .icon {
-	background-image: url("images/icons/focus.png");
+#session-sync .header-bar .header-menu .menu-button[id="tab-view"] .icon {
+	background-image: url("images/icons/document.png");
+}
+
+#session-sync .header-bar .header-menu .menu-button[id="feedback"] .icon {
+	background-image: url("images/icons/mail.png");
+}
+
+#session-sync .header-bar .header-menu .menu-button[id="export"] .icon {
+	background-image: url("images/icons/booklet.png");
+}
+
+#session-sync .header-bar .header-menu .menu-button[id="github"] .icon {
+	background-image: url("images/github-logo.png");
 }
 
 #session-sync .header-bar .header-menu .menu-button .title {
-	height: 1em;
-	margin-top: 0.25em;
-	color: #555;
+	height: 1.4em;
+	margin-top: 0.4em;
 	font-size: 0.8em;
 	line-height: 100%;
 	text-align: center;
+	color: #555;
 }
 
 

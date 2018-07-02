@@ -88,6 +88,7 @@
 
 #session-sync .session-container .window-separator .text {
 	text-align: center;
+	font-weight: 600;
 }
 
 #session-sync .session-container .window-separator:hover {

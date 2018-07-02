@@ -87,6 +87,13 @@ define(function(require, exports) {
 		var menuArea = DomElem('div', {class: 'menu-area'});
 		headerMenu.appendChild(menuArea);
 
+		var menuRow1 = DomElem('div', {class: 'menu-row'});
+		var menuRow2 = DomElem('div', {class: 'menu-row'});
+		var menuRow3 = DomElem('div', {class: 'menu-row'});
+		menuArea.appendChild(menuRow1);
+		menuArea.appendChild(menuRow2);
+		menuArea.appendChild(menuRow3);
+
 		// ------------------------------------------------------------------------
 		// Methods
 
@@ -109,9 +116,9 @@ define(function(require, exports) {
 			return button;
 		}
 
-		var buttonCfg = MenuButton({
+		var openConfig = MenuButton({
 			id: 'config',
-			title: 'Config',
+			title: 'Options',
 			callback: function () {
 				var model = SessionSyncModel.getModel(document);
 				var state = model.state['config'] == undefined ? 'on' : undefined;
@@ -119,26 +126,113 @@ define(function(require, exports) {
 			}
 		});
 
-		var buttonHelp = MenuButton({
+		var openTutorial = MenuButton({
 			id: 'help',
-			title: 'About',
+			title: 'Tutorial',
 			callback: function () {
-				GlobalEvents.emit('open-addon-page');
-				WindowEvents.emit(document, 'CloseUI');
+				browser.runtime.sendMessage({event: 'session-sync-tutorial'});
 			}
 		});
 
-		var buttonDetach = MenuButton({
-			id: 'detach',
-			title: 'Detach',
+		var leaveFeedback = MenuButton({
+			id: 'feedback',
+			title: 'Feedback',
 			callback: function () {
-				WindowEvents.emit(document, 'open-addon-detached');
+				browser.runtime.sendMessage({event: 'session-sync-leave-feedback'});
 			}
 		});
 
-		menuArea.appendChild(buttonCfg);
-		menuArea.appendChild(buttonHelp);
-		menuArea.appendChild(buttonDetach);
+		var exportImport = MenuButton({
+			id: 'export',
+			title: 'Export/Import',
+			callback: function () {
+				browser.tabs.create({
+					url: 'home/home.html#export-import',
+					active: true,
+				});
+			}
+		});
+
+		var buttonDetachInTab = MenuButton({
+			id: 'tab-view',
+			title: 'Tab View',
+			callback: function () {
+				browser.runtime.sendMessage({event: 'session-sync-detach-tab'});
+			}
+		});
+
+		var buttonDetachInWindow = MenuButton({
+			id: 'window-view',
+			title: 'Window View',
+			callback: function () {
+				browser.runtime.sendMessage({event: 'session-sync-detach-window'});
+			}
+		});
+
+		var githubPage = MenuButton({
+			id: 'github',
+			title: 'Dev page',
+			callback: function () {
+				browser.runtime.sendMessage({event: 'session-sync-open-github'});
+			}
+		});
+
+		menuRow1.appendChild(openConfig);
+		menuRow2.appendChild(openTutorial);
+		menuRow2.appendChild(leaveFeedback);
+		menuRow2.appendChild(githubPage);
+		menuRow3.appendChild(exportImport);
+		menuRow3.appendChild(buttonDetachInTab);
+		menuRow3.appendChild(buttonDetachInWindow);
+
+		// ------------------------------------------------------------------------
+		// Dev actions
+		if (AppConfig.devMode())
+		{
+			var devMenu = DomElem('div', {class: 'menu-row'});
+
+			var activeTabInfo = MenuButton({
+				id: 'tabInfo',
+				title: 'Tab Info',
+				callback: function () {
+					browser.tabs.query({active: true, windowId: browser.windows.WINDOW_ID_CURRENT})
+					.then(tabs => browser.tabs.get(tabs[0].id))
+					.then(tab => {
+						console.log(tab);
+					});
+				}
+			});
+
+			var localStorage = MenuButton({
+				id: 'localStorage',
+				title: 'Local Storage',
+				callback: function () {
+					browser.storage.local.get().then(function (data) {
+						console.log(data);
+					});
+				}
+			});
+
+			var clearFaviconCache = MenuButton({
+				id: 'clearFaviconCache',
+				title: 'Clear Favicons',
+				callback: function () {
+					browser.storage.local.get().then(function (data) {
+						for (var key in data) {
+							if (key.startsWith('@favIconUrl')) {
+								browser.storage.local.remove(key);
+							}
+						}
+					});
+				}
+			});
+
+			devMenu.appendChild(activeTabInfo);
+			devMenu.appendChild(localStorage);
+			devMenu.appendChild(clearFaviconCache);
+			menuArea.appendChild(devMenu);
+		}
+
 
 		// ------------------------------------------------------------------------
 		// Events

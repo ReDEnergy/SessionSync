@@ -16,8 +16,6 @@ body {
 	font-family: "Open Sans", "Segoe UI", Arial, Helvetica, sans-serif;
 
 	cursor: default;
-
-	-moz-user-select: none;
 }
 
 #page {
@@ -77,20 +75,16 @@ body {
 #github {
 	width: 150px;
 	height: 50px;
-	color: #FFF;
 	text-decoration: none;
 	display: block;
 	position: absolute;
-	background-image: url("../images/github.png"), url("../images/github-logo.png");
-	background-repeat: no-repeat;
-	background-position: center right, center left;
-	opacity: 0.3;
+	opacity: 0.6;
 	top: 20px;
 	right: 0;
 }
 
 #github:hover {
-	opacity: 0.7;
+	opacity: 0.8;
 }
 
 #github a {
@@ -99,46 +93,58 @@ body {
 	position: absolute;
 }
 
+#github .logo {
+	width: 50px;
+	height: 100%;
+	background-image: url("../images/github-logo.png");
+	background-size: 40px;
+	background-repeat: no-repeat;
+	background-position: center center;
+	float: left;
+}
+
+#github .brand {
+	width: 100px;
+	height: 100%;
+	background-image: url("../images/github.png");
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center right;
+	float: left;
+}
 
 #feedback {
-	width: 50px;
 	height: 50px;
-	color: #FFF;
-	text-decoration: none;
 	display: block;
 	position: absolute;
-	background-image: url("../images/mail50.png");
+	opacity: 0.7;
+	top: 20px;
+	left: 0;
+}
+
+#feedback .icon {
+	width: 50px;
+	height: 100%;
+	background-image: url("../images/mail.png");
+	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center right, center left;
-	opacity: 0.3;
-	top: 60px;
-	right: 0px;
+	float: left;
+}
+
+#feedback .info {
+	height: 100%;
+	color: #333;
+	line-height: 200%;
+	font-size: 24px;
+	text-decoration: none;
+	float: left;
 }
 
 #feedback:hover {
-	opacity: 0.7;
-}
-
-#feedback:hover .tooltip {
 	opacity: 1;
 }
 
-#feedback a {
-	width: 100%;
-	height: 100%;
-	position: absolute;
-}
-
-#feedback .tooltip {
-	width: 150px;
-	color: #333;
-	position: absolute;
-	left: 100%;
-	font-size: 20px;
-	top: 80%;
-	left: -40px;
-	opacity: 0;
-}
 
 #tooltip {
 	width: auto;
@@ -233,10 +239,6 @@ body {
 	cursor: pointer;
 }
 
-#container .preview {
-
-}
-
 #container .carousel {
 	width: 2000%;
 	height: 100%;
@@ -310,4 +312,8 @@ body {
 
 #container .highlight {
 	color: #DF5600
+}
+
+#container a {
+	text-decoration: none;
 }

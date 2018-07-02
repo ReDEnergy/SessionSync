@@ -19,6 +19,7 @@ define(function(require, exports) {
 	var SessionSyncDOMModel = function SessionSyncDOMModel(document)
 	{
 		this.bookmarks = {};
+		this.tabs = {};
 		this.state = {};
 
 		// ------------------------------------------------------------------------

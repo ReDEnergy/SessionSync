@@ -3,7 +3,7 @@
 <head>
 
 	<meta charset="utf-8">
-	<title>Session Sync</title>
+	<title>Session Sync - Tutorial</title>
 	<link rel="icon" href="../images/icon64.png" />
 	<link rel="stylesheet" href="./home.css" />
 
@@ -24,12 +24,17 @@
 		</div>
 
 		<div id="github">
-			<a href="https://github.com/ReDEnergy/SessionSync" title="GitHub Repo" target="_blank"> </a>
+			<a href="https://github.com/ReDEnergy/SessionSync" title="GitHub Repo" target="_blank">
+				<div class="logo"></div>
+				<div class="brand"></div>
+			</a>
 		</div>
 
 		<div id="feedback">
-			<a href="mailto:gabriel.ivanica@gmail.com?Subject=[Session-Sync]%20User%20feedback"> </a>
-			<div class="tooltip"> Send Feedback</div>
+			<a href="mailto:gabriel.ivanica@gmail.com?Subject=[Session-Sync]%20User%20feedback">
+				<div class="icon"> </div>
+				<div class="info">Feedback</div>
+			</a>
 		</div>
 
 		<div id="container">
@@ -99,8 +104,15 @@
 						<b> Click </b> on the URL bar to <span class="highlight">copy</span> the link</b>
 					</div>
 					<div id="info-detach-mode">
-						You can detach the UI into a separate <span class="highlight">window</span> or <span class="highlight">tab</span> (see configuration) </br>
-						Press <b><span id="hotkey-session-sync-detach" class="highlight">CTRL + SHIFT + V</span></b> or use the <span class="highlight"><b> button from addon menu</span></b> </br>
+						You can detach the UI into a separate <span class="highlight">window</span> or <span class="highlight">tab</span> </br>
+						<b>Window Mode: <span id="hotkey-session-sync-detach-window" class="highlight">CTRL + SHIFT + V</span> &nbsp;
+						Tab Mode: <span id="hotkey-session-sync-detach-tab" class="highlight">CTRL + SHIFT + U</span></b></br>
+						or simply use the <span class="highlight"><b> buttons from addon menu</span></b> </br>
+					</div>
+					<div id="info-export-import">
+						Saved session are stored as bookmarks. It's recommended to use <a href="https://www.mozilla.org/en-US/firefox/accounts/" target="_blank"><span class="highlight">Firefox Account</span></a> to sync your bookmarks. </br>
+						Currenly you can only use <span class="highlight">Firefox Bookmark Manager</span> (CTRL + SHIFT + B) to <b>export/import</b> all your bookmarks (which includes all Session Sync saved data). </br>
+						Session Sync detects automatically all updated bookmarks after an import.
 					</div>
 				</div>
 			</div>

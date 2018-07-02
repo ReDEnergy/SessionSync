@@ -11,17 +11,27 @@ window.addEventListener('load', load);
 
 function load() {
 
-	//console.log('logic loaded');
-
-	Carousel = document.getElementById("carousel");
-	bullets = document.getElementById("bullets");
-	tooltip = document.getElementById("tooltip");
+	Carousel = document.getElementById('carousel');
+	bullets = document.getElementById('bullets');
+	tooltip = document.getElementById('tooltip');
 
 	bullets.addEventListener('mouseleave', function(e) {
 		tooltip.removeAttribute('active');
 	});
 
 	initTutorial();
+
+	var url = window.location.href;
+	var startIndex = url.indexOf('#');
+	if (startIndex > 0) {
+		var reference = url.substring(url.indexOf('#') + 1);
+		if (reference.length != 0) {
+			var entry = TutorialEntries.getEntryByKey(reference);
+			if (entry instanceof HelpEntry) {
+				setCarouselTo(entry.index);
+			}
+		}
+	}
 }
 
 var initTutorial = function initTutorial() {
@@ -34,7 +44,7 @@ var initTutorial = function initTutorial() {
 	Carousel.textContent = '';
 	bullets.textContent = '';
 
-	size = CreateHelpPage();
+	size = TutorialEntries.init();
 
 	initCarousel();
 	updateActiveBullet(bullets.firstElementChild);
@@ -42,6 +52,7 @@ var initTutorial = function initTutorial() {
 };
 
 function updateActiveBullet(node) {
+	console.log(node);
 	if (activeBullet) {
 		activeBullet.removeAttribute('active');
 	}
@@ -57,6 +68,7 @@ function setCarouselTo(index)
 
 	Carousel.style.left = -index * 100 + '%';
 	Carousel.setAttribute('advance', index * 100);
+	updateActiveBullet(TutorialEntries.getEntryByIndex(index).bullet);
 }
 
 function advanceCarousel(offset)
@@ -69,7 +81,7 @@ function advanceCarousel(offset)
 	Carousel.style.left = -position + '%';
 	Carousel.setAttribute('advance', position);
 	updateActiveBullet(offset > 0 ? activeBullet.nextElementSibling : activeBullet.previousElementSibling);
-};
+}
 
 function initCarousel()
 {
@@ -84,7 +96,7 @@ function HelpEntry(options)
 {
 	var box = document.createElement('div');
 	box.className = 'box';
-	box.setAttribute('info', options.info);
+	box.setAttribute('info', options.key);
 
 	var title = document.createElement('div');
 	title.className = 'title';
@@ -93,20 +105,22 @@ function HelpEntry(options)
 	var info = document.createElement('div');
 	info.className = 'info';
 
-	var infoNode = document.getElementById('info-' + options.info);
+	var infoNode = document.getElementById('info-' + options.key);
 	if (infoNode) {
 		info.appendChild(infoNode);
 	}
 
 	var visual = document.createElement('div');
 	visual.className = 'tutorial-image';
-	visual.style.backgroundImage = 'url("../images/tutorial/' + options.info + '.png")';
+	visual.style.backgroundImage = 'url("../images/tutorial/' + options.key + '.png")';
 
 	box.appendChild(title);
 	box.appendChild(info);
 	box.appendChild(visual);
 
 	// Bullet
+	var reference = document.createElement('a');
+	reference.href = '#' + options.info;
 
 	var bullet = document.createElement('div');
 	bullet.className = 'bullet';
@@ -114,7 +128,6 @@ function HelpEntry(options)
 	bullet.setAttribute('tooltip', options.title);
 	bullet.addEventListener('click', function(e) {
 		setCarouselTo(options.index);
-		updateActiveBullet(this);
 	});
 	bullet.addEventListener('mouseover', function(e) {
 		var pos = bullet.getBoundingClientRect();
@@ -123,89 +136,118 @@ function HelpEntry(options)
 		tooltip.style.top = pos.y + 'px';
 		tooltip.textContent = options.title;
 	});
-	bullets.appendChild(bullet);
 
-	return box;
+	reference.appendChild(bullet);
+
+	this.index = options.index;
+	this.box = box;
+	this.bullet = bullet;
+	this.link = reference;
 }
 
-function CreateHelpPage()
+var TutorialEntries = (function TutorialEntries()
 {
-	var helper_list = [
+	var entries = {};
+	var entryList = [
 		{
 			title: 'Addon overview',
-			info: 'overview'
+			key: 'overview'
 		},
 		{
 			title : 'Session history',
-			info: 'history-list'
+			key: 'history-list'
 		},
 		{
 			title: 'Session menu',
-			info: 'session-menu'
+			key: 'session-menu'
 		},
 		{
 			title: 'Context menus',
-			info: 'context-menus'
+			key: 'context-menus'
 		},
 		{
 			title: 'Session saving settings',
-			info: 'session-save-settings'
+			key: 'session-save-settings'
 		},
 		{
 			title: 'Edit session information',
-			info: 'session-edit'
+			key: 'session-edit'
 		},
 		{
 			title: 'Sort sessions',
-			info: 'session-sorting'
+			key: 'session-sorting'
 		},
 		{
 			title: 'Filter sessions',
-			info: 'session-filter'
+			key: 'session-filter'
 		},
 		{
 			title: 'Url bar',
-			info: 'url-bar'
+			key: 'url-bar'
 		},
 		{
 			title: 'Trash bin',
-			info: 'delete-item'
+			key: 'delete-item'
 		},
 		{
 			title: 'Configuration panel',
-			info: 'config-panel'
+			key: 'config-panel'
 		},
 		{
 			title: 'Resize UI',
-			info: 'resize-ui'
+			key: 'resize-ui'
 		},
 		{
 			title: 'Resize sessions list',
-			info: 'resize-sessions'
+			key: 'resize-sessions'
 		},
 		{
 			title : 'Detach mode',
-			info: 'detach-mode'
-		}
+			key: 'detach-mode'
+		},
+		{
+			title: 'Export/Import Sessions',
+			key: 'export-import'
+		},
 	];
 
-	var index = 0;
-	helper_list.forEach(function(helper) {
-		helper.index = index;
-		var entry = new HelpEntry(helper);
-		Carousel.appendChild(entry);
-		index++;
-	});
+	function init()
+	{
+		var index = 0;
+		entryList.forEach(function(info) {
+			info.index = index;
+			var entry = new HelpEntry(info);
+			entries[info.key] = entry;
+			info.entry = entry;
 
-	return helper_list.length;
-}
+			Carousel.appendChild(entry.box);
+			bullets.appendChild(entry.link);
+			index++;
+		});
+	}
 
-browser.commands.getAll().
-then(function (commands) {
-	commands.forEach(function (command) {
-		var shortcut = document.getElementById('hotkey-'+ command.name);
-		if (shortcut) {
-			shortcut.textContent = command.shortcut;
-		}
-	});
-});
+	function getEntryByKey(key) {
+		return entries[key];
+	}
+
+	function getEntryByIndex(index) {
+		return entryList[index].entry;
+	}
+
+	return {
+		init: init,
+		getEntryByIndex: getEntryByIndex,
+		getEntryByKey: getEntryByKey
+	};
+
+})();
+
+// browser.commands.getAll().
+// then(function (commands) {
+// 	commands.forEach(function (command) {
+// 		var shortcut = document.getElementById('hotkey-'+ command.name);
+// 		if (shortcut) {
+// 			shortcut.textContent = command.shortcut;
+// 		}
+// 	});
+// });

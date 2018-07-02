@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="lazy.css">
+	<title></title>
+</head>
+
+<body>
+	<div id=container>
+		<div id="title"> Title </div>
+		<a id="url" href="about:example" class="caption">about:example</a>
+		<div id="replacedPageMessage" class="caption"></div>
+
+		<div id="warning">
+			<div class="message"> This page is used for lazy loading <b>Session Sync</b> restored pages </div>
+			<div class="message"> If the page was not loaded automatically please check that lazy loading is enabled in addon configuration panel. </div>
+			<div class="separator"></div>
+			<div class="message">
+				<div class="highlight">Firefox Addon API prevents loading certain URL types. This is not an addon issue.</div>
+				<ul>
+					<li>chrome: URLs</li>
+					<li>javascript: URLs</li>
+					<li>data: URLs</li>
+					<li>file: URLs (files on the filesystem)</li>
+					<li>priviledged about: URLs</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="lazy.js"></script>
+</body>
+
+</html>

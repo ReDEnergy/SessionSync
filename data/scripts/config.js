@@ -63,10 +63,11 @@ define(function(require, exports) {
 			getConfigValue('session.history.selected', null);
 
 			// Bookmarks configuration
-			getConfigValue('bookmark.click.new.tab', false);
+			getConfigValue('bookmark.click.newTab', false);
+			getConfigValue('bookmark.middleClick.newTab', true);
+			getConfigValue('restore.lazy.loading', true);
 
 			// General settings
-			getConfigValue('detach.window', true);
 			getConfigValue('context.menu.icons', true);
 			getConfigValue('storageID');
 
@@ -109,6 +110,11 @@ define(function(require, exports) {
 		var isPanel = function isPanel()
 		{
 			return isPanelUI;
+		};
+
+		var devMode = function devMode()
+		{
+			return false;
 		};
 
 		var isAddonContext = function isAddonContext()
@@ -160,6 +166,7 @@ define(function(require, exports) {
 			set: set,
 			get: get,
 			init : init,
+			devMode: devMode,
 			isPanel: isPanel,
 			isInitState: isInitState,
 			isAddonContext: isAddonContext

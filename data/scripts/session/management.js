@@ -14,6 +14,8 @@ define(function(require, exports) {
 
 	var SessionManager = (function SessionManager() {
 
+		var trackTabs = true;
+
 		var getCurrentTab = function getCurrentTab(callback)
 		{
 			browser.tabs.query({active: true, windowId: browser.windows.WINDOW_ID_CURRENT})
@@ -23,13 +25,35 @@ define(function(require, exports) {
 		};
 
 		var getCurrentWindow = function getCurrentWindow(callback) {
-			browser.windows.getCurrent({populate: true,	windowTypes: ['normal']})
+			browser.windows.getCurrent({ populate: true })
 			.then(callback);
 		};
 
 		var getAllWindows = function getAllWindows(callback) {
-			browser.windows.getAll({populate: true,	windowTypes: ['normal']})
+			browser.windows.getAll({
+				populate: true,
+				windowTypes: ['normal']
+			})
 			.then(callback);
+		};
+
+		var tabTracking = function tabTracking()
+		{
+			return trackTabs;
+		};
+
+		var moveTab = function moveTab(tabID, newIndex, windowID)
+		{
+			trackTabs = false;
+			browser.tabs.move([tabID], {
+				index: newIndex,
+				windowId: windowID
+			}).then(function() {
+				WindowEvents.emit(document, 'UpdateCurrentSession');
+				trackTabs = true;
+			}, function onError() {
+				trackTabs = true;
+			});
 		};
 
 		var activateTab = function activateTab(tabID)
@@ -128,11 +152,7 @@ define(function(require, exports) {
 					}
 					else
 					{
-						BookmarkManager.createBookmark({
-							url: tab.url,
-							title: tab.title,
-							parentId: folder.id
-						})
+						BookmarkManager.createBookmarkFromTab(tab, folder.id)
 						.then(trackSaving.advance, trackSaving.advance);
 					}
 				}
@@ -172,11 +192,7 @@ define(function(require, exports) {
 					for (let i = savingList.length - 1; i >= 0; i--)
 					{
 						var tab = savingList[i];
-						BookmarkManager.createBookmark({
-							url: tab.url,
-							title: tab.title,
-							parentId: sessionID
-						})
+						BookmarkManager.createBookmarkFromTab(tab, sessionID)
 						.then(updateEvent.advance, updateEvent.advance);
 					}
 				});
@@ -206,12 +222,7 @@ define(function(require, exports) {
 						for (let i = mozWindow.tabs.length - 1; i >= 0; i--)
 						{
 							var tab = mozWindow.tabs[i];
-							var url = tab.url;
-							BookmarkManager.createBookmark({
-								url: url,
-								title: tab.title,
-								parentId: sessionID
-							})
+							BookmarkManager.createBookmarkFromTab(tab, sessionID)
 							.then(updateFinish.advance, updateFinish.advance);
 						}
 					});
@@ -226,7 +237,6 @@ define(function(require, exports) {
 				parentId: AppConfig.get('storageID')
 			})
 			.then(function (folder) {
-
 				var trackSaving = new LimitCounter(sessionInfo.tabs.length, function () {
 					callback(folder);
 				});
@@ -242,11 +252,7 @@ define(function(require, exports) {
 					}
 					else
 					{
-						BookmarkManager.createBookmark({
-							url: tab.url,
-							title: tab.title,
-							parentId: folder.id
-						})
+						BookmarkManager.createBookmarkFromTab(tab, folder.id)
 						.then(trackSaving.advance, trackSaving.advance);
 					}
 				}
@@ -267,26 +273,17 @@ define(function(require, exports) {
 
 		var restoreSession = function restoreSession(folderID)
 		{
-			BookmarkManager.getFolderBookmarks(folderID, function(bookmarks) {
-				bookmarks.forEach(function (bookmark) {
-					browser.tabs.create({
-						url: bookmark.url,
-						active: false,
-					});
-				});
-			});
+			browser.runtime.sendMessage({event: 'restore-session', bookmarkID: folderID});
 		};
 
 		var restoreNewWindow = function restoreNewWindow(folderID)
 		{
-			BookmarkManager.getFolderBookmarks(folderID, function(bookmarks) {
-				loadBookmarksNewWindow([bookmarks]);
-			});
+			browser.runtime.sendMessage({event: 'restore-session', bookmarkID: folderID, inNewWindow: true});
 		};
 
 		var loadBookmarksNewWindow = function loadBookmarksNewWindow(windows)
 		{
-			browser.runtime.sendMessage({event: 'restore-windows', windows: windows});
+			browser.runtime.sendMessage({event: 'restore-sessions', windows: windows });
 		};
 
 		var createNewSession = function createNewSession() {
@@ -301,7 +298,9 @@ define(function(require, exports) {
 
 		// Public API
 		return {
+			moveTab: moveTab,
 			activateTab: activateTab,
+			tabTracking: tabTracking,
 			activateWindow: activateWindow,
 			getCurrentTab: getCurrentTab,
 			getCurrentWindow: getCurrentWindow,

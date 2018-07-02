@@ -32,9 +32,11 @@ BrowserSession.prototype.update = function update()
 				for (var i in mozWindow.tabs)
 				{
 					var tab = mozWindow.tabs[i];
+					var info = SessionManagement.getTabInfo(tab.url);
 					var sessionTab = {
 						title: tab.title,
-						url: tab.url,
+						url: info.url,
+						favIconUrl: info.lazyLoading ? info.favIconUrl : tab.favIconUrl,
 						pinned: tab.pinned,
 					};
 					tabCount++;

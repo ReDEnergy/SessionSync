@@ -5,16 +5,40 @@ define(function(require, exports) {
 	// Modules
 
 	const { AppConfig } = require('../config');
-	const { GlobalEvents } = require('../utils/global-events');
 
 	// ************************************************************************
 	// API
 
 	var BookmarkManager = (function BookmarkManager() {
 
-		var createBookmark = function createBookmark(options)
+		var urlParser = document.createElement('a');
+		var lazyLoadingUrl = browser.extension.getURL('data/lazy/lazy.html');
+
+		function getLazyLoadingParameters(url)
 		{
-			return browser.bookmarks.create(options);
+			let paramater = {};
+			let paras = url.split('?')[1].split('&');
+			for (let p of paras) {
+				paramater[p.split('=')[0]] = decodeURIComponent(p.split('=')[1]);
+			}
+			return paramater;
+		}
+
+		var getHostName = function getHostName(url)
+		{
+			urlParser.href = url;
+			return urlParser.hostname;
+		};
+
+		var getFaviconUrl = function getFaviconUrl(favIconUrl, callback)
+		{
+			var key = '@favIconUrl:' + getHostName(favIconUrl);
+			browser.storage.local.get(key)
+			.then(function (obj) {
+				if (obj[key]) {
+					callback(obj[key]);
+				}
+			});
 		};
 
 		var getFolderBookmarks = function getFolderBookmarks(folderID, callback)
@@ -30,45 +54,51 @@ define(function(require, exports) {
 			return browser.bookmarks.search(keyword);
 		};
 
-		var getOpenMode = function getOpenMode(button) {
-			var opt1 = (button == 0 ? 'newTab' : null);
-			var opt2 = (button == 0 ? null : 'newTab');
-			return AppConfig.get('bookmark.click.new.tab') ? opt1 : opt2;
+		var getOpenMode = function getOpenMode(index)
+		{
+			var buttons = ['click', 'middleClick'];
+			var state = AppConfig.get('bookmark.' + buttons[index] + '.newTab');
+			return state ? 'newTab' : 'activeTab';
+		};
+
+		var createBookmarkFromTab = function createBookmarkFromTab(tab, parentId)
+		{
+			var url = tab.url;
+			if (url.startsWith(lazyLoadingUrl, 0))
+			{
+				var info = getLazyLoadingParameters(url);
+				url = info.url;
+			}
+			else
+			{
+				browser.runtime.sendMessage({event: 'save-favicon', tab: tab});
+			}
+
+			return browser.bookmarks.create({
+				url: url,
+				title: tab.title,
+				parentId: parentId
+			});
+
+		};
+
+		var createBookmark = function createBookmark(options)
+		{
+			return browser.bookmarks.create(options);
 		};
 
 		var openBookmark = function openBookmark(options)
 		{
-			var mode = options.mode;
-			delete options.mode;
-
 			if (AppConfig.isPanel() == false)
 			{
-				if (mode != 'newWindow')
+				if (options.mode == 'activeTab')
 				{
-					options.active = AppConfig.get('detach.window') ? options.active : false;
-					return browser.tabs.create(options);
+					options.mode = 'newTab';
+					options.active = false;
 				}
 			}
 
-			switch (mode)
-			{
-				case 'newTab': {
-					return browser.tabs.create(options);
-				}
-
-				case 'newWindow': {
-					return browser.windows.create(options);
-				}
-
-				default: {
-					browser.tabs.query({active: true, windowId: browser.windows.WINDOW_ID_CURRENT})
-					.then(tabs => browser.tabs.get(tabs[0].id))
-					.then(tab => {
-						browser.tabs.update(tab.id, options);
-					});
-					break;
-				}
-			}
+			browser.runtime.sendMessage({event: 'open-tab', options: options});
 		};
 
 		var setTitle = function setTitle(bookmark, title, callback)
@@ -87,7 +117,13 @@ define(function(require, exports) {
 
 		var setLocation = function setLocation(bookmark, url)
 		{
-			bookmark.url = url;
+			browser.bookmarks.update(bookmark.id, {
+				url: url
+			}).then(function success() {
+				bookmark.url = url;
+			}, function error() {
+				throw 'error';
+			});
 		};
 
 		var moveItem = function moveItem(itemID, newParentID, index, callback, errorCallback)
@@ -114,9 +150,11 @@ define(function(require, exports) {
 		};
 
 		return {
+			getFaviconUrl: getFaviconUrl,
 			getOpenMode: getOpenMode,
 			openBookmark: openBookmark,
 			createBookmark: createBookmark,
+			createBookmarkFromTab: createBookmarkFromTab,
 			searchBookmarks: searchBookmarks,
 
 			setTitle: setTitle,

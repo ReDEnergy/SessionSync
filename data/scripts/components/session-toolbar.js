@@ -15,33 +15,6 @@ define(function(require, exports) {
 	// *****************************************************************************
 	// API
 
-	function createToggleButton(document, options)
-	{
-		var DomElem = HTMLCreator(document);
-
-		var state = options.state;
-
-		var entry = DomElem('div', {class: 'toggle-btn'});
-		var title = DomElem('div', {class: 'title'});
-		title.textContent = options.description;
-
-		var button = DomElem('div', {class: 'label'});
-		button.setAttribute('state', state);
-		button.textContent = state ? options.onState : options.offState;
-
-		entry.appendChild(title);
-		entry.appendChild(button);
-
-		entry.addEventListener('click', function() {
-			state = !state;
-			options.callback(state);
-			button.setAttribute('state', state);
-			button.textContent = state ? options.onState : options.offState;
-		});
-
-		return entry;
-	}
-
 	/*
 	* Command bar
 	*/
@@ -128,27 +101,27 @@ define(function(require, exports) {
 
 		var menu = DomElem('div', {class: 'menu-bar'});
 
-		var save = DomElem('div', {class: 'button save'});
-		save.setAttribute('tooltip', 'Save session');
+		var ActionButton = function actionButton(options)
+		{
+			var button = DomElem('div', {class: 'button ' + options.className});
+			button.setAttribute('tooltip', options.tooltip);
 
-		var add = DomElem('div', {class: 'button add'});
-		add.setAttribute('tooltip', 'Add current tab');
+			button.addEventListener('click', function (e) {
+				WindowEvents.emit(document, options.event, e);
+			});
 
-		var restore = DomElem('div', {class: 'button restore'});
-		restore.setAttribute('tooltip', 'Restore');
+			return button;
+		};
 
-		var restoreW = DomElem('div', {class: 'button restore-new-win'});
-		restoreW.setAttribute('tooltip', 'Restore in new window');
-
-		var mergeSession = DomElem('div', {class: 'button merge-sessions'});
-		mergeSession.setAttribute('tooltip', 'Merge sessions');
-
-		var overwriteSession = DomElem('div', {class: 'button replace-session'});
-		overwriteSession.setAttribute('tooltip', 'Overwrite session');
+		var save = ActionButton({tooltip: 'Save session', className: 'save', event: 'MenuSaveSession' });
+		var add = ActionButton({tooltip: 'Add current tab', className: 'add', event: 'MenuAddCurrentTab' });
+		var restore = ActionButton({tooltip: 'Restore', className: 'restore', event: 'MenuRestoreClick' });
+		var restoreW = ActionButton({tooltip: 'Restore in new window', className: 'restore-new-win', event: 'MenuRestoreNewWindow' });
+		var mergeSession = ActionButton({tooltip: 'Merge sessions', className: 'merge-sessions', event: 'MenuMergeSessions' });
+		var overwriteSession = ActionButton({tooltip: 'Overwrite session', className: 'replace-session', event: 'MenuReplaceSession' });
 
 		var separator1 = DomElem('div', {class: 'separator'});
 		var separator2 = DomElem('div', {class: 'separator'});
-
 		var saveConfig = DomElem('div', {class: 'save-config'});
 
 		// Pin tabs action
@@ -177,7 +150,7 @@ define(function(require, exports) {
 			callback: function(value) {
 				saveCfg.allWindows = value;
 				AppConfig.set(saveCfgKey, saveCfg);
-				WindowEvents.emit(document, 'SessionContainer-RefreshUI');
+				WindowEvents.emit(document, 'UpdateCurrentSession');
 			}
 		});
 		saveConfig.appendChild(cfgAllWindows.DOMRoot);
@@ -194,34 +167,6 @@ define(function(require, exports) {
 
 		// ------------------------------------------------------------------------
 		// Events
-
-		restore.addEventListener('click', function() {
-			WindowEvents.emit(document, 'MenuRestoreClick');
-		});
-
-		restoreW.addEventListener('click', function() {
-			WindowEvents.emit(document, 'MenuRestoreNewWindow');
-		});
-
-		// Merge sessions
-		mergeSession.addEventListener('click', function(e) {
-			WindowEvents.emit(document, 'MenuMergeSessions', e);
-		});
-
-		// Replace session
-		overwriteSession.addEventListener('click', function(e) {
-			WindowEvents.emit(document, 'MenuReplaceSession', e);
-		});
-
-		// Append current tab to the selected session
-		add.addEventListener('click', function() {
-			WindowEvents.emit(document, 'MenuAddCurrentTab');
-		});
-
-		// Save the session
-		save.addEventListener('click', function() {
-			WindowEvents.emit(document, 'MenuSaveSession');
-		});
 
 		// Tooltip events
 		menu.addEventListener('mouseover', function(e) {

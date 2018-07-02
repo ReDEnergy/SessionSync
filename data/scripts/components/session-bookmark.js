@@ -18,27 +18,9 @@ define(function(require, exports) {
 	// *****************************************************************************
 	// API
 
-	var ignoreFaviconSearch = {
-		'chrom' : true,
-		'javas' : true,
-		'data:' : true,
-		'file:' : true,
-		'about' : true,
-	};
-
-	function setBookmarkFavicon(faviconNode, faviconURL, request)
+	function setTabFavicon(faviconNode, faviconURL)
 	{
-		if (ignoreFaviconSearch[faviconURL.substring(0, 5)] == true)
-			return;
-
-		if (request)
-		{
-			faviconNode.style.background = 'url("https://s2.googleusercontent.com/s2/favicons?domain_url=' + faviconURL + '")';
-		}
-		else
-		{
-			faviconNode.style.background = 'url("' + faviconURL + '")';
-		}
+		faviconNode.style.background = 'url("' + faviconURL + '")';
 		faviconNode.style.backgroundRepeat = 'no-repeat';
 		faviconNode.style.backgroundPosition = 'center center';
 		faviconNode.style.backgroundSize = 'contain';
@@ -70,7 +52,9 @@ define(function(require, exports) {
 		box.appendChild(favicon);
 		box.appendChild(title);
 
-		setBookmarkFavicon(favicon, bookmark.url, true);
+		BookmarkManager.getFaviconUrl(bookmark.url, function (url) {
+			setTabFavicon(favicon, url);
+		});
 
 		// ------------------------------------------------------------------------
 		// Public data
@@ -163,21 +147,6 @@ define(function(require, exports) {
 			var ID = getAttribute(e.target, 'windowID');
 			return ID ? ID | 0 : undefined;
 		}
-
-		var mouseUpActiveTab = function mouseUpActiveTab(e)
-		{
-			window.removeEventListener('mouseup', mouseUpActiveTab);
-
-			var tabID = getTabID(e);
-			if (tabID) {
-				SessionManager.activateTab(tabID);
-			}
-
-			var windowID = getWindowID(e);
-			if (windowID) {
-				SessionManager.activateWindow(windowID);
-			}
-		};
 
 		// --------------------------------------------------------------
 		// Session level
@@ -311,33 +280,63 @@ define(function(require, exports) {
 
 		var mouseUp = function _mouseUp(e)
 		{
-			var bookmarkID = getBookmarkID(e);
+			switch(SyncModel.state.session)
+			{
+				// if restore session preview
+				case 'restore': {
+					var bookmarkID = getBookmarkID(e);
 
-			// Test if changing
-			if (bookmarkID != null)
-			{
-				if (bookmarkContext.bookmarkID == bookmarkID) {
-					// Preview the content if a click event was registered (mouse-up on the same DOM node)
-					if (!DragContext.hasContext()) {
-						BookmarkManager.openBookmark({
-							url: SessionSyncModel.bookmarks[bookmarkID].url,
-							mode : BookmarkManager.getOpenMode(0)
-						});
-					}
-				}
-				else
-				{
-					if (SessionSyncModel.bookmarks[bookmarkID] != undefined)
+					// Test if changing
+					if (bookmarkID != null)
 					{
-						SessionSyncModel.moveBookmark(bookmarkContext.bookmarkID, bookmarkID);
+						if (bookmarkContext.bookmarkID == bookmarkID) {
+							// Preview the content if a click event was registered (mouse-up on the same DOM node)
+							if (!DragContext.hasContext()) {
+								BookmarkManager.openBookmark({
+									url: SessionSyncModel.bookmarks[bookmarkID].url,
+									mode: BookmarkManager.getOpenMode(0),
+									favicon: false,
+								});
+							}
+						}
+						else
+						{
+							if (SessionSyncModel.bookmarks[bookmarkID] != undefined)
+							{
+								SessionSyncModel.moveBookmark(bookmarkContext.bookmarkID, bookmarkID);
+							}
+						}
 					}
+					else
+					{
+						var sessionID = getSessionID(e);
+						if (sessionID != null && SessionSyncModel.bookmarks[sessionID] != undefined) {
+							SessionSyncModel.moveBookmarkTo(bookmarkContext.bookmarkID, sessionID);
+						}
+					}
+					break;
 				}
-			}
-			else
-			{
-				var sessionID = getSessionID(e);
-				if (sessionID != null && SessionSyncModel.bookmarks[sessionID] != undefined) {
-					SessionSyncModel.moveBookmarkTo(bookmarkContext.bookmarkID, sessionID);
+
+				case 'current': {
+					let tabID = getTabID(e);
+					let tabContext = SyncModel.tabs[tabID];
+
+					if (tabContext) {
+						if (tabContext != bookmarkContext)
+						{
+							SessionManager.moveTab(bookmarkContext.tab.id, tabContext.tab.index, tabContext.tab.windowId);
+						}
+						else
+						{
+							if (tabID) {
+								SessionManager.activateTab(tabID);
+								var windowID = getWindowID(e);
+								if (windowID) {
+									SessionManager.activateWindow(windowID);
+								}
+							}
+						}
+					}
 				}
 			}
 
@@ -385,7 +384,8 @@ define(function(require, exports) {
 					{
 						BookmarkManager.openBookmark({
 							url: SessionSyncModel.bookmarks[bookmarkID].url,
-							mode : BookmarkManager.getOpenMode(1)
+							mode: BookmarkManager.getOpenMode(1),
+							favicon: false,
 						});
 						return;
 					}
@@ -395,8 +395,25 @@ define(function(require, exports) {
 
 				// If active session preview
 				case 'current': {
-					if (e.button == 0 && (getWindowID(e) != undefined || getTabID(e) != undefined)) {
-						window.addEventListener('mouseup', mouseUpActiveTab);
+
+					if (e.button == 0)
+					{
+						let tabID = getTabID(e);
+						if (tabID != undefined) {
+							bookmarkContext = SyncModel.tabs[tabID];
+							if (bookmarkContext != undefined) {
+								startDragEvent = e;
+								window.addEventListener('mousemove', trackDragging);
+								window.addEventListener('mouseup', mouseUp);
+								return;
+							}
+						}
+						else {
+							let windowID = getWindowID(e);
+							if (windowID) {
+								SessionManager.activateWindow(windowID);
+							}
+						}
 					}
 					return;
 				}
@@ -413,7 +430,7 @@ define(function(require, exports) {
 							case 1: {
 								BookmarkManager.openBookmark({
 									url: url,
-									mode : BookmarkManager.getOpenMode(e.button)
+									mode: BookmarkManager.getOpenMode(e.button)
 								});
 
 								break;
@@ -424,7 +441,7 @@ define(function(require, exports) {
 					{
 						if (e.button == 0)
 						{
-							var windowID = getWindowID(e);
+							let windowID = getWindowID(e);
 							if (windowID != undefined) {
 								WindowEvents.emit(document, 'HistorySessionRestoreWindow', windowID);
 							}
@@ -483,7 +500,7 @@ define(function(require, exports) {
 	};
 
 	/*
-	* SessionSeparator
+	* SessionWindow
 	* Used as separator for different windows
 	*/
 
@@ -530,15 +547,23 @@ define(function(require, exports) {
 		text.setAttribute('over', '');
 
 		if (tab.favIconUrl) {
-			setBookmarkFavicon(favicon, tab.favIconUrl);
+			setTabFavicon(favicon, tab.favIconUrl);
 		}
 
 		text.textContent = tab.title;
 		box.appendChild(favicon);
 		box.appendChild(text);
 
+		this.tab = tab;
+		this.position = tab.index + indexOffset;
 		this.DOMRoot = box;
 	}
+
+	SessionTab.prototype.restorePosition = function restorePosition()
+	{
+		this.DOMRoot.style.left = '0px';
+		this.DOMRoot.style.top = this.position * bookmarkOffset + 'em';
+	};
 
 	/*
 	* SessionSeparator
@@ -585,7 +610,9 @@ define(function(require, exports) {
 		text.setAttribute('over', '');
 		text.textContent = tab.title;
 
-		setBookmarkFavicon(favicon, tab.url, true);
+		if (tab.favIconUrl)	{
+			setTabFavicon(favicon, tab.favIconUrl);
+		}
 
 		box.appendChild(favicon);
 		box.appendChild(text);

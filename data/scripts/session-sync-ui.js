@@ -221,17 +221,6 @@ define(function(require, exports) {
 		// ------------------------------------------------------------------------
 		// App Events
 
-		GlobalEvents.on('open-addon-page', function() {
-			BookmarkManager.openBookmark({
-				url: 'home/home.html',
-				mode: 'newTab',
-			});
-		});
-
-		WindowEvents.on(document, 'open-addon-detached', function() {
-			browser.runtime.sendMessage({event: 'session-sync-detach'});
-		});
-
 		WindowEvents.on(document, 'SetUIState', setUIState);
 
 		WindowEvents.on(document, 'CopyURL', function (url) {
@@ -239,7 +228,7 @@ define(function(require, exports) {
 			WindowEvents.emit(document, 'UrlBar-CopyURL');
 		});
 
-		WindowEvents.on(document, 'CopyText', function (text) {
+		WindowEvents.on(document, 'CopyText', function () {
 			WindowEvents.emit(document, 'UrlBar-CopyURL');
 		});
 
@@ -268,7 +257,6 @@ define(function(require, exports) {
 		});
 
 		WindowEvents.on(document, 'SessionContextMenu-RestoreSession', SessionManager.restoreSession);
-
 		WindowEvents.on(document, 'SessionContextMenu-RestoreInNewWindow', SessionManager.restoreNewWindow);
 
 		// BookmarksCtxMenu events
@@ -294,20 +282,24 @@ define(function(require, exports) {
 		WindowEvents.on(document, 'BookmarkCtxMenu-OpenInNewTab', function (bookmarkID) {
 			BookmarkManager.openBookmark({
 				url: SessionSyncModel.bookmarks[bookmarkID].url,
-				mode: 'newTab'
+				mode: 'newTab',
+				favicon: false,
 			});
 		});
 
 		WindowEvents.on(document, 'BookmarkCtxMenu-OpenInActiveTab', function (bookmarkID) {
 			BookmarkManager.openBookmark({
-				url: SessionSyncModel.bookmarks[bookmarkID].url
+				url: SessionSyncModel.bookmarks[bookmarkID].url,
+				mode: 'activeTab',
+				favicon: false,
 			});
 		});
 
 		WindowEvents.on(document, 'BookmarkCtxMenu-OpenInNewWindow', function (bookmarkID) {
 			BookmarkManager.openBookmark({
 				url: SessionSyncModel.bookmarks[bookmarkID].url,
-				mode: 'newWindow'
+				mode: 'newWindow',
+				favicon: false,
 			});
 		});
 
@@ -326,7 +318,8 @@ define(function(require, exports) {
 
 		WindowEvents.on(document, 'HistoryMarksCtxMenu-OpenInActiveTab', function (url) {
 			BookmarkManager.openBookmark({
-				url: url
+				url: url,
+				mode: 'activeTab'
 			});
 		});
 

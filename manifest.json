@@ -1,6 +1,6 @@
 {
 	"name": "Session Sync",
-	"version": "3.0.2",
+	"version": "3.1.0",
 	"author": "Gabriel Ivanica",
 	"description": "Save sessions as bookmarks and sync them through Firefox Sync (or any other sync engine).\nPowerful session management - organize, edit, change, save, restore, etc\n",
 	"homepage_url": "https://github.com/ReDEnergy/SessionSync",
@@ -22,6 +22,7 @@
 	"background": {
 		"scripts": [
 			"scripts/main.js",
+			"scripts/favicon-service.js",
 			"scripts/session-management.js",
 			"scripts/session-history.js"
 		]
@@ -30,7 +31,8 @@
 		"storage",
 		"bookmarks",
 		"tabs",
-		"clipboardWrite"
+		"clipboardWrite",
+		"unlimitedStorage"
 	],
 	"browser_action": {
 		"browser_style": true,
@@ -49,11 +51,17 @@
 			},
 			"description": "Toggle Widget"
 		},
-		"session-sync-detach": {
+		"session-sync-detach-tab": {
 			"suggested_key": {
 				"default": "Ctrl+Shift+V"
 			},
-			"description": "Detach UI"
+			"description": "Tab View"
+		},
+		"session-sync-detach-window": {
+			"suggested_key": {
+				"default": "Ctrl+Shift+U"
+			},
+			"description": "Window View"
 		}
 	}
 }

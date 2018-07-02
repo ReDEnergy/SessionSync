@@ -149,13 +149,39 @@ define(function(require, exports) {
 
 		(function() {
 
+			var section = new ConfigSection(document, { title: 'Session Management' });
+			panel.appendChild(section.container);
+
+			ToggleOptionConfig({
+				parent: section,
+				name: 'Lazy loading restore',
+				key: 'restore.lazy.loading',
+				onState: 'Enabled',
+				offState: 'Disabled',
+			});
+
+		})();
+
+		// ------------------------
+		// Section: General settings
+
+		(function() {
+
 			var section = new ConfigSection(document, { title: 'General' });
 			panel.appendChild(section.container);
 
 			ToggleOptionConfig({
 				parent: section,
-				name: 'Open url (on click)',
-				key: 'bookmark.click.new.tab',
+				name: 'Left click',
+				key: 'bookmark.click.newTab',
+				onState: 'New tab',
+				offState: 'Same tab',
+			});
+
+			ToggleOptionConfig({
+				parent: section,
+				name: 'Middle click',
+				key: 'bookmark.middleClick.newTab',
 				onState: 'New tab',
 				offState: 'Same tab',
 			});
@@ -167,14 +193,6 @@ define(function(require, exports) {
 				key: 'context.menu.icons',
 				onState: 'Show',
 				offState: 'Disabled',
-			});
-
-			ToggleOptionConfig({
-				parent: section,
-				name: 'Detach method',
-				key: 'detach.window',
-				onState: 'Window',
-				offState: 'New tab',
 			});
 
 		})();

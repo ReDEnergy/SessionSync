@@ -131,7 +131,7 @@ define(function(require, exports) {
 
 		}.bind(this));
 
-		WindowEvents.on(document, 'SessionContainer-RefreshUI', function() {
+		WindowEvents.on(document, 'UpdateCurrentSession', function() {
 			if (this.SyncModel.state.session == 'current') {
 				this.showCurrentSession();
 			}
@@ -165,17 +165,20 @@ define(function(require, exports) {
 		var updateTimeout = null;
 		function updateOnTabEvent()
 		{
-			if (updateTimeout == null) {
-				updateTimeout = setTimeout(function () {
-					updateTimeout = null;
-					WindowEvents.emit(document, 'SessionContainer-RefreshUI');
-				}, 1000);
+			if (SessionManager.tabTracking())
+			{
+				if (updateTimeout == null) {
+					updateTimeout = setTimeout(function () {
+						updateTimeout = null;
+						WindowEvents.emit(document, 'UpdateCurrentSession');
+					}, 1000);
+				}
 			}
 		}
 
 		// Tab updates tracking
 		if (AppConfig.isAddonContext()) {
-			var trackedEvents = ['onUpdated', 'onCreated', 'onDetached', 'onAttached', 'onMoved', 'onRemoved'];
+			var trackedEvents = ['onUpdated', 'onCreated', 'onDetached', 'onMoved', 'onAttached', 'onRemoved'];
 			trackedEvents.forEach(function (eventType) {
 				browser.tabs[eventType].addListener(updateOnTabEvent);
 			}.bind(this));
@@ -218,9 +221,10 @@ define(function(require, exports) {
 			if (mozWindow.incognito == true || AppConfig.get('session.save').allWindows == false)
 			{
 				mozWindow.tabs.forEach(function (tab) {
-					var sessionTab = new SessionTab(document, tab, 0, -1);
+					let sessionTab = new SessionTab(document, tab, 0, -1);
+					this.SyncModel.tabs[sessionTab.tab.id] = sessionTab;
 					DOMBookmarks.appendChild(sessionTab.DOMRoot);
-				});
+				}.bind(this));
 
 				this.restoreScrollTop('current');
 			}
@@ -247,6 +251,7 @@ define(function(require, exports) {
 							{
 								let tab = mozWindow.tabs[i];
 								let sessionTab = new SessionTab(document, tab, globalOffset);
+								this.SyncModel.tabs[sessionTab.tab.id] = sessionTab;
 								DOMBookmarks.appendChild(sessionTab.DOMRoot);
 								tabIndex++;
 							}
@@ -351,11 +356,8 @@ define(function(require, exports) {
 			}
 
 			// Add bookmark into the session
-			BookmarkManager.createBookmark({
-				title: activeTab.title,
-				url: activeTab.url,
-				parentId: sessionID
-			})
+
+			BookmarkManager.createBookmarkFromTab(activeTab, sessionID)
 			.then(function (mark) {
 				var bookmark = new SessionBookmark(document, mark);
 
