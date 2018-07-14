@@ -126,6 +126,10 @@ define(function(require, exports) {
 			}
 		}
 
+		function getTargetType(e) {
+			return getAttribute(e.target, 'type');
+		}
+
 		function getSessionID(e) {
 			return getAttribute(e.target, 'sessionID');
 		}
@@ -309,9 +313,14 @@ define(function(require, exports) {
 					}
 					else
 					{
-						var sessionID = getSessionID(e);
-						if (sessionID != null && SessionSyncModel.bookmarks[sessionID] != undefined) {
-							SessionSyncModel.moveBookmarkTo(bookmarkContext.bookmarkID, sessionID);
+						var targeType = getTargetType(e);
+						if (targeType === 'folder')
+						{
+							var sessionID = getSessionID(e);
+							if (sessionID != null && SessionSyncModel.bookmarks[sessionID] != undefined) {
+								console.log(e.target, sessionID, bookmarkContext);
+								SessionSyncModel.moveBookmarkTo(bookmarkContext.bookmarkID, sessionID);
+							}
 						}
 					}
 					break;
