@@ -16,10 +16,10 @@ define(function(require, exports) {
 	// *****************************************************************************
 	// API
 
-	function TrashCan(document) {
+	function TrashCan() {
 
 		// Create DomHealper
-		var DomElem = HTMLCreator(document);
+		var DomElem = HTMLCreator();
 
 		// ------------------------------------------------------------------------
 		var block = DomElem('div', {class: 'trash-can', tooltip: 'Drop item to delete'});

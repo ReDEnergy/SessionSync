@@ -26,9 +26,9 @@ define(function(require, exports) {
 	* Panel for listing session information (Firefox Bookmark Folder) and children bookmarks
 	*/
 
-	function SessionContainer(document)
+	function SessionContainer()
 	{
-		var DomElem = HTMLCreator(document);
+		var DomElem = HTMLCreator();
 
 		// ------------------------------------------------------------------------
 		// Init UI
@@ -221,7 +221,7 @@ define(function(require, exports) {
 			if (mozWindow.incognito == true || AppConfig.get('session.save').allWindows == false)
 			{
 				mozWindow.tabs.forEach(function (tab) {
-					let sessionTab = new SessionTab(document, tab, 0, -1);
+					let sessionTab = new SessionTab(tab, 0, -1);
 					this.SyncModel.tabs[sessionTab.tab.id] = sessionTab;
 					DOMBookmarks.appendChild(sessionTab.DOMRoot);
 				}.bind(this));
@@ -240,7 +240,7 @@ define(function(require, exports) {
 						if (!mozWindow.incognito)
 						{
 							// Add window separator
-							var sessionWindow = new SessionWindow(document, mozWindow.id, windowIndex, tabIndex);
+							var sessionWindow = new SessionWindow(mozWindow.id, windowIndex, tabIndex);
 							DOMBookmarks.appendChild(sessionWindow.DOMRoot);
 							tabIndex++;
 
@@ -250,7 +250,7 @@ define(function(require, exports) {
 							for (let i in mozWindow.tabs)
 							{
 								let tab = mozWindow.tabs[i];
-								let sessionTab = new SessionTab(document, tab, globalOffset);
+								let sessionTab = new SessionTab(tab, globalOffset);
 								this.SyncModel.tabs[sessionTab.tab.id] = sessionTab;
 								DOMBookmarks.appendChild(sessionTab.DOMRoot);
 								tabIndex++;
@@ -279,7 +279,7 @@ define(function(require, exports) {
 		for (let historyTabs of sessionInfo.windows)
 		{
 			// Add window separator
-			var sessionWindow = new HistoryWindow(document, windowIndex, tabIndex);
+			var sessionWindow = new HistoryWindow(windowIndex, tabIndex);
 			this.DOMBookmarks.appendChild(sessionWindow.DOMRoot);
 			tabIndex++;
 
@@ -290,7 +290,7 @@ define(function(require, exports) {
 			{
 				var tab = historyTabs[i];
 				tab.index = i | 0;
-				var sessionTab = new HistoryTab(document, tab, globalOffset);
+				var sessionTab = new HistoryTab(tab, globalOffset);
 				this.DOMBookmarks.appendChild(sessionTab.DOMRoot);
 				tabIndex++;
 			}
@@ -313,7 +313,7 @@ define(function(require, exports) {
 			var len = marks.length;
 			for (var i = 0; i < len; i++)
 			{
-				var bookmark = new SessionBookmark(document, marks[i]);
+				var bookmark = new SessionBookmark(marks[i]);
 				bookmark.setVirtualPosition(marks[i].index);
 
 				SessionSyncModel.bookmarks[marks[i].id] = marks[i];
@@ -359,7 +359,7 @@ define(function(require, exports) {
 
 			BookmarkManager.createBookmarkFromTab(activeTab, sessionID)
 			.then(function (mark) {
-				var bookmark = new SessionBookmark(document, mark);
+				var bookmark = new SessionBookmark(mark);
 
 				SessionSyncModel.bookmarks[mark.id] = mark;
 				this.SyncModel.setBookmark(mark.id, bookmark);

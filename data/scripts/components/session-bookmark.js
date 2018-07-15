@@ -33,9 +33,9 @@ define(function(require, exports) {
 	* Used for interacting with a Firefox bookmark item
 	*/
 
-	function SessionBookmark(document, bookmark)
+	function SessionBookmark(bookmark)
 	{
-		var DomElem = HTMLCreator(document);
+		var DomElem = HTMLCreator();
 
 		var box = DomElem('div', {class : 'bookmark'});
 		box.setAttribute('pinned', bookmark.pinned);
@@ -513,9 +513,9 @@ define(function(require, exports) {
 	* Used as separator for different windows
 	*/
 
-	function SessionWindow(document, windowID, windowIndex, index)
+	function SessionWindow(windowID, windowIndex, index)
 	{
-		var DomElem = HTMLCreator(document);
+		var DomElem = HTMLCreator();
 
 		var box = DomElem('div', {class : 'window-separator'});
 		box.style.top = index * bookmarkOffset + 'em';
@@ -534,9 +534,9 @@ define(function(require, exports) {
 	* Used for displaying tabs from the current window
 	*/
 
-	function SessionTab(document, tab, indexOffset)
+	function SessionTab(tab, indexOffset)
 	{
-		var DomElem = HTMLCreator(document);
+		var DomElem = HTMLCreator();
 
 		var box = DomElem('div', {class : 'bookmark'});
 		box.style.top = (tab.index + indexOffset) * bookmarkOffset + 'em';
@@ -579,9 +579,9 @@ define(function(require, exports) {
 	* Used as separator for different windows
 	*/
 
-	function HistoryWindow(document, windowID, index)
+	function HistoryWindow(windowID, index)
 	{
-		var DomElem = HTMLCreator(document);
+		var DomElem = HTMLCreator();
 
 		var box = DomElem('div', {class : 'history-window-separator'});
 		box.style.top = index * bookmarkOffset + 'em';
@@ -601,9 +601,9 @@ define(function(require, exports) {
 	* Used for displaying tabs from the history windows
 	*/
 
-	function HistoryTab(document, tab, indexOffset)
+	function HistoryTab(tab, indexOffset)
 	{
-		var DomElem = HTMLCreator(document);
+		var DomElem = HTMLCreator();
 
 		var box = DomElem('div', {class : 'bookmark'});
 		box.style.top = (tab.index + indexOffset) * bookmarkOffset + 'em';

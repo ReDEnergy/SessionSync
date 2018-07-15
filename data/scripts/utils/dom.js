@@ -6,7 +6,7 @@ define(function(require, exports, module) {
 	// ------------------------------------------------------------------------
 	// Generic Node Creator
 
-	function Node(document, ns, type, attrs) {
+	function Node(ns, type, attrs) {
 		var elem = document.createElementNS(ns, type);
 
 		attrs && Object.keys(attrs).forEach(function(attr) {
@@ -16,8 +16,8 @@ define(function(require, exports, module) {
 		return elem;
 	}
 
-	function HTMLCreator(document) {
-		return Node.bind(null, document, NS_HTML);
+	function HTMLCreator() {
+		return Node.bind(null, NS_HTML);
 	}
 
 	// ------------------------------------------------------------------------

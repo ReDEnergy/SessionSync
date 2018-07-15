@@ -19,10 +19,10 @@ define(function(require, exports) {
 	* Command bar
 	*/
 
-	function SessionToolbar(document)
+	function SessionToolbar()
 	{
 		// Create DomHealper
-		var DomElem = HTMLCreator(document);
+		var DomElem = HTMLCreator();
 
 		// ------------------------------------------------------------------------
 		// Create UI
@@ -52,7 +52,7 @@ define(function(require, exports) {
 		// ------------------------------------------------------------------------
 		// Session toolbar menu
 
-		var sessionMenu = this.createMenu(document);
+		var sessionMenu = this.createMenu();
 		toolbar.appendChild(sessionMenu);
 
 		var sessionDate = DomElem('div', {class: 'session-date'});
@@ -92,9 +92,9 @@ define(function(require, exports) {
 		this.DOMRoot = toolbar;
 	}
 
-	SessionToolbar.prototype.createMenu = function createMenu(document)
+	SessionToolbar.prototype.createMenu = function createMenu()
 	{
-		var DomElem = HTMLCreator(document);
+		var DomElem = HTMLCreator();
 
 		// ------------------------------------------------------------------------
 		// UI - SessionContainer menu
@@ -128,7 +128,7 @@ define(function(require, exports) {
 
 		var saveCfgKey = 'session.save';
 		var saveCfg = AppConfig.get(saveCfgKey);
-		var cfgSavePinned = new DOMComponent.ToggleSwitch(document, {
+		var cfgSavePinned = new DOMComponent.ToggleSwitch({
 			state: saveCfg ? saveCfg.pinned : false,
 			tooltip: 'Save pinned tabs',
 			attribute: 'pin',
@@ -141,7 +141,7 @@ define(function(require, exports) {
 		});
 		saveConfig.appendChild(cfgSavePinned.DOMRoot);
 
-		var cfgAllWindows = new DOMComponent.ToggleSwitch(document, {
+		var cfgAllWindows = new DOMComponent.ToggleSwitch({
 			state: saveCfg ? saveCfg.allWindows : false,
 			tooltip: 'Show all windows',
 			attribute: 'windows',

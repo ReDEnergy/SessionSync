@@ -15,9 +15,9 @@ define(function(require, exports) {
 	* SessionFiltering
 	*/
 
-	function SessionFiltering(document)
+	function SessionFiltering()
 	{
-		var DomElem = HTMLCreator(document);
+		var DomElem = HTMLCreator();
 
 		// ------------------------------------------------------------------------
 		// Create UI

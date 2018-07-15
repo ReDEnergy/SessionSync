@@ -10,9 +10,9 @@ define(function(require, exports) {
 	// ------------------------------------------------------------------------
 	// API
 
-	function UrlBar(document)
+	function UrlBar()
 	{
-		var DomElem = HTMLCreator(document);
+		var DomElem = HTMLCreator();
 
 		var url_bar = DomElem('div', {class: 'url-bar'});
 		var url_arrow = DomElem('div', {class: 'arrow'});

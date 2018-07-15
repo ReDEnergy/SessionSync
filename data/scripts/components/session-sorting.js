@@ -12,10 +12,10 @@ define(function(require, exports) {
 	// *****************************************************************************
 	// API
 
-	function SessionSorting(document)
+	function SessionSorting()
 	{
 		// Create DomHealper
-		var DomElem = HTMLCreator(document);
+		var DomElem = HTMLCreator();
 
 		// ------------------------------------------------------------------------
 		// UI

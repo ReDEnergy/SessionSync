@@ -20,10 +20,10 @@ define(function(require, exports) {
 	* Config panel
 	*/
 
-	function ConfigPanel(document)
+	function ConfigPanel()
 	{
 		// Create DomHealper
-		var DomElem = HTMLCreator(document);
+		var DomElem = HTMLCreator();
 
 		// ------------------------------------------------------------------------
 		// Create UI
@@ -38,7 +38,7 @@ define(function(require, exports) {
 
 		function RangeOptionConfig(options)
 		{
-			var optionRG = new DOMComponent.RangeControl(document, {
+			var optionRG = new DOMComponent.RangeControl({
 				value: AppConfig.get(options.key),
 				description: options.name,
 				step: options.step ? options.step : 1,
@@ -62,7 +62,7 @@ define(function(require, exports) {
 			var isSwitch = (options.type === 'switch');
 			var Toggle = isSwitch ? DOMComponent.ToggleSwitch : DOMComponent.ToggleButton;
 
-			var toggleBtn = new Toggle(document, {
+			var toggleBtn = new Toggle({
 				state: AppConfig.get(options.key),
 				description: options.name,
 				onState: options.onState,
@@ -87,7 +87,7 @@ define(function(require, exports) {
 			});
 		}
 
-		function ConfigSection(document, options)
+		function ConfigSection(options)
 		{
 			var sectionContainer = DomElem('div', {class: 'section-container'});
 			var sectionTitle = DomElem('div', {class: 'section-title'});
@@ -129,7 +129,7 @@ define(function(require, exports) {
 
 		(function() {
 
-			var section = new ConfigSection(document, { title: 'UI Scaling' });
+			var section = new ConfigSection({ title: 'UI Scaling' });
 			panel.appendChild(section.container);
 
 			if (AppConfig.isPanel())
@@ -149,7 +149,7 @@ define(function(require, exports) {
 
 		(function() {
 
-			var section = new ConfigSection(document, { title: 'Session Management' });
+			var section = new ConfigSection({ title: 'Session Management' });
 			panel.appendChild(section.container);
 
 			ToggleOptionConfig({
@@ -167,7 +167,7 @@ define(function(require, exports) {
 
 		(function() {
 
-			var section = new ConfigSection(document, { title: 'General' });
+			var section = new ConfigSection({ title: 'General' });
 			panel.appendChild(section.container);
 
 			ToggleOptionConfig({
@@ -208,12 +208,12 @@ define(function(require, exports) {
 			if (typeof browser === 'object' && browser.commands.update == undefined)
 				return;
 
-			var section = new ConfigSection(document, { title: 'Hotkeys' });
+			var section = new ConfigSection({ title: 'Hotkeys' });
 			panel.appendChild(section.container);
 
 			function HotkeyOptionConfig(command)
 			{
-				var button = new DOMComponent.ActionButton(document, {
+				var button = new DOMComponent.ActionButton({
 					value: command.shortcut,
 					description: command.description,
 					callback: function() {
@@ -245,13 +245,13 @@ define(function(require, exports) {
 
 		(function() {
 
-			var section = new ConfigSection(document, { title: 'Auto-save History', id: 'history-config' });
+			var section = new ConfigSection({ title: 'Auto-save History', id: 'history-config' });
 			panel.appendChild(section.container);
 
 			SessionHistory.getConfig(function (historyConfig) {
 
 				// Context menu icons
-				var contextMenuIconsTB = new DOMComponent.ToggleSwitch(document, {
+				var contextMenuIconsTB = new DOMComponent.ToggleSwitch({
 					state: historyConfig.enabled,
 					description: 'Auto-save sessions',
 					onState: 'Enabled',
@@ -269,7 +269,7 @@ define(function(require, exports) {
 				WindowEvents.emit(document, 'SetUIState', {'history': historyConfig.enabled});
 
 				// Auto-save interval
-				var saveIntervalRG = new DOMComponent.RangeControl(document, {
+				var saveIntervalRG = new DOMComponent.RangeControl({
 					value: historyConfig.interval,
 					description: 'Save interval (seconds)',
 					minValue: 10,
@@ -281,9 +281,9 @@ define(function(require, exports) {
 				section.addItem(saveIntervalRG.DOMRoot);
 
 				// Auto-save slots
-				var saveSlotsRG = new DOMComponent.RangeControl(document, {
+				var saveSlotsRG = new DOMComponent.RangeControl({
 					value: historyConfig.savingSlots,
-					description: 'Saving slots',
+					description: 'Saving entries (max)',
 					minValue: 2,
 					onChange: function(value) {
 						historyConfig.savingSlots = value;
@@ -293,7 +293,7 @@ define(function(require, exports) {
 				section.addItem(saveSlotsRG.DOMRoot);
 
 				// Auto-save expire time
-				var expireAfterRG = new DOMComponent.RangeControl(document, {
+				var expireAfterRG = new DOMComponent.RangeControl({
 					value: historyConfig.expireTimeHours,
 					description: 'Delete after [...] hours',
 					minValue: 0,

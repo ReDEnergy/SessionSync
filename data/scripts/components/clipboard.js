@@ -10,9 +10,9 @@ define(function(require, exports) {
 	// ------------------------------------------------------------------------
 	// API
 
-	function Clipboard(document)
+	function Clipboard()
 	{
-		var DomElem = HTMLCreator(document);
+		var DomElem = HTMLCreator();
 
 		var input =  DomElem('input', {id: 'clipboard'});
 		document.body.appendChild(input);

@@ -10,9 +10,9 @@ define(function(require, exports) {
 	// *****************************************************************************
 	// NotificationSystem
 
-	function NotificationSystem(document)
+	function NotificationSystem()
 	{
-		var DomElem = HTMLCreator(document);
+		var DomElem = HTMLCreator();
 
 		var panel = DomElem('div', {class : 'notification-system'});
 		var info = DomElem('div', {class : 'info'});

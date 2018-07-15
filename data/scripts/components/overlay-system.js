@@ -6,7 +6,6 @@ define(function(require, exports) {
 
 	const { AppConfig } = require('../config');
 	const { HTMLCreator } = require('../utils/dom');
-	const { WindowEvents } = require('../utils/global-events');
 
 	// *****************************************************************************
 	// API
@@ -15,10 +14,10 @@ define(function(require, exports) {
 	* Session Hotkeys
 	*/
 
-	function OverlaySystem(document)
+	function OverlaySystem()
 	{
 		// Create DomHealper
-		var DomElem = HTMLCreator(document);
+		var DomElem = HTMLCreator();
 
 		// ------------------------------------------------------------------------
 		// Create UI
@@ -50,9 +49,9 @@ define(function(require, exports) {
 				setState(false);
 		}
 
-		document.addEventListener('click', autoHide);
+		// document.addEventListener('click', autoHide);
 
-		WindowEvents.on(document, 'OverlaySystem', setState);
+		// WindowEvents.on(document, 'OverlaySystem', setState);
 
 		// ------------------------------------------------------------------------
 		// Public properties

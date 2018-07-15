@@ -22,9 +22,9 @@ define(function(require, exports) {
 	* UI Module for interacting with all the session
 	*/
 
-	function SessionList(document)
+	function SessionList()
 	{
-		var DomElem = HTMLCreator(document);
+		var DomElem = HTMLCreator();
 
 		// ------------------------------------------------------------------------
 		// Init UI
@@ -36,7 +36,7 @@ define(function(require, exports) {
 		root.appendChild(resizeHandle);
 
 		// History list
-		var historyList = this.createHistoryList(document);
+		var historyList = this.createHistoryList();
 		root.appendChild(historyList);
 
 		// Session list
@@ -164,9 +164,9 @@ define(function(require, exports) {
 		WindowEvents.emit(document, 'SetUIState', { list: state });
 	};
 
-	SessionList.prototype.createHistoryList = function createHistoryList(document)
+	SessionList.prototype.createHistoryList = function createHistoryList()
 	{
-		var DomElem = HTMLCreator(document);
+		var DomElem = HTMLCreator();
 
 		// ------------------------------------------------------------------------
 		// Create UI
@@ -279,7 +279,7 @@ define(function(require, exports) {
 			}
 			else
 			{
-				sessionFolder = new SessionFolder(this.document, session);
+				sessionFolder = new SessionFolder(session);
 				sessionFolder.setVirtualPosition(session.index);
 				this.SyncModel.setBookmark(session.id, sessionFolder);
 			}

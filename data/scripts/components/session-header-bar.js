@@ -15,9 +15,9 @@ define(function(require, exports) {
 	// ------------------------------------------------------------------------
 	// API
 
-	function SessionHeaderBar(document)
+	function SessionHeaderBar()
 	{
-		var DomElem = HTMLCreator(document);
+		var DomElem = HTMLCreator();
 
 		// ------------------------------------------------------------------------
 		// Create UI
@@ -34,7 +34,7 @@ define(function(require, exports) {
 		headerBar.appendChild(activeSessionBtn);
 
 		// Header Menu
-		var headerMenu = CreateHeaderMenu(document);
+		var headerMenu = CreateHeaderMenu();
 		headerBar.appendChild(headerMenu);
 
 		// ------------------------------------------------------------------------
@@ -74,9 +74,9 @@ define(function(require, exports) {
 		this.DOMRoot = headerBar;
 	}
 
-	var CreateHeaderMenu = function CreateHeaderMenu(document)
+	var CreateHeaderMenu = function CreateHeaderMenu()
 	{
-		var DomElem = HTMLCreator(document);
+		var DomElem = HTMLCreator();
 
 		// ------------------------------------------------------------------------
 		// Create UI

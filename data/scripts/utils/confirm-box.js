@@ -12,9 +12,9 @@ define(function(require, exports) {
 	// *****************************************************************************
 	// Bookmark Confirm Box
 
-	function ConfirmBox(document, options)
+	function ConfirmBox(options)
 	{
-		var DomElem = HTMLCreator(document);
+		var DomElem = HTMLCreator();
 
 		var panel = DomElem('div', {class : 'confirm-box'});
 

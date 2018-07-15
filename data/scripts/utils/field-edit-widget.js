@@ -11,9 +11,9 @@ define(function(require, exports) {
 
 	var counterID = 0;
 
-	function FieldEditWdiget(document, options)
+	function FieldEditWdiget(options)
 	{
-		var DomElem = HTMLCreator(document);
+		var DomElem = HTMLCreator();
 
 		// ------------------------------------------------------------------------
 		// Create UI

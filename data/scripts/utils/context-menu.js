@@ -16,9 +16,9 @@ define(function(require, exports) {
 
 	var previousContextMenu = null;
 
-	function ContextMenu(document, options)
+	function ContextMenu(options)
 	{
-		var DomElem = HTMLCreator(document);
+		var DomElem = HTMLCreator();
 
 		// ------------------------------------------------------------------------
 		// Create UI

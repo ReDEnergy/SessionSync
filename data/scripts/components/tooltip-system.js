@@ -10,9 +10,9 @@ define(function(require, exports) {
 	// *****************************************************************************
 	// TooltipSystem
 
-	function TooltipSystem(document)
+	function TooltipSystem()
 	{
-		var DomElem = HTMLCreator(document);
+		var DomElem = HTMLCreator();
 
 		var tooltip = DomElem('div', {class : 'tooltip-system'});
 

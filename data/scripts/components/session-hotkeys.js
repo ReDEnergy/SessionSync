@@ -14,7 +14,7 @@ define(function(require, exports) {
 	* Session Hotkeys
 	*/
 
-	function SessionHotkeys(document)
+	function SessionHotkeys()
 	{
 		// ------------------------------------------------------------------------
 		// Events

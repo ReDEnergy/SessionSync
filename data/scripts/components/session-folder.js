@@ -21,9 +21,9 @@ define(function(require, exports) {
 	* Session Bookmark
 	* Used for interacting with a Firefox bookmark item
 	*/
-	function SessionFolder(document, bookmark)
+	function SessionFolder(bookmark)
 	{
-		var DomElem = HTMLCreator(document);
+		var DomElem = HTMLCreator();
 		var folder = DomElem('div', {class: 'folder', type: bookmark.type});
 		folder.setAttribute('sessionID', bookmark.id);
 
@@ -34,7 +34,6 @@ define(function(require, exports) {
 		// Public data
 
 		this.visible = true;
-		this.document = document;
 		this.bookmarkID = bookmark.id;
 	}
 

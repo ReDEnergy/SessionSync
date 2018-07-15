@@ -44,7 +44,7 @@ define(function(require, exports) {
 
 	var SessionSyncUI = function SessionSyncUI() {
 
-		var DomElem = HTMLCreator(document);
+		var DomElem = HTMLCreator();
 
 		document.body.setAttribute('panel', AppConfig.isPanel());
 		var content = document.getElementById('body');
@@ -52,19 +52,19 @@ define(function(require, exports) {
 		// ------------------------------------------------------------------------
 		// UI Modules
 
-		var configPanel = new ConfigPanel(document);
+		var configPanel = new ConfigPanel();
 		content.appendChild(configPanel.DOMRoot);
 
-		var tooltipSystem = new TooltipSystem(document);
+		var tooltipSystem = new TooltipSystem();
 		content.appendChild(tooltipSystem.DOMRoot);
 
-		var notificationSystem = new NotificationSystem(document);
+		var notificationSystem = new NotificationSystem();
 		content.appendChild(notificationSystem.DOMRoot);
 
-		var hotekyManager = new SessionHotkeyManager(document);
+		var hotekyManager = new SessionHotkeyManager();
 		content.appendChild(hotekyManager.DOMRoot);
 
-		var overlaySystem = new OverlaySystem(document);
+		var overlaySystem = new OverlaySystem();
 		content.appendChild(overlaySystem.DOMRoot);
 
 		// -------------------------------------------------------------
@@ -74,22 +74,22 @@ define(function(require, exports) {
 		// -------------------------------------------------------------
 		// Clipboard
 
-		new Clipboard(document);
+		new Clipboard();
 
 		// -------------------------------------------------------------
 		// GlobalHotkeys
 
-		new SessionHotkeys(document);
+		new SessionHotkeys();
 
 		// --------------------------------------------------------------------
 		// Center area
 
-		var headerBar = new SessionHeaderBar(document);
-		var toolbar = new SessionToolbar(document);
-		var sessionList = new SessionList(document);
-		var searchBar = new SessionFiltering(document);
-		var sessionContainer = new SessionContainer(document);
-		var sessionSorting = new SessionSorting(document);
+		var headerBar = new SessionHeaderBar();
+		var toolbar = new SessionToolbar();
+		var sessionList = new SessionList();
+		var searchBar = new SessionFiltering();
+		var sessionContainer = new SessionContainer();
+		var sessionSorting = new SessionSorting();
 
 		headerBar.DOMRoot.appendChild(searchBar.DOMRoot);
 		sessionList.DOMRoot.appendChild(sessionSorting.DOMRoot);
@@ -103,13 +103,13 @@ define(function(require, exports) {
 		// -------------------------------------------------------------
 		// Trash can
 
-		var trashCan = new TrashCan(document);
+		var trashCan = new TrashCan();
 		centralArea.appendChild(trashCan.DOMRoot);
 
 		// --------------------------------------------------------------------
 		// URL bar
 
-		var urlBar = new UrlBar(document);
+		var urlBar = new UrlBar();
 		headerBar.DOMRoot.appendChild(urlBar.DOMRoot);
 
 		centralArea.appendChild(resizeHandle);
@@ -122,7 +122,7 @@ define(function(require, exports) {
 		// Context Menues
 
 		// Bookmark Item Context Menu
-		var BM = new ContextMenu(document, {name : 'BookmarkCtxMenu'});
+		var BM = new ContextMenu({name : 'BookmarkCtxMenu'});
 		BM.addMenuEntry({value: 'Open (new tab)', event: 'OpenInNewTab', icon: 'new-tab'});
 		if (AppConfig.isPanel()) {
 			BM.addMenuEntry({value: 'Open (current tab)', event: 'OpenInActiveTab', icon: 'same-tab'});
@@ -135,7 +135,7 @@ define(function(require, exports) {
 		content.appendChild(BM.DOMRoot);
 
 		// Session Context Menu
-		var SM = new ContextMenu(document, {name : 'SessionContextMenu'});
+		var SM = new ContextMenu({name : 'SessionContextMenu'});
 		SM.addMenuEntry({value: 'Restore', event: 'RestoreSession', icon: 'same-window'});
 		SM.addMenuEntry({value: 'Restore (new window)', event: 'RestoreInNewWindow', icon: 'new-window'});
 		SM.addMenuEntry({value: 'Edit', event: 'EditSession', icon: 'edit'});
@@ -155,7 +155,7 @@ define(function(require, exports) {
 			});
 		};
 
-		var HSML = new ContextMenu(document, {name : 'HistoryListCtxMenu'});
+		var HSML = new ContextMenu({name : 'HistoryListCtxMenu'});
 		HSML.addMenuEntry({value: 'Delete All', callback: confirmDeleteAll, icon: 'delete'});
 		content.appendChild(HSML.DOMRoot);
 
@@ -172,14 +172,14 @@ define(function(require, exports) {
 			});
 		};
 
-		var HSM = new ContextMenu(document, {name : 'HistorySessionCtxMenu'});
+		var HSM = new ContextMenu({name : 'HistorySessionCtxMenu'});
 		HSM.addMenuEntry({value: 'Save', event: 'Save', icon: 'heart'});
 		HSM.addMenuEntry({value: 'Restore (new window)', event: 'Restore', icon: 'new-window'});
 		HSM.addMenuEntry({value: 'Delete', callback: confirmDeleteOne, icon: 'delete', separator: 'top'});
 		content.appendChild(HSM.DOMRoot);
 
 		// History Context Menu
-		var HBM = new ContextMenu(document, {name : 'HistoryMarksCtxMenu'});
+		var HBM = new ContextMenu({name : 'HistoryMarksCtxMenu'});
 		HBM.addMenuEntry({value: 'Open (new tab)', event: 'OpenInNewTab', icon: 'new-tab'});
 		if (AppConfig.isPanel()) {
 			HBM.addMenuEntry({value: 'Open (current tab)', event: 'OpenInActiveTab', icon: 'same-tab'});
@@ -189,20 +189,20 @@ define(function(require, exports) {
 		content.appendChild(HBM.DOMRoot);
 
 		// Field edit widgets
-		var BEP = new FieldEditWdiget(document, {name: 'BookmarkEditWidget'});
+		var BEP = new FieldEditWdiget({name: 'BookmarkEditWidget'});
 		BEP.addField({label: 'Name', name: 'title'});
 		BEP.addField({label: 'Location', name: 'url'});
 		// BEP.addField({label: 'Description', name: 'desc'});
 		centralArea.appendChild(BEP.DOMRoot);
 
 		// Field edit Info
-		var SEP = new FieldEditWdiget(document, {name: 'SessionFolderEditWidget'});
+		var SEP = new FieldEditWdiget({name: 'SessionFolderEditWidget'});
 		SEP.addField({label: 'Title', name: 'title'});
 		// SEP.addField({label: 'Description', name: 'desc'});
 		centralArea.appendChild(SEP.DOMRoot);
 
 		// Confirm Box
-		var CB = new ConfirmBox(document, {name: 'ConfirmBox'});
+		var CB = new ConfirmBox({name: 'ConfirmBox'});
 		content.appendChild(CB.DOMRoot);
 
 		// ------------------------------------------------------------------------

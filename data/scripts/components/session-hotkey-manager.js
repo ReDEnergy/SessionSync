@@ -18,10 +18,10 @@ define(function(require, exports) {
 	* Session Hotkeys
 	*/
 
-	function SessionHotkeyManager(document)
+	function SessionHotkeyManager()
 	{
 		// Create DomHealper
-		var DomElem = HTMLCreator(document);
+		var DomElem = HTMLCreator();
 
 		// ------------------------------------------------------------------------
 		// Create UI
@@ -82,7 +82,7 @@ define(function(require, exports) {
 		// --------------------------------------------------------------------
 		// Modifier key
 
-		var modifierKey = new DropDown(document, {
+		var modifierKey = new DropDown({
 			id: 'modifier-key',
 			description: 'Special keys',
 			onChange: updateNewHotkey
@@ -99,7 +99,7 @@ define(function(require, exports) {
 		// --------------------------------------------------------------------
 		// Optional Modifier
 
-		var optionalModifier = new DropDown(document, {
+		var optionalModifier = new DropDown({
 			id: 'optional-modifier',
 			description: 'Optional modifier',
 			onChange: updateNewHotkey
@@ -114,7 +114,7 @@ define(function(require, exports) {
 		// --------------------------------------------------------------------
 		// Shortcut key
 
-		var shortcutKey = new DropDown(document, {
+		var shortcutKey = new DropDown({
 			id: 'shortcut-key',
 			description: 'Key',
 			onChange: updateNewHotkey

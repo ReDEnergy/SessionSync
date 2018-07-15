@@ -14,9 +14,9 @@ define(function(require, exports) {
 	* Toggle switch
 	*/
 
-	function ToggleSwitch(document, options)
+	function ToggleSwitch(options)
 	{
-		var DomElem = HTMLCreator(document);
+		var DomElem = HTMLCreator();
 
 		var state = options.state;
 
@@ -63,9 +63,9 @@ define(function(require, exports) {
 		this.DOMRoot = entry;
 	}
 
-	function ToggleButton(document, options)
+	function ToggleButton(options)
 	{
-		var DomElem = HTMLCreator(document);
+		var DomElem = HTMLCreator();
 
 		// ------------------------------------------------------------------------
 		// Create UI
@@ -116,9 +116,9 @@ define(function(require, exports) {
 	* Action Button
 	*/
 
-	function ActionButton(document, options)
+	function ActionButton(options)
 	{
-		var DomElem = HTMLCreator(document);
+		var DomElem = HTMLCreator();
 
 		var entry = DomElem('div', {class: 'comp-button'});
 		var title = DomElem('div', {class: 'label'});
@@ -162,9 +162,9 @@ define(function(require, exports) {
 	* RageControl
 	*/
 
-	function RangeControl(document, options)
+	function RangeControl(options)
 	{
-		var DomElem = HTMLCreator(document);
+		var DomElem = HTMLCreator();
 
 		// ------------------------------------------------------------------------
 		// Create UI
@@ -245,9 +245,9 @@ define(function(require, exports) {
 		this.setValue = setValue;
 	}
 
-	function DropDown(document, options)
+	function DropDown(options)
 	{
-		var DomElem = HTMLCreator(document);
+		var DomElem = HTMLCreator();
 
 		// ------------------------------------------------------------------------
 		// Create UI
