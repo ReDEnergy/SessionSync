@@ -256,10 +256,16 @@ define(function(require, exports) {
 
 		var folderContextMenu = function folderContextMenu(e)
 		{
-			WindowEvents.emit(document, 'SessionContextMenu-Open', {
-				context: bookmarkContext.bookmark.id,
-				event: e
-			});
+			if (bookmarkContext)
+			{
+				WindowEvents.emit(document, 'SessionContextMenu-Open', {
+					context: bookmarkContext.bookmark.id,
+					event: e
+				});
+			}
+			else {
+				WindowEvents.emit(document, 'SessionListMenu-Open', { event: e });
+			}
 		};
 
 		var sessionDblClick = function sessionDblClick(e)

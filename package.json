@@ -2,7 +2,7 @@
   "name": "session-sync",
   "author": "Gabriel Ivanica",
   "url": "https://github.com/ReDEnergy/SessionSync",
-  "version": "3.0.1",
+  "version": "3.1.1",
   "description": "Save sessions as bookmarks and sync them through any sync engine.\nManage sessions, edit, save, restore.\nSession-Sync will automatically update sessions across multiple machines",
   "license": "MPL-2.0",
   "devDependencies": {

@@ -10,8 +10,8 @@ var Commands = {
 };
 
 browser.runtime.onInstalled.addListener(function (startInfo) {
-	if (startInfo.reason === 'install') {
-		checkEvent(Commands.openTutorial);
+	if (startInfo.reason == 'install') {
+		SessionSync.checkEvent(Commands.openTutorial);
 	}
 });
 

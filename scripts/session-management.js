@@ -4,9 +4,11 @@ var SessionManagement = (function SessionManagement()
 {
 	var lazyLoadingKey = 'restore.lazy.loading';
 	var lazyLoadingUrl = browser.extension.getURL('data/lazy/lazy.html');
-	var lazyLoadingHost = lazyLoadingUrl.substr(16, 8);
 	var lazyLoading = false;
 	var windowsTabsToKill = [];
+
+	var reverseOrderKey = 'restore.reverse.order';
+	var reverseOrder = false;
 
 	function getLazyLoadingParameters(url)
 	{
@@ -41,11 +43,17 @@ var SessionManagement = (function SessionManagement()
 		}
 	};
 
-	var retriveLazyLoadingState = function retriveLazyLoadingState()
+	var initConfig = function initConfig()
 	{
 		browser.storage.local.get(lazyLoadingKey)
 		.then(function (obj) {
 			setLazyLoading(obj[lazyLoadingKey]);
+		});
+
+		browser.storage.local.get(reverseOrderKey)
+		.then(function (obj) {
+			reverseOrder = obj[reverseOrderKey] == true;
+			console.log('reverseOrder', reverseOrder);
 		});
 	};
 
@@ -135,6 +143,14 @@ var SessionManagement = (function SessionManagement()
 		}
 	};
 
+	var checkReverseOrder = function checkReverseOrder(bookmarks)
+	{
+		if (reverseOrder === true)
+		{
+			bookmarks = bookmarks.reverse();
+		}
+	};
+
 	var restoreSession = function restoreSession(folderID, newWindow)
 	{
 		browser.bookmarks.getChildren(folderID)
@@ -146,6 +162,7 @@ var SessionManagement = (function SessionManagement()
 			}
 			else
 			{
+				checkReverseOrder(bookmarks);
 				bookmarks.forEach(function (bookmark) {
 
 					if (lazyLoading)
@@ -181,6 +198,7 @@ var SessionManagement = (function SessionManagement()
 					var windowID = mozWindow.id;
 					windowsTabsToKill[windowID] = mozWindow.tabs[0].id;
 
+					checkReverseOrder(bookmarks);
 					bookmarks.forEach(function (bookmark) {
 						if (lazyLoading)
 						{
@@ -231,6 +249,9 @@ var SessionManagement = (function SessionManagement()
 				{
 					restoreLazyTab(activeTab);
 				}
+				else if (activeTab.status == 'loading') {
+					restoreLazyTab(activeTab, activeTab.title);
+				}
 			});
 		}
 	};
@@ -261,6 +282,9 @@ var SessionManagement = (function SessionManagement()
 		if (object[lazyLoadingKey]) {
 			setLazyLoading(object[lazyLoadingKey].newValue);
 		}
+		if (object[reverseOrderKey]) {
+			reverseOrder = object[reverseOrderKey].newValue == true;
+		}
 	});
 
 	browser.tabs.onCreated.addListener(function (tab) {
@@ -276,7 +300,7 @@ var SessionManagement = (function SessionManagement()
 	// ************************************************************************
 	// Init
 
-	retriveLazyLoadingState();
+	initConfig();
 
 	// ************************************************************************
 	// Public API

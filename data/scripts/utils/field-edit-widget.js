@@ -103,6 +103,7 @@ define(function(require, exports) {
 			document.addEventListener('keydown', keyBoardShortcut);
 			WindowEvents.emit(document, 'FieldWidgetInvoked', widgetID);
 			first_field.focus();
+			first_field.select();
 		}
 
 		function saveValues()

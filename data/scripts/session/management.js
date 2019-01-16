@@ -24,6 +24,14 @@ define(function(require, exports) {
 			});
 		};
 
+		var getWindowTab = function getWindowTab(tabIndex, windowId, callback)
+		{
+			browser.tabs.query({index: tabIndex, windowId: windowId})
+			.then(function(tabs) {
+				callback(tabs[0]);
+			});
+		};
+
 		var getCurrentWindow = function getCurrentWindow(callback) {
 			browser.windows.getCurrent({ populate: true })
 			.then(callback);
@@ -92,6 +100,7 @@ define(function(require, exports) {
 					var sessionTitle = (new Date()).toLocaleString();
 					saveWindowSession(mozWindow, sessionTitle, function onSuccess(folder) {
 						sessionID = folder.id;
+						sessionCount++;
 						updateOnSave();
 					});
 				}
@@ -302,6 +311,7 @@ define(function(require, exports) {
 			activateTab: activateTab,
 			tabTracking: tabTracking,
 			activateWindow: activateWindow,
+			getWindowTab: getWindowTab,
 			getCurrentTab: getCurrentTab,
 			getCurrentWindow: getCurrentWindow,
 			getAllWindows: getAllWindows,

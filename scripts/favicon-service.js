@@ -62,13 +62,8 @@ var FaviconService = (function FaviconService() {
 	{
 		if (tab.favIconUrl)
 		{
-			if (tab.favIconUrl.startsWith('data:image'))
-			{
-				return;
-			}
-
 			getFaviconUrl(tab.url, function (value) {
-				if (value === undefined) {
+				if (value === undefined || tab.url != value) {
 					var key = '@favIconUrl:' + getHostName(tab.url);
 					setFaviconUrl(key, tab.favIconUrl)
 				}

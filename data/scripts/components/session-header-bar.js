@@ -187,7 +187,29 @@ define(function(require, exports) {
 
 		// ------------------------------------------------------------------------
 		// Dev actions
-		if (AppConfig.devMode())
+
+		var DebugMode =	{
+			init: AppConfig.devMode(),
+			manualTrigger: 0,
+			triggerDate: new Date(),
+			action : function () {
+				if (this.init == false)
+				{
+					if (new Date() - this.triggerDate < 5000) {
+						this.manualTrigger++;
+						if (this.manualTrigger > 10) {
+							this.init = true;
+							initDevMode();
+						}
+					}
+					else {
+						this.manualTrigger = 0;
+					}
+				}
+			}
+		};
+
+		function initDevMode()
 		{
 			var devMenu = DomElem('div', {class: 'menu-row'});
 
@@ -233,6 +255,8 @@ define(function(require, exports) {
 			menuArea.appendChild(devMenu);
 		}
 
+		if (AppConfig.devMode())
+			initDevMode();
 
 		// ------------------------------------------------------------------------
 		// Events
@@ -259,6 +283,8 @@ define(function(require, exports) {
 				if (newState == 1) {
 					document.addEventListener('click', closeOnMiss);
 				}
+
+				DebugMode.action();
 			}
 		});
 

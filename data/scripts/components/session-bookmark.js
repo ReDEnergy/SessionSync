@@ -313,12 +313,10 @@ define(function(require, exports) {
 					}
 					else
 					{
-						var targeType = getTargetType(e);
-						if (targeType === 'folder')
+						if (getTargetType(e) === 'folder')
 						{
 							var sessionID = getSessionID(e);
 							if (sessionID != null && SessionSyncModel.bookmarks[sessionID] != undefined) {
-								console.log(e.target, sessionID, bookmarkContext);
 								SessionSyncModel.moveBookmarkTo(bookmarkContext.bookmarkID, sessionID);
 							}
 						}
@@ -330,7 +328,8 @@ define(function(require, exports) {
 					let tabID = getTabID(e);
 					let tabContext = SyncModel.tabs[tabID];
 
-					if (tabContext) {
+					if (tabContext)
+					{
 						if (tabContext != bookmarkContext)
 						{
 							SessionManager.moveTab(bookmarkContext.tab.id, tabContext.tab.index, tabContext.tab.windowId);
@@ -343,6 +342,21 @@ define(function(require, exports) {
 								if (windowID) {
 									SessionManager.activateWindow(windowID);
 								}
+							}
+						}
+					}
+					else
+					{
+						if (getTargetType(e) === 'folder')
+						{
+							var savingSessionID = getSessionID(e);
+							if (savingSessionID != null) {
+								BookmarkManager.createBookmarkFromTab(bookmarkContext.tab, savingSessionID)
+								.then(function() {
+									WindowEvents.emit(document, 'Notification', {
+										message: 'Saved',
+									});
+								});
 							}
 						}
 					}

@@ -15,7 +15,7 @@ function load() {
 	bullets = document.getElementById('bullets');
 	tooltip = document.getElementById('tooltip');
 
-	bullets.addEventListener('mouseleave', function(e) {
+	bullets.addEventListener('mouseleave', function() {
 		tooltip.removeAttribute('active');
 	});
 
@@ -47,17 +47,20 @@ var initTutorial = function initTutorial() {
 	size = TutorialEntries.init();
 
 	initCarousel();
-	updateActiveBullet(bullets.firstElementChild);
+	updateActiveBullet(bullets.firstElementChild.firstElementChild);
 
 };
 
 function updateActiveBullet(node) {
-	console.log(node);
 	if (activeBullet) {
 		activeBullet.removeAttribute('active');
 	}
+
 	activeBullet = node;
-	activeBullet.setAttribute('active', '');
+
+	if (activeBullet) {
+		activeBullet.setAttribute('active', '');
+	}
 }
 
 function setCarouselTo(index)
@@ -80,13 +83,13 @@ function advanceCarousel(offset)
 	}
 	Carousel.style.left = -position + '%';
 	Carousel.setAttribute('advance', position);
-	updateActiveBullet(offset > 0 ? activeBullet.nextElementSibling : activeBullet.previousElementSibling);
+	updateActiveBullet(TutorialEntries.getEntryByIndex(position / 100).bullet);
 }
 
 function initCarousel()
 {
-	var moveLeft = document.getElementById("scroll-left");
-	var moveRight = document.getElementById("scroll-right");
+	var moveLeft = document.getElementById('scroll-left');
+	var moveRight = document.getElementById('scroll-right');
 
 	moveLeft.addEventListener('click', advanceCarousel.bind(null, -100));
 	moveRight.addEventListener('click', advanceCarousel.bind(null, 100));
@@ -120,16 +123,16 @@ function HelpEntry(options)
 
 	// Bullet
 	var reference = document.createElement('a');
-	reference.href = '#' + options.info;
+	reference.href = '#' + options.key;
 
 	var bullet = document.createElement('div');
 	bullet.className = 'bullet';
 	bullet.setAttribute('left', options.index);
 	bullet.setAttribute('tooltip', options.title);
-	bullet.addEventListener('click', function(e) {
+	bullet.addEventListener('click', function() {
 		setCarouselTo(options.index);
 	});
-	bullet.addEventListener('mouseover', function(e) {
+	bullet.addEventListener('mouseover', function() {
 		var pos = bullet.getBoundingClientRect();
 		tooltip.setAttribute('active', '');
 		tooltip.style.left = pos.x + pos.width / 2 + 'px';
@@ -224,6 +227,7 @@ var TutorialEntries = (function TutorialEntries()
 			bullets.appendChild(entry.link);
 			index++;
 		});
+		return entryList.length;
 	}
 
 	function getEntryByKey(key) {

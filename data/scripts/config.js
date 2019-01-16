@@ -66,6 +66,7 @@ define(function(require, exports) {
 			getConfigValue('bookmark.click.newTab', false);
 			getConfigValue('bookmark.middleClick.newTab', true);
 			getConfigValue('restore.lazy.loading', true);
+			getConfigValue('restore.reverse.order', false);
 
 			// General settings
 			getConfigValue('context.menu.icons', true);

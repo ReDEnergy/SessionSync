@@ -160,6 +160,14 @@ define(function(require, exports) {
 				offState: 'Disabled',
 			});
 
+			ToggleOptionConfig({
+				parent: section,
+				name: 'Reverse restore order',
+				key: 'restore.reverse.order',
+				onState: 'Enabled',
+				offState: 'Disabled',
+			});
+
 		})();
 
 		// ------------------------

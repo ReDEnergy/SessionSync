@@ -143,6 +143,10 @@ define(function(require, exports) {
 		SM.addMenuEntry({value: 'Create new session', callback: SessionManager.createNewSession, icon: 'new-session', separator: 'top'});
 		content.appendChild(SM.DOMRoot);
 
+		var SLM = new ContextMenu({name : 'SessionListMenu'});
+		SLM.addMenuEntry({value: 'Create new session', callback: SessionManager.createNewSession, icon: 'new-session'});
+		content.appendChild(SLM.DOMRoot);
+
 		// History List Context Menu
 		var confirmDeleteAll = function confirmDeleteAll(context, event)
 		{
