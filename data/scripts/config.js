@@ -61,6 +61,7 @@ define(function(require, exports) {
 			getConfigValue('session.active.filter', '');
 			getConfigValue('session.selected', null);
 			getConfigValue('session.history.selected', null);
+			getConfigValue('services.favicon.enabled', true);
 
 			// Bookmarks configuration
 			getConfigValue('bookmark.click.newTab', false);

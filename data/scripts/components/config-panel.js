@@ -203,6 +203,14 @@ define(function(require, exports) {
 				offState: 'Disabled',
 			});
 
+			ToggleOptionConfig({
+				parent: section,
+				name: 'Favicon service',
+				key: 'services.favicon.enabled',
+				onState: 'Enabled',
+				offState: 'Disabled',
+			});
+
 		})();
 
 		// ------------------------

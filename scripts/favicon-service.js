@@ -13,6 +13,8 @@ var FaviconService = (function FaviconService() {
 
 	var database = {};
 	var urlParser = document.createElement('a');
+	var serviceStatus = true;
+	var serviceStatusKey = 'services.favicon.enabled';
 
 	var getBase64ImageFromUrl = async function getBase64ImageFromUrl(imageUrl) {
 
@@ -49,6 +51,7 @@ var FaviconService = (function FaviconService() {
 
 	var setFaviconUrl = function setFaviconUrl(key, favIconUrl)
 	{
+		console.log('new favicon key', key);
 		getBase64ImageFromUrl(favIconUrl)
 		.then(function(result) {
 			browser.storage.local.set({ [key] : result });
@@ -60,6 +63,10 @@ var FaviconService = (function FaviconService() {
 
 	var checkTabFaviconSaved = function checkTabFaviconSaved(tab, waitToLoad)
 	{
+		if (serviceStatus == false) {
+			return;
+		}
+
 		if (tab.favIconUrl)
 		{
 			getFaviconUrl(tab.url, function (value) {
@@ -83,6 +90,32 @@ var FaviconService = (function FaviconService() {
 			});
 		}
 	}
+
+	var initConfig = function initConfig()
+	{
+		browser.storage.local.get(serviceStatusKey)
+		.then(function (obj) {
+			serviceStatus = object[serviceStatusKey];
+		});
+	};
+
+	// ************************************************************************
+	// Events
+
+	browser.storage.onChanged.addListener(function onChange(object) {
+		if (object[serviceStatusKey]) {
+			serviceStatus = object[serviceStatusKey].newValue;
+			console.log(serviceStatus);
+		}
+	});
+
+	// ************************************************************************
+	// Init
+
+	initConfig();
+
+	// ************************************************************************
+	// Public API
 
 	return {
 		getFaviconUrl: getFaviconUrl,
