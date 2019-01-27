@@ -89,12 +89,18 @@ define(function(require, exports) {
 		// ------------------------------------------------------------------------
 		// Init code
 
-		var undoEvents = AppConfig.get('undo.events');
-		updateItemCount(undoEvents ? undoEvents.length : 0);
 		block.setAttribute('dismiss', '');
 
 		// ------------------------------------------------------------------------
+		// Events
+
+		AppConfig.onChange('undo.events', function (value) {
+			updateItemCount(value ? value.length : 0);
+		})
+
+		// ------------------------------------------------------------------------
 		// Public properties
+
 		this.DOMRoot = block;
 	}
 

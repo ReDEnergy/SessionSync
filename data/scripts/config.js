@@ -4,6 +4,8 @@ define(function(require, exports) {
 	// *****************************************************************************
 	// Custom Modules
 
+	const { PubSub } = require('./3rd/pubsub');
+
 	// Utils
 	const { GlobalEvents } = require('./utils/global-events');
 
@@ -12,7 +14,10 @@ define(function(require, exports) {
 
 	var Config = (function() {
 
+		var initState = true;
+		var initConfig = true;
 		var localSettings = {};
+		var configEvents = new PubSub();
 		var isPanelUI = (document.body.clientWidth == 0);
 
 		// ------------------------------------------------------------------------
@@ -20,15 +25,26 @@ define(function(require, exports) {
 
 		function getConfigValue(key, defaultValue)
 		{
+			if (initConfig && localSettings[key] == undefined) {
+				localSettings[key] = defaultValue;
+				return;
+			}
+
 			browser.storage.local.get(key).then(function (obj) {
-				if (Object.keys(obj).length === 0 && obj.constructor === Object && defaultValue != undefined)
+				if (obj.hasOwnProperty(key))
 				{
-					set(key, defaultValue);
+					// console.log('[LocalStorage][Read]', key, obj[key]);
+					localSettings[key] = obj[key];
+					configEvents.publish(key, obj[key]);
 				}
 				else
 				{
-					localSettings[key] = obj[key];
-					GlobalEvents.emit(key, obj[key]);
+					// console.log('Not found [LocalStorage][Set]', key, defaultValue);
+					browser.storage.local.set({ [key] : defaultValue })
+					.then(function success() {
+						localSettings[key] = defaultValue;
+						configEvents.publish(key, defaultValue);
+					});
 				}
 			});
 		}
@@ -52,7 +68,7 @@ define(function(require, exports) {
 			// Session saving settings
 			getConfigValue('session.save', {
 				pinned: false,
-				allWindows: false
+				allWindows: true
 			});
 
 			// Management configuration
@@ -71,7 +87,6 @@ define(function(require, exports) {
 
 			// General settings
 			getConfigValue('context.menu.icons', true);
-			getConfigValue('storageID');
 
 			getConfigValue('hide.trash.can', true);
 			getConfigValue('undo.events', []);
@@ -79,10 +94,19 @@ define(function(require, exports) {
 
 		var set = function set(key, value, onSuccess)
 		{
+			if (typeof value != 'object' && localSettings[key] == value)
+			{
+				if (typeof onSuccess === 'function') {
+					onSuccess();
+				}
+				return;
+			}
+
 			browser.storage.local.set({ [key] : value })
 			.then(function success() {
 				localSettings[key] = value;
-				GlobalEvents.emit(key, value);
+				// console.log('[Change config]', key, value);
+				configEvents.publish(key, value);
 				if (typeof onSuccess === 'function') {
 					onSuccess();
 				}
@@ -96,10 +120,10 @@ define(function(require, exports) {
 			if (localSettings[key] === undefined) {
 				console.log('[ERROR] Settings key [' + key + '] was not found!');
 			}
+			// console.log(key, localSettings[key]);
 			return localSettings[key];
 		};
 
-		var initState = true;
 		var isInitState = function isInitState()
 		{
 			if (initState == true) {
@@ -124,6 +148,10 @@ define(function(require, exports) {
 			return typeof browser === 'object';
 		};
 
+		var onChange = function onChange(topic, callback) {
+			configEvents.subscribe(topic, callback)
+		}
+
 		// ------------------------------------------------------------------------
 		// Startup
 
@@ -134,11 +162,9 @@ define(function(require, exports) {
 			if (isAddonContext()) {
 				browser.commands.getAll().
 				then(function (commands) {
-					GlobalEvents.emit('config.hotkey.init', commands);
+					configEvents.publish('config.hotkey.init', commands);
 				});
 			}
-
-			// console.log(localSettings);
 		};
 
 		if (isAddonContext()) {
@@ -151,7 +177,9 @@ define(function(require, exports) {
 			// console.log(manifest.name + ' v' + manifest.version);
 			// console.log('------------------------------------------');
 
+
 			setupConfig();
+			initConfig = false;
 
 			GlobalEvents.on('hotkey.update', function (command) {
 				browser.commands.update({
@@ -168,6 +196,7 @@ define(function(require, exports) {
 			set: set,
 			get: get,
 			init : init,
+			onChange: onChange,
 			devMode: devMode,
 			isPanel: isPanel,
 			isInitState: isInitState,

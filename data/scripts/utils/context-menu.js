@@ -4,6 +4,9 @@ define(function(require, exports) {
 	// *****************************************************************************
 	// Custom Modules
 
+	// App
+	const { AppConfig } = require('../config');
+
 	const { HTMLCreator } = require('./dom');
 
 	// TODO - remove window/global events
@@ -121,7 +124,7 @@ define(function(require, exports) {
 			WindowEvents.emit(document, 'OverlaySystem', { state: true });
 		});
 
-		GlobalEvents.on('context.menu.icons', function(value) {
+		AppConfig.onChange('context.menu.icons', function(value) {
 			menu.setAttribute('icons', value ? 'yes' : 'no');
 		});
 

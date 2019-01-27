@@ -104,17 +104,16 @@ BrowserSession.prototype.resetInterval = function resetInterval(updateInterval)
 	};
 
 	browser.storage.local.get(config.key).then(function (obj) {
-		if (Object.keys(obj).length === 0 && obj.constructor === Object)
+		if (obj[config.key])
+		{
+			config = obj[config.key];
+			init();
+		}
+		else
 		{
 			browser.storage.local.set({
 				[config.key] : config
 			}).then(init);
-		}
-		else
-		{
-			config = obj[config.key];
-			init();
-
 		}
 	});
 

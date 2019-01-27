@@ -77,11 +77,11 @@ define(function(require, exports) {
 			WindowEvents.emit(document, 'ShowHistoryList');
 		});
 
-		GlobalEvents.on('style.sessions.list.width', function(width) {
+		AppConfig.onChange('style.sessions.list.width', function(width) {
 			container.style.width = width + 'px';
 		});
 
-		GlobalEvents.on('style.scale.toolbar', function(value) {
+		AppConfig.onChange('style.scale.toolbar', function(value) {
 			toolbar.style.fontSize = value + 'px';
 		});
 
@@ -103,7 +103,12 @@ define(function(require, exports) {
 
 		var ActionButton = function actionButton(options)
 		{
-			var button = DomElem('div', {class: 'button ' + options.className});
+			var button = DomElem('div', {
+				class: 'button ' + options.className,
+				'state-current': options.state.current,
+				'state-restore': options.state.restore,
+				'state-history': options.state.history,
+			});
 			button.setAttribute('tooltip', options.tooltip);
 
 			button.addEventListener('click', function (e) {
@@ -113,12 +118,61 @@ define(function(require, exports) {
 			return button;
 		};
 
-		var save = ActionButton({tooltip: 'Save session', className: 'save', event: 'MenuSaveSession' });
-		var add = ActionButton({tooltip: 'Add current tab', className: 'add', event: 'MenuAddCurrentTab' });
-		var restore = ActionButton({tooltip: 'Restore', className: 'restore', event: 'MenuRestoreClick' });
-		var restoreW = ActionButton({tooltip: 'Restore in new window', className: 'restore-new-win', event: 'MenuRestoreNewWindow' });
-		var mergeSession = ActionButton({tooltip: 'Merge sessions', className: 'merge-sessions', event: 'MenuMergeSessions' });
-		var overwriteSession = ActionButton({tooltip: 'Overwrite session', className: 'replace-session', event: 'MenuReplaceSession' });
+		var save = ActionButton({
+			tooltip: 'Save session',
+			className: 'save',
+			event: 'MenuSaveSession',
+			state: {
+				current : true,
+				history: true
+			}
+		});
+
+		var add = ActionButton({
+			tooltip: 'Add current tab',
+			className: 'add',
+			event: 'MenuAddCurrentTab',
+			state: {
+				restore: true
+			}
+		});
+
+		var restore = ActionButton({
+			tooltip: 'Restore',
+			className: 'restore',
+			event: 'MenuRestoreClick',
+			state: {
+				restore: true
+			}
+		});
+
+		var restoreW = ActionButton({
+			tooltip: 'Restore in new window',
+			className: 'restore-new-win',
+			event: 'MenuRestoreNewWindow',
+			state: {
+				restore : true,
+				history: true
+			}
+		});
+
+		var mergeSession = ActionButton({
+			tooltip: 'Merge sessions',
+			className: 'merge-sessions',
+			event: 'MenuMergeSessions',
+			state: {
+				restore: true
+			}
+		});
+
+		var overwriteSession = ActionButton({
+			tooltip: 'Overwrite session',
+			className: 'replace-session',
+			event: 'MenuReplaceSession',
+			state: {
+				restore: true
+			}
+		});
 
 		var separator1 = DomElem('div', {class: 'separator'});
 		var separator2 = DomElem('div', {class: 'separator'});
@@ -129,7 +183,7 @@ define(function(require, exports) {
 		var saveCfgKey = 'session.save';
 		var saveCfg = AppConfig.get(saveCfgKey);
 		var cfgSavePinned = new DOMComponent.ToggleSwitch({
-			state: saveCfg ? saveCfg.pinned : false,
+			state: saveCfg.pinned,
 			tooltip: 'Save pinned tabs',
 			attribute: 'pin',
 			onState: '',
@@ -142,7 +196,7 @@ define(function(require, exports) {
 		saveConfig.appendChild(cfgSavePinned.DOMRoot);
 
 		var cfgAllWindows = new DOMComponent.ToggleSwitch({
-			state: saveCfg ? saveCfg.allWindows : false,
+			state: saveCfg.allWindows,
 			tooltip: 'Show all windows',
 			attribute: 'windows',
 			onState: '',
@@ -150,7 +204,6 @@ define(function(require, exports) {
 			callback: function(value) {
 				saveCfg.allWindows = value;
 				AppConfig.set(saveCfgKey, saveCfg);
-				WindowEvents.emit(document, 'UpdateCurrentSession');
 			}
 		});
 		saveConfig.appendChild(cfgAllWindows.DOMRoot);
@@ -167,6 +220,11 @@ define(function(require, exports) {
 
 		// ------------------------------------------------------------------------
 		// Events
+
+		AppConfig.onChange(saveCfgKey, function(value) {
+			cfgSavePinned.setState(value.pinned);
+			cfgAllWindows.setState(value.allWindows);
+		});
 
 		// Tooltip events
 		menu.addEventListener('mouseover', function(e) {

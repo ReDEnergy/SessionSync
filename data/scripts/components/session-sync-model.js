@@ -306,7 +306,7 @@ define(function(require, exports) {
 					delete bookmarks[B.id];
 				});
 
-				// Save unde event
+				// Save undo event
 				var undoEvents = AppConfig.get('undo.events');
 				undoEvents.push(undoEvent);
 

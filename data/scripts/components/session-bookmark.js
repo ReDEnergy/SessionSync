@@ -299,7 +299,7 @@ define(function(require, exports) {
 								BookmarkManager.openBookmark({
 									url: SessionSyncModel.bookmarks[bookmarkID].url,
 									mode: BookmarkManager.getOpenMode(0),
-									favicon: false,
+									favicon: true,
 								});
 							}
 						}
@@ -408,7 +408,7 @@ define(function(require, exports) {
 						BookmarkManager.openBookmark({
 							url: SessionSyncModel.bookmarks[bookmarkID].url,
 							mode: BookmarkManager.getOpenMode(1),
-							favicon: false,
+							favicon: true,
 						});
 						return;
 					}

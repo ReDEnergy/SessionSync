@@ -40,7 +40,7 @@ define(function(require, exports) {
 		// ------------------------------------------------------------------------
 		// Events
 
-		GlobalEvents.on('style.scale.header', function(value) {
+		AppConfig.onChange('style.scale.header', function(value) {
 			headerBar.style.fontSize = value + 'px';
 		});
 

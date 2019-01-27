@@ -52,7 +52,7 @@ define(function(require, exports) {
 				},
 			});
 			options.parent.addItem(optionRG.DOMRoot);
-			GlobalEvents.on(options.key, function(value) {
+			AppConfig.onChange(options.key, function(value) {
 				optionRG.setValue(value, false);
 			});
 		}
@@ -60,7 +60,12 @@ define(function(require, exports) {
 		function ToggleOptionConfig(options)
 		{
 			var isSwitch = (options.type === 'switch');
-			var Toggle = isSwitch ? DOMComponent.ToggleSwitch : DOMComponent.ToggleButton;
+			var Toggle = DOMComponent.ToggleButton;
+			if (isSwitch) {
+				Toggle = DOMComponent.ToggleSwitch;
+				options.onState = 'Enabled';
+				options.offState = 'Disabled';
+			}
 
 			var toggleBtn = new Toggle({
 				state: AppConfig.get(options.key),
@@ -75,7 +80,7 @@ define(function(require, exports) {
 				},
 			});
 			options.parent.addItem(toggleBtn.DOMRoot);
-			GlobalEvents.on(options.key, function(value) {
+			AppConfig.onChange(options.key, function(value) {
 				if (isSwitch)
 				{
 					toggleBtn.setState(value);
@@ -156,16 +161,14 @@ define(function(require, exports) {
 				parent: section,
 				name: 'Lazy loading restore',
 				key: 'restore.lazy.loading',
-				onState: 'Enabled',
-				offState: 'Disabled',
+				type: 'switch',
 			});
 
 			ToggleOptionConfig({
 				parent: section,
 				name: 'Reverse restore order',
 				key: 'restore.reverse.order',
-				onState: 'Enabled',
-				offState: 'Disabled',
+				type: 'switch',
 			});
 
 		})();
@@ -207,8 +210,7 @@ define(function(require, exports) {
 				parent: section,
 				name: 'Favicon service',
 				key: 'services.favicon.enabled',
-				onState: 'Enabled',
-				offState: 'Disabled',
+				type: 'switch',
 			});
 
 		})();
@@ -248,7 +250,7 @@ define(function(require, exports) {
 				return button.DOMRoot;
 			}
 
-			GlobalEvents.on('config.hotkey.init', function(commands) {
+			AppConfig.onChange('config.hotkey.init', function(commands) {
 				commands.forEach(function (command) {
 					var action = HotkeyOptionConfig(command);
 					section.addItem(action);

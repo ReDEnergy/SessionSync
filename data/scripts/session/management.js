@@ -275,7 +275,7 @@ define(function(require, exports) {
 				parentId: AppConfig.get('storageID')
 			})
 			.then(function success(session) {
-				WindowEvents.emitLocal('SetPromiseSession', { sessionID: session.id, edit: true, update: true });
+				WindowEvents.emit(document, 'SetPromiseSession', { sessionID: session.id, edit: true, update: true });
 			}, function error() {
 			});
 		};

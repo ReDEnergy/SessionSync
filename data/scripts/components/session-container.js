@@ -147,9 +147,15 @@ define(function(require, exports) {
 
 		WindowEvents.on(document, 'ViewSession', this.previewSession.bind(this));
 
-		GlobalEvents.on('style.scale.bookmarks', function(size) {
+		AppConfig.onChange('style.scale.bookmarks', function(size) {
 			container.style.fontSize = size + 'px';
 		});
+
+		AppConfig.onChange('session.save', function(obj) {
+			if (this.SyncModel.state.session == 'current') {
+				this.showCurrentSession();
+			}
+		}.bind(this));
 
 		WindowEvents.on(document, 'SessionDescriptionChanged', function(sessionID) {
 			if (this.activeSessionID == sessionID)

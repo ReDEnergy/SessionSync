@@ -7,7 +7,7 @@ define(function(require, exports) {
 	// Utils
 	const { AppConfig } = require('../config');
 	const { HTMLCreator } = require('../utils/dom');
-	const { WindowEvents } = require('../utils/global-events');
+	const { WindowEvents, GlobalEvents } = require('../utils/global-events');
 
 	// *****************************************************************************
 	// API
@@ -47,14 +47,17 @@ define(function(require, exports) {
 		dropdown.appendChild(optionList);
 		sortControl.appendChild(dropdown);
 
-		var sortMethod = AppConfig.get('session.sorting');
-		if (options[sortMethod]) {
-			var activeButton = optionList.children[options[sortMethod].index];
-			activeButton.setAttribute('active', '');
-		}
+		var activeButton = optionList.children[0];
 
 		// ------------------------------------------------------------------------
 		// Events
+
+		AppConfig.onChange('session.sorting', function (value) {
+			if (options[value]) {
+				activeButton = optionList.children[options[value].index];
+				activeButton.setAttribute('active', '');
+			}
+		});
 
 		optionList.addEventListener('click', function(e) {
 			if (e.target.className == 'option') {

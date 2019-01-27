@@ -52,14 +52,13 @@ var SessionManagement = (function SessionManagement()
 
 		browser.storage.local.get(reverseOrderKey)
 		.then(function (obj) {
-			reverseOrder = obj[reverseOrderKey] == true;
-			console.log('reverseOrder', reverseOrder);
+			reverseOrder = (obj[reverseOrderKey] == true);
 		});
 	};
 
 	var openTab = function openTab(options)
 	{
-		var checkFavicon = options.favicon === false ? FaviconService.checkTabFaviconSaved : () => {};
+		var checkFavicon = options.favicon === true ? FaviconService.checkTabFaviconSaved : () => {};
 		delete options.favicon;
 
 		var mode = options.mode;

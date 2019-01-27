@@ -287,7 +287,7 @@ define(function(require, exports) {
 			BookmarkManager.openBookmark({
 				url: SessionSyncModel.bookmarks[bookmarkID].url,
 				mode: 'newTab',
-				favicon: false,
+				favicon: true,
 			});
 		});
 
@@ -295,7 +295,7 @@ define(function(require, exports) {
 			BookmarkManager.openBookmark({
 				url: SessionSyncModel.bookmarks[bookmarkID].url,
 				mode: 'activeTab',
-				favicon: false,
+				favicon: true,
 			});
 		});
 
@@ -303,7 +303,7 @@ define(function(require, exports) {
 			BookmarkManager.openBookmark({
 				url: SessionSyncModel.bookmarks[bookmarkID].url,
 				mode: 'newWindow',
-				favicon: false,
+				favicon: true,
 			});
 		});
 
@@ -398,11 +398,11 @@ define(function(require, exports) {
 
 		if (AppConfig.isPanel())
 		{
-			GlobalEvents.on('style.panel.width', function (size) {
+			AppConfig.onChange('style.panel.width', function (size) {
 				document.body.style.width = size + 'px';
 			});
 
-			GlobalEvents.on('style.panel.height', function (size) {
+			AppConfig.onChange('style.panel.height', function (size) {
 				document.body.style.height = size + 'px';
 			});
 
@@ -438,8 +438,6 @@ define(function(require, exports) {
 
 		// ------------------------------------------------------------------------
 		// App Init
-
-		searchBar.init();
 
 	};
 

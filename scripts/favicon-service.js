@@ -51,7 +51,6 @@ var FaviconService = (function FaviconService() {
 
 	var setFaviconUrl = function setFaviconUrl(key, favIconUrl)
 	{
-		console.log('new favicon key', key);
 		getBase64ImageFromUrl(favIconUrl)
 		.then(function(result) {
 			browser.storage.local.set({ [key] : result });
@@ -95,7 +94,7 @@ var FaviconService = (function FaviconService() {
 	{
 		browser.storage.local.get(serviceStatusKey)
 		.then(function (obj) {
-			serviceStatus = object[serviceStatusKey];
+			serviceStatus = obj[serviceStatusKey];
 		});
 	};
 
@@ -105,7 +104,6 @@ var FaviconService = (function FaviconService() {
 	browser.storage.onChanged.addListener(function onChange(object) {
 		if (object[serviceStatusKey]) {
 			serviceStatus = object[serviceStatusKey].newValue;
-			console.log(serviceStatus);
 		}
 	});
 

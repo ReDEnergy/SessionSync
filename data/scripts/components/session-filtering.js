@@ -118,15 +118,15 @@ define(function(require, exports) {
 		// ------------------------------------------------------------------------
 		// Init state
 
-		this.init = function init()
-		{
-			var activeFilter = AppConfig.get('session.active.filter');
-			if (activeFilter && activeFilter.length > 0) {
-				searchInput.value = activeFilter;
+		var settingsKey = 'session.active.filter';
+
+		AppConfig.onChange(settingsKey, function(value) {
+			if (value && value.length > 0) {
+				searchInput.value = value;
 				panel.setAttribute('active', true);
 				onKeyDown();
 			}
-		};
+		});
 
 		// ------------------------------------------------------------------------
 		// Public properties

@@ -46,11 +46,11 @@ define(function(require, exports) {
 		// ------------------------------------------------------------------------
 		// Events
 
-		GlobalEvents.on('style.sessions.list.width', function(width) {
+		AppConfig.onChange('style.sessions.list.width', function(width) {
 			root.style.width = width + 'px';
 		});
 
-		GlobalEvents.on('style.scale.sessions', function(value) {
+		AppConfig.onChange('style.scale.sessions', function(value) {
 			root.style.fontSize = value + 'px';
 		});
 
@@ -121,6 +121,7 @@ define(function(require, exports) {
 					}
 				}
 			}
+
 			this.setState('sync');
 			if (options.update == true) {
 				GlobalEvents.emit('update-sessions');
@@ -142,15 +143,22 @@ define(function(require, exports) {
 			}
 		}.bind(this));
 
+		AppConfig.onChange('session.selected', function(value) {
+			if (value) {
+				WindowEvents.emit(document, 'SetPromiseSession', { sessionID: value, update: false } );
+			}
+		});
+
+		// ------------------------------------------------------------------------
+		// Init
+
 		SessionFolderEvents(document, list, this);
 
 		// ------------------------------------------------------------------------
 		// Public data
 
 		this.sessions = [];
-		this.promiseInfo = {
-			sessionID: AppConfig.get('session.selected')
-		};
+		this.promiseInfo = {};
 		this.DOMList = list;
 		this.DOMRoot = root;
 		this.document = document;
@@ -266,6 +274,7 @@ define(function(require, exports) {
 		// Position for active filtering
 		var position = 0;
 		var selectedSession;
+		var filterExpression = AppConfig.get('session.active.filter');
 
 		SessionSyncModel.sessions.forEach(function(session) {
 
@@ -289,7 +298,7 @@ define(function(require, exports) {
 				selectedSession = sessionFolder;
 			}
 
-			if (AppConfig.get('session.active.filter').length) {
+			if (filterExpression.length) {
 				if (sessionFolder.match(this.filter)) {
 					sessionFolder.setVirtualPosition(position);
 					position++;
@@ -301,7 +310,6 @@ define(function(require, exports) {
 
 		}.bind(this));
 
-		var filterExpression = AppConfig.get('session.active.filter');
 		if (filterExpression.length > 0) {
 			this.filterSessions(filterExpression);
 		}
