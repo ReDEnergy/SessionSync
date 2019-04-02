@@ -102,8 +102,8 @@ var SessionSync = (function () {
 				// top: 0,
 				url: 'data/session-sync.html',
 				type: 'panel'
-			}).then(function (window) {
-				activeWindow = window;
+			}).then(function (newWindow) {
+				activeWindow = newWindow;
 				// WindowUtils.centerWindow(window);
 			});
 		});
@@ -188,6 +188,8 @@ var WindowUtils = (function ()
 
 // Delete previous undo events
 browser.storage.local.set({'undo.events' : []});
+browser.storage.local.set({'trashcan.hide' : true});
+browser.storage.local.set({'trashcan.hide-count' : 0});
 browser.storage.local.set({'session.active.filter' : ''});
 browser.storage.local.set({'session.selected' : null});
 browser.storage.local.set({'session.history.selected' : null});

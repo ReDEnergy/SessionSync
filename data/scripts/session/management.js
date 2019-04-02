@@ -98,7 +98,10 @@ define(function(require, exports) {
 				if (mozWindow.incognito == true || AppConfig.get('session.save').allWindows == false)
 				{
 					var sessionTitle = (new Date()).toLocaleString();
-					saveWindowSession(mozWindow, sessionTitle, function onSuccess(folder) {
+					saveWindowSession({
+						title: sessionTitle,
+						tabs: mozWindow.tabs
+					}, function onSuccess(folder) {
 						sessionID = folder.id;
 						sessionCount++;
 						updateOnSave();
@@ -125,45 +128,16 @@ define(function(require, exports) {
 							{
 								windowID++;
 								let sessionTitle = date.toLocaleString() + ((sessionCount > 1) ? (' #' + windowID) : '');
-								saveWindowSession(mozWindow, sessionTitle, function(folder) {
+								saveWindowSession({
+									title: sessionTitle,
+									tabs: mozWindow.tabs,
+								}, function(folder) {
 									sessionID = folder.id;
 									updateEvent.advance();
 								});
 							}
 						});
 					});
-				}
-			});
-		};
-
-		var saveWindowSession = function saveWindowSession(mozWindow, folderName, callback)
-		{
-			BookmarkManager.createBookmark({
-				title: folderName,
-				parentId: AppConfig.get('storageID')
-			})
-			.then(function (folder) {
-
-				var trackSaving = new LimitCounter(mozWindow.tabs.length, function () {
-					callback(folder);
-				});
-
-				// TODO - add option to discard duplicate tabs
-
-				var savePinned = AppConfig.get('session.save').pinned;
-
-				for (let i = mozWindow.tabs.length - 1; i >= 0; i--)
-				{
-					let tab = mozWindow.tabs[i];
-					if (tab.pinned && savePinned == false)
-					{
-						trackSaving.offsetLimit(-1);
-					}
-					else
-					{
-						BookmarkManager.createBookmarkFromTab(tab, folder.id)
-						.then(trackSaving.advance, trackSaving.advance);
-					}
 				}
 			});
 		};
@@ -239,16 +213,47 @@ define(function(require, exports) {
 			});
 		};
 
-		var saveHistorySession = function saveHistorySession(sessionInfo, callback)
+		var saveHistorySession = function saveHistorySession(sessionInfo)
+		{
+			var windowCount = sessionInfo.windows.length;
+
+			var windowID = 0;
+
+			function onSave(bookmark) {
+				WindowEvents.emit(document, 'SetPromiseSession', {
+					sessionID: bookmark.id,
+					edit: false,
+					update: true
+				});
+			}
+
+			// save all history windows
+			for (var key in sessionInfo.windows)
+			{
+				var date = new Date(sessionInfo.lastSave);
+				var sessionTitle = date.toLocaleString() + ((windowCount > 1) ? (' #' + windowID) : '');
+				windowID++;
+
+				saveWindowSession({
+					title: sessionTitle,
+					tabs: sessionInfo.windows[key].tabs
+				}, onSave);
+			}
+		};
+
+		var saveWindowSession = function saveWindowSession(sessionInfo, callback)
 		{
 			BookmarkManager.createBookmark({
 				title: sessionInfo.title,
 				parentId: AppConfig.get('storageID')
 			})
 			.then(function (folder) {
+
 				var trackSaving = new LimitCounter(sessionInfo.tabs.length, function () {
 					callback(folder);
 				});
+
+				// TODO - add option to discard duplicate tabs
 
 				var savePinned = AppConfig.get('session.save').pinned;
 
@@ -275,7 +280,10 @@ define(function(require, exports) {
 				parentId: AppConfig.get('storageID')
 			})
 			.then(function success(session) {
-				WindowEvents.emit(document, 'SetPromiseSession', { sessionID: session.id, edit: true, update: true });
+				WindowEvents.emit(document, 'SetPromiseSession', {
+					sessionID: session.id,
+					edit: true,
+					update: true });
 			}, function error() {
 			});
 		};
@@ -321,7 +329,6 @@ define(function(require, exports) {
 			mergeSessions: mergeSessions,
 			overwriteSession: overwriteSession,
 			saveActiveSession: saveActiveSession,
-			saveWindowSession: saveWindowSession,
 			createNewSession: createNewSession,
 			saveHistorySession: saveHistorySession,
 		};

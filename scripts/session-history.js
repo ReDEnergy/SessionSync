@@ -3,12 +3,19 @@
 var BrowserSession = function BrowserSession()
 {
 	this.timer;
+	this.active = true;
 	this.tabCount = 0;
 	this.startTime = (new Date()).getTime();
 	this.lastSave = this.startTime;
-	this.updateInterval = 15;
-	this.windows = [];
-	this.onUpdate = function () {};
+	this.windows = { };
+};
+
+var WindowSession = function WindowSession(id)
+{
+	this.id = id;
+	this.tabs = [];
+	this.active = true;
+	this.saveTime = (new Date()).getTime();
 };
 
 BrowserSession.prototype.update = function update()
@@ -18,15 +25,19 @@ BrowserSession.prototype.update = function update()
 		populate: true,
 		windowTypes: ['normal']
 	})
-	.then(function (windows) {
-		var sessions = [];
+	.then(function (mozWindows) {
 		var tabCount = 0;
 
-		for (let mozWindow of windows)
+		for (var key in this.windows)
+		{
+			this.windows[key].active = false;
+		}
+
+		for (let mozWindow of mozWindows)
 		{
 			if (mozWindow.incognito == false)
 			{
-				var tabs = [];
+				var windowInfo = new WindowSession(mozWindow.id);
 
 				// Add window tabs
 				for (var i in mozWindow.tabs)
@@ -40,29 +51,28 @@ BrowserSession.prototype.update = function update()
 						pinned: tab.pinned,
 					};
 					tabCount++;
-					tabs[tab.index] = sessionTab;
+					windowInfo.tabs[tab.index] = sessionTab;
 				}
 
-				sessions.push(tabs);
+				this.windows[mozWindow.id] = windowInfo;
 			}
 		}
 
 		// Update internal storage
 		this.lastSave = (new Date()).getTime();
 		this.tabCount = tabCount;
-		this.windows = sessions;
-		this.onUpdate();
 
-		// console.log(this);
+		// Save new session
+		browser.storage.local.set({ 'history.active' : this});
 
 	}.bind(this));
 };
 
-BrowserSession.prototype.start = function start()
+BrowserSession.prototype.start = function start(updateInterval)
 {
 	if (this.timer == undefined) {
 		// console.log('Session auto-save: start');
-		this.timer = setInterval(this.update.bind(this), this.updateInterval * 1000);
+		this.timer = setInterval(this.update.bind(this), updateInterval * 1000);
 		this.update();
 	}
 };
@@ -78,15 +88,20 @@ BrowserSession.prototype.stop = function stop()
 
 BrowserSession.prototype.resetInterval = function resetInterval(updateInterval)
 {
-	this.updateInterval = updateInterval;
 	if (this.timer != undefined) {
 		// console.log('Session auto-save: reset interval');
 		this.stop();
-		this.start();
+		this.start(updateInterval);
 	}
 };
 
-(function SessionAutoSave()
+BrowserSession.prototype.setConfig = function setConfig(config)
+{
+	this.resetInterval(config.interval);
+	config.enabled ? this.start(config.interval) : this.stop();
+};
+
+var SessionAutoSave = (function SessionAutoSave()
 {
 	// ------------------------------------------------------------------------
 	// Init
@@ -94,16 +109,19 @@ BrowserSession.prototype.resetInterval = function resetInterval(updateInterval)
 	var activeSession = new BrowserSession();
 	var sessions = [];
 	var sessionsKey = 'history.sessions';
+	var activeSessionKey = 'history.active';
 
 	var config = {
 		key: 'history.config',
 		enabled: true,
 		interval: 15,
+		saveBuffer: 3,
 		savingSlots: 10,
 		expireTimeHours: 48,	// hours
 	};
 
-	browser.storage.local.get(config.key).then(function (obj) {
+	browser.storage.local.get(config.key)
+	.then(function onSuccess(obj) {
 		if (obj[config.key])
 		{
 			config = obj[config.key];
@@ -115,80 +133,99 @@ BrowserSession.prototype.resetInterval = function resetInterval(updateInterval)
 				[config.key] : config
 			}).then(init);
 		}
+
+	}, function onError() {
+		init();
 	});
 
-	var init = function init()
+	var upgradeStorage = function upgradeStorage()
 	{
-		browser.storage.local.get(sessionsKey).then(function (obj) {
-			if (obj[sessionsKey]) {
-				sessions = obj[sessionsKey];
+		for (var i = 0; i < sessions.length; i++)
+		{
+			// New storage works with WindowSession objects
+			if (Array.isArray(sessions[i].windows[0]) == true)
+			{
+				for (var j = 0; j < sessions[i].windows.length; j++) {
+					var session = new WindowSession(0);
+					session.state = 'history';
+					session.saveTime = sessions[i].lastSave;
+					session.tabs = sessions[i].windows[j];
+					sessions[i].windows[j] = session;
+				}
 			}
-
-			updateStorage();
-
-			activeSession.resetInterval(config.interval);
-			activeSession.onUpdate = updateTrackedSession;
-
-			updateState();
-
-			browser.storage.onChanged.addListener(function onChange(object) {
-				if (object[config.key]) {
-					config = object[config.key].newValue;
-
-					activeSession.resetInterval(config.interval);
-					config.enabled ? activeSession.start() : activeSession.stop();
-				}
-				if (object[sessionsKey]) {
-					sessions = object[sessionsKey].newValue;
-				}
-			});
-		});
-	};
-
-	// ------------------------------------------------------------------------
-	// Events
-
-	var updateTrackedSession = function updateTrackedSession()
-	{
-		sessions[sessions.length ? (sessions.length - 1) : 0] = {
-			tabCount: activeSession.tabCount,
-			startDate: activeSession.startTime,
-			lastSave: activeSession.lastSave,
-			windows: activeSession.windows,
-			active: true,
-		};
-
-		browser.storage.local.set({ [sessionsKey] : sessions});
+		}
 	};
 
 	var updateStorage = function updateStorage()
 	{
+		var removeCount = sessions.length - config.savingSlots;
+		if (removeCount <= 0)
+			return;
+
 		var expireTime = new Date(new Date() - config.expireTimeHours * 3600 * 1000);
 
 		var list = [];
 
 		// compact free space and delete expired sessions
 		sessions.forEach(function (session) {
-			if (session && session.tabCount) {
-				delete session.active;
-				if (config.expireTimeHours > 0)
-				{
-					if (session.lastSave < expireTime) {
-						return;
-					}
+			if (removeCount > 0) {
+				removeCount--;
+				if (session.lastSave < expireTime) {
+					return;
 				}
+				list.push(session);
+			}
+			else {
 				list.push(session);
 			}
 		});
 
 		// get session list
-		sessions = list.slice(-(config.savingSlots - 1));
-		sessions[list.length] = undefined;
+		sessions = list;
 	};
 
-	var updateState = function updateState()
+	var init = function init()
 	{
-		config.enabled ? activeSession.start() : activeSession.stop();
+		browser.storage.onChanged.addListener(onConfigChanged);
+
+		browser.storage.local.get([activeSessionKey, sessionsKey])
+		.then(function(obj) {
+
+			if (obj[sessionsKey]) {
+				sessions = obj[sessionsKey];
+				updateStorage();
+			}
+
+			if (obj[activeSessionKey]) {
+				obj[activeSessionKey].windows = Object.values(obj[activeSessionKey].windows);
+				delete obj[activeSessionKey].active;
+				sessions.push(obj[activeSessionKey]);
+			}
+
+			upgradeStorage();
+
+			browser.storage.local.set({ [sessionsKey] : sessions});
+
+			activeSession.setConfig(config);
+		});
+	};
+
+	// ------------------------------------------------------------------------
+	// Events
+
+	var onConfigChanged = function onConfigChanged(object)
+	{
+		if (object[config.key]) {
+			config = object[config.key].newValue;
+			activeSession.setConfig(config);
+		}
+	};
+
+	// ------------------------------------------------------------------------
+	// Public API
+
+	return {
+		activeSession : activeSession
 	};
 
 })();

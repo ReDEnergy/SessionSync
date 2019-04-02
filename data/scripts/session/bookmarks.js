@@ -17,8 +17,8 @@ define(function(require, exports) {
 		function getLazyLoadingParameters(url)
 		{
 			let paramater = {};
-			let paras = url.split('?')[1].split('&');
-			for (let p of paras) {
+			let params = url.split('?')[1].split('&');
+			for (let p of params) {
 				paramater[p.split('=')[0]] = decodeURIComponent(p.split('=')[1]);
 			}
 			return paramater;

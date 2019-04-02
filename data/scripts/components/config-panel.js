@@ -220,9 +220,6 @@ define(function(require, exports) {
 
 		(function() {
 
-			if (!AppConfig.isAddonContext())
-				return;
-
 			if (typeof browser === 'object' && browser.commands.update == undefined)
 				return;
 
@@ -313,8 +310,8 @@ define(function(require, exports) {
 				// Auto-save expire time
 				var expireAfterRG = new DOMComponent.RangeControl({
 					value: historyConfig.expireTimeHours,
-					description: 'Delete after [...] hours',
-					minValue: 0,
+					description: 'Delete older than [...] hours',
+					minValue: 1,
 					onChange: function(value) {
 						historyConfig.expireTimeHours = value;
 						SessionHistory.updateConfig(historyConfig);

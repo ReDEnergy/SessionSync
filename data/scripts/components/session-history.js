@@ -12,37 +12,56 @@ define(function(require, exports) {
 
 	var SessionHistory = (function SessionHistory()
 	{
-		var configKey = 'history.config';
-		var sessionsKey = 'history.sessions';
+		var storageKey = {
+			config: 'history.config',
+			active: 'history.active',
+			list: 'history.sessions'
+		};
 
-		var getHistory = function getHistory(callback)
+		var sessions = [];
+
+		var init = function init()
 		{
-			if (AppConfig.isAddonContext()) {
-				browser.storage.local.get(sessionsKey).then(function (obj) {
-					if(obj[sessionsKey]) {
-						callback(obj[sessionsKey]);
-					}
+			browser.storage.local.get(storageKey.list).then(function (obj) {
+				if(obj[storageKey.list]) {
+					sessions = obj[storageKey.list];
+				}
+			});
+		};
+
+		var getFullHistory = function getFullHistory(callback)
+		{
+			browser.storage.local.get(storageKey.active).then(function (obj) {
+				callback(sessions, obj[storageKey.active]);
+			});
+		};
+
+		var getHistorySession = function getHistorySession(index, callback) {
+			if (index >=0 && index < sessions.length) {
+				callback(sessions[index]);
+			}
+			else {
+				browser.storage.local.get(storageKey.active).then(function (obj) {
+					callback(obj[storageKey.active]);
 				});
 			}
 		};
 
 		var getConfig = function getConfig(callback)
 		{
-			if (AppConfig.isAddonContext()) {
-				browser.storage.local.get(configKey).then(function (obj) {
-					callback(obj[configKey]);
-				});
-			}
+			browser.storage.local.get(storageKey.config).then(function (obj) {
+				callback(obj[storageKey.config]);
+			});
 		};
 
 		var updateConfig = function updateConfig(info)
 		{
-			browser.storage.local.set({ [configKey] : info});
+			browser.storage.local.set({ [storageKey.config] : info});
 		};
 
 		var updateSessions = function updateSessions(sessions)
 		{
-			browser.storage.local.set({ [sessionsKey] : sessions})
+			browser.storage.local.set({ [storageKey.list] : sessions})
 			.then(function () {
 				WindowEvents.emit(document, 'ShowHistoryList');
 			});
@@ -50,7 +69,7 @@ define(function(require, exports) {
 
 		GlobalEvents.on('HistorySessionDelete', function(index)
 		{
-			getHistory(function (sessions) {
+			getFullHistory(function (sessions) {
 				if (index >= 0 && index < sessions.length) {
 					if (index == sessions.length - 1)
 					{
@@ -73,8 +92,10 @@ define(function(require, exports) {
 		// Public API
 
 		return {
+			init: init,
 			getConfig: getConfig,
-			getHistory: getHistory,
+			getFullHistory: getFullHistory,
+			getHistorySession: getHistorySession,
 			updateConfig: updateConfig
 		};
 

@@ -6,7 +6,8 @@ define(function(require, exports) {
 
 	// App
 	const { AppConfig } = require('../config');
-	const { SessionBookmark, SessionBookmarkEvents, SessionTab,	SessionWindow, HistoryWindow, HistoryTab } = require('./session-bookmark');
+	const { SessionBookmark, SessionTab, SessionWindow, HistoryWindow, HistoryTab } = require('./session-bookmark');
+	const { SessionBookmarkEvents } = require('./session-bookmark-events');
 	const { SessionSyncModel } = require('./session-sync-model');
 
 	// Utils
@@ -49,18 +50,38 @@ define(function(require, exports) {
 					SessionSyncModel.bookmarks[ID].parentId == AppConfig.get('storageID'));
 		}
 
+		function restoreHistoryWindow(sessionInfo)
+		{
+			var list = [];
+			sessionInfo.windows.forEach(historyWindow => {
+				list.push(historyWindow.tabs);
+			});
+			SessionManager.loadBookmarksNewWindow(list);
+		}
+
 		WindowEvents.on(document, 'HistorySessionSave', this.saveHistorySession.bind(this));
 
 		WindowEvents.on(document, 'HistorySessionRestore', function (index) {
-			SessionHistory.getHistory(function (historySessions) {
-				SessionManager.loadBookmarksNewWindow(historySessions[index].windows);
+			SessionHistory.getHistorySession(index, function (sessionInfo) {
+				restoreHistoryWindow(sessionInfo);
 			});
-
-		}.bind(this));
+		});
 
 		WindowEvents.on(document, 'HistorySessionRestoreWindow', function (windowID) {
 			if (this.SyncModel.state.session === 'history') {
-				SessionManager.loadBookmarksNewWindow([this.selectedHistorySession.windows[windowID]]);
+				if (this.selectedHistorySession.active == true)
+				{
+					var activeSessionWindows = Object.values(this.selectedHistorySession.windows);
+					if (activeSessionWindows[windowID].active) {
+						SessionManager.activateWindow(activeSessionWindows[windowID].id);
+					}
+					else {
+						SessionManager.loadBookmarksNewWindow([activeSessionWindows[windowID].tabs]);
+					}
+				}
+				else {
+					SessionManager.loadBookmarksNewWindow([this.selectedHistorySession.windows[windowID].tabs]);
+				}
 			}
 		}.bind(this));
 
@@ -78,7 +99,7 @@ define(function(require, exports) {
 
 			// history session
 			if (this.SyncModel.state.session === 'history') {
-				SessionManager.loadBookmarksNewWindow(this.selectedHistorySession.windows);
+				restoreHistoryWindow(this.selectedHistorySession);
 			}
 		}.bind(this));
 
@@ -166,7 +187,7 @@ define(function(require, exports) {
 
 		// Tracked events
 
-		SessionBookmarkEvents(document, bookmarks);
+		SessionBookmarkEvents(bookmarks);
 
 		var updateTimeout = null;
 		function updateOnTabEvent()
@@ -183,12 +204,10 @@ define(function(require, exports) {
 		}
 
 		// Tab updates tracking
-		if (AppConfig.isAddonContext()) {
-			var trackedEvents = ['onUpdated', 'onCreated', 'onDetached', 'onMoved', 'onAttached', 'onRemoved'];
-			trackedEvents.forEach(function (eventType) {
-				browser.tabs[eventType].addListener(updateOnTabEvent);
-			}.bind(this));
-		}
+		var trackedEvents = ['onUpdated', 'onCreated', 'onDetached', 'onMoved', 'onAttached', 'onRemoved'];
+		trackedEvents.forEach(function (eventType) {
+			browser.tabs[eventType].addListener(updateOnTabEvent);
+		}.bind(this));
 
 		// ------------------------------------------------------------------------
 		// Public data
@@ -282,19 +301,20 @@ define(function(require, exports) {
 		var tabIndex = 0;
 		var windowIndex = 0;
 
-		for (let historyTabs of sessionInfo.windows)
+		for (let key in sessionInfo.windows)
 		{
 			// Add window separator
-			var sessionWindow = new HistoryWindow(windowIndex, tabIndex);
+			var sessionWindow = new HistoryWindow(sessionInfo.windows[key], windowIndex, tabIndex);
 			this.DOMBookmarks.appendChild(sessionWindow.DOMRoot);
 			tabIndex++;
 
 			var globalOffset = tabIndex;
 
 			// Add window tabs
-			for (var i in historyTabs)
+			var windowTabs = sessionInfo.windows[key].tabs;
+			for (var i in windowTabs)
 			{
-				var tab = historyTabs[i];
+				var tab = windowTabs[i];
 				tab.index = i | 0;
 				var sessionTab = new HistoryTab(tab, globalOffset);
 				this.DOMBookmarks.appendChild(sessionTab.DOMRoot);
@@ -383,36 +403,15 @@ define(function(require, exports) {
 	{
 		if (sessionIndex == undefined)
 		{
-			save(this.selectedHistorySession);
+			// When Save button from toolbar is pressed
+			SessionManager.saveHistorySession(this.selectedHistorySession);
 		}
 		else
 		{
-			SessionHistory.getHistory(function (historySessions) {
-				save(historySessions[sessionIndex]);
+			// Save from context menu
+			SessionHistory.getHistorySession(sessionIndex, function (sessionInfo) {
+				SessionManager.saveHistorySession(sessionInfo);
 			});
-		}
-
-		function save(sessionInfo) {
-			var windowCount = sessionInfo.windows.length;
-
-			var windowID = 0;
-
-			function onSave(bookmark) {
-				WindowEvents.emit(document, 'SetPromiseSession', { sessionID: bookmark.id, edit: false, update: true } );
-			}
-
-			// save all history windows
-			for (let tabs of sessionInfo.windows)
-			{
-				var date = new Date(sessionInfo.lastSave);
-				var sessionTitle = date.toLocaleString() + ((windowCount > 1) ? (' #' + windowID) : '');
-				windowID++;
-
-				SessionManager.saveHistorySession({
-					title: sessionTitle,
-					tabs: tabs
-				}, onSave);
-			}
 		}
 	};
 

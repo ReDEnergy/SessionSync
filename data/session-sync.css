@@ -201,7 +201,7 @@
  */
 
 #session-sync .config-panel {
-	width: 300px;
+	width: 350px;
 	padding: 30px 0 0 0;
 	font-size: 12px;
 	border-right: 1px solid #CCC;
@@ -213,7 +213,7 @@
 	position: absolute;
 	top: 1px;
 	bottom: 1px;
-	right: -305px;
+	right: -355px;
 	z-index: 2000;
 	box-shadow: 0 0 10px 0 #CCC;
 
@@ -227,7 +227,7 @@
 }
 
 #session-sync[show="false"] .config-panel {
-	right: -305px !important;
+	right: -355px !important;
 }
 
 /*
@@ -634,7 +634,7 @@
 	width: 100%;
 	padding: 5px 5px 5px 30px;
 
-	background-image: url("images/icons/cloud.png");
+	background-image: url("images/icons/heart.png");
 	background-size: 20px;
 	background-repeat: no-repeat;
 	background-position: 3px 3px;
@@ -2273,11 +2273,11 @@
  * Session list
  */
 
-#session-sync[list="history"] .sessions .list {
+#session-sync[list="history"] .sessions .session-list {
 	flex: 0;
 }
 
-#session-sync .sessions .list {
+#session-sync .sessions .session-list {
 	width: calc(100% + 12px);
 	margin: 0 0 0 0;
 
@@ -2480,10 +2480,6 @@
 	opacity: 1;
 }
 
-#session-sync .trash-can[dismiss] {
-	opacity: 0;
-}
-
 #session-sync .trash-can:hover {
 	cursor: pointer;
 	font-size: 16px;
@@ -2522,15 +2518,15 @@
 	right: 0.5em;
 }
 
-#session-sync .trash-can[dismiss] {
+#session-sync .trash-can[dismiss="true"] {
 	opacity: 0;
 }
 
-#session-sync .trash-can[dismiss] .dismiss {
+#session-sync .trash-can[dismiss="true"] .dismiss {
 	display: none;
 }
 
-#session-sync .trash-can[dismiss]:hover {
+#session-sync .trash-can[dismiss="true"]:hover {
 	opacity: 1;
 }
 

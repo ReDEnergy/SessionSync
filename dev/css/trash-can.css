@@ -54,10 +54,6 @@
 	opacity: 1;
 }
 
-#session-sync .trash-can[dismiss] {
-	opacity: 0;
-}
-
 #session-sync .trash-can:hover {
 	cursor: pointer;
 	font-size: 16px;
@@ -96,14 +92,14 @@
 	right: 0.5em;
 }
 
-#session-sync .trash-can[dismiss] {
+#session-sync .trash-can[dismiss="true"] {
 	opacity: 0;
 }
 
-#session-sync .trash-can[dismiss] .dismiss {
+#session-sync .trash-can[dismiss="true"] .dismiss {
 	display: none;
 }
 
-#session-sync .trash-can[dismiss]:hover {
+#session-sync .trash-can[dismiss="true"]:hover {
 	opacity: 1;
 }

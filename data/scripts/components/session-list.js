@@ -10,7 +10,8 @@ define(function(require, exports) {
 	const { WindowEvents, GlobalEvents } = require('../utils/global-events');
 	const { AutoScroll } = require('../utils/auto-scroll');
 
-	const { SessionFolder, SessionFolderSortBy, SessionFolderEvents } = require('./session-folder');
+	const { SessionFolder, SessionHistoryFolder, SessionFolderSortBy } = require('./session-folder');
+	const { SessionFolderEvents, SessionHistoryEvents } = require('./session-folder-events');
 	const { SessionSyncModel } = require('./session-sync-model');
 	const { SessionHistory } = require('./session-history');
 
@@ -40,8 +41,8 @@ define(function(require, exports) {
 		root.appendChild(historyList);
 
 		// Session list
-		var list = DomElem('div', {class: 'list'});
-		root.appendChild(list);
+		var sessionList = DomElem('div', {class: 'session-list'});
+		root.appendChild(sessionList);
 
 		// ------------------------------------------------------------------------
 		// Events
@@ -83,6 +84,10 @@ define(function(require, exports) {
 		WindowEvents.on(document, 'SetPromiseSession', function(sessionInfo) {
 			this.promiseInfo = sessionInfo;
 			WindowEvents.emit(document, 'ShowSyncList', { update: sessionInfo.update });
+		}.bind(this));
+
+		WindowEvents.on(document, 'SelectSyncSession', function(context) {
+			this.selectSyncSession(context, false);
 		}.bind(this));
 
 		WindowEvents.on(document, 'FilterSessions', this.filterSessions.bind(this));
@@ -143,6 +148,10 @@ define(function(require, exports) {
 			}
 		}.bind(this));
 
+		WindowEvents.on(document, 'SelectHistorySession', function(context) {
+			this.selectHistorySession(context);
+		}.bind(this));
+
 		AppConfig.onChange('session.selected', function(value) {
 			if (value) {
 				WindowEvents.emit(document, 'SetPromiseSession', { sessionID: value, update: false } );
@@ -150,16 +159,18 @@ define(function(require, exports) {
 		});
 
 		// ------------------------------------------------------------------------
-		// Init
+		// Event Initialization
 
-		SessionFolderEvents(document, list, this);
+		SessionFolderEvents(sessionList);
+		SessionHistoryEvents(historyList);
+		SessionHistory.init();
 
 		// ------------------------------------------------------------------------
 		// Public data
 
 		this.sessions = [];
 		this.promiseInfo = {};
-		this.DOMList = list;
+		this.DOMList = sessionList;
 		this.DOMRoot = root;
 		this.document = document;
 
@@ -184,79 +195,48 @@ define(function(require, exports) {
 		// ------------------------------------------------------------------------
 		// Events
 
-		function createHistoryList()
+		function refreshHistoryList()
 		{
 			var snap = AppConfig.isInitState();
 			var selectedIndex = AppConfig.get('session.history.selected');
 
 			historyList.textContent = '';
-			SessionHistory.getHistory(function (historySessions) {
+			SessionHistory.getFullHistory(function (historySessions, activeSession) {
+
+				if (activeSession) {
+					let activeSnapshot = new SessionHistoryFolder(activeSession, -1);
+					activeSnapshot.setTitle('Active snapshot');
+					historyList.appendChild(activeSnapshot.DOMRoot);
+				}
+
 				for (let i = historySessions.length - 1; i >= 0; i--) {
 					if (historySessions[i] && historySessions[i].tabCount)
 					{
-						var node = DomElem('div', {class: 'history-node'});
-						node.textContent = new Date(historySessions[i].lastSave).toLocaleString();
-						if (historySessions[i].active == true) {
-							node.textContent = 'Current session';
-						}
-						node.setAttribute('index', i);
-						historyList.appendChild(node);
+						let historySession = new SessionHistoryFolder(historySessions[i], i);
+						historyList.appendChild(historySession.DOMRoot);
 
 						if (i == selectedIndex) {
-							selectHistorySession(node);
+							var node = historySession.DOMRoot;
 							AutoScroll.scrollTo(historyList, node.offsetTop - historyList.parentNode.clientHeight / 2 + node.clientHeight, snap === true ? 0 : 0.25);
 						}
 					}
 				}
-			});
+			}.bind(this));
 		}
 
-		var selectHistorySession = function selectHistorySession(node)
-		{
-			this.setSelectedNode(node);
-			var index = node.getAttribute('index') | 0;
-
-			SessionHistory.getHistory(function (sessions) {
-				if (AppConfig.get('session.history.selected') != index) {
-					AppConfig.set('session.history.selected', index);
-					AppConfig.set('state.scrollTop.history', 0);
-				}
-
-				WindowEvents.emit(document, 'ShowHistorySession', sessions[index]);
-			});
-		}.bind(this);
-
 		GlobalEvents.on('UpdateHistoryList', function() {
-			createHistoryList();
+			refreshHistoryList();
 		});
 
 		WindowEvents.on(document, 'ShowHistoryList', function() {
 			this.setState('history');
-			createHistoryList();
+			refreshHistoryList();
 		}.bind(this));
-
-		historyList.addEventListener('mousedown', function(e) {
-
-			if (e.button != 2)
-				return;
-
-			var target = e.target;
-			if (target.className == 'history-node') {
-				WindowEvents.emit(document, 'HistorySessionCtxMenu-Open', {
-					context: e.target,
-					event: e
-				});
-			}
-			else
-			{
-				WindowEvents.emit(document, 'HistoryListCtxMenu-Open', {event: e });
-			}
-		});
 
 		historyList.addEventListener('click', function(e) {
 			if (e.target.className === 'history-node')
 			{
-				selectHistorySession(e.target);
+				this.selectHistorySession(e.target);
 			}
 		}.bind(this));
 
@@ -264,6 +244,21 @@ define(function(require, exports) {
 		// Public data
 
 		return historyList;
+	};
+
+	SessionList.prototype.selectHistorySession = function selectHistorySession(node)
+	{
+		this.setSelectedNode(node);
+		var index = node.getAttribute('index') | 0;
+
+		SessionHistory.getHistorySession(index, function (sessionInfo) {
+			WindowEvents.emit(document, 'ShowHistorySession', sessionInfo);
+
+			if (AppConfig.get('session.history.selected') != index) {
+				AppConfig.set('session.history.selected', index);
+				AppConfig.set('state.scrollTop.history', 0);
+			}
+		});
 	};
 
 	SessionList.prototype.setSessions = function setSessions()
@@ -385,6 +380,7 @@ define(function(require, exports) {
 
 		if (expression.length)
 		{
+			expression = expression.toLowerCase();
 			var exactMatch = false;
 			var expLength = expression.length;
 			var document = this.document;

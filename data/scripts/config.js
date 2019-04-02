@@ -88,7 +88,8 @@ define(function(require, exports) {
 			// General settings
 			getConfigValue('context.menu.icons', true);
 
-			getConfigValue('hide.trash.can', true);
+			getConfigValue('trashcan.hide', true);
+			getConfigValue('trashcan.hide-count', 0);
 			getConfigValue('undo.events', []);
 		};
 
@@ -150,7 +151,7 @@ define(function(require, exports) {
 
 		var onChange = function onChange(topic, callback) {
 			configEvents.subscribe(topic, callback)
-		}
+		};
 
 		// ------------------------------------------------------------------------
 		// Startup
@@ -158,6 +159,7 @@ define(function(require, exports) {
 		var init = function init()
 		{
 			setupConfig();
+			// console.log(localSettings);
 
 			if (isAddonContext()) {
 				browser.commands.getAll().
@@ -176,7 +178,6 @@ define(function(require, exports) {
 			// console.log(manifest);
 			// console.log(manifest.name + ' v' + manifest.version);
 			// console.log('------------------------------------------');
-
 
 			setupConfig();
 			initConfig = false;

@@ -22,15 +22,29 @@ define(function(require, exports) {
 		var DomElem = HTMLCreator();
 
 		// ------------------------------------------------------------------------
-		var block = DomElem('div', {class: 'trash-can', tooltip: 'Drop item to delete'});
-		block.setAttribute('items', '0');
+		var block = DomElem('div', {
+			class: 'trash-can',
+			items: 0,
+			dismiss: true,
+			tooltip: 'Drop item to delete'
+		});
 
 		var count = DomElem('div', {class: 'count', tooltip: 'Click to restore'});
 		count.textContent = '0';
 		block.appendChild(count);
 
-		var dismiss = DomElem('div', {class: 'dismiss css-close-button', tooltip: 'Hide'});
+		var dismiss = DomElem('div', {
+			class: 'dismiss css-close-button',
+			tooltip: 'Hide'
+		});
+
 		block.appendChild(dismiss);
+
+		var configKey = {
+			hide: 'trashcan.hide',
+			hideCount: 'trashcan.hide-count',
+			undoEvents: 'undo.events',
+		};
 
 		// ------------------------------------------------------------------------
 		// Events
@@ -43,16 +57,8 @@ define(function(require, exports) {
 		function updateItemCount(value) {
 			count.textContent = value;
 			block.setAttribute('items', value);
-			block.removeAttribute('dismiss');
+			AppConfig.set(configKey.hide, value == 0 || value == AppConfig.get(configKey.hideCount));
 		}
-
-		GlobalEvents.on('TrashCan-Items', function(value) {
-			updateItemCount(value);
-		});
-
-		GlobalEvents.on('TrashCan-Dismiss', function() {
-			block.setAttribute('dismiss', '');
-		});
 
 		block.addEventListener('mouseup', function (e) {
 			var item = DragContext.getContext();
@@ -66,8 +72,9 @@ define(function(require, exports) {
 			}
 		});
 
-		dismiss.addEventListener('click', function (e) {
-			GlobalEvents.emit('TrashCan-Dismiss');
+		dismiss.addEventListener('click', function () {
+			AppConfig.set(configKey.hide, true);
+			AppConfig.set(configKey.hideCount, AppConfig.get(configKey.undoEvents).length);
 		});
 
 		// Tooltip events
@@ -78,7 +85,7 @@ define(function(require, exports) {
 			});
 		});
 
-		block.addEventListener('mouseleave', function(e) {
+		block.addEventListener('mouseleave', function() {
 			WindowEvents.emit(document, 'HideTooltip');
 		});
 
@@ -89,14 +96,17 @@ define(function(require, exports) {
 		// ------------------------------------------------------------------------
 		// Init code
 
-		block.setAttribute('dismiss', '');
 
 		// ------------------------------------------------------------------------
 		// Events
 
-		AppConfig.onChange('undo.events', function (value) {
-			updateItemCount(value ? value.length : 0);
-		})
+		AppConfig.onChange(configKey.hide, function (value) {
+			block.setAttribute('dismiss', value);
+		});
+
+		AppConfig.onChange(configKey.undoEvents, function (value) {
+			updateItemCount(value.length);
+		});
 
 		// ------------------------------------------------------------------------
 		// Public properties

@@ -45,7 +45,7 @@ define(function(require, exports) {
 			if (searchInput.value.length) {
 				prevValue = '';
 				searchInput.value = prevValue;
-				WindowEvents.emit(document, 'FilterSessions', searchInput.value.toLowerCase());
+				WindowEvents.emit(document, 'FilterSessions', searchInput.value);
 			}
 
 			searchInput.blur();
@@ -66,7 +66,7 @@ define(function(require, exports) {
 			WindowEvents.emit(document, 'SetUIState', {'search-box-content': searchInput.value != ''});
 			clearTimeout(timeOut);
 			timeOut = setTimeout(function () {
-				WindowEvents.emit(document, 'FilterSessions', searchInput.value.toLowerCase());
+				WindowEvents.emit(document, 'FilterSessions', searchInput.value);
 			}, 200);
 		};
 

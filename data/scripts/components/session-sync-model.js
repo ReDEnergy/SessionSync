@@ -311,7 +311,6 @@ define(function(require, exports) {
 				undoEvents.push(undoEvent);
 
 				AppConfig.set('undo.events', undoEvents);
-				GlobalEvents.emit('TrashCan-Items', undoEvents.length);
 				GlobalEvents.emit('BookmarkDeleted', bookmarkID);
 
 				// Trigger reordering
@@ -367,7 +366,6 @@ define(function(require, exports) {
 				AppConfig.set('undo.events', undoEvents);
 				WindowEvents.emit(document, 'SetPromiseSession', { sessionID: sessionID, update: false });
 				GlobalEvents.emit('update-sessions');
-				GlobalEvents.emit('TrashCan-Items', undoEvents.length);
 			}
 
 			if (undoEvents.length)

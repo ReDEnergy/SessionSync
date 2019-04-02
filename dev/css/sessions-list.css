@@ -109,11 +109,11 @@
  * Session list
  */
 
-#session-sync[list="history"] .sessions .list {
+#session-sync[list="history"] .sessions .session-list {
 	flex: 0;
 }
 
-#session-sync .sessions .list {
+#session-sync .sessions .session-list {
 	width: calc(100% + 12px);
 	margin: 0 0 0 0;
 
