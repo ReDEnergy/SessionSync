@@ -155,6 +155,10 @@
 	background: url("images/icons/frames.png") no-repeat center;
 }
 
+#session-sync .session-toolbar .menu-bar .fix-session {
+	background: url("images/icons/tools.png") no-repeat center;
+}
+
 /*
  * Menu state
  */

@@ -13,9 +13,12 @@ var SessionManagement = (function SessionManagement()
 	function getLazyLoadingParameters(url)
 	{
 		let paramater = {};
-		let paras = url.split('?')[1].split('&');
-		for (let p of paras) {
-			paramater[p.split('=')[0]] = decodeURIComponent(p.split('=')[1]);
+		let params = url.split('?');
+		if (params.length > 1) {
+			let paras = params[1].split('&');
+			for (let p of paras) {
+				paramater[p.split('=')[0]] = decodeURIComponent(p.split('=')[1]);
+			}
 		}
 		return paramater;
 	}
@@ -255,6 +258,29 @@ var SessionManagement = (function SessionManagement()
 		}
 	};
 
+	var fixLazySession = function fixLazySession(folderID)
+	{
+		var result = browser.bookmarks.getChildren(folderID);
+		result.then(function (bookmarks) {
+			console.log(bookmarks);
+
+			bookmarks.forEach(function (bookmark) {
+				if (bookmark.url.startsWith('moz-extension'))
+				{
+					let redirectInfo = getLazyLoadingParameters(bookmark.url);
+					if (redirectInfo.url != undefined) {
+						console.log(bookmark, redirectInfo);
+						browser.bookmarks.update(bookmark.id, {
+							url: redirectInfo.url
+						});
+					}
+				}
+			});
+		}, function fail() {
+			console.log('Error getting bookmarks from folder ID: ', folderID);
+		});
+	};
+
 	browser.runtime.onMessage.addListener(function (message) {
 		switch (message.event)
 		{
@@ -272,6 +298,10 @@ var SessionManagement = (function SessionManagement()
 
 			case 'open-tab':
 				openTab(message.options);
+				break;
+
+			case 'fix-lazy-session':
+				fixLazySession(message.bookmarkID);
 				break;
 
 		}

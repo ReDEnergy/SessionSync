@@ -303,6 +303,11 @@ define(function(require, exports) {
 			browser.runtime.sendMessage({event: 'restore-sessions', windows: windows });
 		};
 
+		var fixLazySession = function fixLazySession(folderID)
+		{
+			browser.runtime.sendMessage({event: 'fix-lazy-session', bookmarkID: folderID });
+		};
+
 		var createNewSession = function createNewSession() {
 			createSession((new Date()).toLocaleString());
 		};
@@ -324,6 +329,7 @@ define(function(require, exports) {
 			getCurrentWindow: getCurrentWindow,
 			getAllWindows: getAllWindows,
 			restoreSession: restoreSession,
+			fixLazySession: fixLazySession,
 			restoreNewWindow: restoreNewWindow,
 			loadBookmarksNewWindow: loadBookmarksNewWindow,
 			mergeSessions: mergeSessions,

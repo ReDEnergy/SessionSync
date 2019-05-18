@@ -152,6 +152,12 @@ define(function(require, exports) {
 
 		}.bind(this));
 
+		WindowEvents.on(document, 'MenuFixLazySession', function() {
+			if (isValidSessionID(this.activeSessionID)) {
+				SessionManager.fixLazySession(this.activeSessionID);
+			}
+		}.bind(this));
+
 		WindowEvents.on(document, 'UpdateCurrentSession', function() {
 			if (this.SyncModel.state.session == 'current') {
 				this.showCurrentSession();
