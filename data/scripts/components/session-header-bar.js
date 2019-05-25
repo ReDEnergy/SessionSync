@@ -105,20 +105,22 @@ define(function(require, exports) {
 			var title = DomElem('div', {class: 'title'});
 
 			title.textContent = options.title;
-			button.setAttribute('id', options.id);
-			button.appendChild(icon);
-			button.appendChild(title);
+
+			var url = 'url("images/' + options.icon + '")';
+			icon.style.backgroundImage = url;
 
 			// Events
 			var callback = JSUtils.getValidFunction(options.callback);
 			button.addEventListener('click', callback);
 
+			button.appendChild(icon);
+			button.appendChild(title);
 			return button;
 		}
 
 		var openConfig = MenuButton({
-			id: 'config',
 			title: 'Options',
+			icon: 'icons/gear.png',
 			callback: function () {
 				var model = SessionSyncModel.getModel(document);
 				var state = model.state['config'] == undefined ? 'on' : undefined;
@@ -127,24 +129,24 @@ define(function(require, exports) {
 		});
 
 		var openTutorial = MenuButton({
-			id: 'help',
 			title: 'Tutorial',
+			icon: 'icons/brightness.png',
 			callback: function () {
 				browser.runtime.sendMessage({event: 'session-sync-tutorial'});
 			}
 		});
 
 		var leaveFeedback = MenuButton({
-			id: 'feedback',
 			title: 'Feedback',
+			icon: 'icons/mail.png',
 			callback: function () {
 				browser.runtime.sendMessage({event: 'session-sync-leave-feedback'});
 			}
 		});
 
 		var exportImport = MenuButton({
-			id: 'export',
 			title: 'Export/Import',
+			icon: 'icons/booklet.png',
 			callback: function () {
 				browser.tabs.create({
 					url: 'home/home.html#export-import',
@@ -154,24 +156,24 @@ define(function(require, exports) {
 		});
 
 		var buttonDetachInTab = MenuButton({
-			id: 'tab-view',
 			title: 'Tab View',
+			icon: 'icons/document.png',
 			callback: function () {
 				browser.runtime.sendMessage({event: 'session-sync-detach-tab'});
 			}
 		});
 
 		var buttonDetachInWindow = MenuButton({
-			id: 'window-view',
 			title: 'Window View',
+			icon: 'icons/browser.png',
 			callback: function () {
 				browser.runtime.sendMessage({event: 'session-sync-detach-window'});
 			}
 		});
 
 		var githubPage = MenuButton({
-			id: 'github',
 			title: 'Dev page',
+			icon: 'github-logo.png',
 			callback: function () {
 				browser.runtime.sendMessage({event: 'session-sync-open-github'});
 			}
@@ -211,11 +213,11 @@ define(function(require, exports) {
 
 		function initDevMode()
 		{
-			var devMenu = DomElem('div', {class: 'menu-row'});
+			var devRow1 = DomElem('div', {class: 'menu-row'});
 
 			var activeTabInfo = MenuButton({
-				id: 'tabInfo',
 				title: 'Tab Info',
+				icon: 'icons/document.png',
 				callback: function () {
 					browser.tabs.query({active: true, windowId: browser.windows.WINDOW_ID_CURRENT})
 					.then(tabs => browser.tabs.get(tabs[0].id))
@@ -226,8 +228,8 @@ define(function(require, exports) {
 			});
 
 			var localStorage = MenuButton({
-				id: 'localStorage',
 				title: 'Local Storage',
+				icon: 'icons/bookshelf.png',
 				callback: function () {
 					browser.storage.local.get().then(function (data) {
 						console.log(data);
@@ -236,8 +238,8 @@ define(function(require, exports) {
 			});
 
 			var clearFaviconCache = MenuButton({
-				id: 'clearFaviconCache',
 				title: 'Clear Favicons',
+				icon: 'icons/x.png',
 				callback: function () {
 					browser.storage.local.get().then(function (data) {
 						for (var key in data) {
@@ -249,10 +251,23 @@ define(function(require, exports) {
 				}
 			});
 
-			devMenu.appendChild(activeTabInfo);
-			devMenu.appendChild(localStorage);
-			devMenu.appendChild(clearFaviconCache);
-			menuArea.appendChild(devMenu);
+			var fixLazySession = MenuButton({
+				title: 'Fix session',
+				icon: 'icons/tools.png',
+				callback: function() {
+					WindowEvents.emit(document, 'MenuFixLazySession');
+				}
+			});
+
+			devRow1.appendChild(activeTabInfo);
+			devRow1.appendChild(localStorage);
+			devRow1.appendChild(clearFaviconCache);
+			menuArea.appendChild(devRow1);
+
+
+			var devRow2 = DomElem('div', {class: 'menu-row'});
+			devRow2.appendChild(fixLazySession);
+			menuArea.appendChild(devRow2);
 		}
 
 		if (AppConfig.devMode())

@@ -1776,34 +1776,6 @@
 	background-position: center;
 }
 
-#session-sync .header-bar .header-menu .menu-button[id="help"] .icon {
-	background-image: url("images/icons/brightness.png");
-}
-
-#session-sync .header-bar .header-menu .menu-button[id="config"] .icon {
-	background-image: url("images/icons/gear.png");
-}
-
-#session-sync .header-bar .header-menu .menu-button[id="window-view"] .icon {
-	background-image: url("images/icons/browser.png");
-}
-
-#session-sync .header-bar .header-menu .menu-button[id="tab-view"] .icon {
-	background-image: url("images/icons/document.png");
-}
-
-#session-sync .header-bar .header-menu .menu-button[id="feedback"] .icon {
-	background-image: url("images/icons/mail.png");
-}
-
-#session-sync .header-bar .header-menu .menu-button[id="export"] .icon {
-	background-image: url("images/icons/booklet.png");
-}
-
-#session-sync .header-bar .header-menu .menu-button[id="github"] .icon {
-	background-image: url("images/github-logo.png");
-}
-
 #session-sync .header-bar .header-menu .menu-button .title {
 	height: 1.4em;
 	margin-top: 0.4em;
@@ -1812,8 +1784,6 @@
 	text-align: center;
 	color: #555;
 }
-
-
 
 /*
  * Sorting method
@@ -2067,6 +2037,10 @@
 
 #session-sync .session-toolbar .menu-bar .restore-new-win {
 	background: url("images/icons/frames.png") no-repeat center;
+}
+
+#session-sync .session-toolbar .menu-bar .fix-session {
+	background: url("images/icons/tools.png") no-repeat center;
 }
 
 /*
