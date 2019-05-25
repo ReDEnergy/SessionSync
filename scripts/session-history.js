@@ -143,7 +143,7 @@ var SessionAutoSave = (function SessionAutoSave()
 		for (var i = 0; i < sessions.length; i++)
 		{
 			// New storage works with WindowSession objects
-			if (Array.isArray(sessions[i].windows[0]) == true)
+			if (sessions[i] != undefined && Array.isArray(sessions[i].windows[0]) == true)
 			{
 				for (var j = 0; j < sessions[i].windows.length; j++) {
 					var session = new WindowSession(0);
