@@ -11,7 +11,7 @@ define(function(require, exports) {
 	const { HTMLCreator } = require('../utils/dom');
 	const { DragContext } = require('../utils/drag-context');
 	const { SessionFolder } = require('./session-folder');
-	const { SessionBookmark } = require('./session-bookmark');
+	const { SessionBookmark, SessionTab } = require('./session-bookmark');
 
 	// *****************************************************************************
 	// API
@@ -62,13 +62,18 @@ define(function(require, exports) {
 
 		block.addEventListener('mouseup', function (e) {
 			var item = DragContext.getContext();
-			if (item && (item instanceof SessionFolder || item instanceof SessionBookmark)) {
+			if (item instanceof SessionFolder || item instanceof SessionBookmark) {
 				block.setAttribute('action', 'drop');
 				GlobalEvents.emit('DeleteBookmarkItem', item.bookmarkID);
 				WindowEvents.emit(document, 'ShowTooltip', {
 					node: e.target,
 					message: 'Click to restore'
 				});
+				return;
+			}
+
+			if (item instanceof SessionTab) {
+				GlobalEvents.emit('management.close-tab', item.tab.id);
 			}
 		});
 

@@ -158,7 +158,7 @@ define(function(require, exports) {
 			}
 		}.bind(this));
 
-		WindowEvents.on(document, 'UpdateCurrentSession', function() {
+		GlobalEvents.on('UpdateCurrentSession', function() {
 			if (this.SyncModel.state.session == 'current') {
 				this.showCurrentSession();
 			}
@@ -203,7 +203,7 @@ define(function(require, exports) {
 				if (updateTimeout == null) {
 					updateTimeout = setTimeout(function () {
 						updateTimeout = null;
-						WindowEvents.emit(document, 'UpdateCurrentSession');
+						GlobalEvents.emit('UpdateCurrentSession');
 					}, 1000);
 				}
 			}

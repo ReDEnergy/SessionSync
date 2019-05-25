@@ -57,7 +57,7 @@ define(function(require, exports) {
 				index: newIndex,
 				windowId: windowID
 			}).then(function() {
-				WindowEvents.emit(document, 'UpdateCurrentSession');
+				GlobalEvents.emit('UpdateCurrentSession');
 				trackTabs = true;
 			}, function onError() {
 				trackTabs = true;
@@ -69,6 +69,11 @@ define(function(require, exports) {
 			browser.tabs.update(tabID, {
 				active: true
 			});
+		};
+
+		var closeTab = function closeTab(tabID)
+		{
+			browser.tabs.remove(tabID);
 		};
 
 		var activateWindow = function activateWindow(windowID)
@@ -318,9 +323,20 @@ define(function(require, exports) {
 			createSession(title);
 		});
 
+		// Events
+		GlobalEvents.on('management.close-tab', function(tabID) {
+			trackTabs = false;
+			browser.tabs.remove(tabID)
+			.then(function () {
+				GlobalEvents.emit('UpdateCurrentSession');
+				trackTabs = true;
+			});
+		});
+
 		// Public API
 		return {
 			moveTab: moveTab,
+			closeTab: closeTab,
 			activateTab: activateTab,
 			tabTracking: tabTracking,
 			activateWindow: activateWindow,
