@@ -79,6 +79,7 @@ define(function(require, exports) {
 					}
 				},
 			});
+
 			options.parent.addItem(toggleBtn.DOMRoot);
 			AppConfig.onChange(options.key, function(value) {
 				if (isSwitch)
@@ -210,6 +211,13 @@ define(function(require, exports) {
 				parent: section,
 				name: 'Favicon service',
 				key: 'services.favicon.enabled',
+				type: 'switch',
+			});
+
+			ToggleOptionConfig({
+				parent: section,
+				name: 'Troubleshooting',
+				key: 'troubleshooting',
 				type: 'switch',
 			});
 

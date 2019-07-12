@@ -251,6 +251,21 @@ define(function(require, exports) {
 				}
 			});
 
+			devRow1.appendChild(activeTabInfo);
+			devRow1.appendChild(localStorage);
+			devRow1.appendChild(clearFaviconCache);
+			menuArea.appendChild(devRow1);
+		}
+
+		if (AppConfig.devMode())
+		{
+			initDevMode();
+		}
+
+		var Troubleshooting = (function Troubleshooting()
+		{
+			var isInit = false;
+
 			var fixLazySession = MenuButton({
 				title: 'Fix session',
 				icon: 'icons/tools.png',
@@ -259,19 +274,24 @@ define(function(require, exports) {
 				}
 			});
 
-			devRow1.appendChild(activeTabInfo);
-			devRow1.appendChild(localStorage);
-			devRow1.appendChild(clearFaviconCache);
-			menuArea.appendChild(devRow1);
+			function init()
+			{
+				if (isInit == true)
+				{
+					return;
+				}
 
+				isInit = true;
+				var devRow = DomElem('div', {class: 'menu-row'});
+				devRow.appendChild(fixLazySession);
+				menuArea.appendChild(devRow);
+			}
 
-			var devRow2 = DomElem('div', {class: 'menu-row'});
-			devRow2.appendChild(fixLazySession);
-			menuArea.appendChild(devRow2);
-		}
+			return {
+				init: init
+			};
 
-		if (AppConfig.devMode())
-			initDevMode();
+		})();
 
 		// ------------------------------------------------------------------------
 		// Events
@@ -305,6 +325,12 @@ define(function(require, exports) {
 
 		WindowEvents.on(document, 'CloseUI', function() {
 			closeMenu();
+		});
+
+		AppConfig.onChange('troubleshooting', function(value) {
+			if (value == true) {
+				Troubleshooting.init();
+			}
 		});
 
 		// ------------------------------------------------------------------------

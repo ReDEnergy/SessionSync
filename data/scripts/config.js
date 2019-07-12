@@ -91,6 +91,8 @@ define(function(require, exports) {
 			getConfigValue('trashcan.hide', true);
 			getConfigValue('trashcan.hide-count', 0);
 			getConfigValue('undo.events', []);
+
+			getConfigValue('troubleshooting', false);
 		};
 
 		var set = function set(key, value, onSuccess)

@@ -68,6 +68,13 @@ BrowserSession.prototype.update = function update()
 	}.bind(this));
 };
 
+BrowserSession.prototype.clear = function clear()
+{
+	// Save new session
+	this.windows = {};
+	browser.storage.local.set({ 'history.active' : this});
+};
+
 BrowserSession.prototype.start = function start(updateInterval)
 {
 	if (this.timer == undefined) {
@@ -116,7 +123,7 @@ var SessionAutoSave = (function SessionAutoSave()
 		enabled: true,
 		interval: 15,
 		saveBuffer: 3,
-		savingSlots: 10,
+		savingSlots: 20,
 		expireTimeHours: 48,	// hours
 	};
 
@@ -158,36 +165,38 @@ var SessionAutoSave = (function SessionAutoSave()
 
 	var updateStorage = function updateStorage()
 	{
-		var removeCount = sessions.length - config.savingSlots;
-		if (removeCount <= 0)
-			return;
+		upgradeStorage();
 
+		var removeCount = Math.max(sessions.length - config.savingSlots, 0);
 		var expireTime = new Date(new Date() - config.expireTimeHours * 3600 * 1000);
 
 		var list = [];
+		// console.log('To remove', removeCount);
 
 		// compact free space and delete expired sessions
 		sessions.forEach(function (session) {
-			if (removeCount > 0) {
-				removeCount--;
-				if (session.lastSave < expireTime) {
-					return;
-				}
+			if (session != undefined && (removeCount <= 0 || session.lastSave > expireTime))
+			{
 				list.push(session);
 			}
-			else {
-				list.push(session);
+			else
+			{
+				if (removeCount > 0)
+					removeCount--;
 			}
 		});
 
-		// get session list
+		if (removeCount > 0)
+		{
+			list = list.slice(removeCount);
+		}
+
+		// update session list
 		sessions = list;
 	};
 
 	var init = function init()
 	{
-		browser.storage.onChanged.addListener(onConfigChanged);
-
 		browser.storage.local.get([activeSessionKey, sessionsKey])
 		.then(function(obj) {
 
@@ -196,22 +205,27 @@ var SessionAutoSave = (function SessionAutoSave()
 				updateStorage();
 			}
 
+			// console.log(sessions);
+
 			if (obj[activeSessionKey]) {
 				obj[activeSessionKey].windows = Object.values(obj[activeSessionKey].windows);
 				delete obj[activeSessionKey].active;
 				sessions.push(obj[activeSessionKey]);
 			}
 
-			upgradeStorage();
-
-			browser.storage.local.set({ [sessionsKey] : sessions});
-
+			browser.storage.local.set({ [sessionsKey] : sessions });
 			activeSession.setConfig(config);
 		});
 	};
 
 	// ------------------------------------------------------------------------
 	// Events
+
+	browser.runtime.onMessage.addListener(function (message) {
+		if (message.event == 'history.deleteActive') {
+			activeSession.clear();
+		}
+	});
 
 	var onConfigChanged = function onConfigChanged(object)
 	{
@@ -220,6 +234,8 @@ var SessionAutoSave = (function SessionAutoSave()
 			activeSession.setConfig(config);
 		}
 	};
+
+	browser.storage.onChanged.addListener(onConfigChanged);
 
 	// ------------------------------------------------------------------------
 	// Public API

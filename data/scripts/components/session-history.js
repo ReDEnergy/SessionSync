@@ -67,26 +67,36 @@ define(function(require, exports) {
 			});
 		};
 
+		var onStorageChanged = function onStorageChanged(object)
+		{
+			if (object[storageKey.list]) {
+				init();
+			}
+		};
+
 		GlobalEvents.on('HistorySessionDelete', function(index)
 		{
-			getFullHistory(function (sessions) {
-				if (index >= 0 && index < sessions.length) {
-					if (index == sessions.length - 1)
-					{
-						sessions[index] = undefined;
-					}
-					else
-					{
+			if (index == -1)
+			{
+				browser.runtime.sendMessage({event: 'history.deleteActive'});
+			}
+			else
+			{
+				getFullHistory(function (sessions) {
+					if (index >= 0 && index < sessions.length) {
 						sessions.splice(index, 1);
+						updateSessions(sessions);
 					}
-					updateSessions(sessions);
-				}
-			});
+				});
+			}
 		});
 
 		GlobalEvents.on('HistorySessionDeleteAll', function() {
-			updateSessions([]);
+			sessions = [];
+			updateSessions(sessions);
 		});
+
+		browser.storage.onChanged.addListener(onStorageChanged);
 
 		// ------------------------------------------------------------------------
 		// Public API
