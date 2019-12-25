@@ -153,14 +153,40 @@ var SessionManagement = (function SessionManagement()
 		}
 	};
 
-	var restoreSession = function restoreSession(folderID, newWindow)
+	var restoreSession = function restoreSession(folderID, options)
 	{
 		browser.bookmarks.getChildren(folderID)
 		.then(function (bookmarks) {
-
-			if (newWindow)
+			if (options && options.newWindow)
 			{
-				restoreSessions([bookmarks]);
+				createSessionWindow(bookmarks)
+				.then(function(createdWindow) {
+					if (createdWindow)
+					{
+						if (options.closeAll)
+						{
+							browser.windows.getAll({
+								populate: true,
+								windowTypes: ['normal']
+							})
+							.then(function (windows) {
+								console.log(windows, createdWindow);
+								windows.forEach(function (mozWidnow) {
+									if (mozWidnow.id != createdWindow.id) {
+										browser.windows.remove(mozWidnow.id);
+									}
+								});
+							});
+						}
+
+						if (options.closeWindow)
+						{
+							browser.windows.remove(options.closeWindow);
+						}
+					}
+				}, function onError() {
+					console.log('strage error');
+				});
 			}
 			else
 			{
@@ -189,14 +215,14 @@ var SessionManagement = (function SessionManagement()
 		});
 	};
 
-	var restoreSessions = function restoreSessions(windows)
+	var createSessionWindow = function createSessionWindow(bookmarks)
 	{
-		windows.forEach (function (bookmarks) {
+		var action = new Promise((resolve, reject) => {
 			if (bookmarks.length > 0)
 			{
 				browser.windows.create({})
 				.then(function(mozWindow) {
-
+					resolve(mozWindow);
 					var windowID = mozWindow.id;
 					windowsTabsToKill[windowID] = mozWindow.tabs[0].id;
 
@@ -221,6 +247,18 @@ var SessionManagement = (function SessionManagement()
 					});
 				});
 			}
+			else
+			{
+				reject();
+			}
+		});
+		return action;
+	};
+
+	var restoreSessions = function restoreSessions(windows)
+	{
+		windows.forEach (function (bookmarks) {
+			createSessionWindow(bookmarks);
 		});
 	};
 
@@ -285,7 +323,7 @@ var SessionManagement = (function SessionManagement()
 		switch (message.event)
 		{
 			case 'restore-session':
-				restoreSession(message.bookmarkID, message.inNewWindow);
+				restoreSession(message.bookmarkID, message.options);
 				break;
 
 			case 'restore-sessions':

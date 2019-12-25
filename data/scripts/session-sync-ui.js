@@ -138,6 +138,8 @@ define(function(require, exports) {
 		var SM = new ContextMenu({name : 'SessionContextMenu'});
 		SM.addMenuEntry({value: 'Restore', event: 'RestoreSession', icon: 'same-window'});
 		SM.addMenuEntry({value: 'Restore (new window)', event: 'RestoreInNewWindow', icon: 'new-window'});
+		SM.addMenuEntry({value: 'Restore (close active)', event: 'ReplaceSession', icon: 'replace-current'});
+		SM.addMenuEntry({value: 'Restore (close all)', event: 'ReplaceSessionAll', icon: 'replace-all'});
 		SM.addMenuEntry({value: 'Edit', event: 'EditSession', icon: 'edit'});
 		SM.addMenuEntry({value: 'Delete', globalEvent: 'DeleteBookmarkItem', icon: 'delete'});
 		SM.addMenuEntry({value: 'Create new session', callback: SessionManager.createNewSession, icon: 'new-session', separator: 'top'});
@@ -262,6 +264,8 @@ define(function(require, exports) {
 
 		WindowEvents.on(document, 'SessionContextMenu-RestoreSession', SessionManager.restoreSession);
 		WindowEvents.on(document, 'SessionContextMenu-RestoreInNewWindow', SessionManager.restoreNewWindow);
+		WindowEvents.on(document, 'SessionContextMenu-ReplaceSession', SessionManager.replaceSession);
+		WindowEvents.on(document, 'SessionContextMenu-ReplaceSessionAll', SessionManager.replaceSessionAll);
 
 		// BookmarksCtxMenu events
 

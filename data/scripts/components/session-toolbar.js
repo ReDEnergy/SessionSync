@@ -147,12 +147,30 @@ define(function(require, exports) {
 		});
 
 		var restoreW = ActionButton({
-			tooltip: 'Restore in new window',
+			tooltip: 'Restore (new window)',
 			className: 'restore-new-win',
 			event: 'MenuRestoreNewWindow',
 			state: {
 				restore : true,
 				history: true
+			}
+		});
+
+		var replaceSession = ActionButton({
+			tooltip: 'Restore (close active)',
+			className: 'repalce-session',
+			event: 'ReplaceSession',
+			state: {
+				restore: true
+			}
+		});
+
+		var replaceSessionAll = ActionButton({
+			tooltip: 'Restore (close all)',
+			className: 'repalce-session-all',
+			event: 'ReplaceSessionAll',
+			state: {
+				restore: true
 			}
 		});
 
@@ -210,6 +228,8 @@ define(function(require, exports) {
 
 		menu.appendChild(restore);
 		menu.appendChild(restoreW);
+		menu.appendChild(replaceSession);
+		menu.appendChild(replaceSessionAll);
 		menu.appendChild(separator1);
 		menu.appendChild(mergeSession);
 		menu.appendChild(overwriteSession);
@@ -217,6 +237,7 @@ define(function(require, exports) {
 		menu.appendChild(add);
 		menu.appendChild(save);
 		menu.appendChild(saveConfig);
+
 
 		// ------------------------------------------------------------------------
 		// Events

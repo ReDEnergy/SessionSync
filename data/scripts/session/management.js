@@ -300,7 +300,35 @@ define(function(require, exports) {
 
 		var restoreNewWindow = function restoreNewWindow(folderID)
 		{
-			browser.runtime.sendMessage({event: 'restore-session', bookmarkID: folderID, inNewWindow: true});
+			var options = {
+				newWindow: true
+			};
+			browser.runtime.sendMessage({event: 'restore-session', bookmarkID: folderID, options: options});
+		};
+
+		var restoreAdvanced = function restoreAdvanced(folderID, options)
+		{
+			browser.runtime.sendMessage({event: 'restore-session', bookmarkID: folderID, options: options});
+		};
+
+		var replaceSession = function replaceSession(folderID)
+		{
+			getCurrentWindow(function(mozWindow) {
+				var options = {
+					newWindow: true,
+					closeWindow: mozWindow.id,
+				};
+				restoreAdvanced(folderID, options);
+			});
+		};
+
+		var replaceSessionAll = function replaceSessionAll(folderID)
+		{
+			var options = {
+				newWindow: true,
+				closeAll: true,
+			};
+			restoreAdvanced(folderID, options);
 		};
 
 		var loadBookmarksNewWindow = function loadBookmarksNewWindow(windows)
@@ -345,6 +373,9 @@ define(function(require, exports) {
 			getCurrentWindow: getCurrentWindow,
 			getAllWindows: getAllWindows,
 			restoreSession: restoreSession,
+			replaceSession: replaceSession,
+			restoreAdvanced: restoreAdvanced,
+			replaceSessionAll: replaceSessionAll,
 			fixLazySession: fixLazySession,
 			restoreNewWindow: restoreNewWindow,
 			loadBookmarksNewWindow: loadBookmarksNewWindow,

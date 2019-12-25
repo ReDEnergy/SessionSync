@@ -103,6 +103,18 @@ define(function(require, exports) {
 			}
 		}.bind(this));
 
+		WindowEvents.on(document, 'ReplaceSessionAll', function() {
+			if (isValidSessionID(this.activeSessionID)) {
+				SessionManager.replaceSessionAll(this.activeSessionID);
+			}
+		}.bind(this));
+
+		WindowEvents.on(document, 'ReplaceSession', function() {
+			if (isValidSessionID(this.activeSessionID)) {
+				SessionManager.replaceSession(this.activeSessionID);
+			}
+		}.bind(this));
+
 		WindowEvents.on(document, 'MenuMergeSessions', function(e) {
 			if (isValidSessionID(this.activeSessionID)) {
 				WindowEvents.emit(document, 'ConfirmBox-Open', {

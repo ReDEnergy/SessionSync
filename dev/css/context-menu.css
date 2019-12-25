@@ -64,6 +64,14 @@
 	background-image: url("images/icons/frames.png");
 }
 
+#session-sync .context-menu .button[icon="replace-current"] {
+	background-image: url("images/material_icons/repeat_one.svg");
+}
+
+#session-sync .context-menu .button[icon="replace-all"] {
+	background-image: url("images/material_icons/repeat.svg");
+}
+
 #session-sync .context-menu .button[icon="copy"] {
 	background-image: url("images/icons/clipboard.png");
 }
