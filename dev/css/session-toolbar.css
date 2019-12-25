@@ -167,6 +167,10 @@
 	background: url("images/icons/tools.png") no-repeat center;
 }
 
+#session-sync .session-toolbar .menu-bar .customize-toolbar {
+	background: url("images/icons_v2/more.png") no-repeat center;
+}
+
 /*
  * Menu state
  */

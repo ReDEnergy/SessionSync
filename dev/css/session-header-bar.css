@@ -93,8 +93,8 @@
 #session-sync .header-bar .header-menu {
 	width: 1.8em;
 	height: 1.8em;
-	background-image: url("images/menu.png");
-	background-size: 55%;
+	background-image: url("images/icons_v2/menu.png");
+	background-size: 75% 80%;
 	background-repeat: no-repeat;
 	background-position: center center;
 	border: 1px solid rgba(0, 0, 0, 0);
