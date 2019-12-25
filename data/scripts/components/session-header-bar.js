@@ -10,7 +10,7 @@ define(function(require, exports) {
 	// Utils
 	const JSUtils = require('../utils/general');
 	const { HTMLCreator } = require('../utils/dom');
-	const { WindowEvents, GlobalEvents } = require('../utils/global-events');
+	const { WindowEvents } = require('../utils/global-events');
 
 	// ------------------------------------------------------------------------
 	// API

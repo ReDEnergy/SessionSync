@@ -4,7 +4,6 @@ define(function(require, exports) {
 	// *****************************************************************************
 	// Custom Modules
 
-	const { AppConfig } = require('../config');
 	const { WindowEvents, GlobalEvents } = require('../utils/global-events');
 
 	// *****************************************************************************

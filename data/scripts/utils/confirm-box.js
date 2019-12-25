@@ -5,9 +5,7 @@ define(function(require, exports) {
 	// Custom Modules
 
 	const { HTMLCreator } = require('./dom');
-	const { WindowEvents, GlobalEvents } = require('./global-events');
-
-	var ID = 0;
+	const { WindowEvents } = require('./global-events');
 
 	// *****************************************************************************
 	// Bookmark Confirm Box
@@ -37,7 +35,6 @@ define(function(require, exports) {
 		panel.appendChild(info);
 		panel.appendChild(controls);
 
-		var contextID = ID++;
 		var callback;
 		var defaultCallback = function defaultCallback() {};
 
@@ -64,7 +61,6 @@ define(function(require, exports) {
 			info.textContent = options.message;
 			setCallback(options.callback);
 
-			GlobalEvents.emit('ConfimBoxOpen', contextID);
 		};
 
 		var hidePanel = function hidePanel()
@@ -72,11 +68,6 @@ define(function(require, exports) {
 			panel.removeAttribute('data-active');
 			document.removeEventListener('mousedown', blurMenu);
 			callback = defaultCallback;
-		};
-
-		var hideIfNotInvoked = function hideIfNotInvoked(ctxID)
-		{
-			if (contextID !== ctxID) hidePanel();
 		};
 
 		var blurMenu = function hideWhenClickOutside(e)
@@ -93,9 +84,6 @@ define(function(require, exports) {
 		function setCallback(func) {
 			callback = typeof func === 'function' ? func : defaultCallback;
 		}
-
-		// probably used for closing other opened confirm boxes ?
-		GlobalEvents.on('ConfimBoxOpen', hideIfNotInvoked);
 
 		// Register custom events
 		WindowEvents.on(document, options.name + '-Open', openPanel);
