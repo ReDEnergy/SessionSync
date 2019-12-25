@@ -289,7 +289,19 @@ define(function(require, exports) {
 					}
 				});
 				section.addItem(contextMenuIconsTB.DOMRoot);
-				WindowEvents.emit(document, 'SetUIState', {'history': historyConfig.enabled});
+
+				// Context menu icons
+				var autoSavePrivateTB = new DOMComponent.ToggleSwitch({
+					state: historyConfig.savePrivate,
+					description: 'Save private windows',
+					onState: 'Enabled',
+					offState: 'Disabled',
+					callback: function(value) {
+						historyConfig.savePrivate = value;
+						SessionHistory.updateConfig(historyConfig);
+					}
+				});
+				section.addItem(autoSavePrivateTB.DOMRoot);
 
 				// Auto-save interval
 				var saveIntervalRG = new DOMComponent.RangeControl({
@@ -326,6 +338,10 @@ define(function(require, exports) {
 					},
 				});
 				section.addItem(expireAfterRG.DOMRoot);
+
+				// Events
+				WindowEvents.emit(document, 'SetUIState', {'history': historyConfig.enabled});
+
 			});
 		})();
 

@@ -35,27 +35,30 @@ BrowserSession.prototype.update = function update()
 
 		for (let mozWindow of mozWindows)
 		{
-			if (mozWindow.incognito == false)
+			if (mozWindow.incognito && this.config.savePrivate == false)
 			{
-				var windowInfo = new WindowSession(mozWindow.id);
-
-				// Add window tabs
-				for (var i in mozWindow.tabs)
-				{
-					var tab = mozWindow.tabs[i];
-					var info = SessionManagement.getTabInfo(tab.url);
-					var sessionTab = {
-						title: tab.title,
-						url: info.url,
-						favIconUrl: info.lazyLoading ? info.favIconUrl : tab.favIconUrl,
-						pinned: tab.pinned,
-					};
-					tabCount++;
-					windowInfo.tabs[tab.index] = sessionTab;
-				}
-
-				this.windows[mozWindow.id] = windowInfo;
+				delete this.windows[mozWindow.id];
+				continue;
 			}
+
+			var windowInfo = new WindowSession(mozWindow.id);
+
+			// Add window tabs
+			for (var i in mozWindow.tabs)
+			{
+				var tab = mozWindow.tabs[i];
+				var info = SessionManagement.getTabInfo(tab.url);
+				var sessionTab = {
+					title: tab.title,
+					url: info.url,
+					favIconUrl: info.lazyLoading ? info.favIconUrl : tab.favIconUrl,
+					pinned: tab.pinned,
+				};
+				tabCount++;
+				windowInfo.tabs[tab.index] = sessionTab;
+			}
+
+			this.windows[mozWindow.id] = windowInfo;
 		}
 
 		// Update internal storage
@@ -104,6 +107,7 @@ BrowserSession.prototype.resetInterval = function resetInterval(updateInterval)
 
 BrowserSession.prototype.setConfig = function setConfig(config)
 {
+	this.config = config;
 	this.resetInterval(config.interval);
 	config.enabled ? this.start(config.interval) : this.stop();
 };
@@ -125,6 +129,7 @@ var SessionAutoSave = (function SessionAutoSave()
 		saveBuffer: 3,
 		savingSlots: 20,
 		expireTimeHours: 48,	// hours
+		savePrivate: false,
 	};
 
 	browser.storage.local.get(config.key)
