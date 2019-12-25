@@ -278,21 +278,6 @@ define(function(require, exports) {
 			});
 		};
 
-		var createSession = function createSession(title)
-		{
-			BookmarkManager.createBookmark({
-				title: title,
-				parentId: AppConfig.get('storageID')
-			})
-			.then(function success(session) {
-				WindowEvents.emit(document, 'SetPromiseSession', {
-					sessionID: session.id,
-					edit: true,
-					update: true });
-			}, function error() {
-			});
-		};
-
 		var restoreSession = function restoreSession(folderID)
 		{
 			browser.runtime.sendMessage({event: 'restore-session', bookmarkID: folderID});
@@ -341,8 +326,52 @@ define(function(require, exports) {
 			browser.runtime.sendMessage({event: 'fix-lazy-session', bookmarkID: folderID });
 		};
 
-		var createNewSession = function createNewSession() {
-			createSession((new Date()).toLocaleString());
+		var createSeparator = function createSeparator(folderID) {
+			browser.bookmarks.get(folderID)
+			.then(function (marks) {
+				BookmarkManager.createBookmark({
+					index: marks[0].index + 1,
+					type: 'separator',
+					parentId: AppConfig.get('storageID')
+				})
+				.then(function success(separator) {
+					WindowEvents.emit(document, 'SetPromiseSession', { sessionID: separator.id, update: true });
+				});
+			}, function onError(msg) {
+				console.log(msg);
+			});
+		};
+
+		var createSession = function createSession(title, index)
+		{
+			BookmarkManager.createBookmark({
+				index: index,
+				title: title,
+				parentId: AppConfig.get('storageID')
+			})
+			.then(function success(session) {
+				WindowEvents.emit(document, 'SetPromiseSession', {
+					sessionID: session.id,
+					edit: true,
+					update: true
+				});
+			}, function error() {
+			});
+		};
+
+		var createNewSession = function createNewSession(folderID) {
+			var sessionTitle = (new Date()).toLocaleString();
+			if (folderID)
+			{
+				browser.bookmarks.get(folderID)
+				.then(function (marks) {
+					createSession(sessionTitle, marks[0].index + 1);
+				});
+			}
+			else
+			{
+				createSession(sessionTitle);
+			}
 		};
 
 		// Events
@@ -382,6 +411,7 @@ define(function(require, exports) {
 			mergeSessions: mergeSessions,
 			overwriteSession: overwriteSession,
 			saveActiveSession: saveActiveSession,
+			createSeparator: createSeparator,
 			createNewSession: createNewSession,
 			saveHistorySession: saveHistorySession,
 		};

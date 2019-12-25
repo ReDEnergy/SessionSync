@@ -176,7 +176,26 @@ define(function(require, exports) {
 		{
 			if (bookmarkContext)
 			{
-				WindowEvents.emit(document, 'SessionContextMenu-Open', {
+				var contextMenu = undefined;
+				switch (bookmarkContext.bookmark.type)
+				{
+					case 'folder':
+						contextMenu = 'SessionContextMenu';
+						break;
+
+					case 'bookmark':
+						contextMenu = 'SessionContextBookmarkMenu';
+						break;
+
+					case 'separator':
+						contextMenu = 'SessionContextSeparatorMenu';
+						break;
+
+					default:
+						return;
+				}
+
+				WindowEvents.emit(document, contextMenu + '-Open', {
 					context: bookmarkContext.bookmark.id,
 					event: e
 				});
@@ -190,8 +209,7 @@ define(function(require, exports) {
 		{
 			if (bookmarkContext)
 			{
-				var type = e.target.getAttribute('type');
-				switch (type)
+				switch (bookmarkContext.bookmark.type)
 				{
 					case 'folder':
 						WindowEvents.emit(document, 'SessionContextMenu-EditSession', bookmarkContext.bookmarkID);

@@ -142,11 +142,25 @@ define(function(require, exports) {
 		SM.addMenuEntry({value: 'Restore (close all)', event: 'ReplaceSessionAll', icon: 'replace-all'});
 		SM.addMenuEntry({value: 'Edit', event: 'EditSession', icon: 'edit'});
 		SM.addMenuEntry({value: 'Delete', globalEvent: 'DeleteBookmarkItem', icon: 'delete'});
-		SM.addMenuEntry({value: 'Create new session', callback: SessionManager.createNewSession, icon: 'new-session', separator: 'top'});
+		SM.addMenuEntry({value: 'Create session', callback: SessionManager.createNewSession, icon: 'new-session', separator: 'top'});
+		SM.addMenuEntry({value: 'Insert separator', callback: SessionManager.createSeparator, icon: 'new-session'});
 		content.appendChild(SM.DOMRoot);
 
+		var SCBM = new ContextMenu({name : 'SessionContextBookmarkMenu'});
+		SCBM.addMenuEntry({value: 'Edit', event: 'EditBookmark', icon: 'edit'});
+		SCBM.addMenuEntry({value: 'Delete', globalEvent: 'DeleteBookmarkItem', icon: 'delete'});
+		SCBM.addMenuEntry({value: 'Create session', callback: SessionManager.createNewSession, icon: 'new-session', separator: 'top'});
+		SCBM.addMenuEntry({value: 'Insert separator', callback: SessionManager.createSeparator, icon: 'new-session'});
+		content.appendChild(SCBM.DOMRoot);
+
+		var SCSM = new ContextMenu({name : 'SessionContextSeparatorMenu'});
+		SCSM.addMenuEntry({value: 'Delete', globalEvent: 'DeleteBookmarkItem', icon: 'delete'});
+		SCSM.addMenuEntry({value: 'Create session', callback: SessionManager.createNewSession, icon: 'new-session', separator: 'top'});
+		SCSM.addMenuEntry({value: 'Insert separator', callback: SessionManager.createSeparator, icon: 'new-session'});
+		content.appendChild(SCSM.DOMRoot);
+
 		var SLM = new ContextMenu({name : 'SessionListMenu'});
-		SLM.addMenuEntry({value: 'Create new session', callback: SessionManager.createNewSession, icon: 'new-session'});
+		SLM.addMenuEntry({value: 'Create session', callback: SessionManager.createNewSession, icon: 'new-session'});
 		content.appendChild(SLM.DOMRoot);
 
 		// History List Context Menu
@@ -269,7 +283,8 @@ define(function(require, exports) {
 
 		// BookmarksCtxMenu events
 
-		WindowEvents.on(document, 'BookmarkCtxMenu-EditBookmark', function (bookmarkID) {
+		function InvokeBookmarkEdit(bookmarkID)
+		{
 			WindowEvents.emit(document, 'BookmarkEditWidget-Invoke', {
 				context : bookmarkID,
 				fields : {
@@ -277,7 +292,10 @@ define(function(require, exports) {
 					url : SessionSyncModel.bookmarks[bookmarkID].url,
 				}
 			});
-		});
+		}
+
+		WindowEvents.on(document, 'SessionContextBookmarkMenu-EditBookmark', InvokeBookmarkEdit);
+		WindowEvents.on(document, 'BookmarkCtxMenu-EditBookmark', InvokeBookmarkEdit);
 
 		WindowEvents.on(document, 'BookmarkCtxMenu-CopyURL', function (bookmarkID) {
 			WindowEvents.emit(document, 'CopyURL', SessionSyncModel.bookmarks[bookmarkID].url);
