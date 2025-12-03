@@ -1431,7 +1431,17 @@
 	flex: 1;
 }
 
-#session-sync .session-container .bookmarks:hover {
+#session-sync[scrollbar="hide"] .session-container .bookmarks:hover {
+	overflow-y: scroll;
+}
+
+/* When scrollbar is enabled, use standard width to show it */
+#session-sync[scrollbar="show"] .session-container .bookmarks {
+	width: 100%;
+}
+
+/* Show the scrollbar on hover */
+#session-sync[scrollbar="show"] .session-container .bookmarks:hover {
 	overflow-y: scroll;
 }
 
@@ -2216,6 +2226,16 @@
 	flex: 0;
 }
 
+/* When scrollbar is enabled, use standard width to show it */
+#session-sync[scrollbar="show"] .sessions .history-list {
+	width: 100%;
+}
+
+/* Show the scrollbar on hover */
+#session-sync[scrollbar="show"] .sessions .history-list:hover {
+	overflow-y: scroll;
+}
+
 #session-sync .sessions .history-node {
 	width: 100%;
 	height: 2.5em;
@@ -2263,6 +2283,16 @@
 	transition-duration: 0.2s;
 	box-sizing: border-box;
 	flex: 1;
+}
+
+/* When scrollbar is enabled, use standard width to show it */
+#session-sync[scrollbar="show"] .sessions .session-list {
+	width: 100%;
+}
+
+/* Show the scrollbar on hover */
+#session-sync[scrollbar="show"] .sessions .session-list:hover {
+	overflow-y: scroll;
 }
 
 /*

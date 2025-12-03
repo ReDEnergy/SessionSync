@@ -87,7 +87,7 @@ define(function(require, exports) {
 
 			// General settings
 			getConfigValue('context.menu.icons', true);
-
+			getConfigValue('show.scroll.bar', true);
 			getConfigValue('trashcan.hide', true);
 			getConfigValue('trashcan.hide-count', 0);
 			getConfigValue('undo.events', []);

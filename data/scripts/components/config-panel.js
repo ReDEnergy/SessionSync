@@ -200,6 +200,15 @@ define(function(require, exports) {
 
 			ToggleOptionConfig({
 				parent: section,
+				name: 'Show scroll bar',
+				key: 'show.scroll.bar',
+				type: 'switch',
+				onState: 'Show',
+				offState: 'Hide',
+			});
+
+			ToggleOptionConfig({
+				parent: section,
 				type: 'switch',
 				name: 'Context menu icons',
 				key: 'context.menu.icons',

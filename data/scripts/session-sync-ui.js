@@ -47,6 +47,7 @@ define(function(require, exports) {
 		var DomElem = HTMLCreator();
 
 		document.body.setAttribute('panel', AppConfig.isPanel());
+		document.body.setAttribute('scrollbar', AppConfig.get('general.showScrollbar'));
 		var content = document.getElementById('body');
 
 		// ------------------------------------------------------------------------
@@ -426,6 +427,11 @@ define(function(require, exports) {
 
 			AppConfig.onChange('style.panel.height', function (size) {
 				document.body.style.height = size + 'px';
+			});
+
+			// Handle scrollbar visibility setting
+			AppConfig.onChange('show.scroll.bar', function (value) {
+				document.body.setAttribute('scrollbar', value ? 'show' : 'hide');
 			});
 
 			resizeHandle.addEventListener('mousedown', startResize);
