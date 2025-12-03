@@ -1431,13 +1431,10 @@
 	flex: 1;
 }
 
-#session-sync[scrollbar="hide"] .session-container .bookmarks:hover {
-	overflow-y: scroll;
-}
-
 /* When scrollbar is enabled, use standard width to show it */
 #session-sync[scrollbar="show"] .session-container .bookmarks {
 	width: 100%;
+	overflow-y: hidden;
 }
 
 /* Show the scrollbar on hover */
@@ -2049,6 +2046,14 @@
 	background: url("images/icons/frames.png") no-repeat center;
 }
 
+#session-sync .session-toolbar .menu-bar .repalce-session-all {
+	background: url("images/material_icons/repeat.svg") no-repeat center;
+}
+
+#session-sync .session-toolbar .menu-bar .repalce-session {
+	background: url("images/material_icons/repeat_one.svg") no-repeat center;
+}
+
 #session-sync .session-toolbar .menu-bar .fix-session {
 	background: url("images/icons/tools.png") no-repeat center;
 }
@@ -2229,6 +2234,7 @@
 /* When scrollbar is enabled, use standard width to show it */
 #session-sync[scrollbar="show"] .sessions .history-list {
 	width: 100%;
+	overflow-y: hidden;
 }
 
 /* Show the scrollbar on hover */
@@ -2288,6 +2294,7 @@
 /* When scrollbar is enabled, use standard width to show it */
 #session-sync[scrollbar="show"] .sessions .session-list {
 	width: 100%;
+	overflow-y: hidden;
 }
 
 /* Show the scrollbar on hover */
