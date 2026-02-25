@@ -1,14 +1,17 @@
 {
 	"name": "Session Sync",
-	"version": "3.1.12",
+	"version": "3.2.0",
 	"author": "Gabriel Ivanica",
 	"description": "Save sessions as bookmarks and sync them through Firefox Sync (or any other sync engine).\nPowerful session management - organize, edit, change, save, restore, etc\n",
 	"homepage_url": "https://github.com/ReDEnergy/SessionSync",
 	"manifest_version": 2,
 	"default_locale": "en",
-	"applications": {
+	"browser_specific_settings": {
 		"gecko": {
-			"id": "session-sync@gabrielivanica.com"
+			"id": "session-sync@gabrielivanica.com",
+			"data_collection_permissions": {
+				"required": ["none"]
+			}
 		}
 	},
 	"icons": {
