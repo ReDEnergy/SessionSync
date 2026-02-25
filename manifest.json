@@ -37,6 +37,7 @@
 		"tabs",
 		"clipboardWrite",
 		"unlimitedStorage",
+		"cookies",
 		"contextualIdentities"
 	],
 	"browser_action": {
