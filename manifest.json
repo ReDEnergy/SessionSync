@@ -33,7 +33,8 @@
 		"bookmarks",
 		"tabs",
 		"clipboardWrite",
-		"unlimitedStorage"
+		"unlimitedStorage",
+		"contextualIdentities"
 	],
 	"browser_action": {
 		"browser_style": true,
