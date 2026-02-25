@@ -36,11 +36,16 @@ var SessionManagement = (function SessionManagement()
 		};
 	}
 
+	// Container suffix helpers — canonical source: data/scripts/session/bookmarks.js
+	var containerSuffix = {
+		regex: /^(.*) \[container:([^\]]+)\]$/,
+	};
+
 	// Parse a [container:<id>] suffix from a bookmark title.
 	// Returns { title, cookieStoreId } — cookieStoreId is null when absent.
 	function parseContainerFromTitle(rawTitle)
 	{
-		var match = rawTitle && rawTitle.match(/^(.*) \[container:([^\]]+)\]$/);
+		var match = rawTitle && rawTitle.match(containerSuffix.regex);
 		if (match) {
 			return { title: match[1], cookieStoreId: match[2] };
 		}
