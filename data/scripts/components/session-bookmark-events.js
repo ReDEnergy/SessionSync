@@ -209,10 +209,13 @@ define(function(require, exports) {
 						if (bookmarkContext.bookmarkID == bookmarkID) {
 							// Preview the content if a click event was registered (mouse-up on the same DOM node)
 							if (!DragContext.hasContext()) {
+								var mark = SessionSyncModel.bookmarks[bookmarkID];
+								var parsed = BookmarkManager.parseContainerFromTitle(mark.title);
 								BookmarkManager.openBookmark({
-									url: SessionSyncModel.bookmarks[bookmarkID].url,
+									url: mark.url,
 									mode: BookmarkManager.getOpenMode(0),
 									favicon: true,
+									cookieStoreId: parsed.cookieStoreId,
 								});
 							}
 						}
@@ -318,10 +321,13 @@ define(function(require, exports) {
 					// Middle Click
 					if (e.button == 1)
 					{
+						var mark = SessionSyncModel.bookmarks[bookmarkID];
+						var parsed = BookmarkManager.parseContainerFromTitle(mark.title);
 						BookmarkManager.openBookmark({
-							url: SessionSyncModel.bookmarks[bookmarkID].url,
+							url: mark.url,
 							mode: BookmarkManager.getOpenMode(1),
 							favicon: true,
+							cookieStoreId: parsed.cookieStoreId,
 						});
 						return;
 					}

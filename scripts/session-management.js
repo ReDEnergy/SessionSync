@@ -108,17 +108,23 @@ var SessionManagement = (function SessionManagement()
 		var checkFavicon = options.favicon === true ? FaviconService.checkTabFaviconSaved : () => {};
 		delete options.favicon;
 
+		var cookieStoreId = options.cookieStoreId || null;
+		delete options.cookieStoreId;
+
 		var mode = options.mode;
 		delete options.mode;
 
 		switch (mode)
 		{
 			case 'newTab': {
-				browser.tabs.create(options).then(checkFavicon);
+				createTabWithContainer(options, cookieStoreId, checkFavicon);
 				break;
 			}
 
 			case 'newWindow': {
+				if (cookieStoreId) {
+					options.cookieStoreId = cookieStoreId;
+				}
 				browser.windows.create(options).then(function (windowInfo) {
 					checkFavicon(windowInfo.tabs[0]);
 				});

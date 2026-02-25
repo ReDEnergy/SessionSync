@@ -306,26 +306,35 @@ define(function(require, exports) {
 		});
 
 		WindowEvents.on(document, 'BookmarkCtxMenu-OpenInNewTab', function (bookmarkID) {
+			var mark = SessionSyncModel.bookmarks[bookmarkID];
+			var parsed = BookmarkManager.parseContainerFromTitle(mark.title);
 			BookmarkManager.openBookmark({
-				url: SessionSyncModel.bookmarks[bookmarkID].url,
+				url: mark.url,
 				mode: 'newTab',
 				favicon: true,
+				cookieStoreId: parsed.cookieStoreId,
 			});
 		});
 
 		WindowEvents.on(document, 'BookmarkCtxMenu-OpenInActiveTab', function (bookmarkID) {
+			var mark = SessionSyncModel.bookmarks[bookmarkID];
+			var parsed = BookmarkManager.parseContainerFromTitle(mark.title);
 			BookmarkManager.openBookmark({
-				url: SessionSyncModel.bookmarks[bookmarkID].url,
+				url: mark.url,
 				mode: 'activeTab',
 				favicon: true,
+				cookieStoreId: parsed.cookieStoreId,
 			});
 		});
 
 		WindowEvents.on(document, 'BookmarkCtxMenu-OpenInNewWindow', function (bookmarkID) {
+			var mark = SessionSyncModel.bookmarks[bookmarkID];
+			var parsed = BookmarkManager.parseContainerFromTitle(mark.title);
 			BookmarkManager.openBookmark({
-				url: SessionSyncModel.bookmarks[bookmarkID].url,
+				url: mark.url,
 				mode: 'newWindow',
 				favicon: true,
+				cookieStoreId: parsed.cookieStoreId,
 			});
 		});
 
