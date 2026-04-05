@@ -36,6 +36,50 @@ var SessionManagement = (function SessionManagement()
 		};
 	}
 
+	// Container suffix helpers — canonical source: data/scripts/session/bookmarks.js
+	var containerSuffix = {
+		regex: /^(.*) \[container:([^\]]+)\]$/,
+	};
+
+	// Parse a [container:<id>] suffix from a bookmark title.
+	// Returns { title, cookieStoreId } — cookieStoreId is null when absent.
+	function parseContainerFromTitle(rawTitle)
+	{
+		var match = rawTitle && rawTitle.match(containerSuffix.regex);
+		if (match) {
+			return { title: match[1], cookieStoreId: match[2] };
+		}
+		return { title: rawTitle, cookieStoreId: null };
+	}
+
+	// Create a tab with a cookieStoreId; silently falls back to default container
+	// if the container doesn't exist or the API rejects it.
+	// onError is called only if creation fails even without a container.
+	function createTabWithContainer(options, cookieStoreId, onSuccess, onError)
+	{
+		var tryCreate = function(withContainer) {
+			var tabOptions = Object.assign({}, options);
+			if (withContainer && cookieStoreId) {
+				tabOptions.cookieStoreId = cookieStoreId;
+			}
+			return browser.tabs.create(tabOptions).then(
+				function(tabInfo) {
+					if (onSuccess) onSuccess(tabInfo);
+				},
+				function(err) {
+					if (withContainer) {
+						// Container not available — retry without it
+						tryCreate(false);
+					} else {
+						if (onError) onError(err);
+						else console.log('createTabWithContainer error:', err);
+					}
+				}
+			);
+		};
+		tryCreate(cookieStoreId != null);
+	}
+
 	var setLazyLoading = function setLazyLoading(state)
 	{
 		lazyLoading = state;
@@ -64,17 +108,23 @@ var SessionManagement = (function SessionManagement()
 		var checkFavicon = options.favicon === true ? FaviconService.checkTabFaviconSaved : () => {};
 		delete options.favicon;
 
+		var cookieStoreId = options.cookieStoreId || null;
+		delete options.cookieStoreId;
+
 		var mode = options.mode;
 		delete options.mode;
 
 		switch (mode)
 		{
 			case 'newTab': {
-				browser.tabs.create(options).then(checkFavicon);
+				createTabWithContainer(options, cookieStoreId, checkFavicon);
 				break;
 			}
 
 			case 'newWindow': {
+				if (cookieStoreId) {
+					options.cookieStoreId = cookieStoreId;
+				}
 				browser.windows.create(options).then(function (windowInfo) {
 					checkFavicon(windowInfo.tabs[0]);
 				});
@@ -106,24 +156,19 @@ var SessionManagement = (function SessionManagement()
 			title += '&favIconUrl=' + encodeURIComponent(bookmark.favIconUrl);
 		}
 
-		browser.tabs.create({
+		var tabOptions = {
 			url: title,
 			active: false,
 			pinned: bookmark.pinned,
 			windowId: bookmark.windowID,
-		})
-		.then(
-			function success() {
-			},
+		};
+
+		createTabWithContainer(tabOptions, bookmark.cookieStoreId,
+			function success() {},
 			function error() {
-				browser.tabs.create({
-					url: title,
-					active: false,
-					pinned: bookmark.pinned,
-					windowId: bookmark.windowID,
-				})
+				browser.tabs.create(tabOptions)
 				.then(function (tab) {
-					browser.tabs.update([tab.id], {
+					browser.tabs.update(tab.id, {
 						title: bookmark.title,
 					});
 				});
@@ -133,6 +178,11 @@ var SessionManagement = (function SessionManagement()
 
 	var openLazyTab = function openLazyTab(bookmark)
 	{
+		// Extract container info encoded in the title
+		var parsed = parseContainerFromTitle(bookmark.title);
+		bookmark.title = parsed.title;
+		bookmark.cookieStoreId = parsed.cookieStoreId;
+
 		if (bookmark.favIconUrl) {
 			createLazyTab(bookmark);
 		}
@@ -199,13 +249,12 @@ var SessionManagement = (function SessionManagement()
 					}
 					else
 					{
-						browser.tabs.create({
-							url: bookmark.url,
-							active: false,
-						})
-						.then(function(tabInfo) {
-							FaviconService.checkTabFaviconSaved(tabInfo);
-						});
+						var parsed = parseContainerFromTitle(bookmark.title);
+						createTabWithContainer(
+							{ url: bookmark.url, active: false },
+							parsed.cookieStoreId,
+							function(tabInfo) { FaviconService.checkTabFaviconSaved(tabInfo); }
+						);
 					}
 				});
 			}
@@ -235,14 +284,12 @@ var SessionManagement = (function SessionManagement()
 						}
 						else
 						{
-							browser.tabs.create({
-								url: bookmark.url,
-								pinned: bookmark.pinned,
-								windowId: windowID,
-							})
-							.then(function(tabInfo) {
-								FaviconService.checkTabFaviconSaved(tabInfo);
-							});
+							var parsed = parseContainerFromTitle(bookmark.title);
+							createTabWithContainer(
+								{ url: bookmark.url, pinned: bookmark.pinned, windowId: windowID },
+								parsed.cookieStoreId,
+								function(tabInfo) { FaviconService.checkTabFaviconSaved(tabInfo); }
+							);
 						}
 					});
 				});

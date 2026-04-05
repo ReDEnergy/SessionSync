@@ -61,6 +61,12 @@ define(function(require, exports) {
 			return state ? 'newTab' : 'activeTab';
 		};
 
+		var containerSuffix = {
+			encode: function(id) { return ' [container:' + id + ']'; },
+			regex:  /^(.*) \[container:([^\]]+)\]$/,
+			default: 'firefox-default',
+		};
+
 		var createBookmarkFromTab = function createBookmarkFromTab(tab, parentId)
 		{
 			var url = tab.url;
@@ -74,12 +80,29 @@ define(function(require, exports) {
 				browser.runtime.sendMessage({event: 'save-favicon', tab: tab});
 			}
 
+			var title = tab.title;
+			if (tab.cookieStoreId && tab.cookieStoreId !== containerSuffix.default)
+			{
+				title += containerSuffix.encode(tab.cookieStoreId);
+			}
+
 			return browser.bookmarks.create({
 				url: url,
-				title: tab.title,
+				title: title,
 				parentId: parentId
 			});
 
+		};
+
+		// Parse a [container:<id>] suffix from a bookmark title.
+		// Returns { title, cookieStoreId } — cookieStoreId is null when absent.
+		var parseContainerFromTitle = function parseContainerFromTitle(rawTitle)
+		{
+			var match = rawTitle && rawTitle.match(containerSuffix.regex);
+			if (match) {
+				return { title: match[1], cookieStoreId: match[2] };
+			}
+			return { title: rawTitle, cookieStoreId: null };
 		};
 
 		var createBookmark = function createBookmark(options)
@@ -155,6 +178,7 @@ define(function(require, exports) {
 			openBookmark: openBookmark,
 			createBookmark: createBookmark,
 			createBookmarkFromTab: createBookmarkFromTab,
+			parseContainerFromTitle: parseContainerFromTitle,
 			searchBookmarks: searchBookmarks,
 
 			setTitle: setTitle,

@@ -53,6 +53,7 @@ BrowserSession.prototype.update = function update()
 					url: info.url,
 					favIconUrl: info.lazyLoading ? info.favIconUrl : tab.favIconUrl,
 					pinned: tab.pinned,
+					cookieStoreId: tab.cookieStoreId,
 				};
 				tabCount++;
 				windowInfo.tabs[tab.index] = sessionTab;
