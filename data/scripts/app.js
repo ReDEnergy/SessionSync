@@ -12,22 +12,24 @@ define(function(require, exports) {
 
 	const { BookmarkManager } = require('./session/bookmarks');
 
+	const sessionRoot = 'SessionSync';
+
 	// ------------------------------------------------------------------------
 	// API
 
 	var findSessionSync = function findSessionSync(callback)
 	{
-		BookmarkManager.searchBookmarks({title: 'SessionSync'})
+		BookmarkManager.searchBookmarks({title: sessionRoot})
 		.then(
 			function success(bookmarks) {
 				if (bookmarks.length == 0)
 				{
 					BookmarkManager.createBookmark({
-						title: 'SessionSync',
+						title: sessionRoot,
 						parentId: 'menu________'
 					}).then(callback, function error() {
 						BookmarkManager.createBookmark({
-							title: 'SessionSync',
+							title: sessionRoot,
 						}).then(callback);
 					});
 				}

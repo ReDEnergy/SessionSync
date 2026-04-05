@@ -89,7 +89,7 @@ define(function(require, exports) {
 		createSession.addEventListener('mouseover', function(e) {
 			WindowEvents.emit(document, 'ShowTooltip', {
 				node: e.target,
-				message: 'Create session',
+				message: 'Create new session',
 			});
 		});
 
