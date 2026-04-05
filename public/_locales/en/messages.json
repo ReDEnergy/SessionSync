@@ -1,0 +1,14 @@
+{
+	"test": {
+		"message": "Restore in new window"
+	},
+	"session_sync_tutorial": {
+		"message": "Tutorial"
+	},
+	"session_sync_detach_tab": {
+		"message": "Tab View"
+	},
+	"session_sync_detach_window": {
+		"message": "Window View"
+	}
+}

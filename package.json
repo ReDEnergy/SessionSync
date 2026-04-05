@@ -1,22 +1,24 @@
 {
-  "name": "session-sync",
-  "author": "Gabriel Ivanica",
-  "url": "https://github.com/ReDEnergy/SessionSync",
-  "version": "3.1.1",
-  "description": "Save sessions as bookmarks and sync them through any sync engine.\nManage sessions, edit, save, restore.\nSession-Sync will automatically update sessions across multiple machines",
-  "license": "MPL-2.0",
-  "devDependencies": {
-    "connect-livereload": "^0.5.3",
-    "express": "^4.13.1",
-    "gulp": "^3.9.0",
-    "gulp-callback": "0.0.3",
-    "gulp-concat": "^2.6.0",
-    "gulp-open": "^1.0.0",
-    "gulp-plumber": "^1.0.1",
-    "gulp-util": "^3.0.6",
-    "gulp-watch": "^4.3.3",
-    "serve-index": "^1.7.1",
-    "socket.io": "^1.4.8",
-    "tiny-lr": "^0.1.6"
-  }
+	"name": "session-sync",
+	"author": "Gabriel Ivanica",
+	"url": "https://github.com/ReDEnergy/SessionSync",
+	"version": "3.2.0",
+	"description": "Save sessions as bookmarks and sync them through any sync engine.\nManage sessions, edit, save, restore.\nSession-Sync will automatically update sessions across multiple machines",
+	"license": "MPL-2.0",
+	"scripts": {
+		"dev": "wxt",
+		"dev:chrome": "wxt -b chrome --mv3",
+		"dev:firefox": "wxt -b firefox --mv2",
+		"build": "wxt build",
+		"build:chrome": "wxt build -b chrome --mv3",
+		"build:firefox": "wxt build -b firefox --mv2",
+		"clean": "wxt clean",
+		"zip": "wxt zip",
+		"zip:chrome": "wxt zip -b chrome --mv3",
+		"zip:firefox": "wxt zip -b firefox --mv2",
+		"postinstall": "wxt prepare"
+	},
+	"devDependencies": {
+		"wxt": "^0.20.20"
+	}
 }

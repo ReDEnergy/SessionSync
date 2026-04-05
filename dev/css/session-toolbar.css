@@ -111,12 +111,13 @@
 	display: none;
 	float: left;
 
-	filter: saturate(100%);
+	opacity: 0.75;
+	filter: grayscale(100%);
 }
 
 #session-sync .session-toolbar .menu-bar .button:hover {
 	cursor: pointer;
-	filter: saturate(100%);
+	opacity: 1;
 	box-shadow: none;
 }
 
@@ -131,12 +132,10 @@
 
 #session-sync .session-toolbar .menu-bar .add {
 	background: url("images/icons/star.png") no-repeat center;
-	filter: saturate(100%);
 }
 
 #session-sync .session-toolbar .menu-bar .save {
 	background: url("images/icons/heart.png") no-repeat center;
-	filter: saturate(100%);
 }
 
 #session-sync .session-toolbar .menu-bar .merge-sessions {

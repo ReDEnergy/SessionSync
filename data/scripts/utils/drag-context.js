@@ -1,46 +1,40 @@
-define(function(require, exports) {
-	'use strict';
+'use strict';
 
-	// *****************************************************************************
-	// Custom Modules
+// *****************************************************************************
+// Custom Modules
 
-	const { WindowEvents } = require('./global-events');
+import { WindowEvents } from './global-events';
 
-	// *****************************************************************************
-	// API
+// *****************************************************************************
+// API
 
-	var DragContext = (function DragContext() {
+export const DragContext = (function DragContext() {
 
-		var context = null;
+	var context = null;
 
-		function setContext(ctx) {
-			context = ctx;
+	function setContext(ctx) {
+		context = ctx;
+		if (typeof document !== 'undefined') {
 			WindowEvents.emit(document, 'TrashCan-Droppable', ctx != null);
 		}
+	}
 
-		function getContext() {
-			return context;
-		}
+	function getContext() {
+		return context;
+	}
 
-		function hasContext() {
-			return context != null;
-		}
+	function hasContext() {
+		return context != null;
+	}
 
-		function clearContext() {
-			setContext(null);
-		}
+	function clearContext() {
+		setContext(null);
+	}
 
-		return {
-			hasContext: hasContext,
-			clearContext: clearContext,
-			setContext: setContext,
-			getContext: getContext
-		};
-	})();
-
-
-	// *****************************************************************************
-	// Public API
-	exports.DragContext = DragContext;
-
-});
+	return {
+		hasContext: hasContext,
+		clearContext: clearContext,
+		setContext: setContext,
+		getContext: getContext
+	};
+})();

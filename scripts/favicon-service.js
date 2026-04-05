@@ -1,18 +1,7 @@
 'use strict';
 
-var FaviconService = (function FaviconService() {
+const FaviconService = (function FaviconService() {
 
-	// var ignoreFaviconSearch = {
-	// 	'chrom' : true,
-	// 	'javas' : true,
-	// 	'data:' : true,
-	// 	'file:' : true,
-	// 	'about' : true,
-	// 	'moz-e' : true,
-	// };
-
-	var database = {};
-	var urlParser = document.createElement('a');
 	var serviceStatus = true;
 	var serviceStatusKey = 'services.favicon.enabled';
 
@@ -27,47 +16,45 @@ var FaviconService = (function FaviconService() {
 				resolve(reader.result);
 			}, false);
 
-			reader.onerror = function() {
+			reader.onerror = function () {
 				return reject(this);
 			};
 			reader.readAsDataURL(blob);
 		});
 	}
 
-	var getHostName = function getHostName(url)
-	{
-		urlParser.href = url;
-		return urlParser.hostname;
+	var getHostName = function getHostName(url) {
+		try {
+			return new URL(url).hostname;
+		} catch (e) {
+			return '';
+		}
 	}
 
-	var getFaviconUrl = function getFaviconUrl(url, callback)
-	{
+	var getFaviconUrl = function getFaviconUrl(url, callback) {
 		var key = '@favIconUrl:' + getHostName(url);
 		browser.storage.local.get(key)
-		.then(function (obj) {
-			callback(obj[key]);
-		}, callback);
+			.then(function (obj) {
+				callback(obj[key]);
+			}, callback);
 	}
 
-	var setFaviconUrl = function setFaviconUrl(key, favIconUrl)
-	{
+	var setFaviconUrl = function setFaviconUrl(key, favIconUrl) {
 		getBase64ImageFromUrl(favIconUrl)
-		.then(function(result) {
-			browser.storage.local.set({ [key] : result });
-		},
-		function onError(info) {
-			browser.storage.local.set({ [key] : favIconUrl });
-		});
+			.then(function (result) {
+				browser.storage.local.set({ [key]: result });
+			},
+				function onError(info) {
+					browser.storage.local.set({ [key]: favIconUrl });
+				});
 	}
 
-	var checkTabFaviconSaved = function checkTabFaviconSaved(tab, waitToLoad)
-	{
+	var checkTabFaviconSaved = function checkTabFaviconSaved(tab, waitToLoad) {
 		if (serviceStatus == false) {
 			return;
 		}
 
-		if (tab.favIconUrl)
-		{
+		if (tab.favIconUrl) {
 			getFaviconUrl(tab.url, function (value) {
 				if (value === undefined || tab.url != value) {
 					var key = '@favIconUrl:' + getHostName(tab.url);
@@ -75,10 +62,8 @@ var FaviconService = (function FaviconService() {
 				}
 			});
 		}
-		else if (waitToLoad != false)
-		{
-			function handle(tabId, changeInfo, tabInfo)
-			{
+		else if (waitToLoad != false) {
+			function handle(tabId, changeInfo, tabInfo) {
 				browser.tabs.onUpdated.removeListener(handle);
 				checkTabFaviconSaved(tabInfo, false);
 			}
@@ -90,16 +75,12 @@ var FaviconService = (function FaviconService() {
 		}
 	}
 
-	var initConfig = function initConfig()
-	{
+	var initConfig = function initConfig() {
 		browser.storage.local.get(serviceStatusKey)
-		.then(function (obj) {
-			serviceStatus = obj[serviceStatusKey];
-		});
+			.then(function (obj) {
+				serviceStatus = obj[serviceStatusKey];
+			});
 	};
-
-	// ************************************************************************
-	// Events
 
 	browser.storage.onChanged.addListener(function onChange(object) {
 		if (object[serviceStatusKey]) {
@@ -107,16 +88,12 @@ var FaviconService = (function FaviconService() {
 		}
 	});
 
-	// ************************************************************************
-	// Init
-
 	initConfig();
-
-	// ************************************************************************
-	// Public API
 
 	return {
 		getFaviconUrl: getFaviconUrl,
 		checkTabFaviconSaved: checkTabFaviconSaved
 	}
 })();
+
+export { FaviconService };

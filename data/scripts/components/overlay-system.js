@@ -1,66 +1,58 @@
-define(function(require, exports) {
-	'use strict';
+'use strict';
 
-	// *****************************************************************************
-	// Custom Modules
+// *****************************************************************************
+// Custom Modules
 
-	const { AppConfig } = require('../config');
-	const { HTMLCreator } = require('../utils/dom');
+import { AppConfig } from '../config';
+import { HTMLCreator } from '../utils/dom';
 
-	// *****************************************************************************
-	// API
+// *****************************************************************************
+// API
 
-	/*
-	* Session Hotkeys
-	*/
+/*
+* Session Hotkeys
+*/
 
-	function OverlaySystem()
-	{
-		// Create DomHealper
-		var DomElem = HTMLCreator();
+export function OverlaySystem() {
+	// Create DomHealper
+	var DomElem = HTMLCreator();
 
-		// ------------------------------------------------------------------------
-		// Create UI
+	// ------------------------------------------------------------------------
+	// Create UI
 
-		var overlay = DomElem('div', { id : 'overlay' });
+	var overlay = DomElem('div', { id: 'overlay' });
 
-		// ------------------------------------------------------------------------
-		// Events
+	// ------------------------------------------------------------------------
+	// Events
 
-		var state = false;
+	var state = false;
 
-		function setState(options) {
-			if (AppConfig.isPanel()) {
-				state = options.state;
-				overlay.setAttribute('state', state);
+	function setState(options) {
+		if (AppConfig.isPanel()) {
+			state = options.state;
+			overlay.setAttribute('state', state);
 
-				if (options.zIndex) {
-					overlay.style.zIndex = options.zIndex;
-				}
+			if (options.zIndex) {
+				overlay.style.zIndex = options.zIndex;
+			}
 
-				if (state == false) {
-					overlay.removeAttribute('style');
-				}
+			if (state == false) {
+				overlay.removeAttribute('style');
 			}
 		}
-
-		function autoHide() {
-			if (state == true)
-				setState(false);
-		}
-
-		// document.addEventListener('click', autoHide);
-
-		// WindowEvents.on(document, 'OverlaySystem', setState);
-
-		// ------------------------------------------------------------------------
-		// Public properties
-
-		this.DOMRoot = overlay;
 	}
 
-	// *****************************************************************************
-	// Public API
+	function autoHide() {
+		if (state == true)
+			setState(false);
+	}
 
-	exports.OverlaySystem = OverlaySystem;
-});
+	// document.addEventListener('click', autoHide);
+
+	// WindowEvents.on(document, 'OverlaySystem', setState);
+
+	// ------------------------------------------------------------------------
+	// Public properties
+
+	this.DOMRoot = overlay;
+}

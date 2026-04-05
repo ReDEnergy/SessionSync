@@ -2,3 +2,11 @@
 /node_modules
 .vscode
 .idea
+
+.wxt
+.output
+
+/dev/tutorial
+/dev/experiments
+/releases
+/data/session-sync.css

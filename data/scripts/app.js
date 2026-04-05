@@ -1,79 +1,64 @@
-define(function(require, exports) {
-	'use strict';
+'use strict';
 
-	// ------------------------------------------------------------------------
-	// Modules
+// ------------------------------------------------------------------------
+// Modules
 
-	const { AppConfig } = require('./config');
-	const { WindowEvents, GlobalEvents } = require('./utils/global-events');
+import { AppConfig } from './config';
+import { WindowEvents, GlobalEvents } from './utils/global-events';
+import { SessionSyncUI } from './session-sync-ui';
+import { SessionSyncModel } from './components/session-sync-model';
+import { BookmarkManager } from './session/bookmarks';
 
-	const { SessionSyncUI } = require('./session-sync-ui');
-	const { SessionSyncModel } = require ('./components/session-sync-model');
+const sessionRoot = 'SessionSync';
 
-	const { BookmarkManager } = require('./session/bookmarks');
+// ------------------------------------------------------------------------
+// API
 
-	const sessionRoot = 'SessionSync';
-
-	// ------------------------------------------------------------------------
-	// API
-
-	var findSessionSync = function findSessionSync(callback)
-	{
-		BookmarkManager.searchBookmarks({title: sessionRoot})
-		.then(
-			function success(bookmarks) {
-				if (bookmarks.length == 0)
-				{
+const findSessionSync = function findSessionSync(callback)
+{
+	BookmarkManager.searchBookmarks({title: sessionRoot})
+	.then(
+		function success(bookmarks) {
+			if (bookmarks.length == 0)
+			{
+				BookmarkManager.createBookmark({
+					title: sessionRoot,
+					parentId: 'menu________'
+				}).then(callback, function error() {
 					BookmarkManager.createBookmark({
 						title: sessionRoot,
-						parentId: 'menu________'
-					}).then(callback, function error() {
-						BookmarkManager.createBookmark({
-							title: sessionRoot,
-						}).then(callback);
-					});
-				}
-				else
-				{
-					callback(bookmarks[0]);
-				}
-			},
-			function fail() {
+					}).then(callback);
+				});
 			}
-		);
-	};
+			else
+			{
+				callback(bookmarks[0]);
+			}
+		},
+		function fail() {
+		}
+	);
+};
 
-	var listSessions = function listSessions()
-	{
-		BookmarkManager.getFolderBookmarks(AppConfig.get('storageID'), function(sessions) {
-			SessionSyncModel.sessions = sessions;
-			WindowEvents.emit(document, 'ListSessions');
+const listSessions = function listSessions()
+{
+	BookmarkManager.getFolderBookmarks(AppConfig.get('storageID'), function(sessions) {
+		SessionSyncModel.sessions = sessions;
+		WindowEvents.emit(document, 'ListSessions');
+	});
+};
+
+export const init = function init()
+{
+	SessionSyncUI();
+
+	findSessionSync(function(bookmark) {
+		AppConfig.set('storageID', bookmark.id, function() {
+			listSessions(true);
 		});
-	};
+	});
 
-	var init = function init()
-	{
-		SessionSyncUI();
+	AppConfig.init();
 
-		findSessionSync(function(bookmark) {
-			AppConfig.set('storageID', bookmark.id, function() {
-				listSessions(true);
-			});
-		});
-
-		AppConfig.init();
-
-		GlobalEvents.on('update-sessions', listSessions.bind(null, false, false));
-	};
-
-	// ------------------------------------------------------------------------
-	// Events
-
-	// ------------------------------------------------------------------------
-	// Init
-
-	// ------------------------------------------------------------------------
-	// Module exports
-
-	exports.init = init;
-});
+	GlobalEvents.on('update-sessions', listSessions.bind(null, false, false));
+};

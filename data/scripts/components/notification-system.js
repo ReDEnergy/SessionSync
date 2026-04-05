@@ -1,54 +1,44 @@
-define(function(require, exports) {
-	'use strict';
+'use strict';
 
-	// *****************************************************************************
-	// Custom Modules
+// *****************************************************************************
+// Custom Modules
 
-	const { HTMLCreator } = require('../utils/dom');
-	const { WindowEvents } = require('../utils/global-events');
+import { HTMLCreator } from '../utils/dom';
+import { WindowEvents } from '../utils/global-events';
 
-	// *****************************************************************************
-	// NotificationSystem
+// *****************************************************************************
+// NotificationSystem
 
-	function NotificationSystem()
-	{
-		var DomElem = HTMLCreator();
+export function NotificationSystem() {
+	var DomElem = HTMLCreator();
 
-		var panel = DomElem('div', {class : 'notification-system'});
-		var info = DomElem('div', {class : 'info'});
-		var warning = DomElem('div', {class : 'warning'});
+	var panel = DomElem('div', { class: 'notification-system' });
+	var info = DomElem('div', { class: 'info' });
+	var warning = DomElem('div', { class: 'warning' });
 
-		panel.appendChild(info);
-		panel.appendChild(warning);
+	panel.appendChild(info);
+	panel.appendChild(warning);
 
-		// ------------------------------------------------------------------------
-		// Events
+	// ------------------------------------------------------------------------
+	// Events
 
-		var infoTimeout = 0;
+	var infoTimeout = 0;
 
-		var closeInfoBox = function closeInfoBox()
-		{
-			info.removeAttribute('active');
-		};
+	var closeInfoBox = function closeInfoBox() {
+		info.removeAttribute('active');
+	};
 
-		var showInfo = function showInfo(options)
-		{
-			info.textContent = options.message;
-			info.setAttribute('active', '');
-			clearTimeout(infoTimeout);
-			infoTimeout = setTimeout(closeInfoBox, options.timeout ? options.timeout : 1500);
-		};
+	var showInfo = function showInfo(options) {
+		info.textContent = options.message;
+		info.setAttribute('active', '');
+		clearTimeout(infoTimeout);
+		infoTimeout = setTimeout(closeInfoBox, options.timeout ? options.timeout : 1500);
+	};
 
-		WindowEvents.on(document, 'Notification', showInfo);
+	WindowEvents.on(document, 'Notification', showInfo);
 
-		// ------------------------------------------------------------------------
-		// Public data
+	// ------------------------------------------------------------------------
+	// Public data
 
-		this.DOMRoot = panel;
-	}
-
-	// *****************************************************************************
-	// Public API
-
-	exports.NotificationSystem = NotificationSystem;
-});
+	this.DOMRoot = panel;
+}

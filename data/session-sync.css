@@ -662,6 +662,14 @@
 	background-image: url("images/icons/frames.png");
 }
 
+#session-sync .context-menu .button[icon="replace-current"] {
+	background-image: url("images/material_icons/repeat_one.svg");
+}
+
+#session-sync .context-menu .button[icon="replace-all"] {
+	background-image: url("images/material_icons/repeat.svg");
+}
+
 #session-sync .context-menu .button[icon="copy"] {
 	background-image: url("images/icons/clipboard.png");
 }
@@ -1684,8 +1692,8 @@
 #session-sync .header-bar .header-menu {
 	width: 1.8em;
 	height: 1.8em;
-	background-image: url("images/menu.png");
-	background-size: 55%;
+	background-image: url("images/icons_v2/menu.png");
+	background-size: 75% 80%;
 	background-repeat: no-repeat;
 	background-position: center center;
 	border: 1px solid rgba(0, 0, 0, 0);
@@ -1995,12 +2003,13 @@
 	display: none;
 	float: left;
 
-	filter: saturate(100%);
+	opacity: 0.75;
+	/* filter: grayscale(100%); */
 }
 
 #session-sync .session-toolbar .menu-bar .button:hover {
 	cursor: pointer;
-	filter: saturate(100%);
+	opacity: 1;
 	box-shadow: none;
 }
 
@@ -2015,12 +2024,10 @@
 
 #session-sync .session-toolbar .menu-bar .add {
 	background: url("images/icons/star.png") no-repeat center;
-	filter: saturate(100%);
 }
 
 #session-sync .session-toolbar .menu-bar .save {
 	background: url("images/icons/heart.png") no-repeat center;
-	filter: saturate(100%);
 }
 
 #session-sync .session-toolbar .menu-bar .merge-sessions {
@@ -2039,8 +2046,20 @@
 	background: url("images/icons/frames.png") no-repeat center;
 }
 
+#session-sync .session-toolbar .menu-bar .repalce-session-all {
+	background: url("images/material_icons/repeat.svg") no-repeat center;
+}
+
+#session-sync .session-toolbar .menu-bar .repalce-session {
+	background: url("images/material_icons/repeat_one.svg") no-repeat center;
+}
+
 #session-sync .session-toolbar .menu-bar .fix-session {
 	background: url("images/icons/tools.png") no-repeat center;
+}
+
+#session-sync .session-toolbar .menu-bar .customize-toolbar {
+	background: url("images/icons_v2/more.png") no-repeat center;
 }
 
 /*

@@ -15,7 +15,7 @@ function load() {
 	bullets = document.getElementById('bullets');
 	tooltip = document.getElementById('tooltip');
 
-	bullets.addEventListener('mouseleave', function() {
+	bullets.addEventListener('mouseleave', function () {
 		tooltip.removeAttribute('active');
 	});
 
@@ -63,8 +63,7 @@ function updateActiveBullet(node) {
 	}
 }
 
-function setCarouselTo(index)
-{
+function setCarouselTo(index) {
 	if (index < 0 || index > (size - 1)) {
 		return;
 	}
@@ -74,8 +73,7 @@ function setCarouselTo(index)
 	updateActiveBullet(TutorialEntries.getEntryByIndex(index).bullet);
 }
 
-function advanceCarousel(offset)
-{
+function advanceCarousel(offset) {
 	var position = Carousel.getAttribute('advance') | 0;
 	position += offset;
 	if (position < 0 || position > (size - 1) * 100) {
@@ -86,8 +84,7 @@ function advanceCarousel(offset)
 	updateActiveBullet(TutorialEntries.getEntryByIndex(position / 100).bullet);
 }
 
-function initCarousel()
-{
+function initCarousel() {
 	var moveLeft = document.getElementById('scroll-left');
 	var moveRight = document.getElementById('scroll-right');
 
@@ -95,8 +92,7 @@ function initCarousel()
 	moveRight.addEventListener('click', advanceCarousel.bind(null, 100));
 }
 
-function HelpEntry(options)
-{
+function HelpEntry(options) {
 	var box = document.createElement('div');
 	box.className = 'box';
 	box.setAttribute('info', options.key);
@@ -115,7 +111,7 @@ function HelpEntry(options)
 
 	var visual = document.createElement('div');
 	visual.className = 'tutorial-image';
-	visual.style.backgroundImage = 'url("../images/tutorial/' + options.key + '.png")';
+	visual.style.backgroundImage = 'url("/images/tutorial/' + options.key + '.png")';
 
 	box.appendChild(title);
 	box.appendChild(info);
@@ -129,10 +125,10 @@ function HelpEntry(options)
 	bullet.className = 'bullet';
 	bullet.setAttribute('left', options.index);
 	bullet.setAttribute('tooltip', options.title);
-	bullet.addEventListener('click', function() {
+	bullet.addEventListener('click', function () {
 		setCarouselTo(options.index);
 	});
-	bullet.addEventListener('mouseover', function() {
+	bullet.addEventListener('mouseover', function () {
 		var pos = bullet.getBoundingClientRect();
 		tooltip.setAttribute('active', '');
 		tooltip.style.left = pos.x + pos.width / 2 + 'px';
@@ -148,8 +144,7 @@ function HelpEntry(options)
 	this.link = reference;
 }
 
-var TutorialEntries = (function TutorialEntries()
-{
+var TutorialEntries = (function TutorialEntries() {
 	var entries = {};
 	var entryList = [
 		{
@@ -157,7 +152,7 @@ var TutorialEntries = (function TutorialEntries()
 			key: 'overview'
 		},
 		{
-			title : 'Session history',
+			title: 'Session history',
 			key: 'history-list'
 		},
 		{
@@ -205,7 +200,7 @@ var TutorialEntries = (function TutorialEntries()
 			key: 'resize-sessions'
 		},
 		{
-			title : 'Detach mode',
+			title: 'Detach mode',
 			key: 'detach-mode'
 		},
 		{
@@ -214,10 +209,9 @@ var TutorialEntries = (function TutorialEntries()
 		},
 	];
 
-	function init()
-	{
+	function init() {
 		var index = 0;
-		entryList.forEach(function(info) {
+		entryList.forEach(function (info) {
 			info.index = index;
 			var entry = new HelpEntry(info);
 			entries[info.key] = entry;

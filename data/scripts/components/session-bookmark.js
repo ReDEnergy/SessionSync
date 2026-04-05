@@ -1,45 +1,41 @@
-define(function(require, exports) {
+'use strict';
 
-	'use strict';
+// *****************************************************************************
+// Custom Modules
 
-	// *****************************************************************************
-	// Custom Modules
+import { HTMLCreator } from '../utils/dom';
+import { AutoScroll } from '../utils/auto-scroll';
+import { BookmarkManager } from '../session/bookmarks';
 
-	const { HTMLCreator } = require('../utils/dom');
-	const { AutoScroll } = require('../utils/auto-scroll');
+// *****************************************************************************
+// API
 
-	const { BookmarkManager } = require('../session/bookmarks');
+const bookmarkOffset = 2.2; // height + 2 in em
 
-	// *****************************************************************************
-	// API
+function setTabFavicon(faviconNode, faviconURL) {
+	faviconNode.style.background = 'url("' + faviconURL + '")';
+	faviconNode.style.backgroundRepeat = 'no-repeat';
+	faviconNode.style.backgroundPosition = 'center center';
+	faviconNode.style.backgroundSize = 'contain';
+}
 
-	const bookmarkOffset = 2.2; // height + 2 in em
+/*
+* Session Bookmark
+* Used for interacting with a Firefox bookmark item
+*/
 
-	function setTabFavicon(faviconNode, faviconURL)
-	{
-		faviconNode.style.background = 'url("' + faviconURL + '")';
-		faviconNode.style.backgroundRepeat = 'no-repeat';
-		faviconNode.style.backgroundPosition = 'center center';
-		faviconNode.style.backgroundSize = 'contain';
-	}
+export class SessionBookmark {
+	constructor(bookmark) {
+		const DomElem = HTMLCreator();
 
-	/*
-	* Session Bookmark
-	* Used for interacting with a Firefox bookmark item
-	*/
-
-	function SessionBookmark(bookmark)
-	{
-		var DomElem = HTMLCreator();
-
-		var box = DomElem('div', {class : 'bookmark'});
+		const box = DomElem('div', { class: 'bookmark' });
 		box.setAttribute('pinned', bookmark.pinned);
 
-		var favicon = DomElem('div', {class : 'favicon'});
+		const favicon = DomElem('div', { class: 'favicon' });
 		favicon.setAttribute('bookmarkID', bookmark.id);
 		favicon.setAttribute('over', '');
 
-		var title = DomElem('div', {class : 'text'});
+		const title = DomElem('div', { class: 'text' });
 		title.setAttribute('bookmarkID', bookmark.id);
 		title.setAttribute('over', '');
 		title.textContent = bookmark.title;
@@ -47,12 +43,9 @@ define(function(require, exports) {
 		box.appendChild(favicon);
 		box.appendChild(title);
 
-		BookmarkManager.getFaviconUrl(bookmark.url, function (url) {
+		BookmarkManager.getFaviconUrl(bookmark.url, (url) => {
 			setTabFavicon(favicon, url);
 		});
-
-		// ------------------------------------------------------------------------
-		// Public data
 
 		this.bookmark = bookmark;
 		this.DOMtitle = title;
@@ -61,57 +54,52 @@ define(function(require, exports) {
 		this.DOMRoot = box;
 	}
 
-	SessionBookmark.prototype.setTitle = function setTitle(title)
-	{
+	setTitle(title) {
 		this.DOMtitle.textContent = title;
-	};
+	}
 
-	SessionBookmark.prototype.restorePosition = function restorePosition()
-	{
+	restorePosition() {
 		this.DOMRoot.style.left = '0px';
 		this.DOMRoot.style.top = this.position * bookmarkOffset + 'em';
-	};
+	}
 
-	SessionBookmark.prototype.setVirtualPosition = function setVirtualPosition(position)
-	{
+	setVirtualPosition(position) {
 		this.position = position;
-		// this.DOMtitle.textContent = '[' + position + '] ' + this.bookmark.title,
 		this.DOMRoot.style.top = position * bookmarkOffset + 'em';
-	};
+	}
 
-	SessionBookmark.prototype.remove = function remove()
-	{
-		var box = this.DOMRoot;
-		if (box.parentElement)
+	remove() {
+		const box = this.DOMRoot;
+		if (box.parentElement) {
 			box.parentElement.removeChild(box);
-	};
+		}
+	}
 
-	SessionBookmark.prototype.highlight = function highlight()
-	{
+	highlight() {
 		this.DOMRoot.setAttribute('highlight', 'true');
-		setTimeout(function() {
+		setTimeout(() => {
 			this.DOMRoot.removeAttribute('highlight');
-		}.bind(this), 2000);
+		}, 2000);
 
-		var offsetStep = this.DOMRoot.clientHeight;
-		var parentNode = this.DOMRoot.parentElement;
-		var offset = this.DOMRoot.offsetTop - parentNode.clientHeight / 2 + offsetStep;
+		const offsetStep = this.DOMRoot.clientHeight;
+		const parentNode = this.DOMRoot.parentElement;
+		const offset = this.DOMRoot.offsetTop - parentNode.clientHeight / 2 + offsetStep;
 		AutoScroll.scrollTo(parentNode, offset, 0.25);
-	};
+	}
+}
 
-	/*
-	* SessionWindow
-	* Used as separator for different windows
-	*/
+/*
+* SessionWindow
+* Used as separator for different windows
+*/
+export class SessionWindow {
+	constructor(windowID, windowIndex, index) {
+		const DomElem = HTMLCreator();
 
-	function SessionWindow(windowID, windowIndex, index)
-	{
-		var DomElem = HTMLCreator();
-
-		var box = DomElem('div', {class : 'window-separator'});
+		const box = DomElem('div', { class: 'window-separator' });
 		box.style.top = index * bookmarkOffset + 'em';
 
-		var text = DomElem('div', {class : 'text'});
+		const text = DomElem('div', { class: 'text' });
 		text.textContent = 'Window ' + (windowIndex + 1);
 		text.setAttribute('windowID', windowID);
 
@@ -119,28 +107,28 @@ define(function(require, exports) {
 
 		this.DOMRoot = box;
 	}
+}
 
-	/*
-	* SessionTab
-	* Used for displaying tabs from the current window
-	*/
+/*
+* SessionTab
+* Used for displaying tabs from the current window
+*/
+export class SessionTab {
+	constructor(tab, indexOffset) {
+		const DomElem = HTMLCreator();
 
-	function SessionTab(tab, indexOffset)
-	{
-		var DomElem = HTMLCreator();
-
-		var box = DomElem('div', {class : 'bookmark'});
+		const box = DomElem('div', { class: 'bookmark' });
 		box.style.top = (tab.index + indexOffset) * bookmarkOffset + 'em';
 		box.setAttribute('pinned', tab.pinned);
 		box.setAttribute('url', tab.url);
 
-		var favicon = DomElem('div', {class : 'favicon'});
+		const favicon = DomElem('div', { class: 'favicon' });
 		favicon.setAttribute('tabID', tab.id);
 		favicon.setAttribute('windowID', tab.windowId);
 		favicon.setAttribute('url', tab.url);
 		favicon.setAttribute('over', '');
 
-		var text = DomElem('div', {class : 'text'});
+		const text = DomElem('div', { class: 'text' });
 		text.setAttribute('tabID', tab.id);
 		text.setAttribute('windowID', tab.windowId);
 		text.setAttribute('url', tab.url);
@@ -159,26 +147,25 @@ define(function(require, exports) {
 		this.DOMRoot = box;
 	}
 
-	SessionTab.prototype.restorePosition = function restorePosition()
-	{
+	restorePosition() {
 		this.DOMRoot.style.left = '0px';
 		this.DOMRoot.style.top = this.position * bookmarkOffset + 'em';
-	};
+	}
+}
 
-	/*
-	* SessionSeparator
-	* Used as separator for different windows
-	*/
+/*
+* HistoryWindow
+* Used as separator for different windows
+*/
+export class HistoryWindow {
+	constructor(sessionWindowInfo, windowID, index) {
+		const DomElem = HTMLCreator();
 
-	function HistoryWindow(sessionWindowInfo, windowID, index)
-	{
-		var DomElem = HTMLCreator();
-
-		var box = DomElem('div', {class : 'history-window-separator'});
+		const box = DomElem('div', { class: 'history-window-separator' });
 		box.style.top = index * bookmarkOffset + 'em';
 		box.setAttribute('windowID', windowID);
 
-		var text = DomElem('div', {class : 'text'});
+		const text = DomElem('div', { class: 'text' });
 		text.setAttribute('windowID', windowID);
 		text.textContent = 'Window ' + windowID;
 
@@ -190,31 +177,31 @@ define(function(require, exports) {
 
 		this.DOMRoot = box;
 	}
+}
 
-	/*
-	* HistoryTab
-	* Used for displaying tabs from the history windows
-	*/
+/*
+* HistoryTab
+* Used for displaying tabs from the history windows
+*/
+export class HistoryTab {
+	constructor(tab, indexOffset) {
+		const DomElem = HTMLCreator();
 
-	function HistoryTab(tab, indexOffset)
-	{
-		var DomElem = HTMLCreator();
-
-		var box = DomElem('div', {class : 'bookmark'});
+		const box = DomElem('div', { class: 'bookmark' });
 		box.style.top = (tab.index + indexOffset) * bookmarkOffset + 'em';
 		box.setAttribute('url', tab.url);
 		box.setAttribute('pinned', tab.pinned);
 
-		var favicon = DomElem('div', {class : 'favicon'});
+		const favicon = DomElem('div', { class: 'favicon' });
 		favicon.setAttribute('url', tab.url);
 		favicon.setAttribute('over', '');
 
-		var text = DomElem('div', {class : 'text'});
+		const text = DomElem('div', { class: 'text' });
 		text.setAttribute('url', tab.url);
 		text.setAttribute('over', '');
 		text.textContent = tab.title;
 
-		if (tab.favIconUrl)	{
+		if (tab.favIconUrl) {
 			setTabFavicon(favicon, tab.favIconUrl);
 		}
 
@@ -223,40 +210,4 @@ define(function(require, exports) {
 
 		this.DOMRoot = box;
 	}
-
-	// var SortMethods = {
-
-	// 	'name-asc' : function sortByNameAscending(a, b) {
-	// 		return a.title_lowercase > b.title_lowercase;
-	// 	},
-
-	// 	'name-desc' : function sortByNameDescending(a, b) {
-	// 		return a.title_lowercase < b.title_lowercase;
-	// 	},
-
-	// 	'position-asc' : function sortByPositionAscending(a, b) {
-	// 		return a.index > b.index;
-	// 	},
-
-	// 	'position-desc' : function sortByPositionDescending(a, b) {
-	// 		return a.index < b.index;
-	// 	},
-
-	// 	'date-asc' : function sortByDateAscending(a, b) {
-	// 		return a.date > b.date;
-	// 	},
-
-	// 	'date-desc' : function sortByDateDescending(a, b) {
-	// 		return a.date < b.date;
-	// 	}
-	// };
-
-	// *****************************************************************************
-	// Public API
-
-	exports.SessionBookmark = SessionBookmark;
-	exports.SessionTab = SessionTab;
-	exports.SessionWindow = SessionWindow;
-	exports.HistoryWindow = HistoryWindow;
-	exports.HistoryTab = HistoryTab;
-});
+}
