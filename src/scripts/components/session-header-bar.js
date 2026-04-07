@@ -291,39 +291,6 @@ var CreateHeaderMenu = function CreateHeaderMenu()
 		initDevMode();
 	}
 
-	var Troubleshooting = (function Troubleshooting()
-	{
-		var isInit = false;
-
-		var fixLazySession = MenuButton({
-			title: 'Fix session',
-			icon: 'icons/tools.png',
-			callback: function() {
-				if (typeof document !== 'undefined') {
-					WindowEvents.emit(document, 'MenuFixLazySession');
-				}
-			}
-		});
-
-		function init()
-		{
-			if (isInit == true)
-			{
-				return;
-			}
-
-			isInit = true;
-			var devRow = DomElem('div', {class: 'menu-row'});
-			devRow.appendChild(fixLazySession);
-			menuArea.appendChild(devRow);
-		}
-
-		return {
-			init: init
-		};
-
-	})();
-
 	// ------------------------------------------------------------------------
 	// Events
 
@@ -361,12 +328,6 @@ var CreateHeaderMenu = function CreateHeaderMenu()
 			closeMenu();
 		});
 	}
-
-	AppConfig.onChange('troubleshooting', function(value) {
-		if (value == true) {
-			Troubleshooting.init();
-		}
-	});
 
 	// ------------------------------------------------------------------------
 	// Public

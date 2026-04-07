@@ -31,50 +31,48 @@ BrowserSession.prototype.update = function update() {
 	browser.windows.getAll({
 		populate: true,
 		windowTypes: ['normal']
-	})
-		.then(function (mozWindows) {
-			var tabCount = 0;
+	}).then(function (mozWindows) {
+		var tabCount = 0;
 
-			for (var key in this.windows) {
-				this.windows[key].active = false;
+		for (var key in this.windows) {
+			this.windows[key].active = false;
+		}
+
+		for (let mozWindow of mozWindows) {
+			if (mozWindow.incognito && (this.config && this.config.savePrivate == false)) {
+				delete this.windows[mozWindow.id];
+				continue;
 			}
 
-			for (let mozWindow of mozWindows) {
-				if (mozWindow.incognito && (this.config && this.config.savePrivate == false)) {
-					delete this.windows[mozWindow.id];
-					continue;
-				}
+			var windowInfo = new WindowSession(mozWindow.id);
 
-				var windowInfo = new WindowSession(mozWindow.id);
-
-				// Add window tabs
-				for (var i in mozWindow.tabs) {
-					var tab = mozWindow.tabs[i];
-					var info = SessionManagement.getTabInfo(tab.url);
-					var sessionTab = {
-						title: tab.title,
-						url: info.url,
-						favIconUrl: info.lazyLoading ? info.favIconUrl : tab.favIconUrl,
-						pinned: tab.pinned,
-						cookieStoreId: tab.cookieStoreId,
-					};
-					tabCount++;
-					windowInfo.tabs[tab.index] = sessionTab;
-				}
-
-				this.windows[mozWindow.id] = windowInfo;
+			// Add window tabs
+			for (var i in mozWindow.tabs) {
+				var tab = mozWindow.tabs[i];
+				var sessionTab = {
+					title: tab.title,
+					url: tab.url,
+					favIconUrl: tab.favIconUrl,
+					pinned: tab.pinned,
+					cookieStoreId: tab.cookieStoreId,
+				};
+				tabCount++;
+				windowInfo.tabs[tab.index] = sessionTab;
 			}
 
-			// Update internal storage
-			this.lastSave = (new Date()).getTime();
-			this.tabCount = tabCount;
+			this.windows[mozWindow.id] = windowInfo;
+		}
 
-			// Save new session
-			if (browser.storage && browser.storage.local) {
-				browser.storage.local.set({ [storageKey.active]: this });
-			}
+		// Update internal storage
+		this.lastSave = (new Date()).getTime();
+		this.tabCount = tabCount;
 
-		}.bind(this));
+		// Save new session
+		if (browser.storage && browser.storage.local) {
+			browser.storage.local.set({ [storageKey.active]: this });
+		}
+
+	}.bind(this));
 };
 
 BrowserSession.prototype.clear = function clear() {

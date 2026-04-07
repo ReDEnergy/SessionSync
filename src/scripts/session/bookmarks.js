@@ -10,19 +10,7 @@ import { AppConfig } from '../config';
 
 export const BookmarkManager = (function BookmarkManager() {
 
-	var lazyLoadingUrl = browser.runtime.getURL('public/lazy/lazy.html');
-
-	function getLazyLoadingParameters(url) {
-		let paramater = {};
-		let splits = url.split('?');
-		if (splits.length < 2) return paramater;
-		let query = splits[1];
-		let params = query.split('&');
-		for (let p of params) {
-			paramater[p.split('=')[0]] = decodeURIComponent(p.split('=')[1]);
-		}
-		return paramater;
-	}
+	const containerTag = 'container';
 
 	var getHostName = function getHostName(url) {
 		try {
@@ -67,13 +55,7 @@ export const BookmarkManager = (function BookmarkManager() {
 
 	var createBookmarkFromTab = function createBookmarkFromTab(tab, parentId) {
 		var url = tab.url;
-		if (url.startsWith(lazyLoadingUrl, 0)) {
-			var info = getLazyLoadingParameters(url);
-			url = info.url;
-		}
-		else {
-			browser.runtime.sendMessage({ event: 'save-favicon', tab: tab });
-		}
+		browser.runtime.sendMessage({ event: 'save-favicon', tab: tab });
 
 		var title = tab.title;
 		if (tab.cookieStoreId && tab.cookieStoreId !== containerSuffix.default) {

@@ -4,31 +4,15 @@ import { FaviconService } from './favicon-service';
 
 export const SessionManagement = (function SessionManagement() {
 	var lazyLoadingKey = 'restore.lazy.loading';
-	var lazyLoadingUrl = typeof browser !== 'undefined' && browser.runtime ? browser.runtime.getURL('public/lazy/lazy.html') : '';
 	var lazyLoading = false;
 	var windowsTabsToKill = [];
 
 	var reverseOrderKey = 'restore.reverse.order';
 	var reverseOrder = false;
 
-	function getLazyLoadingParameters(url) {
-		let paramater = {};
-		let params = url.split('?');
-		if (params.length > 1) {
-			let paras = params[1].split('&');
-			for (let p of paras) {
-				paramater[p.split('=')[0]] = decodeURIComponent(p.split('=')[1]);
-			}
-		}
-		return paramater;
-	}
+	const containerTag = 'container';
 
 	function getTabInfo(url) {
-		if (lazyLoadingUrl && url.startsWith(lazyLoadingUrl)) {
-			var info = getLazyLoadingParameters(url);
-			info.lazyLoading = true;
-			return info;
-		}
 		return {
 			url: url
 		};
@@ -36,7 +20,7 @@ export const SessionManagement = (function SessionManagement() {
 
 	// Container suffix helpers — canonical source: data/scripts/session/bookmarks.js
 	var containerSuffix = {
-		regex: /^(.*) \[container:([^\]]+)\]$/,
+		regex: new RegExp('^(.*) \\[' + containerTag + ':([^\\]]+)\\]$'),
 	};
 
 	// Parse a [container:<id>] suffix from a bookmark title.
@@ -49,19 +33,19 @@ export const SessionManagement = (function SessionManagement() {
 		return { title: rawTitle, cookieStoreId: null };
 	}
 
-	// Create a tab with a cookieStoreId; silently falls back to default container
-	// if the container doesn't exist or the API rejects it.
-	// onError is called only if creation fails even without a container.
-	function createTabWithContainer(options, cookieStoreId, onSuccess, onError) {
+	function createTab(options, info, onSuccess, onError) {
 		if (typeof browser === 'undefined' || !browser.tabs) return;
 
 		var tryCreate = function (withContainer) {
 			var tabOptions = Object.assign({}, options);
-			if (withContainer && cookieStoreId) {
-				tabOptions.cookieStoreId = cookieStoreId;
+			if (withContainer && info.container) {
+				tabOptions.cookieStoreId = info.container;
 			}
 			return browser.tabs.create(tabOptions).then(
 				function (tabInfo) {
+					if (info.discard) {
+						browser.tabs.discard(tabInfo.id);
+					}
 					if (onSuccess) onSuccess(tabInfo);
 				},
 				function (err) {
@@ -70,26 +54,17 @@ export const SessionManagement = (function SessionManagement() {
 						tryCreate(false);
 					} else {
 						if (onError) onError(err);
-						else console.log('createTabWithContainer error:', err);
+						else console.log('createTab error:', err);
 					}
 				}
 			);
 		};
-		tryCreate(cookieStoreId != null);
+		tryCreate(info.container != null);
 	}
 
 	var setLazyLoading = function setLazyLoading(state) {
 		if (typeof browser === 'undefined' || !browser.tabs) return;
-
 		lazyLoading = state;
-		try {
-			browser.tabs.onActivated.removeListener(onLazyTabActivated);
-			if (state) {
-				browser.tabs.onActivated.addListener(onLazyTabActivated);
-			}
-		} catch (err) {
-			console.warn('browser.tabs.onActivated listener update failed', err);
-		}
 	};
 
 	var initConfig = function initConfig() {
@@ -118,7 +93,7 @@ export const SessionManagement = (function SessionManagement() {
 
 		switch (mode) {
 			case 'newTab': {
-				createTabWithContainer(options, cookieStoreId, checkFavicon);
+				createTab(options, { container: cookieStoreId }, checkFavicon);
 				break;
 			}
 
@@ -143,55 +118,6 @@ export const SessionManagement = (function SessionManagement() {
 
 			default:
 				break;
-		}
-	};
-
-	var createLazyTab = function createLazyTab(bookmark) {
-		if (typeof browser === 'undefined' || !browser.runtime) return;
-
-		let title = browser.runtime.getURL('public/lazy/lazy.html') +
-			'?state=redirect' +
-			'&title=' + encodeURIComponent(bookmark.title) +
-			'&url=' + encodeURIComponent(bookmark.url);
-
-		if (bookmark.favIconUrl) {
-			title += '&favIconUrl=' + encodeURIComponent(bookmark.favIconUrl);
-		}
-
-		var tabOptions = {
-			url: title,
-			active: false,
-			pinned: bookmark.pinned,
-			windowId: bookmark.windowID,
-		};
-
-		createTabWithContainer(tabOptions, bookmark.cookieStoreId,
-			function success() { },
-			function error() {
-				browser.tabs.create(tabOptions)
-					.then(function (tab) {
-						browser.tabs.update(tab.id, {
-							title: bookmark.title,
-						});
-					});
-			}
-		);
-	};
-
-	var openLazyTab = function openLazyTab(bookmark) {
-		// Extract container info encoded in the title
-		var parsed = parseContainerFromTitle(bookmark.title);
-		bookmark.title = parsed.title;
-		bookmark.cookieStoreId = parsed.cookieStoreId;
-
-		if (bookmark.favIconUrl) {
-			createLazyTab(bookmark);
-		}
-		else {
-			FaviconService.getFaviconUrl(bookmark.url, function (favIconUrl) {
-				bookmark.favIconUrl = favIconUrl;
-				createLazyTab(bookmark);
-			});
 		}
 	};
 
@@ -235,18 +161,18 @@ export const SessionManagement = (function SessionManagement() {
 				else {
 					checkReverseOrder(bookmarks);
 					bookmarks.forEach(function (bookmark) {
-
-						if (lazyLoading) {
-							openLazyTab(bookmark);
-						}
-						else {
-							var parsed = parseContainerFromTitle(bookmark.title);
-							createTabWithContainer(
-								{ url: bookmark.url, active: false },
-								parsed.cookieStoreId,
-								function (tabInfo) { FaviconService.checkTabFaviconSaved(tabInfo); }
-							);
-						}
+						const parsed = parseContainerFromTitle(bookmark.title);
+						createTab(
+							{
+								url: bookmark.url,
+								active: false,
+								discard: lazyLoading,
+							},
+							{
+								container: parsed.cookieStoreId
+							},
+							function (tabInfo) { FaviconService.checkTabFaviconSaved(tabInfo); }
+						);
 					});
 				}
 			},
@@ -268,18 +194,19 @@ export const SessionManagement = (function SessionManagement() {
 
 						checkReverseOrder(bookmarks);
 						bookmarks.forEach(function (bookmark) {
-							if (lazyLoading) {
-								bookmark.windowID = windowID;
-								openLazyTab(bookmark);
-							}
-							else {
-								var parsed = parseContainerFromTitle(bookmark.title);
-								createTabWithContainer(
-									{ url: bookmark.url, pinned: bookmark.pinned, windowId: windowID },
-									parsed.cookieStoreId,
-									function (tabInfo) { FaviconService.checkTabFaviconSaved(tabInfo); }
-								);
-							}
+							const parsed = parseContainerFromTitle(bookmark.title);
+							createTab(
+								{
+									url: bookmark.url,
+									pinned: bookmark.pinned,
+									windowId: windowID,
+								},
+								{
+									discard: lazyLoading,
+									container: parsed.cookieStoreId
+								},
+								function (tabInfo) { FaviconService.checkTabFaviconSaved(tabInfo); }
+							);
 						});
 					});
 			}
@@ -296,56 +223,8 @@ export const SessionManagement = (function SessionManagement() {
 		});
 	};
 
-	var restoreLazyTab = function restoreLazyTab(tab, url) {
-		if (typeof browser === 'undefined' || !browser.tabs) return;
-
-		let redirectInfo = getLazyLoadingParameters(url ? url : tab.url);
-		if (redirectInfo.state == 'redirect') {
-			browser.tabs.update(tab.id, {
-				url: redirectInfo.url
-			})
-				.then(function (tabInfo) {
-					tabInfo.url = redirectInfo.url;
-					FaviconService.checkTabFaviconSaved(tabInfo);
-				});
-		}
-	};
-
 	// ************************************************************************
 	// Events
-
-	var onLazyTabActivated = function onLazyTabActivated(tab) {
-		if (lazyLoading && typeof browser !== 'undefined' && browser.tabs) {
-			browser.tabs.get(tab.tabId).then(function (activeTab) {
-				if (activeTab.url.startsWith('moz-extension')) {
-					restoreLazyTab(activeTab);
-				}
-				else if (activeTab.status == 'loading') {
-					restoreLazyTab(activeTab, activeTab.title);
-				}
-			});
-		}
-	};
-
-	var fixLazySession = function fixLazySession(folderID) {
-		if (typeof browser === 'undefined' || !browser.bookmarks) return;
-
-		var result = browser.bookmarks.getChildren(folderID);
-		result.then(function (bookmarks) {
-			bookmarks.forEach(function (bookmark) {
-				if (bookmark.url.startsWith('moz-extension')) {
-					let redirectInfo = getLazyLoadingParameters(bookmark.url);
-					if (redirectInfo.url != undefined) {
-						browser.bookmarks.update(bookmark.id, {
-							url: redirectInfo.url
-						});
-					}
-				}
-			});
-		}, function fail() {
-			console.log('Error getting bookmarks from folder ID: ', folderID);
-		});
-	};
 
 	function init() {
 		if (typeof browser === 'undefined') return;
@@ -369,11 +248,6 @@ export const SessionManagement = (function SessionManagement() {
 						case 'open-tab':
 							openTab(message.options);
 							break;
-
-						case 'fix-lazy-session':
-							fixLazySession(message.bookmarkID);
-							break;
-
 					}
 				});
 			}
@@ -402,8 +276,7 @@ export const SessionManagement = (function SessionManagement() {
 					var killTabID = windowsTabsToKill[tab.windowId];
 					if (killTabID != undefined && killTabID != tab.id) {
 						browser.tabs.remove(killTabID);
-						windowsTabsToKill[tab.windowId] = undefined;
-						restoreLazyTab(tab, tab.title);
+						delete windowsTabsToKill[tab.windowId];
 					}
 				});
 			}

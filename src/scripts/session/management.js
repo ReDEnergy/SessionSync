@@ -404,7 +404,6 @@ export const SessionManager = (function SessionManager() {
 		replaceSession: replaceSession,
 		restoreAdvanced: restoreAdvanced,
 		replaceSessionAll: replaceSessionAll,
-		fixLazySession: fixLazySession,
 		restoreNewWindow: restoreNewWindow,
 		loadBookmarksNewWindow: loadBookmarksNewWindow,
 		mergeSessions: mergeSessions,
