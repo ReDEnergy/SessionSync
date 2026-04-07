@@ -8,7 +8,7 @@ import { AppConfig } from '../config';
 
 // Utils
 import { HTMLCreator } from '../utils/dom';
-import { WindowEvents, GlobalEvents } from '../utils/global-events';
+import { WindowEvents } from '../utils/global-events';
 import * as DOMComponent from '../utils/components';
 
 // *****************************************************************************
@@ -60,8 +60,9 @@ export function SessionToolbar() {
 	// Events
 
 	if (typeof document !== 'undefined') {
-		WindowEvents.on(document, 'SetSessionDate', function (date) {
-			sessionDate.textContent = (new Date(date)).toLocaleString();
+		WindowEvents.on(document, 'SetSessionInfo', function (sessionInfo) {
+			sessionDate.textContent = (new Date(sessionInfo.dateAdded)).toLocaleString();
+			toolbar.setAttribute('session-type', sessionInfo.type);
 		});
 	}
 
@@ -234,8 +235,8 @@ SessionToolbar.prototype.createMenu = function createMenu() {
 
 	menu.appendChild(restore);
 	menu.appendChild(restoreW);
-	// menu.appendChild(replaceSession);
-	// menu.appendChild(replaceSessionAll);
+	menu.appendChild(replaceSession);
+	menu.appendChild(replaceSessionAll);
 	menu.appendChild(separator1);
 	menu.appendChild(mergeSession);
 	menu.appendChild(overwriteSession);
@@ -254,7 +255,7 @@ SessionToolbar.prototype.createMenu = function createMenu() {
 		}
 	});
 
-	menu.appendChild(customizeToolbar);
+	// menu.appendChild(customizeToolbar);
 
 	// ------------------------------------------------------------------------
 	// Events

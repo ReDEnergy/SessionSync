@@ -15,25 +15,23 @@ export const SessionManager = (function SessionManager() {
 
 	var trackTabs = true;
 
-	var getCurrentTab = function getCurrentTab(callback)
-	{
-		browser.tabs.query({active: true, windowId: browser.windows.WINDOW_ID_CURRENT})
-		.then(function(tabs) {
-			callback(tabs[0]);
-		});
+	var getCurrentTab = function getCurrentTab(callback) {
+		browser.tabs.query({ active: true, windowId: browser.windows.WINDOW_ID_CURRENT })
+			.then(function (tabs) {
+				callback(tabs[0]);
+			});
 	};
 
-	var getWindowTab = function getWindowTab(tabIndex, windowId, callback)
-	{
-		browser.tabs.query({index: tabIndex, windowId: windowId})
-		.then(function(tabs) {
-			callback(tabs[0]);
-		});
+	var getWindowTab = function getWindowTab(tabIndex, windowId, callback) {
+		browser.tabs.query({ index: tabIndex, windowId: windowId })
+			.then(function (tabs) {
+				callback(tabs[0]);
+			});
 	};
 
 	var getCurrentWindow = function getCurrentWindow(callback) {
 		browser.windows.getCurrent({ populate: true })
-		.then(callback);
+			.then(callback);
 	};
 
 	var getAllWindows = function getAllWindows(callback) {
@@ -41,21 +39,19 @@ export const SessionManager = (function SessionManager() {
 			populate: true,
 			windowTypes: ['normal']
 		})
-		.then(callback);
+			.then(callback);
 	};
 
-	var tabTracking = function tabTracking()
-	{
+	var tabTracking = function tabTracking() {
 		return trackTabs;
 	};
 
-	var moveTab = function moveTab(tabID, newIndex, windowID)
-	{
+	var moveTab = function moveTab(tabID, newIndex, windowID) {
 		trackTabs = false;
 		browser.tabs.move([tabID], {
 			index: newIndex,
 			windowId: windowID
-		}).then(function() {
+		}).then(function () {
 			GlobalEvents.emit('UpdateCurrentSession');
 			trackTabs = true;
 		}, function onError() {
@@ -63,34 +59,29 @@ export const SessionManager = (function SessionManager() {
 		});
 	};
 
-	var activateTab = function activateTab(tabID)
-	{
+	var activateTab = function activateTab(tabID) {
 		browser.tabs.update(tabID, {
 			active: true
 		});
 	};
 
-	var closeTab = function closeTab(tabID)
-	{
+	var closeTab = function closeTab(tabID) {
 		browser.tabs.remove(tabID);
 	};
 
-	var activateWindow = function activateWindow(windowID)
-	{
+	var activateWindow = function activateWindow(windowID) {
 		browser.windows.update(windowID, {
 			focused: true
 		});
 	};
 
-	var saveActiveSession = function saveActiveSession()
-	{
-		getCurrentWindow(function(mozWindow) {
+	var saveActiveSession = function saveActiveSession() {
+		getCurrentWindow(function (mozWindow) {
 
 			var sessionID = 0;
 			var sessionCount = 0;
 
-			function updateOnSave()
-			{
+			function updateOnSave() {
 				WindowEvents.emit(document, 'SetPromiseSession', {
 					update: true,
 					sessionID: sessionID,
@@ -99,8 +90,7 @@ export const SessionManager = (function SessionManager() {
 			}
 
 			// Get non-private windows
-			if (mozWindow.incognito == true || AppConfig.get('session.save').allWindows == false)
-			{
+			if (mozWindow.incognito == true || AppConfig.get('session.save').allWindows == false) {
 				var sessionTitle = (new Date()).toLocaleString();
 				saveWindowSession({
 					title: sessionTitle,
@@ -111,10 +101,9 @@ export const SessionManager = (function SessionManager() {
 					updateOnSave();
 				});
 			}
-			else
-			{
+			else {
 				// Get all non private windows
-				getAllWindows(function(windows) {
+				getAllWindows(function (windows) {
 					// Save windows as separate sessions
 					var date = new Date();
 
@@ -128,14 +117,13 @@ export const SessionManager = (function SessionManager() {
 					var updateEvent = new LimitCounter(sessionCount, updateOnSave);
 
 					windows.forEach(function (mozWindow) {
-						if (mozWindow.incognito == false)
-						{
+						if (mozWindow.incognito == false) {
 							windowID++;
 							let sessionTitle = date.toLocaleString() + ((sessionCount > 1) ? (' #' + windowID) : '');
 							saveWindowSession({
 								title: sessionTitle,
 								tabs: mozWindow.tabs,
-							}, function(folder) {
+							}, function (folder) {
 								sessionID = folder.id;
 								updateEvent.advance();
 							});
@@ -146,8 +134,7 @@ export const SessionManager = (function SessionManager() {
 		});
 	};
 
-	var mergeSessions = function mergeSessions(sessionID)
-	{
+	var mergeSessions = function mergeSessions(sessionID) {
 		// Exclude all pages that are already saved
 		getCurrentWindow(function (mozWindow) {
 
@@ -159,7 +146,7 @@ export const SessionManager = (function SessionManager() {
 			});
 
 			// Exclude all pages that are already saved
-			BookmarkManager.getFolderBookmarks(sessionID, function(bookmarks) {
+			BookmarkManager.getFolderBookmarks(sessionID, function (bookmarks) {
 				bookmarks.forEach(function (bookmark) {
 					delete toSave[bookmark.url];
 				});
@@ -170,27 +157,24 @@ export const SessionManager = (function SessionManager() {
 
 				// TODO - reverse saving order
 				var savingList = [];
-				for (let key in toSave)
-				{
+				for (let key in toSave) {
 					let tab = toSave[key];
 					savingList.push(tab);
 				}
 
-				for (let i = savingList.length - 1; i >= 0; i--)
-				{
+				for (let i = savingList.length - 1; i >= 0; i--) {
 					var tab = savingList[i];
 					BookmarkManager.createBookmarkFromTab(tab, sessionID)
-					.then(updateEvent.advance, updateEvent.advance);
+						.then(updateEvent.advance, updateEvent.advance);
 				}
 			});
 		});
 	};
 
-	var overwriteSession = function overwriteSession(sessionID)
-	{
+	var overwriteSession = function overwriteSession(sessionID) {
 		var toRemove = [];
 
-		BookmarkManager.getFolderBookmarks(sessionID, function(bookmarks) {
+		BookmarkManager.getFolderBookmarks(sessionID, function (bookmarks) {
 
 			// Remove all bookmarks from the current session
 			bookmarks.forEach(function (bookmark) {
@@ -198,7 +182,7 @@ export const SessionManager = (function SessionManager() {
 			});
 
 			SessionSyncModel.deleteBookmarkList(toRemove, sessionID, function () {
-				getCurrentWindow(function(mozWindow) {
+				getCurrentWindow(function (mozWindow) {
 
 					var updateFinish = new LimitCounter(mozWindow.tabs.length, function () {
 						WindowEvents.emit(document, 'ViewSession', sessionID);
@@ -206,19 +190,17 @@ export const SessionManager = (function SessionManager() {
 
 					// TODO - add option to discard duplicate tabs and or pinned tabs
 
-					for (let i = mozWindow.tabs.length - 1; i >= 0; i--)
-					{
+					for (let i = mozWindow.tabs.length - 1; i >= 0; i--) {
 						var tab = mozWindow.tabs[i];
 						BookmarkManager.createBookmarkFromTab(tab, sessionID)
-						.then(updateFinish.advance, updateFinish.advance);
+							.then(updateFinish.advance, updateFinish.advance);
 					}
 				});
 			});
 		});
 	};
 
-	var saveHistorySession = function saveHistorySession(sessionInfo)
-	{
+	var saveHistorySession = function saveHistorySession(sessionInfo) {
 		var windowCount = sessionInfo.windows.length;
 
 		var windowID = 0;
@@ -232,8 +214,7 @@ export const SessionManager = (function SessionManager() {
 		}
 
 		// save all history windows
-		for (var key in sessionInfo.windows)
-		{
+		for (var key in sessionInfo.windows) {
 			var date = new Date(sessionInfo.lastSave);
 			var sessionTitle = date.toLocaleString() + ((windowCount > 1) ? (' #' + windowID) : '');
 			windowID++;
@@ -245,59 +226,51 @@ export const SessionManager = (function SessionManager() {
 		}
 	};
 
-	var saveWindowSession = function saveWindowSession(sessionInfo, callback)
-	{
+	var saveWindowSession = function saveWindowSession(sessionInfo, callback) {
 		BookmarkManager.createBookmark({
 			title: sessionInfo.title,
 			parentId: AppConfig.get('storageID')
 		})
-		.then(function (folder) {
+			.then(function (folder) {
 
-			var trackSaving = new LimitCounter(sessionInfo.tabs.length, function () {
-				callback(folder);
+				var trackSaving = new LimitCounter(sessionInfo.tabs.length, function () {
+					callback(folder);
+				});
+
+				// TODO - add option to discard duplicate tabs
+
+				var savePinned = AppConfig.get('session.save').pinned;
+
+				for (let i = sessionInfo.tabs.length - 1; i >= 0; i--) {
+					let tab = sessionInfo.tabs[i];
+					if (tab.pinned && savePinned == false) {
+						trackSaving.offsetLimit(-1);
+					}
+					else {
+						BookmarkManager.createBookmarkFromTab(tab, folder.id)
+							.then(trackSaving.advance, trackSaving.advance);
+					}
+				}
 			});
-
-			// TODO - add option to discard duplicate tabs
-
-			var savePinned = AppConfig.get('session.save').pinned;
-
-			for (let i = sessionInfo.tabs.length - 1; i >= 0; i--)
-			{
-				let tab = sessionInfo.tabs[i];
-				if (tab.pinned && savePinned == false)
-				{
-					trackSaving.offsetLimit(-1);
-				}
-				else
-				{
-					BookmarkManager.createBookmarkFromTab(tab, folder.id)
-					.then(trackSaving.advance, trackSaving.advance);
-				}
-			}
-		});
 	};
 
-	var restoreSession = function restoreSession(folderID)
-	{
-		browser.runtime.sendMessage({event: 'restore-session', bookmarkID: folderID});
+	var restoreSession = function restoreSession(folderID) {
+		browser.runtime.sendMessage({ event: 'restore-session', bookmarkID: folderID });
 	};
 
-	var restoreNewWindow = function restoreNewWindow(folderID)
-	{
+	var restoreNewWindow = function restoreNewWindow(folderID) {
 		var options = {
 			newWindow: true
 		};
-		browser.runtime.sendMessage({event: 'restore-session', bookmarkID: folderID, options: options});
+		browser.runtime.sendMessage({ event: 'restore-session', bookmarkID: folderID, options: options });
 	};
 
-	var restoreAdvanced = function restoreAdvanced(folderID, options)
-	{
-		browser.runtime.sendMessage({event: 'restore-session', bookmarkID: folderID, options: options});
+	var restoreAdvanced = function restoreAdvanced(folderID, options) {
+		browser.runtime.sendMessage({ event: 'restore-session', bookmarkID: folderID, options: options });
 	};
 
-	var replaceSession = function replaceSession(folderID)
-	{
-		getCurrentWindow(function(mozWindow) {
+	var replaceSession = function replaceSession(folderID) {
+		getCurrentWindow(function (mozWindow) {
 			var options = {
 				newWindow: true,
 				closeWindow: mozWindow.id,
@@ -306,8 +279,7 @@ export const SessionManager = (function SessionManager() {
 		});
 	};
 
-	var replaceSessionAll = function replaceSessionAll(folderID)
-	{
+	var replaceSessionAll = function replaceSessionAll(folderID) {
 		var options = {
 			newWindow: true,
 			closeAll: true,
@@ -315,78 +287,69 @@ export const SessionManager = (function SessionManager() {
 		restoreAdvanced(folderID, options);
 	};
 
-	var loadBookmarksNewWindow = function loadBookmarksNewWindow(windows)
-	{
-		browser.runtime.sendMessage({event: 'restore-sessions', windows: windows });
-	};
-
-	var fixLazySession = function fixLazySession(folderID)
-	{
-		browser.runtime.sendMessage({event: 'fix-lazy-session', bookmarkID: folderID });
+	var loadBookmarksNewWindow = function loadBookmarksNewWindow(windows) {
+		browser.runtime.sendMessage({ event: 'restore-sessions', windows: windows });
 	};
 
 	var createSeparator = function createSeparator(folderID) {
 		browser.bookmarks.get(folderID)
-		.then(function (marks) {
-			BookmarkManager.createBookmark({
-				index: marks[0].index + 1,
-				type: 'separator',
-				parentId: AppConfig.get('storageID')
-			})
-			.then(function success(separator) {
-				WindowEvents.emit(document, 'SetPromiseSession', { sessionID: separator.id, update: true });
+			.then(function (marks) {
+				BookmarkManager.createBookmark({
+					index: marks[0].index + 1,
+					type: 'separator',
+					parentId: AppConfig.get('storageID')
+				})
+					.then(function success(separator) {
+						WindowEvents.emit(document, 'SetPromiseSession', { sessionID: separator.id, update: true });
+					});
+			}, function onError(msg) {
+				console.log(msg);
 			});
-		}, function onError(msg) {
-			console.log(msg);
-		});
 	};
 
-	var createSession = function createSession(title, index)
-	{
+	var createSession = function createSession(title, index) {
 		BookmarkManager.createBookmark({
 			index: index,
 			title: title,
 			parentId: AppConfig.get('storageID')
 		})
-		.then(function success(session) {
-			WindowEvents.emit(document, 'SetPromiseSession', {
-				sessionID: session.id,
-				edit: true,
-				update: true
+			.then(function success(session) {
+				WindowEvents.emit(document, 'SetPromiseSession', {
+					sessionID: session.id,
+					edit: true,
+					update: true
+				});
+			}, function error() {
 			});
-		}, function error() {
-		});
 	};
 
 	var createNewSession = function createNewSession(folderID) {
 		var sessionTitle = (new Date()).toLocaleString();
-		if (folderID)
-		{
+		if (folderID) {
 			browser.bookmarks.get(folderID)
-			.then(function (marks) {
-				createSession(sessionTitle, marks[0].index + 1);
-			});
+				.then(function (marks) {
+					createSession(sessionTitle, marks[0].index + 1);
+				});
 		}
-		else
-		{
+		else {
 			createSession(sessionTitle);
 		}
 	};
 
 	// Events
-	GlobalEvents.on('CreateNewSession', function(name) {
+	GlobalEvents.on('CreateNewSession', function (name) {
 		var title = name ? name : (new Date()).toLocaleString();
 		createSession(title);
 	});
 
 	// Events
-	GlobalEvents.on('management.close-tab', function(tabID) {
+	GlobalEvents.on('management.close-tab', function (tabID) {
 		trackTabs = false;
 		browser.tabs.remove(tabID)
-		.then(function () {
-			GlobalEvents.emit('UpdateCurrentSession');
-			trackTabs = true;
-		});
+			.then(function () {
+				GlobalEvents.emit('UpdateCurrentSession');
+				trackTabs = true;
+			});
 	});
 
 	// Public API
@@ -414,4 +377,4 @@ export const SessionManager = (function SessionManager() {
 		saveHistorySession: saveHistorySession,
 	};
 
-})();
+})();

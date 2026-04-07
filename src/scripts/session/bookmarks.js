@@ -48,8 +48,8 @@ export const BookmarkManager = (function BookmarkManager() {
 	};
 
 	var containerSuffix = {
-		encode: function (id) { return ' [container:' + id + ']'; },
-		regex: /^(.*) \[container:([^\]]+)\]$/,
+		encode: function (id) { return ` [${containerTag}:${id}]`; },
+		regex: new RegExp('^(.*) \\[' + containerTag + ':([^\\]]+)\\]$'),
 		default: 'firefox-default',
 	};
 

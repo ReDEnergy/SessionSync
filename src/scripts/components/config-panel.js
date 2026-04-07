@@ -157,7 +157,7 @@ export function ConfigPanel() {
 			type: 'switch',
 		});
 
-	})();
+	});
 
 	// ------------------------
 	// Section: General settings
@@ -222,14 +222,6 @@ export function ConfigPanel() {
 			key: 'services.favicon.enabled',
 			type: 'switch',
 		});
-
-		ToggleOptionConfig({
-			parent: section,
-			name: 'Troubleshooting',
-			key: 'troubleshooting',
-			type: 'switch',
-		});
-
 	})();
 
 	// ------------------------

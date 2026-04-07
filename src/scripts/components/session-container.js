@@ -26,33 +26,29 @@ import { SessionHistory } from './session-history';
 * Panel for listing session information (Firefox Bookmark Folder) and children bookmarks
 */
 
-export class SessionContainer
-{
-	constructor()
-	{
+export class SessionContainer {
+	constructor() {
 		var DomElem = HTMLCreator();
 
 		// ------------------------------------------------------------------------
 		// Init UI
 
-		var container = DomElem('div', {class: 'session-container'});
+		var container = DomElem('div', { class: 'session-container' });
 		container.style.fontSize = AppConfig.get('style.scale.bookmarks') + 'px';
 
-		var bookmarks = DomElem('div', {class: 'bookmarks'});
+		var bookmarks = DomElem('div', { class: 'bookmarks' });
 		container.appendChild(bookmarks);
 
 		// ------------------------------------------------------------------------
 		// User events
 
-		function isValidSessionID(ID)
-		{
+		function isValidSessionID(ID) {
 			return (SessionSyncModel.bookmarks[ID] !== undefined &&
-					SessionSyncModel.bookmarks[ID].type === 'folder' &&
-					SessionSyncModel.bookmarks[ID].parentId == AppConfig.get('storageID'));
+				SessionSyncModel.bookmarks[ID].type === 'folder' &&
+				SessionSyncModel.bookmarks[ID].parentId == AppConfig.get('storageID'));
 		}
 
-		function restoreHistoryWindow(sessionInfo)
-		{
+		function restoreHistoryWindow(sessionInfo) {
 			var list = [];
 			sessionInfo.windows.forEach(historyWindow => {
 				list.push(historyWindow.tabs);
@@ -71,8 +67,7 @@ export class SessionContainer
 
 			WindowEvents.on(document, 'HistorySessionRestoreWindow', (windowID) => {
 				if (this.SyncModel.state.session === 'history') {
-					if (this.selectedHistorySession.active == true)
-					{
+					if (this.selectedHistorySession.active == true) {
 						var activeSessionWindows = Object.values(this.selectedHistorySession.windows);
 						if (activeSessionWindows[windowID].active) {
 							SessionManager.activateWindow(activeSessionWindows[windowID].id);
@@ -153,8 +148,7 @@ export class SessionContainer
 					return;
 				}
 
-				switch(this.SyncModel.state.session)
-				{
+				switch (this.SyncModel.state.session) {
 					case 'current':
 						SessionManager.saveActiveSession();
 						break;
@@ -164,12 +158,6 @@ export class SessionContainer
 						break;
 				}
 
-			});
-
-			WindowEvents.on(document, 'MenuFixLazySession', () => {
-				if (isValidSessionID(this.activeSessionID)) {
-					SessionManager.fixLazySession(this.activeSessionID);
-				}
 			});
 
 			WindowEvents.on(document, 'EditSelectedSession', () => {
@@ -183,8 +171,7 @@ export class SessionContainer
 			WindowEvents.on(document, 'ViewSession', this.previewSession.bind(this));
 
 			WindowEvents.on(document, 'SessionDescriptionChanged', (sessionID) => {
-				if (this.activeSessionID == sessionID)
-				{
+				if (this.activeSessionID == sessionID) {
 					this.updateSessionInfo();
 				}
 			});
@@ -196,7 +183,7 @@ export class SessionContainer
 			}
 		});
 
-		AppConfig.onChange('style.scale.bookmarks', function(size) {
+		AppConfig.onChange('style.scale.bookmarks', function (size) {
 			container.style.fontSize = size + 'px';
 		});
 
@@ -211,10 +198,8 @@ export class SessionContainer
 		SessionBookmarkEvents(bookmarks);
 
 		var updateTimeout = null;
-		function updateOnTabEvent()
-		{
-			if (SessionManager.tabTracking())
-			{
+		function updateOnTabEvent() {
+			if (SessionManager.tabTracking()) {
 				if (updateTimeout == null) {
 					updateTimeout = setTimeout(function () {
 						updateTimeout = null;
@@ -241,10 +226,9 @@ export class SessionContainer
 		this.SyncModel = SessionSyncModel.getModel(typeof document !== 'undefined' ? document : null);
 	}
 
-	setUIState(state, headerTitle, sessionID)
-	{
+	setUIState(state, headerTitle, sessionID) {
 		if (typeof document !== 'undefined') {
-			WindowEvents.emit(document, 'SetUIState', {'session': state});
+			WindowEvents.emit(document, 'SetUIState', { 'session': state });
 			WindowEvents.emit(document, 'SetSessionDescription', headerTitle);
 		}
 
@@ -253,25 +237,22 @@ export class SessionContainer
 		this.selectedHistorySession = undefined;
 	}
 
-	updateSessionInfo()
-	{
+	updateSessionInfo() {
 		var session = SessionSyncModel.bookmarks[this.activeSessionID];
 		if (typeof document !== 'undefined') {
 			WindowEvents.emit(document, 'SetSessionDescription', session.title);
-			WindowEvents.emit(document, 'SetSessionDate', session.dateAdded);
+			WindowEvents.emit(document, 'SetSessionInfo', session);
 		}
 	}
 
-	showCurrentSession()
-	{
+	showCurrentSession() {
 		var DOMBookmarks = this.DOMBookmarks;
 		this.setUIState('current', 'Active session', 0);
 
 		SessionManager.getCurrentWindow((mozWindow) => {
 
 			// Get non-private windows
-			if (mozWindow.incognito == true || AppConfig.get('session.save').allWindows == false)
-			{
+			if (mozWindow.incognito == true || AppConfig.get('session.save').allWindows == false) {
 				mozWindow.tabs.forEach((tab) => {
 					let sessionTab = new SessionTab(tab, 0, -1);
 					this.SyncModel.tabs[sessionTab.tab.id] = sessionTab;
@@ -280,17 +261,14 @@ export class SessionContainer
 
 				this.restoreScrollTop('current');
 			}
-			else
-			{
+			else {
 				// Get non-private windows
 				var tabIndex = 0;
 				var windowIndex = 0;	// display index in UI - ignores private windows
 
 				SessionManager.getAllWindows((windows) => {
-					for (let mozWindow of windows)
-					{
-						if (!mozWindow.incognito)
-						{
+					for (let mozWindow of windows) {
+						if (!mozWindow.incognito) {
 							// Add window separator
 							var sessionWindow = new SessionWindow(mozWindow.id, windowIndex, tabIndex);
 							DOMBookmarks.appendChild(sessionWindow.DOMRoot);
@@ -299,8 +277,7 @@ export class SessionContainer
 							var globalOffset = tabIndex;
 
 							// Add window tabs
-							for (let i in mozWindow.tabs)
-							{
+							for (let i in mozWindow.tabs) {
 								let tab = mozWindow.tabs[i];
 								let sessionTab = new SessionTab(tab, globalOffset);
 								this.SyncModel.tabs[sessionTab.tab.id] = sessionTab;
@@ -318,8 +295,7 @@ export class SessionContainer
 		});
 	}
 
-	showHistorySession(sessionInfo)
-	{
+	showHistorySession(sessionInfo) {
 		var newSession = (this.selectedHistorySession != undefined) && (this.selectedHistorySession != sessionInfo);
 
 		this.setUIState('history', (new Date(sessionInfo.lastSave)).toLocaleString(), -1);
@@ -328,8 +304,7 @@ export class SessionContainer
 		var tabIndex = 0;
 		var windowIndex = 0;
 
-		for (let key in sessionInfo.windows)
-		{
+		for (let key in sessionInfo.windows) {
 			// Add window separator
 			var sessionWindow = new HistoryWindow(sessionInfo.windows[key], windowIndex, tabIndex);
 			this.DOMBookmarks.appendChild(sessionWindow.DOMRoot);
@@ -339,8 +314,7 @@ export class SessionContainer
 
 			// Add window tabs
 			var windowTabs = sessionInfo.windows[key].tabs;
-			for (var i in windowTabs)
-			{
+			for (var i in windowTabs) {
 				var tab = windowTabs[i];
 				tab.index = i | 0;
 				var sessionTab = new HistoryTab(tab, globalOffset);
@@ -354,20 +328,18 @@ export class SessionContainer
 		this.restoreScrollTop('history', newSession ? 0 : undefined);
 	}
 
-	previewSession(sessionID)
-	{
+	previewSession(sessionID) {
 		var session = SessionSyncModel.bookmarks[sessionID];
 		this.setUIState('restore', '', sessionID);
 
 		BookmarkManager.getFolderBookmarks(session.id, (marks) => {
 
 			if (typeof document !== 'undefined') {
-				WindowEvents.emit(document, 'SetPromiseSession', { sessionID: session.id, update: false } );
+				WindowEvents.emit(document, 'SetPromiseSession', { sessionID: session.id, update: false });
 			}
 
 			var len = marks.length;
-			for (var i = 0; i < len; i++)
-			{
+			for (var i = 0; i < len; i++) {
 				var bookmark = new SessionBookmark(marks[i]);
 				bookmark.setVirtualPosition(marks[i].index);
 
@@ -382,24 +354,20 @@ export class SessionContainer
 		});
 	}
 
-	restoreScrollTop(state, forcedValue)
-	{
+	restoreScrollTop(state, forcedValue) {
 		var scrollTop = AppConfig.get('state.scrollTop.' + state);
 		this.DOMBookmarks.scrollTop = (forcedValue !== undefined) ? forcedValue : scrollTop;
 	}
 
-	bookmarkCurrentTab()
-	{
+	bookmarkCurrentTab() {
 		// Test if already saved in this session
 		SessionManager.getCurrentTab((activeTab) => {
 
 			var sessionID = this.activeSessionID;
 			var bookmarks = SessionSyncModel.bookmarks;
 
-			for (var i in bookmarks)
-			{
-				if (bookmarks[i].parentId == sessionID && bookmarks[i].url == activeTab.url)
-				{
+			for (var i in bookmarks) {
+				if (bookmarks[i].parentId == sessionID && bookmarks[i].url == activeTab.url) {
 					if (typeof document !== 'undefined') {
 						WindowEvents.emit(document, 'Notification', {
 							message: 'Already Saved',
@@ -415,34 +383,31 @@ export class SessionContainer
 			// Add bookmark into the session
 
 			BookmarkManager.createBookmarkFromTab(activeTab, sessionID)
-			.then((mark) => {
-				var bookmark = new SessionBookmark(mark);
+				.then((mark) => {
+					var bookmark = new SessionBookmark(mark);
 
-				SessionSyncModel.bookmarks[mark.id] = mark;
-				this.SyncModel.setBookmark(mark.id, bookmark);
-				this.DOMBookmarks.appendChild(bookmark.DOMRoot);
+					SessionSyncModel.bookmarks[mark.id] = mark;
+					this.SyncModel.setBookmark(mark.id, bookmark);
+					this.DOMBookmarks.appendChild(bookmark.DOMRoot);
 
-				bookmark.setVirtualPosition(mark.index);
-				bookmark.highlight();
+					bookmark.setVirtualPosition(mark.index);
+					bookmark.highlight();
 
-			});
+				});
 
 		});
 	}
 
-	saveHistorySession(sessionIndex)
-	{
-		if (sessionIndex == undefined)
-		{
+	saveHistorySession(sessionIndex) {
+		if (sessionIndex == undefined) {
 			// When Save button from toolbar is pressed
 			SessionManager.saveHistorySession(this.selectedHistorySession);
 		}
-		else
-		{
+		else {
 			// Save from context menu
 			SessionHistory.getHistorySession(sessionIndex, function (sessionInfo) {
 				SessionManager.saveHistorySession(sessionInfo);
 			});
 		}
 	}
-}
+}

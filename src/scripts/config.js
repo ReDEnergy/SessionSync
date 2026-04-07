@@ -63,7 +63,6 @@ const Config = (function () {
 
 	var setupConfig = function setupConfig() {
 		browser.storage.local.get(null).then(function (obj) {
-			console.log(obj);
 			for (let key in defaults) {
 				if (obj.hasOwnProperty(key)) {
 					localSettings[key] = obj[key];

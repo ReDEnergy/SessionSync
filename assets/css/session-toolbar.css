@@ -101,6 +101,10 @@
 	flex: 1;
 }
 
+#session-sync .session-toolbar[session-type="separator"] .menu-bar {
+	display: none;
+}
+
 #session-sync .session-toolbar .menu-bar .button {
 	width: 2.6em;
 	height: 100%;
@@ -111,8 +115,8 @@
 	display: none;
 	float: left;
 
-	opacity: 0.75;
-	filter: grayscale(100%);
+	/* opacity: 0.75;
+	filter: grayscale(100%); */
 }
 
 #session-sync .session-toolbar .menu-bar .button:hover {
@@ -174,7 +178,7 @@
  * Menu state
  */
 
- #session-sync[session="current"] .session-toolbar .menu-bar .button[state-current="true"] {
+#session-sync[session="current"] .session-toolbar .menu-bar .button[state-current="true"] {
 	display: block;
 }
 
