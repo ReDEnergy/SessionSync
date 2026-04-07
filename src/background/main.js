@@ -1,7 +1,7 @@
 'use strict';
 
 export const Commands = {
-	toggleWidget: '_execute_browser_action',
+	openPopup: '_execute_browser_action',
 	openTutorial: 'session_sync_tutorial',
 	detachToTab: 'session_sync_detach_tab',
 	detachToWindow: 'session_sync_detach_window',
@@ -87,7 +87,7 @@ const SessionSync = (function () {
 			browser.windows.create({
 				width: windowInfo.width,
 				height: windowInfo.height,
-				url: 'entrypoints/popup/index.html',
+				url: 'popup.html',
 				type: 'panel'
 			}).then(function (newWindow) {
 				activeWindow = newWindow;
@@ -113,7 +113,7 @@ const SessionSync = (function () {
 				}
 
 				browser.tabs.create({
-					url: 'entrypoints/popup/index.html'
+					url: 'popup.html'
 				});
 			});
 	}

@@ -6,6 +6,16 @@ console.log('FIREFOX_PROFILE:', process.env.FIREFOX_PROFILE);
 
 export default defineConfig(() => {
 	return {
+		srcDir: 'src',
+		publicDir: 'public',
+		vite: () => ({
+			optimizeDeps: {
+				entries: [
+					'src/entrypoints/popup/main.js',
+					'src/entrypoints/background.js',
+				],
+			},
+		}),
 		browser: 'firefox',
 		webExt: {
 			binaries: {
@@ -20,10 +30,10 @@ export default defineConfig(() => {
 			author: 'Gabriel Ivanica',
 			description: 'Save sessions as bookmarks and sync them through Firefox Sync (or any other sync engine).\nPowerful session management - organize, edit, change, save, restore, etc\n',
 			homepage_url: 'https://github.com/ReDEnergy/SessionSync',
-			manifest_version: 2,
 			default_locale: 'en',
 			browser_specific_settings: {
 				gecko: {
+					id: 'session-sync@gabrielivanica.com',
 					data_collection_permissions: {
 						required: ['none']
 					}
@@ -38,18 +48,29 @@ export default defineConfig(() => {
 				'cookies',
 				'contextualIdentities'
 			],
+			action: {
+				default_icon: {
+					'16': 'images/icon16.png',
+					'32': 'images/icon32.png',
+					'48': 'images/icon48.png',
+					'128': 'images/icon128.png'
+				},
+				default_title: 'Session Sync',
+			},
+			icons: {
+				'16': 'images/icon16.png',
+				'32': 'images/icon32.png',
+				'48': 'images/icon48.png',
+				'64': 'images/icon64.png',
+				'96': 'images/icon96.png',
+				'128': 'images/icon128.png'
+			},
 			commands: {
 				'_execute_browser_action': {
 					suggested_key: {
 						'default': 'Ctrl+Shift+F'
 					},
 					description: 'Toggle Widget'
-				},
-				'session_sync_tutorial': {
-					suggested_key: {
-						'default': 'Ctrl+Shift+L'
-					},
-					description: 'Tutorial'
 				},
 				'session_sync_detach_tab': {
 					suggested_key: {
@@ -59,7 +80,7 @@ export default defineConfig(() => {
 				},
 				'session_sync_detach_window': {
 					suggested_key: {
-						'default': 'Ctrl+Shift+V'
+						'default': 'Ctrl+Shift+2'
 					},
 					description: 'Window View'
 				}

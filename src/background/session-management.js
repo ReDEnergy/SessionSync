@@ -4,7 +4,7 @@ import { FaviconService } from './favicon-service';
 
 export const SessionManagement = (function SessionManagement() {
 	var lazyLoadingKey = 'restore.lazy.loading';
-	var lazyLoadingUrl = typeof browser !== 'undefined' && browser.runtime ? browser.runtime.getURL('data/lazy/lazy.html') : '';
+	var lazyLoadingUrl = typeof browser !== 'undefined' && browser.runtime ? browser.runtime.getURL('public/lazy/lazy.html') : '';
 	var lazyLoading = false;
 	var windowsTabsToKill = [];
 
@@ -149,7 +149,7 @@ export const SessionManagement = (function SessionManagement() {
 	var createLazyTab = function createLazyTab(bookmark) {
 		if (typeof browser === 'undefined' || !browser.runtime) return;
 
-		let title = browser.runtime.getURL('data/lazy/lazy.html') +
+		let title = browser.runtime.getURL('public/lazy/lazy.html') +
 			'?state=redirect' +
 			'&title=' + encodeURIComponent(bookmark.title) +
 			'&url=' + encodeURIComponent(bookmark.url);

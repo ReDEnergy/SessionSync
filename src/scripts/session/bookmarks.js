@@ -10,10 +10,9 @@ import { AppConfig } from '../config';
 
 export const BookmarkManager = (function BookmarkManager() {
 
-	var lazyLoadingUrl = browser.runtime.getURL('data/lazy/lazy.html');
+	var lazyLoadingUrl = browser.runtime.getURL('public/lazy/lazy.html');
 
-	function getLazyLoadingParameters(url)
-	{
+	function getLazyLoadingParameters(url) {
 		let paramater = {};
 		let splits = url.split('?');
 		if (splits.length < 2) return paramater;
@@ -25,8 +24,7 @@ export const BookmarkManager = (function BookmarkManager() {
 		return paramater;
 	}
 
-	var getHostName = function getHostName(url)
-	{
+	var getHostName = function getHostName(url) {
 		try {
 			return new URL(url).hostname;
 		} catch (e) {
@@ -34,59 +32,51 @@ export const BookmarkManager = (function BookmarkManager() {
 		}
 	};
 
-	var getFaviconUrl = function getFaviconUrl(favIconUrl, callback)
-	{
+	var getFaviconUrl = function getFaviconUrl(favIconUrl, callback) {
 		var key = '@favIconUrl:' + getHostName(favIconUrl);
 		browser.storage.local.get(key)
-		.then(function (obj) {
-			if (obj[key]) {
-				callback(obj[key]);
-			}
-		});
+			.then(function (obj) {
+				if (obj[key]) {
+					callback(obj[key]);
+				}
+			});
 	};
 
-	var getFolderBookmarks = function getFolderBookmarks(folderID, callback)
-	{
+	var getFolderBookmarks = function getFolderBookmarks(folderID, callback) {
 		var result = browser.bookmarks.getChildren(folderID);
 		result.then(callback, function fail() {
 			console.log('Error getting bookmarks from folder ID: ', folderID);
 		});
 	};
 
-	var searchBookmarks = function searchBookmarks(keyword)
-	{
+	var searchBookmarks = function searchBookmarks(keyword) {
 		return browser.bookmarks.search(keyword);
 	};
 
-	var getOpenMode = function getOpenMode(index)
-	{
+	var getOpenMode = function getOpenMode(index) {
 		var buttons = ['click', 'middleClick'];
 		var state = AppConfig.get('bookmark.' + buttons[index] + '.newTab');
 		return state ? 'newTab' : 'activeTab';
 	};
 
 	var containerSuffix = {
-		encode: function(id) { return ' [container:' + id + ']'; },
-		regex:  /^(.*) \[container:([^\]]+)\]$/,
+		encode: function (id) { return ' [container:' + id + ']'; },
+		regex: /^(.*) \[container:([^\]]+)\]$/,
 		default: 'firefox-default',
 	};
 
-	var createBookmarkFromTab = function createBookmarkFromTab(tab, parentId)
-	{
+	var createBookmarkFromTab = function createBookmarkFromTab(tab, parentId) {
 		var url = tab.url;
-		if (url.startsWith(lazyLoadingUrl, 0))
-		{
+		if (url.startsWith(lazyLoadingUrl, 0)) {
 			var info = getLazyLoadingParameters(url);
 			url = info.url;
 		}
-		else
-		{
-			browser.runtime.sendMessage({event: 'save-favicon', tab: tab});
+		else {
+			browser.runtime.sendMessage({ event: 'save-favicon', tab: tab });
 		}
 
 		var title = tab.title;
-		if (tab.cookieStoreId && tab.cookieStoreId !== containerSuffix.default)
-		{
+		if (tab.cookieStoreId && tab.cookieStoreId !== containerSuffix.default) {
 			title += containerSuffix.encode(tab.cookieStoreId);
 		}
 
@@ -100,8 +90,7 @@ export const BookmarkManager = (function BookmarkManager() {
 
 	// Parse a [container:<id>] suffix from a bookmark title.
 	// Returns { title, cookieStoreId } — cookieStoreId is null when absent.
-	var parseContainerFromTitle = function parseContainerFromTitle(rawTitle)
-	{
+	var parseContainerFromTitle = function parseContainerFromTitle(rawTitle) {
 		var match = rawTitle && rawTitle.match(containerSuffix.regex);
 		if (match) {
 			return { title: match[1], cookieStoreId: match[2] };
@@ -109,8 +98,7 @@ export const BookmarkManager = (function BookmarkManager() {
 		return { title: rawTitle, cookieStoreId: null };
 	};
 
-	var createBookmark = function createBookmark(options)
-	{
+	var createBookmark = function createBookmark(options) {
 		// parentId possible values
 		// root________
 		// menu________
@@ -120,22 +108,18 @@ export const BookmarkManager = (function BookmarkManager() {
 		return browser.bookmarks.create(options);
 	};
 
-	var openBookmark = function openBookmark(options)
-	{
-		if (AppConfig.isPanel() == false)
-		{
-			if (options.mode == 'activeTab')
-			{
+	var openBookmark = function openBookmark(options) {
+		if (AppConfig.isPanel() == false) {
+			if (options.mode == 'activeTab') {
 				options.mode = 'newTab';
 				options.active = false;
 			}
 		}
 
-		browser.runtime.sendMessage({event: 'open-tab', options: options});
+		browser.runtime.sendMessage({ event: 'open-tab', options: options });
 	};
 
-	var setTitle = function setTitle(bookmark, title, callback)
-	{
+	var setTitle = function setTitle(bookmark, title, callback) {
 		browser.bookmarks.update(bookmark.id, {
 			title: title
 		}).then(function success() {
@@ -148,8 +132,7 @@ export const BookmarkManager = (function BookmarkManager() {
 		});
 	};
 
-	var setLocation = function setLocation(bookmark, url)
-	{
+	var setLocation = function setLocation(bookmark, url) {
 		browser.bookmarks.update(bookmark.id, {
 			url: url
 		}).then(function success() {
@@ -159,26 +142,22 @@ export const BookmarkManager = (function BookmarkManager() {
 		});
 	};
 
-	var moveItem = function moveItem(itemID, newParentID, index, callback, errorCallback)
-	{
+	var moveItem = function moveItem(itemID, newParentID, index, callback, errorCallback) {
 		browser.bookmarks.move(itemID, {
 			parentId: newParentID,
 			index: index
 		})
-		.then(callback, errorCallback);
+			.then(callback, errorCallback);
 	};
 
-	var deleteItem = function deleteItem(itemID, isFolder, callback, errorCallback)
-	{
-		if (isFolder)
-		{
+	var deleteItem = function deleteItem(itemID, isFolder, callback, errorCallback) {
+		if (isFolder) {
 			browser.bookmarks.removeTree(itemID)
-			.then(callback, errorCallback);
+				.then(callback, errorCallback);
 		}
-		else
-		{
+		else {
 			browser.bookmarks.remove(itemID)
-			.then(callback, errorCallback);
+				.then(callback, errorCallback);
 		}
 	};
 
@@ -193,10 +172,10 @@ export const BookmarkManager = (function BookmarkManager() {
 
 		setTitle: setTitle,
 		setLocation: setLocation,
-		moveItem:  moveItem,
+		moveItem: moveItem,
 		deleteItem: deleteItem,
 
-		getFolderBookmarks : getFolderBookmarks
+		getFolderBookmarks: getFolderBookmarks
 	};
 
 })();

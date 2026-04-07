@@ -13,84 +13,68 @@ import { GlobalEvents } from './utils/global-events';
 
 const Config = (function () {
 
+	const defaults = {
+		'style.panel.width': 800,
+		'style.panel.height': 600,
+		'style.sessions.list.width': 220,
+
+		'style.scale.toolbar': 12,
+		'style.scale.header': 18,
+		'style.scale.sessions': 12,
+		'style.scale.bookmarks': 14,
+
+		'state.scrollTop.current': 0,
+		'state.scrollTop.restore': 0,
+		'state.scrollTop.history': 0,
+
+		'session.save': {
+			pinned: false,
+			allWindows: true
+		},
+
+		'session.view': undefined,
+		'session.sorting': 'position-asc',
+		'session.active.filter': '',
+		'session.selected': null,
+		'session.history.selected': null,
+		'services.favicon.enabled': true,
+
+		'bookmark.click.newTab': false,
+		'bookmark.middleClick.newTab': true,
+		'restore.lazy.loading': true,
+		'restore.reverse.order': false,
+
+		'context.menu.icons': true,
+		'trashcan.hide': true,
+		'trashcan.hide-count': 0,
+		'undo.events': [],
+		'troubleshooting': false,
+		'theme.toolbar.grayscale': false
+	};
+
 	var initState = true;
 	var initConfig = true;
-	var localSettings = {};
+	var localSettings = defaults;
 	var configEvents = new PubSub();
 	var isPanelUI = (typeof document !== 'undefined' && document.body) ? (document.body.clientWidth == 0) : false;
 
 	// ------------------------------------------------------------------------
 	// API
 
-	function getConfigValue(key, defaultValue) {
-		if (initConfig && localSettings[key] == undefined) {
-			localSettings[key] = defaultValue;
-			return;
-		}
-
-		browser.storage.local.get(key).then(function (obj) {
-			if (obj.hasOwnProperty(key)) {
-				// console.log('[LocalStorage][Read]', key, obj[key]);
-				localSettings[key] = obj[key];
-				configEvents.publish(key, obj[key]);
-			}
-			else {
-				// console.log('Not found [LocalStorage][Set]', key, defaultValue);
-				browser.storage.local.set({ [key]: defaultValue })
-					.then(function success() {
-						localSettings[key] = defaultValue;
-						configEvents.publish(key, defaultValue);
-					});
-			}
-		});
-	}
-
 	var setupConfig = function setupConfig() {
-		// Styling
-		getConfigValue('style.panel.width', 800);
-		getConfigValue('style.panel.height', 600);
-		getConfigValue('style.sessions.list.width', 220);
-
-		getConfigValue('style.scale.toolbar', 12);
-		getConfigValue('style.scale.header', 18);
-		getConfigValue('style.scale.sessions', 12);
-		getConfigValue('style.scale.bookmarks', 14);
-
-		getConfigValue('state.scrollTop.current', 0);
-		getConfigValue('state.scrollTop.restore', 0);
-		getConfigValue('state.scrollTop.history', 0);
-
-		// Session saving settings
-		getConfigValue('session.save', {
-			pinned: false,
-			allWindows: true
+		browser.storage.local.get(null).then(function (obj) {
+			console.log(obj);
+			for (let key in defaults) {
+				if (obj.hasOwnProperty(key)) {
+					localSettings[key] = obj[key];
+				} else {
+					localSettings[key] = defaults[key];
+				}
+				configEvents.publish(key, localSettings[key]);
+			}
+			initConfig = false;
+			configEvents.publish('config.init', localSettings);
 		});
-
-		// Management configuration
-		getConfigValue('session.view', undefined);
-		getConfigValue('session.sorting', 'position-asc');
-		getConfigValue('session.active.filter', '');
-		getConfigValue('session.selected', null);
-		getConfigValue('session.history.selected', null);
-		getConfigValue('services.favicon.enabled', true);
-
-		// Bookmarks configuration
-		getConfigValue('bookmark.click.newTab', false);
-		getConfigValue('bookmark.middleClick.newTab', true);
-		getConfigValue('restore.lazy.loading', true);
-		getConfigValue('restore.reverse.order', false);
-
-		// General settings
-		getConfigValue('context.menu.icons', true);
-
-		getConfigValue('trashcan.hide', true);
-		getConfigValue('trashcan.hide-count', 0);
-		getConfigValue('undo.events', []);
-
-		getConfigValue('troubleshooting', false);
-
-		// Theme configuration
-		getConfigValue('theme.toolbar.grayscale', false);
 	};
 
 	var set = function set(key, value, onSuccess) {
@@ -151,7 +135,7 @@ const Config = (function () {
 
 	var init = function init() {
 		setupConfig();
-		// console.log(localSettings);
+		console.log(localSettings);
 
 		if (isAddonContext()) {
 			browser.commands.getAll().

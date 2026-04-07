@@ -18,29 +18,28 @@ import * as DOMComponent from '../utils/components';
 * Command bar
 */
 
-export function SessionToolbar()
-{
+export function SessionToolbar() {
 	// Create DomHealper
 	var DomElem = HTMLCreator();
 
 	// ------------------------------------------------------------------------
 	// Create UI
 
-	var toolbar = DomElem('div', {class: 'session-toolbar'});
+	var toolbar = DomElem('div', { class: 'session-toolbar' });
 
 	// ------------------------------------------------------------------------
 	// List settings
 
-	var container = DomElem('div', {class: 'session-selector'});
+	var container = DomElem('div', { class: 'session-selector' });
 	container.style.width = AppConfig.get('style.scale.bookmarks') + 'px';
 
-	var activeBtn = DomElem('div', {class: 'button active-session'});
+	var activeBtn = DomElem('div', { class: 'button active-session' });
 	activeBtn.textContent = '';
 
-	var syncBtn = DomElem('div', {class: 'button sync'});
+	var syncBtn = DomElem('div', { class: 'button sync' });
 	syncBtn.textContent = 'Sessions';
 
-	var historyBtn = DomElem('div', {class: 'button history'});
+	var historyBtn = DomElem('div', { class: 'button history' });
 	historyBtn.textContent = 'History';
 
 	container.appendChild(activeBtn);
@@ -54,41 +53,41 @@ export function SessionToolbar()
 	var sessionMenu = this.createMenu();
 	toolbar.appendChild(sessionMenu);
 
-	var sessionDate = DomElem('div', {class: 'session-date'});
+	var sessionDate = DomElem('div', { class: 'session-date' });
 	toolbar.appendChild(sessionDate);
 
 	// ------------------------------------------------------------------------
 	// Events
 
 	if (typeof document !== 'undefined') {
-		WindowEvents.on(document, 'SetSessionDate', function(date) {
+		WindowEvents.on(document, 'SetSessionDate', function (date) {
 			sessionDate.textContent = (new Date(date)).toLocaleString();
 		});
 	}
 
-	activeBtn.addEventListener('click', function() {
+	activeBtn.addEventListener('click', function () {
 		if (typeof document !== 'undefined') {
 			WindowEvents.emit(document, 'ShowCurrentSession');
 		}
 	});
 
-	syncBtn.addEventListener('click', function() {
+	syncBtn.addEventListener('click', function () {
 		if (typeof document !== 'undefined') {
 			WindowEvents.emit(document, 'ShowSyncList', { update: true });
 		}
 	});
 
-	historyBtn.addEventListener('click', function() {
+	historyBtn.addEventListener('click', function () {
 		if (typeof document !== 'undefined') {
 			WindowEvents.emit(document, 'ShowHistoryList');
 		}
 	});
 
-	AppConfig.onChange('style.sessions.list.width', function(width) {
+	AppConfig.onChange('style.sessions.list.width', function (width) {
 		container.style.width = width + 'px';
 	});
 
-	AppConfig.onChange('style.scale.toolbar', function(value) {
+	AppConfig.onChange('style.scale.toolbar', function (value) {
 		toolbar.style.fontSize = value + 'px';
 	});
 
@@ -99,17 +98,15 @@ export function SessionToolbar()
 	this.DOMRoot = toolbar;
 }
 
-SessionToolbar.prototype.createMenu = function createMenu()
-{
+SessionToolbar.prototype.createMenu = function createMenu() {
 	var DomElem = HTMLCreator();
 
 	// ------------------------------------------------------------------------
 	// UI - SessionContainer menu
 
-	var menu = DomElem('div', {class: 'menu-bar'});
+	var menu = DomElem('div', { class: 'menu-bar' });
 
-	var ActionButton = function actionButton(options)
-	{
+	var ActionButton = function actionButton(options) {
 		var button = DomElem('div', {
 			class: 'button ' + options.className,
 			'state-current': options.state.current,
@@ -132,7 +129,7 @@ SessionToolbar.prototype.createMenu = function createMenu()
 		className: 'save',
 		event: 'MenuSaveSession',
 		state: {
-			current : true,
+			current: true,
 			history: true
 		}
 	});
@@ -160,7 +157,7 @@ SessionToolbar.prototype.createMenu = function createMenu()
 		className: 'restore-new-win',
 		event: 'MenuRestoreNewWindow',
 		state: {
-			restore : true,
+			restore: true,
 			history: true
 		}
 	});
@@ -201,21 +198,21 @@ SessionToolbar.prototype.createMenu = function createMenu()
 		}
 	});
 
-	var separator1 = DomElem('div', {class: 'separator'});
-	var separator2 = DomElem('div', {class: 'separator'});
-	var saveConfig = DomElem('div', {class: 'save-config'});
+	var separator1 = DomElem('div', { class: 'separator' });
+	var separator2 = DomElem('div', { class: 'separator' });
+	var saveConfig = DomElem('div', { class: 'save-config' });
 
 	// Pin tabs action
 
 	var saveCfgKey = 'session.save';
 	var saveCfg = AppConfig.get(saveCfgKey);
 	var cfgSavePinned = new DOMComponent.ToggleSwitch({
-		state: saveCfg.pinned,
+		state: saveCfg?.pinned,
 		tooltip: 'Save pinned tabs',
 		attribute: 'pin',
 		onState: '',
 		offState: '',
-		callback: function(value) {
+		callback: function (value) {
 			saveCfg.pinned = value;
 			AppConfig.set(saveCfgKey, saveCfg);
 		}
@@ -223,12 +220,12 @@ SessionToolbar.prototype.createMenu = function createMenu()
 	saveConfig.appendChild(cfgSavePinned.DOMRoot);
 
 	var cfgAllWindows = new DOMComponent.ToggleSwitch({
-		state: saveCfg.allWindows,
+		state: saveCfg?.allWindows,
 		tooltip: 'Show all windows',
 		attribute: 'windows',
 		onState: '',
 		offState: '',
-		callback: function(value) {
+		callback: function (value) {
 			saveCfg.allWindows = value;
 			AppConfig.set(saveCfgKey, saveCfg);
 		}
@@ -262,13 +259,13 @@ SessionToolbar.prototype.createMenu = function createMenu()
 	// ------------------------------------------------------------------------
 	// Events
 
-	AppConfig.onChange(saveCfgKey, function(value) {
+	AppConfig.onChange(saveCfgKey, function (value) {
 		cfgSavePinned.setState(value.pinned);
 		cfgAllWindows.setState(value.allWindows);
 	});
 
 	// Tooltip events
-	menu.addEventListener('mouseover', function(e) {
+	menu.addEventListener('mouseover', function (e) {
 		var tooltipMsg = e.target.getAttribute('tooltip');
 		if (tooltipMsg) {
 			if (typeof document !== 'undefined') {
@@ -284,7 +281,7 @@ SessionToolbar.prototype.createMenu = function createMenu()
 		}
 	});
 
-	menu.addEventListener('mouseleave', function() {
+	menu.addEventListener('mouseleave', function () {
 		if (typeof document !== 'undefined') {
 			WindowEvents.emit(document, 'HideTooltip');
 		}

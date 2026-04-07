@@ -7,8 +7,8 @@
 	"license": "MPL-2.0",
 	"scripts": {
 		"dev": "wxt",
-		"dev:chrome": "wxt -b chrome --mv3",
-		"dev:firefox": "wxt -b firefox --mv2",
+		"dev:chrome": "wxt -b chrome --mv3 --host 127.0.0.1",
+		"dev:firefox": "wxt -b firefox --mv2 --host 127.0.0.1",
 		"build": "wxt build",
 		"build:chrome": "wxt build -b chrome --mv3",
 		"build:firefox": "wxt build -b firefox --mv2",
