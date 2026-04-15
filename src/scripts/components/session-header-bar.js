@@ -254,6 +254,7 @@ var CreateHeaderMenu = function CreateHeaderMenu() {
 			callback: function () {
 				if (typeof browser !== 'undefined' && browser.storage) {
 					browser.storage.local.get().then(function (data) {
+
 						console.log(data);
 					});
 				}

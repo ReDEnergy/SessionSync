@@ -8,6 +8,7 @@ import { AppConfig } from '../config';
 import { SessionBookmark, SessionTab, SessionWindow, HistoryWindow, HistoryTab } from './session-bookmark';
 import { SessionBookmarkEvents } from './session-bookmark-events';
 import { SessionSyncModel } from './session-sync-model';
+import { HistoryManager } from '../session/history';
 
 // Utils
 import { HTMLCreator } from '../utils/dom';
@@ -48,12 +49,12 @@ export class SessionContainer {
 				SessionSyncModel.bookmarks[ID].parentId == AppConfig.get('storageID'));
 		}
 
-		function restoreHistoryWindow(sessionInfo) {
+		function restoreHistorySession(sessionInfo) {
 			var list = [];
 			sessionInfo.windows.forEach(historyWindow => {
 				list.push(historyWindow.tabs);
 			});
-			SessionManager.loadBookmarksNewWindow(list);
+			SessionManager.loadHistoryTabsNewWindow(list);
 		}
 
 		if (typeof document !== 'undefined') {
@@ -61,7 +62,7 @@ export class SessionContainer {
 
 			WindowEvents.on(document, 'HistorySessionRestore', (index) => {
 				SessionHistory.getHistorySession(index, (sessionInfo) => {
-					restoreHistoryWindow(sessionInfo);
+					restoreHistorySession(sessionInfo);
 				});
 			});
 
@@ -73,11 +74,11 @@ export class SessionContainer {
 							SessionManager.activateWindow(activeSessionWindows[windowID].id);
 						}
 						else {
-							SessionManager.loadBookmarksNewWindow([activeSessionWindows[windowID].tabs]);
+							SessionManager.loadHistoryTabsNewWindow([activeSessionWindows[windowID].tabs]);
 						}
 					}
 					else {
-						SessionManager.loadBookmarksNewWindow([this.selectedHistorySession.windows[windowID].tabs]);
+						SessionManager.loadHistoryTabsNewWindow([this.selectedHistorySession.windows[windowID].tabs]);
 					}
 				}
 			});
@@ -96,7 +97,7 @@ export class SessionContainer {
 
 				// history session
 				if (this.SyncModel.state.session === 'history') {
-					restoreHistoryWindow(this.selectedHistorySession);
+					restoreHistorySession(this.selectedHistorySession);
 				}
 			});
 
@@ -300,22 +301,27 @@ export class SessionContainer {
 
 		this.setUIState('history', (new Date(sessionInfo.lastSave)).toLocaleString(), -1);
 		this.selectedHistorySession = sessionInfo;
+		HistoryManager.selectSession(sessionInfo);
+
+		console.log('sessionInfo', sessionInfo);
 
 		var tabIndex = 0;
 		var windowIndex = 0;
 
-		for (let key in sessionInfo.windows) {
+		for (let windowID in sessionInfo.windows) {
 			// Add window separator
-			var sessionWindow = new HistoryWindow(sessionInfo.windows[key], windowIndex, tabIndex);
+			var sessionWindow = new HistoryWindow(sessionInfo.windows[windowID], windowIndex, tabIndex);
 			this.DOMBookmarks.appendChild(sessionWindow.DOMRoot);
 			tabIndex++;
 
 			var globalOffset = tabIndex;
 
 			// Add window tabs
-			var windowTabs = sessionInfo.windows[key].tabs;
+			var windowTabs = sessionInfo.windows[windowID].tabs;
 			for (var i in windowTabs) {
 				var tab = windowTabs[i];
+				tab.id = i;
+				tab.windowId = windowID;
 				tab.index = i | 0;
 				var sessionTab = new HistoryTab(tab, globalOffset);
 				this.DOMBookmarks.appendChild(sessionTab.DOMRoot);
@@ -338,15 +344,14 @@ export class SessionContainer {
 				WindowEvents.emit(document, 'SetPromiseSession', { sessionID: session.id, update: false });
 			}
 
-			var len = marks.length;
-			for (var i = 0; i < len; i++) {
-				var bookmark = new SessionBookmark(marks[i]);
-				bookmark.setVirtualPosition(marks[i].index);
+			marks.forEach((mark) => {
+				var bookmark = new SessionBookmark(mark);
+				bookmark.setVirtualPosition(mark.index);
 
-				SessionSyncModel.bookmarks[marks[i].id] = marks[i];
-				this.SyncModel.setBookmark(marks[i].id, bookmark);
+				SessionSyncModel.bookmarks[mark.id] = mark;
+				this.SyncModel.setBookmark(mark.id, bookmark);
 				this.DOMBookmarks.appendChild(bookmark.DOMRoot);
-			}
+			});
 
 			this.updateSessionInfo();
 			this.restoreScrollTop('restore');

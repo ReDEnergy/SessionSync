@@ -291,6 +291,10 @@ export const SessionManager = (function SessionManager() {
 		browser.runtime.sendMessage({ event: 'restore-sessions', windows: windows });
 	};
 
+	var loadHistoryTabsNewWindow = function loadHistoryTabsNewWindow(windows) {
+		browser.runtime.sendMessage({ event: 'restore-history-session', windows: windows });
+	};
+
 	var createSeparator = function createSeparator(folderID) {
 		browser.bookmarks.get(folderID)
 			.then(function (marks) {
@@ -369,6 +373,7 @@ export const SessionManager = (function SessionManager() {
 		replaceSessionAll: replaceSessionAll,
 		restoreNewWindow: restoreNewWindow,
 		loadBookmarksNewWindow: loadBookmarksNewWindow,
+		loadHistoryTabsNewWindow: loadHistoryTabsNewWindow,
 		mergeSessions: mergeSessions,
 		overwriteSession: overwriteSession,
 		saveActiveSession: saveActiveSession,

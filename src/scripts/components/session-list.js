@@ -222,12 +222,10 @@ export class SessionList {
 			refreshHistoryList();
 		});
 
-		if (this.document) {
-			WindowEvents.on(this.document, 'ShowHistoryList', () => {
-				this.setState('history');
-				refreshHistoryList();
-			});
-		}
+		WindowEvents.on(document, 'ShowHistoryList', () => {
+			this.setState('history');
+			refreshHistoryList();
+		});
 
 		historyList.addEventListener('click', (e) => {
 			if (e.target.className === 'history-node') {

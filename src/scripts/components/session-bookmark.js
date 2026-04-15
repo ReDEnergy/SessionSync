@@ -6,6 +6,8 @@
 import { HTMLCreator } from '../utils/dom';
 import { AutoScroll } from '../utils/auto-scroll';
 import { BookmarkManager } from '../session/bookmarks';
+import { BookmarkProperties } from '../../common/bookmark-properties';
+import { FirefoxContainers } from '../services/firefox-containers';
 
 // *****************************************************************************
 // API
@@ -19,6 +21,11 @@ function setTabFavicon(faviconNode, faviconURL) {
 	faviconNode.style.backgroundSize = 'contain';
 }
 
+function configureHoverItem(item, url) {
+	item.setAttribute('over', '');
+	item.setAttribute('url', url);
+}
+
 /*
 * Session Bookmark
 * Used for interacting with a Firefox bookmark item
@@ -28,26 +35,44 @@ export class SessionBookmark {
 	constructor(bookmark) {
 		const DomElem = HTMLCreator();
 
+		// Decode bookmark title
+		var info = BookmarkProperties.parseTitle(bookmark.title);
+
 		const box = DomElem('div', { class: 'bookmark' });
-		box.setAttribute('pinned', bookmark.pinned);
+
+		if (bookmark.pinned || info.properties.pinned) {
+			box.setAttribute('pinned', 'true');
+		}
 
 		const favicon = DomElem('div', { class: 'favicon' });
 		favicon.setAttribute('bookmarkID', bookmark.id);
 		favicon.setAttribute('over', '');
 
-		const title = DomElem('div', { class: 'text' });
+		const title = DomElem('div', { class: 'title' });
 		title.setAttribute('bookmarkID', bookmark.id);
 		title.setAttribute('over', '');
-		title.textContent = bookmark.title;
+		title.textContent = info.title;
+
+		const propertiesBox = DomElem('div', { class: 'properties' });
+		propertiesBox.setAttribute('over', '');
+
+		if (info.properties.container) {
+			const container = FirefoxContainers.getContainerElement(info.properties.container);
+			if (container) {
+				propertiesBox.appendChild(container);
+			}
+		}
 
 		box.appendChild(favicon);
 		box.appendChild(title);
+		box.appendChild(propertiesBox);
 
 		BookmarkManager.getFaviconUrl(bookmark.url, (url) => {
 			setTabFavicon(favicon, url);
 		});
 
 		this.bookmark = bookmark;
+		this.properties = info.properties;
 		this.DOMtitle = title;
 		this.DOMfavicon = favicon;
 		this.bookmarkID = bookmark.id;
@@ -99,11 +124,11 @@ export class SessionWindow {
 		const box = DomElem('div', { class: 'window-separator' });
 		box.style.top = index * bookmarkOffset + 'em';
 
-		const text = DomElem('div', { class: 'text' });
-		text.textContent = 'Window ' + (windowIndex + 1);
-		text.setAttribute('windowID', windowID);
+		const title = DomElem('div', { class: 'title' });
+		title.textContent = 'Window ' + (windowIndex + 1);
+		title.setAttribute('windowID', windowID);
 
-		box.appendChild(text);
+		box.appendChild(title);
 
 		this.DOMRoot = box;
 	}
@@ -119,28 +144,40 @@ export class SessionTab {
 
 		const box = DomElem('div', { class: 'bookmark' });
 		box.style.top = (tab.index + indexOffset) * bookmarkOffset + 'em';
-		box.setAttribute('pinned', tab.pinned);
 		box.setAttribute('url', tab.url);
+
+		if (tab.pinned) {
+			box.setAttribute('pinned', 'true');
+		}
 
 		const favicon = DomElem('div', { class: 'favicon' });
 		favicon.setAttribute('tabID', tab.id);
 		favicon.setAttribute('windowID', tab.windowId);
-		favicon.setAttribute('url', tab.url);
-		favicon.setAttribute('over', '');
+		configureHoverItem(favicon, tab.url);
 
-		const text = DomElem('div', { class: 'text' });
-		text.setAttribute('tabID', tab.id);
-		text.setAttribute('windowID', tab.windowId);
-		text.setAttribute('url', tab.url);
-		text.setAttribute('over', '');
+		const title = DomElem('div', { class: 'title' });
+		title.setAttribute('tabID', tab.id);
+		title.setAttribute('windowID', tab.windowId);
+		title.textContent = tab.title;
+		configureHoverItem(title, tab.url);
 
 		if (tab.favIconUrl) {
 			setTabFavicon(favicon, tab.favIconUrl);
 		}
 
-		text.textContent = tab.title;
+		const propertiesBox = DomElem('div', { class: 'properties' });
+		propertiesBox.setAttribute('over', '');
+
+		if (tab.cookieStoreId) {
+			const container = FirefoxContainers.getContainerElement(tab.cookieStoreId);
+			if (container) {
+				propertiesBox.appendChild(container);
+			}
+		}
+
 		box.appendChild(favicon);
-		box.appendChild(text);
+		box.appendChild(title);
+		box.appendChild(propertiesBox);
 
 		this.tab = tab;
 		this.position = tab.index + indexOffset;
@@ -165,15 +202,15 @@ export class HistoryWindow {
 		box.style.top = index * bookmarkOffset + 'em';
 		box.setAttribute('windowID', windowID);
 
-		const text = DomElem('div', { class: 'text' });
-		text.setAttribute('windowID', windowID);
-		text.textContent = 'Window ' + windowID;
+		const title = DomElem('div', { class: 'title' });
+		title.setAttribute('windowID', windowID);
+		title.textContent = 'Window ' + windowID;
 
 		if (!sessionWindowInfo.active) {
-			text.textContent += ' (closed)';
+			title.textContent += ' (closed)';
 		}
 
-		box.appendChild(text);
+		box.appendChild(title);
 
 		this.DOMRoot = box;
 	}
@@ -190,23 +227,37 @@ export class HistoryTab {
 		const box = DomElem('div', { class: 'bookmark' });
 		box.style.top = (tab.index + indexOffset) * bookmarkOffset + 'em';
 		box.setAttribute('url', tab.url);
-		box.setAttribute('pinned', tab.pinned);
+
+		if (tab.pinned) {
+			box.setAttribute('pinned', 'true');
+		}
 
 		const favicon = DomElem('div', { class: 'favicon' });
-		favicon.setAttribute('url', tab.url);
-		favicon.setAttribute('over', '');
+		configureHoverItem(favicon, tab.url);
 
-		const text = DomElem('div', { class: 'text' });
-		text.setAttribute('url', tab.url);
-		text.setAttribute('over', '');
-		text.textContent = tab.title;
+		const title = DomElem('div', { class: 'title' });
+		configureHoverItem(title, tab.url);
+		title.textContent = tab.title;
+		title.setAttribute('windowID', tab.windowId);
+		title.setAttribute('tabID', tab.id);
 
-		if (tab.favIconUrl) {
-			setTabFavicon(favicon, tab.favIconUrl);
+		BookmarkManager.getFaviconUrl(tab.url, (url) => {
+			setTabFavicon(favicon, url);
+		});
+
+		const propertiesBox = DomElem('div', { class: 'properties' });
+		propertiesBox.setAttribute('over', '');
+
+		if (tab.cookieStoreId) {
+			const container = FirefoxContainers.getContainerElement(tab.cookieStoreId);
+			if (container) {
+				propertiesBox.appendChild(container);
+			}
 		}
 
 		box.appendChild(favicon);
-		box.appendChild(text);
+		box.appendChild(title);
+		box.appendChild(propertiesBox);
 
 		this.DOMRoot = box;
 	}

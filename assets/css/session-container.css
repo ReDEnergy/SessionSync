@@ -86,7 +86,7 @@
 	transition: all 0.2s;
 }
 
-#session-sync .session-container .window-separator .text {
+#session-sync .session-container .window-separator .title {
 	text-align: center;
 	font-weight: 600;
 }
@@ -109,7 +109,7 @@
 #session-sync .session-container .bookmark {
 	width: 100%;
 	height: 2em;
-	padding: 0 4px;
+	padding: 0 0.4em;
 
 	line-height: 1.9em;
 	word-break: keep-all;
@@ -166,7 +166,7 @@
 	cursor: default;
 }
 
-#session-sync .session-container .bookmark[pinned='true']:before {
+#session-sync .session-container .bookmark[pinned]:before {
 	content: "";
 	width: 1.5em;
 	height: 100%;
@@ -195,15 +195,49 @@
 	background-position: center center;
 }
 
-#session-sync .session-container .bookmark .text {
+#session-sync .session-container .bookmark .title {
 	height: 100%;
-	padding: 0 5px;
+	padding: 0 0.5em;
 	word-break: keep-all;
 	white-space: nowrap;
 	overflow: hidden;
 
 	box-sizing: border-box;
 	flex: 1;
+}
+
+#session-sync .session-container .bookmark .properties {
+	height: 1.6em;
+	margin-top: 0.2em;
+}
+
+#session-sync .session-container .bookmark .container {
+	height: 100%;
+	margin-right: 2em;
+	max-width: 10em;
+	border-radius: 1em;
+	color: #FFF;
+	padding: 0 0.5em 0 0.5em;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+
+	box-sizing: border-box;
+}
+
+#session-sync .session-container .bookmark .container .name {
+	height: 100%;
+	padding: 0 0.5em 0 .1em;
+	line-height: 1.5em;
+}
+
+#session-sync .session-container .bookmark .container .icon {
+	width: 1.6em;
+	height: 100%;
+
+	background-size: 1.25em !important;
+	background-repeat: no-repeat !important;
+	background-position: center center !important;
 }
 
 /*
@@ -220,7 +254,7 @@
 	transition: all 0.2s;
 }
 
-#session-sync .session-container .history-window-separator .text {
+#session-sync .session-container .history-window-separator .title {
 	text-align: center;
 }
 

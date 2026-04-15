@@ -44,7 +44,7 @@ const FaviconService = (function FaviconService() {
 			.then(function (result) {
 				browser.storage.local.set({ [key]: result });
 			},
-				function onError(info) {
+				function onError() {
 					browser.storage.local.set({ [key]: favIconUrl });
 				});
 	}
@@ -91,7 +91,6 @@ const FaviconService = (function FaviconService() {
 	initConfig();
 
 	return {
-		getFaviconUrl: getFaviconUrl,
 		checkTabFaviconSaved: checkTabFaviconSaved
 	}
 })();

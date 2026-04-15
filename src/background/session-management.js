@@ -1,6 +1,8 @@
 'use strict';
 
 import { FaviconService } from './favicon-service';
+import { BookmarkProperties } from '../common/bookmark-properties';
+import { FirefoxContainers } from '../scripts/services/firefox-containers';
 
 export const SessionManagement = (function SessionManagement() {
 	var lazyLoadingKey = 'restore.lazy.loading';
@@ -10,37 +12,23 @@ export const SessionManagement = (function SessionManagement() {
 	var reverseOrderKey = 'restore.reverse.order';
 	var reverseOrder = false;
 
-	const containerTag = 'container';
-
 	function getTabInfo(url) {
 		return {
 			url: url
 		};
 	}
 
-	// Container suffix helpers — canonical source: data/scripts/session/bookmarks.js
-	var containerSuffix = {
-		regex: new RegExp('^(.*) \\[' + containerTag + ':([^\\]]+)\\]$'),
-	};
-
-	// Parse a [container:<id>] suffix from a bookmark title.
-	// Returns { title, cookieStoreId } — cookieStoreId is null when absent.
-	function parseContainerFromTitle(rawTitle) {
-		var match = rawTitle && rawTitle.match(containerSuffix.regex);
-		if (match) {
-			return { title: match[1], cookieStoreId: match[2] };
-		}
-		return { title: rawTitle, cookieStoreId: null };
-	}
-
 	function createTab(options, info, onSuccess, onError) {
 		if (typeof browser === 'undefined' || !browser.tabs) return;
 
 		var tryCreate = function (withContainer) {
+
 			var tabOptions = Object.assign({}, options);
+
 			if (withContainer && info.container) {
 				tabOptions.cookieStoreId = info.container;
 			}
+
 			return browser.tabs.create(tabOptions).then(
 				function (tabInfo) {
 					if (info.discard) {
@@ -59,6 +47,7 @@ export const SessionManagement = (function SessionManagement() {
 				}
 			);
 		};
+
 		tryCreate(info.container != null);
 	}
 
@@ -81,28 +70,28 @@ export const SessionManagement = (function SessionManagement() {
 			});
 	};
 
-	var openTab = function openTab(options) {
+	var openTab = function openTab(options, info) {
 		var checkFavicon = options.favicon === true ? FaviconService.checkTabFaviconSaved : () => { };
 		delete options.favicon;
 
-		var cookieStoreId = options.cookieStoreId || null;
-		delete options.cookieStoreId;
-
-		var mode = options.mode;
-		delete options.mode;
-
-		switch (mode) {
+		switch (info.mode) {
 			case 'newTab': {
-				createTab(options, { container: cookieStoreId }, checkFavicon);
+				createTab(options, info, checkFavicon);
 				break;
 			}
 
 			case 'newWindow': {
-				if (cookieStoreId) {
-					options.cookieStoreId = cookieStoreId;
-				}
-				browser.windows.create(options).then(function (windowInfo) {
-					checkFavicon(windowInfo.tabs[0]);
+				const windowOptions = {
+					url: options.url,
+					cookieStoreId: options.cookieStoreId
+				};
+
+				browser.windows.create(windowOptions).then(function (windowInfo) {
+					const tab = windowInfo.tabs[0];
+					if (options.pinned) {
+						browser.tabs.update(tab.id, { pinned: true });
+					}
+					checkFavicon(tab);
 				});
 				break;
 			}
@@ -111,7 +100,16 @@ export const SessionManagement = (function SessionManagement() {
 				browser.tabs.query({ active: true, windowId: browser.windows.WINDOW_ID_CURRENT })
 					.then(tabs => browser.tabs.get(tabs[0].id))
 					.then(tab => {
-						browser.tabs.update(tab.id, options).then(checkFavicon);
+						if ((options.cookieStoreId == undefined && tab.cookieStoreId == FirefoxContainers.defaultContainer) ||
+							(tab.cookieStoreId === options.cookieStoreId)) {
+							delete options.cookieStoreId;
+							browser.tabs.update(tab.id, options).then(checkFavicon);
+						} else {
+							browser.tabs.create({
+								url: options.url,
+								cookieStoreId: options.cookieStoreId
+							});
+						}
 					});
 				break;
 			}
@@ -127,13 +125,51 @@ export const SessionManagement = (function SessionManagement() {
 		}
 	};
 
+	var createTabsFromBookmarks = function createTabsFromBookmarks(bookmarks, windowId) {
+		checkReverseOrder(bookmarks);
+		bookmarks.forEach(function (bookmark) {
+			const info = BookmarkProperties.parseTitle(bookmark.title);
+			createTab(
+				{
+					url: bookmark.url,
+					active: false,
+					windowId: windowId,
+					pinned: info.properties.pinned ? true : false
+				},
+				{
+					discard: lazyLoading,
+					container: info.properties.container
+				},
+				FaviconService.checkTabFaviconSaved
+			);
+		});
+	};
+
+	var createTabsFromHistoryTabs = function createTabsFromHistoryTabs(tabs, windowId) {
+		checkReverseOrder(tabs);
+		tabs.forEach(function (tab) {
+			createTab(
+				{
+					url: tab.url,
+					active: false,
+					windowId: windowId,
+					pinned: tab.pinned ? true : false
+				},
+				{
+					discard: lazyLoading,
+					container: tab.cookieStoreId
+				}
+			);
+		});
+	};
+
 	var restoreSession = function restoreSession(folderID, options) {
 		if (typeof browser === 'undefined' || !browser.bookmarks) return;
 
 		browser.bookmarks.getChildren(folderID)
 			.then(function (bookmarks) {
 				if (options && options.newWindow) {
-					createSessionWindow(bookmarks)
+					createSessionWindow((windowID) => createTabsFromBookmarks(bookmarks, windowID))
 						.then(function (createdWindow) {
 							if (createdWindow) {
 								if (options.closeAll) {
@@ -159,21 +195,7 @@ export const SessionManagement = (function SessionManagement() {
 						});
 				}
 				else {
-					checkReverseOrder(bookmarks);
-					bookmarks.forEach(function (bookmark) {
-						const parsed = parseContainerFromTitle(bookmark.title);
-						createTab(
-							{
-								url: bookmark.url,
-								active: false,
-								discard: lazyLoading,
-							},
-							{
-								container: parsed.cookieStoreId
-							},
-							function (tabInfo) { FaviconService.checkTabFaviconSaved(tabInfo); }
-						);
-					});
+					createTabsFromBookmarks(bookmarks, browser.windows.WINDOW_ID_CURRENT);
 				}
 			},
 				function fail() {
@@ -181,45 +203,30 @@ export const SessionManagement = (function SessionManagement() {
 				});
 	};
 
-	var createSessionWindow = function createSessionWindow(bookmarks) {
+	var createSessionWindow = function createSessionWindow(callback) {
 		var action = new Promise((resolve, reject) => {
 			if (typeof browser === 'undefined' || !browser.windows) return reject();
 
-			if (bookmarks.length > 0) {
-				browser.windows.create({})
-					.then(function (mozWindow) {
-						resolve(mozWindow);
-						var windowID = mozWindow.id;
-						windowsTabsToKill[windowID] = mozWindow.tabs[0].id;
-
-						checkReverseOrder(bookmarks);
-						bookmarks.forEach(function (bookmark) {
-							const parsed = parseContainerFromTitle(bookmark.title);
-							createTab(
-								{
-									url: bookmark.url,
-									pinned: bookmark.pinned,
-									windowId: windowID,
-								},
-								{
-									discard: lazyLoading,
-									container: parsed.cookieStoreId
-								},
-								function (tabInfo) { FaviconService.checkTabFaviconSaved(tabInfo); }
-							);
-						});
-					});
-			}
-			else {
-				reject();
-			}
+			browser.windows.create({})
+				.then(function (mozWindow) {
+					resolve(mozWindow);
+					var windowID = mozWindow.id;
+					windowsTabsToKill[windowID] = mozWindow.tabs[0].id;
+					callback(windowID);
+				});
 		});
 		return action;
 	};
 
 	var restoreSessions = function restoreSessions(windows) {
 		windows.forEach(function (bookmarks) {
-			createSessionWindow(bookmarks);
+			createSessionWindow((windowID) => createTabsFromBookmarks(bookmarks, windowID));
+		});
+	};
+
+	var restoreHistorySession = function restoreHistorySession(windows) {
+		windows.forEach(function (tabs) {
+			createSessionWindow((windowID) => createTabsFromHistoryTabs(tabs, windowID));
 		});
 	};
 
@@ -241,12 +248,16 @@ export const SessionManagement = (function SessionManagement() {
 							restoreSessions(message.windows);
 							break;
 
+						case 'restore-history-session':
+							restoreHistorySession(message.windows);
+							break;
+
 						case 'save-favicon':
 							FaviconService.checkTabFaviconSaved(message.tab, false);
 							break;
 
 						case 'open-tab':
-							openTab(message.options);
+							openTab(message.options, message.info);
 							break;
 					}
 				});

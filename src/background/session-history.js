@@ -1,7 +1,5 @@
 'use strict';
 
-import { SessionManagement } from './session-management';
-
 const storageKey = {
 	config: 'history.config',
 	active: 'history.active',
@@ -52,7 +50,6 @@ BrowserSession.prototype.update = function update() {
 				var sessionTab = {
 					title: tab.title,
 					url: tab.url,
-					favIconUrl: tab.favIconUrl,
 					pinned: tab.pinned,
 					cookieStoreId: tab.cookieStoreId,
 				};
@@ -116,7 +113,7 @@ BrowserSession.prototype.setConfig = function setConfig(conf) {
 let activeSession = new BrowserSession();
 let sessions = [];
 let config = {
-	enabled: true,
+	enabled: false,
 	interval: 15,
 	saveBuffer: 3,
 	savingSlots: 20,

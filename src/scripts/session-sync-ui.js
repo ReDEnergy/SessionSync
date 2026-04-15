@@ -37,6 +37,7 @@ import { SessionToolbar } from './components/session-toolbar';
 // Bookmarks
 import { SessionManager } from './session/management';
 import { BookmarkManager } from './session/bookmarks';
+import { BookmarkProperties } from '../common/bookmark-properties';
 
 // ************************************************************************
 // UI initilization
@@ -300,34 +301,28 @@ export const SessionSyncUI = function SessionSyncUI() {
 
 	WindowEvents.on(document, 'BookmarkCtxMenu-OpenInNewTab', function (bookmarkID) {
 		var mark = SessionSyncModel.bookmarks[bookmarkID];
-		var parsed = BookmarkManager.parseContainerFromTitle(mark.title);
-		BookmarkManager.openBookmark({
-			url: mark.url,
+		BookmarkManager.openBookmark(mark.url, {
+			title: mark.title,
 			mode: 'newTab',
-			favicon: true,
-			cookieStoreId: parsed.cookieStoreId,
+			favicon: true
 		});
 	});
 
 	WindowEvents.on(document, 'BookmarkCtxMenu-OpenInActiveTab', function (bookmarkID) {
 		var mark = SessionSyncModel.bookmarks[bookmarkID];
-		var parsed = BookmarkManager.parseContainerFromTitle(mark.title);
-		BookmarkManager.openBookmark({
-			url: mark.url,
+		BookmarkManager.openBookmark(mark.url, {
+			title: mark.title,
 			mode: 'activeTab',
-			favicon: true,
-			cookieStoreId: parsed.cookieStoreId,
+			favicon: true
 		});
 	});
 
 	WindowEvents.on(document, 'BookmarkCtxMenu-OpenInNewWindow', function (bookmarkID) {
 		var mark = SessionSyncModel.bookmarks[bookmarkID];
-		var parsed = BookmarkManager.parseContainerFromTitle(mark.title);
-		BookmarkManager.openBookmark({
-			url: mark.url,
+		BookmarkManager.openBookmark(mark.url, {
+			title: mark.title,
 			mode: 'newWindow',
-			favicon: true,
-			cookieStoreId: parsed.cookieStoreId,
+			favicon: true
 		});
 	});
 
@@ -338,22 +333,19 @@ export const SessionSyncUI = function SessionSyncUI() {
 	});
 
 	WindowEvents.on(document, 'HistoryMarksCtxMenu-OpenInNewTab', function (url) {
-		BookmarkManager.openBookmark({
-			url: url,
+		BookmarkManager.openBookmark(url, {
 			mode: 'newTab'
 		});
 	});
 
 	WindowEvents.on(document, 'HistoryMarksCtxMenu-OpenInActiveTab', function (url) {
-		BookmarkManager.openBookmark({
-			url: url,
+		BookmarkManager.openBookmark(url, {
 			mode: 'activeTab'
 		});
 	});
 
 	WindowEvents.on(document, 'HistoryMarksCtxMenu-OpenInNewWindow', function (url) {
-		BookmarkManager.openBookmark({
-			url: url,
+		BookmarkManager.openBookmark(url, {
 			mode: 'newWindow'
 		});
 	});
@@ -416,14 +408,22 @@ export const SessionSyncUI = function SessionSyncUI() {
 		document.addEventListener('mousemove', eventMove);
 	};
 
-	if (AppConfig.isPanel()) {
-		AppConfig.onChange('style.panel.width', function (size) {
-			document.body.style.width = size + 'px';
-		});
+	function setPanelWidth(width) {
+		document.body.style.width = width + 'px';
+	}
 
-		AppConfig.onChange('style.panel.height', function (size) {
-			document.body.style.height = size + 'px';
-		});
+	function setPanelHeight(height) {
+		document.body.style.height = height + 'px';
+	}
+
+	if (AppConfig.isPanel()) {
+		// Apply immediately from current config (handles Chrome popup where onChange
+		// events from setupConfig fire before these listeners are registered)
+		setPanelWidth(AppConfig.get('style.panel.width'));
+		setPanelHeight(AppConfig.get('style.panel.height'));
+
+		AppConfig.onChange('style.panel.width', setPanelWidth);
+		AppConfig.onChange('style.panel.height', setPanelHeight);
 
 		resizeHandle.addEventListener('mousedown', startResize);
 	}

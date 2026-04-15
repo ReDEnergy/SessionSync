@@ -9,6 +9,7 @@ import { WindowEvents, GlobalEvents } from '../utils/global-events';
 // API
 
 export const SessionHistory = (function SessionHistory() {
+
 	var storageKey = {
 		config: 'history.config',
 		active: 'history.active',

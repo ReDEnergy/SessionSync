@@ -1,13 +1,19 @@
 import 'dotenv/config';
 import { defineConfig } from 'wxt';
 
-console.log('FIREFOX_BINARY:', process.env.FIREFOX_BINARY);
-console.log('FIREFOX_PROFILE:', process.env.FIREFOX_PROFILE);
-
 export default defineConfig(() => {
+
+	console.log('FIREFOX_BINARY:', process.env.FIREFOX_BINARY);
+	console.log('FIREFOX_PROFILE:', process.env.FIREFOX_PROFILE);
+
 	return {
 		srcDir: 'src',
 		publicDir: 'public',
+		imports: {
+			eslintrc: {
+				enabled: 9,
+			},
+		},
 		vite: () => ({
 			optimizeDeps: {
 				entries: [
@@ -46,7 +52,8 @@ export default defineConfig(() => {
 				'clipboardWrite',
 				'unlimitedStorage',
 				'cookies',
-				'contextualIdentities'
+				'contextualIdentities',
+				'favicon'
 			],
 			action: {
 				default_icon: {
@@ -66,7 +73,7 @@ export default defineConfig(() => {
 				'128': 'images/icon128.png'
 			},
 			commands: {
-				'_execute_browser_action': {
+				'_execute_action': {
 					suggested_key: {
 						'default': 'Ctrl+Shift+F'
 					},

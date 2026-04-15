@@ -11,6 +11,7 @@ import { SessionSyncModel } from './session-sync-model';
 
 import { SessionManager } from '../session/management';
 import { BookmarkManager } from '../session/bookmarks';
+import { HistoryManager } from '../session/history';
 
 // *****************************************************************************
 // API
@@ -18,8 +19,7 @@ import { BookmarkManager } from '../session/bookmarks';
 // ----------------------------------------------------------------------------
 // Session Events - delegated
 
-export function SessionBookmarkEvents(container)
-{
+export function SessionBookmarkEvents(container) {
 	var startDragEvent = null;
 	var trackingTelemetry = new Date();
 	var offsetRect = {};
@@ -66,10 +66,8 @@ export function SessionBookmarkEvents(container)
 	// --------------------------------------------------------------
 	// Session level
 
-	var bookmarkDblClick = function sessionDblClick(e)
-	{
-		if (SyncModel.state.session == 'restore')
-		{
+	var bookmarkDblClick = function sessionDblClick(e) {
+		if (SyncModel.state.session == 'restore') {
 			var bookmarkID = getBookmarkID(e);
 			if (bookmarkID != null && typeof document !== 'undefined') {
 				WindowEvents.emit(document, 'BookmarkCtxMenu-EditBookmark', bookmarkID);
@@ -77,20 +75,18 @@ export function SessionBookmarkEvents(container)
 		}
 	};
 
-	var mouseOver = function mouseOver(e)
-	{
+	var mouseOver = function mouseOver(e) {
 		if (!e.target.hasAttribute('over')) {
 			return;
 		}
 
 		if (typeof document === 'undefined') return;
 
-		switch(SyncModel.state.session)
-		{
+		switch (SyncModel.state.session) {
 			// Bookmark entry
 			case 'restore': {
 				var bookmarkID = getBookmarkID(e);
-				if (bookmarkHoverContextID == bookmarkID)
+				if (!bookmarkID || bookmarkHoverContextID == bookmarkID)
 					return;
 
 				bookmarkHoverContextID = bookmarkID;
@@ -117,8 +113,7 @@ export function SessionBookmarkEvents(container)
 		}
 	};
 
-	var mouseLeave = function mouseLeave()
-	{
+	var mouseLeave = function mouseLeave() {
 		if (typeof document !== 'undefined') {
 			WindowEvents.emit(document, 'HideUrlBar');
 		}
@@ -127,11 +122,9 @@ export function SessionBookmarkEvents(container)
 	// --------------------------------------------------------------
 	// Mouse Events
 
-	var trackDragging = function _mouseMove(e)
-	{
+	var trackDragging = function _mouseMove(e) {
 		var delta = Math.abs(startDragEvent.clientX - e.clientX) > 5 || Math.abs(startDragEvent.clientY - e.clientY) > 5;
-		if (delta)
-		{
+		if (delta) {
 			DragContext.setContext(bookmarkContext);
 			trackingTelemetry = new Date();
 
@@ -140,7 +133,7 @@ export function SessionBookmarkEvents(container)
 			offsetRect.relativeX = offsetRect.x - container.parentElement.offsetLeft;
 
 			bookmarkContext.DOMRoot.style.top = e.clientY - offsetRect.relativeY + 'px';
-			bookmarkContext.DOMRoot.style.left = e.clientX - offsetRect.relativeX  + 'px';
+			bookmarkContext.DOMRoot.style.left = e.clientX - offsetRect.relativeX + 'px';
 			bookmarkContext.DOMRoot.setAttribute('dragging', '');
 
 			// Events
@@ -149,15 +142,14 @@ export function SessionBookmarkEvents(container)
 		}
 	};
 
-	var cancelDragging = function cancelDragging(e)
-	{
+	var cancelDragging = function cancelDragging(e) {
 		AutoScroll.stop();
 
 		bookmarkContext.DOMRoot.setAttribute('dragging', 'drop');
 		bookmarkContext.DOMRoot.style.top = e.clientY - offsetRect.y + container.scrollTop + 'px';
 		bookmarkContext.DOMRoot.style.left = e.clientX - offsetRect.x + 'px';
 
-		setTimeout(function() {
+		setTimeout(function () {
 			bookmarkContext.DOMRoot.removeAttribute('dragging');
 			bookmarkContext.restorePosition();
 		}, 50);
@@ -166,8 +158,7 @@ export function SessionBookmarkEvents(container)
 		DragContext.clearContext();
 	};
 
-	var mouseDragging = function mouseMove(e)
-	{
+	var mouseDragging = function mouseMove(e) {
 		if (this != window)
 			return;
 
@@ -178,8 +169,7 @@ export function SessionBookmarkEvents(container)
 
 		var tryScroll = e.clientX > offsetRect.left && e.clientX < offsetRect.right;
 
-		if (tryScroll)
-		{
+		if (tryScroll) {
 			if (e.clientY < offsetRect.top) {
 				AutoScroll.scroll(container, (e.clientY - offsetRect.top));
 			}
@@ -193,46 +183,37 @@ export function SessionBookmarkEvents(container)
 		}
 
 		bookmarkContext.DOMRoot.style.top = e.clientY - offsetRect.relativeY + 'px';
-		bookmarkContext.DOMRoot.style.left = e.clientX - offsetRect.relativeX  + 'px';
+		bookmarkContext.DOMRoot.style.left = e.clientX - offsetRect.relativeX + 'px';
 		trackingTelemetry = new Date();
 	};
 
-	var mouseUp = function _mouseUp(e)
-	{
-		switch(SyncModel.state.session)
-		{
+	var mouseUp = function _mouseUp(e) {
+		switch (SyncModel.state.session) {
 			// if restore session preview
 			case 'restore': {
 				var bookmarkID = getBookmarkID(e);
 
 				// Test if changing
-				if (bookmarkID != null)
-				{
+				if (bookmarkID != null) {
 					if (bookmarkContext.bookmarkID == bookmarkID) {
 						// Preview the content if a click event was registered (mouse-up on the same DOM node)
 						if (!DragContext.hasContext()) {
 							var mark = SessionSyncModel.bookmarks[bookmarkID];
-							var parsed = BookmarkManager.parseContainerFromTitle(mark.title);
-							BookmarkManager.openBookmark({
-								url: mark.url,
+							BookmarkManager.openBookmark(mark.url, {
+								title: mark.title,
 								mode: BookmarkManager.getOpenMode(0),
-								favicon: true,
-								cookieStoreId: parsed.cookieStoreId,
+								favicon: true
 							});
 						}
 					}
-					else
-					{
-						if (SessionSyncModel.bookmarks[bookmarkID] != undefined)
-						{
+					else {
+						if (SessionSyncModel.bookmarks[bookmarkID] != undefined) {
 							SessionSyncModel.moveBookmark(bookmarkContext.bookmarkID, bookmarkID);
 						}
 					}
 				}
-				else
-				{
-					if (getTargetType(e) === 'folder')
-					{
+				else {
+					if (getTargetType(e) === 'folder') {
 						var sessionID = getSessionID(e);
 						if (sessionID != null && SessionSyncModel.bookmarks[sessionID] != undefined) {
 							SessionSyncModel.moveBookmarkTo(bookmarkContext.bookmarkID, sessionID);
@@ -246,14 +227,11 @@ export function SessionBookmarkEvents(container)
 				let tabID = getTabID(e);
 				let tabContext = SyncModel.tabs[tabID];
 
-				if (tabContext)
-				{
-					if (tabContext != bookmarkContext)
-					{
+				if (tabContext) {
+					if (tabContext != bookmarkContext) {
 						SessionManager.moveTab(bookmarkContext.tab.id, tabContext.tab.index, tabContext.tab.windowId);
 					}
-					else
-					{
+					else {
 						if (tabID) {
 							SessionManager.activateTab(tabID);
 							var windowID = getWindowID(e);
@@ -263,48 +241,42 @@ export function SessionBookmarkEvents(container)
 						}
 					}
 				}
-				else
-				{
-					if (getTargetType(e) === 'folder')
-					{
+				else {
+					if (getTargetType(e) === 'folder') {
 						var savingSessionID = getSessionID(e);
 						if (savingSessionID != null) {
 							BookmarkManager.createBookmarkFromTab(bookmarkContext.tab, savingSessionID)
-							.then(function() {
-								if (typeof document !== 'undefined') {
-									WindowEvents.emit(document, 'Notification', {
-										message: 'Saved',
-									});
-								}
-							});
+								.then(function () {
+									if (typeof document !== 'undefined') {
+										WindowEvents.emit(document, 'Notification', {
+											message: 'Saved',
+										});
+									}
+								});
 						}
 					}
 				}
 			}
 		}
 
-		if (DragContext.hasContext())
-		{
+		if (DragContext.hasContext()) {
 			cancelDragging(e);
 		}
-		else
-		{
+		else {
 			window.removeEventListener('mousemove', trackDragging);
 		}
 
 		window.removeEventListener('mouseup', mouseUp);
 	};
 
-	var bookmarkMouseDown = function _bookmarkMouseDown(e)
-	{
+	var bookmarkMouseDown = function _bookmarkMouseDown(e) {
 		var target = e.target;
 		if (DragContext.hasContext()) {
 			cancelDragging(e);
 			return;
 		}
 
-		switch(SyncModel.state.session)
-		{
+		switch (SyncModel.state.session) {
 			// if restore session preview
 			case 'restore': {
 				var bookmarkID = getBookmarkID(e);
@@ -314,8 +286,7 @@ export function SessionBookmarkEvents(container)
 
 				bookmarkContext = SyncModel.getBookmark(bookmarkID);
 
-				if (e.button == 0)
-				{
+				if (e.button == 0) {
 					startDragEvent = e;
 					window.addEventListener('mousemove', trackDragging);
 					window.addEventListener('mouseup', mouseUp);
@@ -323,15 +294,12 @@ export function SessionBookmarkEvents(container)
 				}
 
 				// Middle Click
-				if (e.button == 1)
-				{
+				if (e.button == 1) {
 					var mark = SessionSyncModel.bookmarks[bookmarkID];
-					var parsed = BookmarkManager.parseContainerFromTitle(mark.title);
-					BookmarkManager.openBookmark({
-						url: mark.url,
+					BookmarkManager.openBookmark(mark.url, {
+						title: mark.title,
 						mode: BookmarkManager.getOpenMode(1),
-						favicon: true,
-						cookieStoreId: parsed.cookieStoreId,
+						favicon: true
 					});
 					return;
 				}
@@ -342,8 +310,7 @@ export function SessionBookmarkEvents(container)
 			// If active session preview
 			case 'current': {
 
-				if (e.button == 0)
-				{
+				if (e.button == 0) {
 					let tabID = getTabID(e);
 					if (tabID != undefined) {
 						bookmarkContext = SyncModel.tabs[tabID];
@@ -366,27 +333,22 @@ export function SessionBookmarkEvents(container)
 
 			// if history session preview
 			case 'history': {
-				if (target.hasAttribute('url'))
-				{
-					let url = getTabURL(e);
-
-					switch (e.button)
-					{
+				if (target.hasAttribute('url')) {
+					switch (e.button) {
 						case 0:
 						case 1: {
-							BookmarkManager.openBookmark({
-								url: url,
-								mode: BookmarkManager.getOpenMode(e.button)
-							});
+							let windowID = getWindowID(e);
+							let tabID = getTabID(e);
+							let tab = HistoryManager.getHistoryTab(windowID, tabID);
+
+							BookmarkManager.openHistoryTab(tab, BookmarkManager.getOpenMode(e.button));
 
 							break;
 						}
 					}
 				}
-				else
-				{
-					if (e.button == 0)
-					{
+				else {
+					if (e.button == 0) {
 						let windowID = getWindowID(e);
 						if (windowID != undefined && typeof document !== 'undefined') {
 							WindowEvents.emit(document, 'HistorySessionRestoreWindow', windowID);
@@ -398,12 +360,10 @@ export function SessionBookmarkEvents(container)
 		}
 	};
 
-	var bookmarkContextMenu = function bookmarkContextMenu(e)
-	{
+	var bookmarkContextMenu = function bookmarkContextMenu(e) {
 		if (typeof document === 'undefined') return;
 
-		switch (SyncModel.state.session)
-		{
+		switch (SyncModel.state.session) {
 			case 'restore': {
 				var bookmarkID = getBookmarkID(e);
 				if (bookmarkID == null)

@@ -4,13 +4,12 @@
 // Modules
 
 import { AppConfig } from '../config';
+import { BookmarkProperties } from '../../common/bookmark-properties';
 
 // ************************************************************************
 // API
 
 export const BookmarkManager = (function BookmarkManager() {
-
-	const containerTag = 'container';
 
 	var getHostName = function getHostName(url) {
 		try {
@@ -20,14 +19,27 @@ export const BookmarkManager = (function BookmarkManager() {
 		}
 	};
 
-	var getFaviconUrl = function getFaviconUrl(favIconUrl, callback) {
+	var getFaviconUrlFromStorage = function getFaviconUrlFromStorage(favIconUrl, callback) {
 		var key = '@favIconUrl:' + getHostName(favIconUrl);
-		browser.storage.local.get(key)
+		return browser.storage.local.get(key)
 			.then(function (obj) {
 				if (obj[key]) {
 					callback(obj[key]);
 				}
 			});
+	};
+
+	var getFaviconUrl = function getFaviconUrl(url, callback) {
+		if (!url) return callback('');
+
+		if (import.meta.env.BROWSER === 'firefox') {
+			getFaviconUrlFromStorage(url, callback);
+			return;
+		}
+
+		const faviconUrl = browser.runtime.getURL(`_favicon/?pageUrl=${encodeURIComponent(url)}&size=32`);
+		callback(faviconUrl);
+		return;
 	};
 
 	var getFolderBookmarks = function getFolderBookmarks(folderID, callback) {
@@ -47,19 +59,14 @@ export const BookmarkManager = (function BookmarkManager() {
 		return state ? 'newTab' : 'activeTab';
 	};
 
-	var containerSuffix = {
-		encode: function (id) { return ` [${containerTag}:${id}]`; },
-		regex: new RegExp('^(.*) \\[' + containerTag + ':([^\\]]+)\\]$'),
-		default: 'firefox-default',
-	};
-
 	var createBookmarkFromTab = function createBookmarkFromTab(tab, parentId) {
 		var url = tab.url;
 		browser.runtime.sendMessage({ event: 'save-favicon', tab: tab });
 
 		var title = tab.title;
-		if (tab.cookieStoreId && tab.cookieStoreId !== containerSuffix.default) {
-			title += containerSuffix.encode(tab.cookieStoreId);
+		console.log('tab', tab);
+		if (tab.cookieStoreId || tab.pinned) {
+			title += BookmarkProperties.encode(tab);
 		}
 
 		return browser.bookmarks.create({
@@ -68,16 +75,6 @@ export const BookmarkManager = (function BookmarkManager() {
 			parentId: parentId
 		});
 
-	};
-
-	// Parse a [container:<id>] suffix from a bookmark title.
-	// Returns { title, cookieStoreId } — cookieStoreId is null when absent.
-	var parseContainerFromTitle = function parseContainerFromTitle(rawTitle) {
-		var match = rawTitle && rawTitle.match(containerSuffix.regex);
-		if (match) {
-			return { title: match[1], cookieStoreId: match[2] };
-		}
-		return { title: rawTitle, cookieStoreId: null };
 	};
 
 	var createBookmark = function createBookmark(options) {
@@ -90,15 +87,61 @@ export const BookmarkManager = (function BookmarkManager() {
 		return browser.bookmarks.create(options);
 	};
 
-	var openBookmark = function openBookmark(options) {
+	var openBookmark = function openBookmark(url, info) {
+
+		console.log('openBookmark', url, info);
+
+		var options = {
+			url: url
+		};
+
 		if (AppConfig.isPanel() == false) {
-			if (options.mode == 'activeTab') {
-				options.mode = 'newTab';
-				options.active = false;
+			options.active = false;
+			if (info.mode === 'activeTab') {
+				info.mode = 'newTab';
 			}
 		}
 
-		browser.runtime.sendMessage({ event: 'open-tab', options: options });
+		if (info.title) {
+			var bookmarkInfo = BookmarkProperties.parseTitle(info.title);
+			if (bookmarkInfo.properties.container) {
+				options.cookieStoreId = bookmarkInfo.properties.container;
+			}
+
+			if (bookmarkInfo.properties.pinned) {
+				options.pinned = true;
+			}
+
+			delete options.title;
+		}
+
+		browser.runtime.sendMessage({ event: 'open-tab', options: options, info: info });
+	};
+
+	var openHistoryTab = function openHistoryTab(tab, mode) {
+
+		console.log('openHistoryTab', tab, mode);
+
+		var options = {
+			url: tab.url
+		};
+
+		if (AppConfig.isPanel() == false) {
+			options.active = false;
+			if (mode === 'activeTab') {
+				mode = 'newTab';
+			}
+		}
+
+		if (tab.cookieStoreId) {
+			options.cookieStoreId = tab.cookieStoreId;
+		}
+
+		if (tab.pinned) {
+			options.pinned = true;
+		}
+
+		browser.runtime.sendMessage({ event: 'open-tab', options: options, info: { mode: mode } });
 	};
 
 	var setTitle = function setTitle(bookmark, title, callback) {
@@ -147,9 +190,9 @@ export const BookmarkManager = (function BookmarkManager() {
 		getFaviconUrl: getFaviconUrl,
 		getOpenMode: getOpenMode,
 		openBookmark: openBookmark,
+		openHistoryTab: openHistoryTab,
 		createBookmark: createBookmark,
 		createBookmarkFromTab: createBookmarkFromTab,
-		parseContainerFromTitle: parseContainerFromTitle,
 		searchBookmarks: searchBookmarks,
 
 		setTitle: setTitle,

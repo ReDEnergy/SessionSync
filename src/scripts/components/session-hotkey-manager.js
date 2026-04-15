@@ -189,10 +189,8 @@ export function SessionHotkeyManager() {
 	});
 
 	url.addEventListener('click', function () {
-		BookmarkManager.openBookmark({
-			url: supportLink,
-			mode: 'newTab',
-			active: true
+		BookmarkManager.openBookmark(supportLink, {
+			mode: 'newTab'
 		});
 	});
 
