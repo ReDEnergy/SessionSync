@@ -23,9 +23,9 @@ import { SessionHistory } from './session-history';
 // API
 
 /*
-* SessionContainer UI
-* Panel for listing session information (Firefox Bookmark Folder) and children bookmarks
-*/
+ * SessionContainer UI
+ * Panel for listing session information (Firefox Bookmark Folder) and children bookmarks
+ */
 
 export class SessionContainer {
 	constructor() {
@@ -44,14 +44,16 @@ export class SessionContainer {
 		// User events
 
 		function isValidSessionID(ID) {
-			return (SessionSyncModel.bookmarks[ID] !== undefined &&
+			return (
+				SessionSyncModel.bookmarks[ID] !== undefined &&
 				SessionSyncModel.bookmarks[ID].type === 'folder' &&
-				SessionSyncModel.bookmarks[ID].parentId == AppConfig.get('storageID'));
+				SessionSyncModel.bookmarks[ID].parentId == AppConfig.get('storageID')
+			);
 		}
 
 		function restoreHistorySession(sessionInfo) {
 			var list = [];
-			sessionInfo.windows.forEach(historyWindow => {
+			sessionInfo.windows.forEach((historyWindow) => {
 				list.push(historyWindow.tabs);
 			});
 			SessionManager.loadHistoryTabsNewWindow(list);
@@ -72,12 +74,10 @@ export class SessionContainer {
 						var activeSessionWindows = Object.values(this.selectedHistorySession.windows);
 						if (activeSessionWindows[windowID].active) {
 							SessionManager.activateWindow(activeSessionWindows[windowID].id);
-						}
-						else {
+						} else {
 							SessionManager.loadHistoryTabsNewWindow([activeSessionWindows[windowID].tabs]);
 						}
-					}
-					else {
+					} else {
 						SessionManager.loadHistoryTabsNewWindow([this.selectedHistorySession.windows[windowID].tabs]);
 					}
 				}
@@ -90,7 +90,6 @@ export class SessionContainer {
 			});
 
 			WindowEvents.on(document, 'MenuRestoreNewWindow', () => {
-
 				if (isValidSessionID(this.activeSessionID)) {
 					SessionManager.restoreNewWindow(this.activeSessionID);
 				}
@@ -158,7 +157,6 @@ export class SessionContainer {
 						this.saveHistorySession();
 						break;
 				}
-
 			});
 
 			WindowEvents.on(document, 'EditSelectedSession', () => {
@@ -229,7 +227,7 @@ export class SessionContainer {
 
 	setUIState(state, headerTitle, sessionID) {
 		if (typeof document !== 'undefined') {
-			WindowEvents.emit(document, 'SetUIState', { 'session': state });
+			WindowEvents.emit(document, 'SetUIState', { session: state });
 			WindowEvents.emit(document, 'SetSessionDescription', headerTitle);
 		}
 
@@ -251,7 +249,6 @@ export class SessionContainer {
 		this.setUIState('current', 'Active session', 0);
 
 		SessionManager.getCurrentWindow((mozWindow) => {
-
 			// Get non-private windows
 			if (mozWindow.incognito == true || AppConfig.get('session.save').allWindows == false) {
 				mozWindow.tabs.forEach((tab) => {
@@ -261,11 +258,10 @@ export class SessionContainer {
 				});
 
 				this.restoreScrollTop('current');
-			}
-			else {
+			} else {
 				// Get non-private windows
 				var tabIndex = 0;
-				var windowIndex = 0;	// display index in UI - ignores private windows
+				var windowIndex = 0; // display index in UI - ignores private windows
 
 				SessionManager.getAllWindows((windows) => {
 					for (let mozWindow of windows) {
@@ -297,9 +293,9 @@ export class SessionContainer {
 	}
 
 	showHistorySession(sessionInfo) {
-		var newSession = (this.selectedHistorySession != undefined) && (this.selectedHistorySession != sessionInfo);
+		var newSession = this.selectedHistorySession != undefined && this.selectedHistorySession != sessionInfo;
 
-		this.setUIState('history', (new Date(sessionInfo.lastSave)).toLocaleString(), -1);
+		this.setUIState('history', new Date(sessionInfo.lastSave).toLocaleString(), -1);
 		this.selectedHistorySession = sessionInfo;
 		HistoryManager.selectSession(sessionInfo);
 
@@ -339,7 +335,6 @@ export class SessionContainer {
 		this.setUIState('restore', '', sessionID);
 
 		BookmarkManager.getFolderBookmarks(session.id, (marks) => {
-
 			if (typeof document !== 'undefined') {
 				WindowEvents.emit(document, 'SetPromiseSession', { sessionID: session.id, update: false });
 			}
@@ -355,19 +350,17 @@ export class SessionContainer {
 
 			this.updateSessionInfo();
 			this.restoreScrollTop('restore');
-
 		});
 	}
 
 	restoreScrollTop(state, forcedValue) {
 		var scrollTop = AppConfig.get('state.scrollTop.' + state);
-		this.DOMBookmarks.scrollTop = (forcedValue !== undefined) ? forcedValue : scrollTop;
+		this.DOMBookmarks.scrollTop = forcedValue !== undefined ? forcedValue : scrollTop;
 	}
 
 	bookmarkCurrentTab() {
 		// Test if already saved in this session
 		SessionManager.getCurrentTab((activeTab) => {
-
 			var sessionID = this.activeSessionID;
 			var bookmarks = SessionSyncModel.bookmarks;
 
@@ -375,7 +368,7 @@ export class SessionContainer {
 				if (bookmarks[i].parentId == sessionID && bookmarks[i].url == activeTab.url) {
 					if (typeof document !== 'undefined') {
 						WindowEvents.emit(document, 'Notification', {
-							message: 'Already Saved',
+							message: 'Already Saved'
 						});
 					}
 
@@ -387,19 +380,16 @@ export class SessionContainer {
 
 			// Add bookmark into the session
 
-			BookmarkManager.createBookmarkFromTab(activeTab, sessionID)
-				.then((mark) => {
-					var bookmark = new SessionBookmark(mark);
+			BookmarkManager.createBookmarkFromTab(activeTab, sessionID).then((mark) => {
+				var bookmark = new SessionBookmark(mark);
 
-					SessionSyncModel.bookmarks[mark.id] = mark;
-					this.SyncModel.setBookmark(mark.id, bookmark);
-					this.DOMBookmarks.appendChild(bookmark.DOMRoot);
+				SessionSyncModel.bookmarks[mark.id] = mark;
+				this.SyncModel.setBookmark(mark.id, bookmark);
+				this.DOMBookmarks.appendChild(bookmark.DOMRoot);
 
-					bookmark.setVirtualPosition(mark.index);
-					bookmark.highlight();
-
-				});
-
+				bookmark.setVirtualPosition(mark.index);
+				bookmark.highlight();
+			});
 		});
 	}
 
@@ -407,8 +397,7 @@ export class SessionContainer {
 		if (sessionIndex == undefined) {
 			// When Save button from toolbar is pressed
 			SessionManager.saveHistorySession(this.selectedHistorySession);
-		}
-		else {
+		} else {
 			// Save from context menu
 			SessionHistory.getHistorySession(sessionIndex, function (sessionInfo) {
 				SessionManager.saveHistorySession(sessionInfo);

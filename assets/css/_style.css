@@ -8,7 +8,7 @@
 	margin: 0;
 
 	font-size: 12px;
-	font-family: "Open Sans", "Segoe UI", Arial, Helvetica, sans-serif;
+	font-family: 'Open Sans', 'Segoe UI', Arial, Helvetica, sans-serif;
 
 	color: #000 !important;
 	overflow: hidden;
@@ -16,11 +16,11 @@
 	-moz-user-select: none;
 }
 
-#session-sync[panel="false"] {
+#session-sync[panel='false'] {
 	position: absolute;
 }
 
-#session-sync[panel="false"] .sessions-area .panel-resize-handle {
+#session-sync[panel='false'] .sessions-area .panel-resize-handle {
 	display: none;
 }
 
@@ -42,7 +42,7 @@
 	display: none;
 }
 
-#session-sync #overlay[state="true"] {
+#session-sync #overlay[state='true'] {
 	display: block;
 }
 
@@ -50,9 +50,9 @@
  * Panel Body
  */
 
- #session-sync #body {
-	 height: 100%;
- }
+#session-sync #body {
+	height: 100%;
+}
 
 #session-sync[config] .body {
 	background-color: rgba(255, 255, 255, 0.95);
@@ -70,18 +70,18 @@
 	flex-direction: column;
 }
 
-#session-sync[show="false"] .sessions-area {
+#session-sync[show='false'] .sessions-area {
 	display: none;
 }
 
-#session-sync[state="pin"] .sessions-area {
+#session-sync[state='pin'] .sessions-area {
 	top: 0;
 	right: 0;
 	margin: 0;
 	transform: translate(0);
 }
 
-#session-sync[state="centered"] .sessions-area {
+#session-sync[state='centered'] .sessions-area {
 	top: calc(50% - 50px);
 	left: 50%;
 	transform: translate(-50%, -50%);
@@ -115,15 +115,14 @@
 	transition: none;
 }
 
-#session-sync .sessions-area .panel-resize-handle
-{
-	content: " ";
+#session-sync .sessions-area .panel-resize-handle {
+	content: ' ';
 	width: 12px;
 	height: 12px;
 	margin-top: -12px;
-	background: url("images/resize.png") center no-repeat !important;
+	background: url('images/resize.png') center no-repeat !important;
 	position: absolute;
-	background: #DDD;
+	background: #ddd;
 	bottom: 0;
 	left: 0px;
 	cursor: sw-resize;
@@ -132,14 +131,12 @@
 	transform: rotate(90deg);
 }
 
-#session-sync .sessions-area .panel-resize-handle:hover
-{
-	background: #1AB61A;
+#session-sync .sessions-area .panel-resize-handle:hover {
+	background: #1ab61a;
 }
 
-#session-sync .sessions-area .panel-resize-handle[resizing]
-{
-	background: #2D92EB;
+#session-sync .sessions-area .panel-resize-handle[resizing] {
+	background: #2d92eb;
 }
 
 #clipboard {

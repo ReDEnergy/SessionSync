@@ -66,7 +66,6 @@ export class SessionSyncDOMModel {
 }
 
 export const SessionSyncModel = (function SessionSync() {
-
 	// Bookmarks storage
 	var bookmarks = {};
 
@@ -78,7 +77,7 @@ export const SessionSyncModel = (function SessionSync() {
 
 	var getModel = function getModel(doc) {
 		var model = domModels.get(doc);
-		if ((model instanceof SessionSyncDOMModel) === false) {
+		if (model instanceof SessionSyncDOMModel === false) {
 			model = new SessionSyncDOMModel(doc);
 		}
 		return model;
@@ -141,8 +140,9 @@ export const SessionSyncModel = (function SessionSync() {
 	// Moving a bookmark to a new session directory
 	var moveBookmarkTo = function moveBookmarkTo(bookmarkID, folderID) {
 		var parentID = bookmarks[bookmarkID].parentId;
-		if (parentID == folderID)
+		if (parentID == folderID) {
 			return;
+		}
 
 		BookmarkManager.moveItem(bookmarkID, folderID, undefined, onSuccess, onActionError);
 
@@ -304,7 +304,6 @@ export const SessionSyncModel = (function SessionSync() {
 			WindowEvents.emitLocal('Notification', {
 				message: 'Success'
 			});
-
 		} catch (err) {
 			console.log(err);
 			WindowEvents.emitLocal('Notification', {
@@ -341,11 +340,10 @@ export const SessionSyncModel = (function SessionSync() {
 				switch (historyEvent.bookmark.type) {
 					case 'bookmark':
 					case 'separator': {
-						recreateBookmark(historyEvent.bookmark)
-							.then(function (bookmark) {
-								sessionID = (bookmark.parentId == AppConfig.get('storageID')) ? bookmark.id : bookmark.parentId;
-								onSuccess();
-							});
+						recreateBookmark(historyEvent.bookmark).then(function (bookmark) {
+							sessionID = bookmark.parentId == AppConfig.get('storageID') ? bookmark.id : bookmark.parentId;
+							onSuccess();
+						});
 						break;
 					}
 
@@ -353,35 +351,33 @@ export const SessionSyncModel = (function SessionSync() {
 						// Restore deleted folder
 						var oldID = historyEvent.bookmark.id;
 
-						recreateBookmark(historyEvent.bookmark)
-							.then(function (node) {
-								sessionID = node.id;
-								var newID = node.id;
-								var updateEvent = new LimitCounter(historyEvent.items.length, onSuccess);
+						recreateBookmark(historyEvent.bookmark).then(function (node) {
+							sessionID = node.id;
+							var newID = node.id;
+							var updateEvent = new LimitCounter(historyEvent.items.length, onSuccess);
 
-								// correct parent for each bookmark
-								if (oldID != newID) {
-									// correct restore event
-									historyEvent.items.forEach(function (bookmark) {
-										bookmark.parentId = newID;
-										recreateBookmark(bookmark)
-											.then(updateEvent.advance, updateEvent.advance);
+							// correct parent for each bookmark
+							if (oldID != newID) {
+								// correct restore event
+								historyEvent.items.forEach(function (bookmark) {
+									bookmark.parentId = newID;
+									recreateBookmark(bookmark).then(updateEvent.advance, updateEvent.advance);
+								});
+
+								// correct all undo events
+								undoEvents.forEach(function (event) {
+									event.items.forEach(function (bookmark) {
+										if (bookmark.parentId == oldID) {
+											bookmark.parentId = newID;
+										}
 									});
+								});
+							}
 
-									// correct all undo events
-									undoEvents.forEach(function (event) {
-										event.items.forEach(function (bookmark) {
-											if (bookmark.parentId == oldID) {
-												bookmark.parentId = newID;
-											}
-										});
-									});
-								}
-
-								if (historyEvent.items.length == 0) {
-									onSuccess();
-								}
-							});
+							if (historyEvent.items.length == 0) {
+								onSuccess();
+							}
+						});
 						break;
 					}
 				}
@@ -407,7 +403,6 @@ export const SessionSyncModel = (function SessionSync() {
 		moveBookmarkTo: moveBookmarkTo,
 
 		deleteBookmarkList: deleteBookmarkList,
-		updateBookmarkItem: updateBookmarkItem,
+		updateBookmarkItem: updateBookmarkItem
 	};
-
 })();

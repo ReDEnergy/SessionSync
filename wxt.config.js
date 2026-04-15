@@ -2,7 +2,6 @@ import 'dotenv/config';
 import { defineConfig } from 'wxt';
 
 export default defineConfig(() => {
-
 	console.log('FIREFOX_BINARY:', process.env.FIREFOX_BINARY);
 	console.log('FIREFOX_PROFILE:', process.env.FIREFOX_PROFILE);
 
@@ -11,30 +10,28 @@ export default defineConfig(() => {
 		publicDir: 'public',
 		imports: {
 			eslintrc: {
-				enabled: 9,
-			},
+				enabled: 9
+			}
 		},
 		vite: () => ({
 			optimizeDeps: {
-				entries: [
-					'src/entrypoints/popup/main.js',
-					'src/entrypoints/background.js',
-				],
-			},
+				entries: ['src/entrypoints/popup/main.js', 'src/entrypoints/background.js']
+			}
 		}),
 		browser: 'firefox',
 		webExt: {
 			binaries: {
-				firefox: process.env.FIREFOX_BINARY,
+				firefox: process.env.FIREFOX_BINARY
 			},
 			firefoxProfile: process.env.FIREFOX_PROFILE,
-			keepProfileChanges: true,
+			keepProfileChanges: true
 		},
 		manifest: {
 			name: 'Session Sync',
 			version: '3.2.0',
 			author: 'Gabriel Ivanica',
-			description: 'Save sessions as bookmarks and sync them through Firefox Sync (or any other sync engine).\nPowerful session management - organize, edit, change, save, restore, etc\n',
+			description:
+				'Save sessions as bookmarks and sync them through Firefox Sync (or any other sync engine).\nPowerful session management - organize, edit, change, save, restore, etc\n',
 			homepage_url: 'https://github.com/ReDEnergy/SessionSync',
 			default_locale: 'en',
 			browser_specific_settings: {
@@ -45,49 +42,40 @@ export default defineConfig(() => {
 					}
 				}
 			},
-			permissions: [
-				'storage',
-				'bookmarks',
-				'tabs',
-				'clipboardWrite',
-				'unlimitedStorage',
-				'cookies',
-				'contextualIdentities',
-				'favicon'
-			],
+			permissions: ['storage', 'bookmarks', 'tabs', 'clipboardWrite', 'unlimitedStorage', 'cookies', 'contextualIdentities', 'favicon'],
 			action: {
 				default_icon: {
-					'16': 'images/icon16.png',
-					'32': 'images/icon32.png',
-					'48': 'images/icon48.png',
-					'128': 'images/icon128.png'
+					16: 'images/icon16.png',
+					32: 'images/icon32.png',
+					48: 'images/icon48.png',
+					128: 'images/icon128.png'
 				},
-				default_title: 'Session Sync',
+				default_title: 'Session Sync'
 			},
 			icons: {
-				'16': 'images/icon16.png',
-				'32': 'images/icon32.png',
-				'48': 'images/icon48.png',
-				'64': 'images/icon64.png',
-				'96': 'images/icon96.png',
-				'128': 'images/icon128.png'
+				16: 'images/icon16.png',
+				32: 'images/icon32.png',
+				48: 'images/icon48.png',
+				64: 'images/icon64.png',
+				96: 'images/icon96.png',
+				128: 'images/icon128.png'
 			},
 			commands: {
-				'_execute_action': {
+				_execute_action: {
 					suggested_key: {
-						'default': 'Ctrl+Shift+F'
+						default: 'Ctrl+Shift+F'
 					},
 					description: 'Toggle Widget'
 				},
-				'session_sync_detach_tab': {
+				session_sync_detach_tab: {
 					suggested_key: {
-						'default': 'Ctrl+Shift+U'
+						default: 'Ctrl+Shift+U'
 					},
 					description: 'Tab View'
 				},
-				'session_sync_detach_window': {
+				session_sync_detach_window: {
 					suggested_key: {
-						'default': 'Ctrl+Shift+2'
+						default: 'Ctrl+Shift+2'
 					},
 					description: 'Window View'
 				}

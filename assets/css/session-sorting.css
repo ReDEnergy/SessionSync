@@ -8,7 +8,7 @@
 	padding: 0;
 	display: flex;
 
-	background-image: url("images/sort.png");
+	background-image: url('images/sort.png');
 	background-size: 20px;
 	background-repeat: no-repeat;
 	background-position: center center;
@@ -22,7 +22,7 @@
 	box-sizing: border-box;
 }
 
-#session-sync[list="history"] .sorting-method {
+#session-sync[list='history'] .sorting-method {
 	display: none;
 }
 
@@ -31,13 +31,13 @@
 	opacity: 1;
 }
 
-#session-sync .sorting-method[active="true"] {
+#session-sync .sorting-method[active='true'] {
 	opacity: 1;
 }
 
-#session-sync .sorting-method[active="true"] .dropdown {
+#session-sync .sorting-method[active='true'] .dropdown {
 	display: block;
-	background: #FFF;
+	background: #fff;
 }
 
 #session-sync .sorting-method .dropdown {
@@ -61,9 +61,9 @@
 #session-sync .sorting-method .dropdown .option-list {
 	width: 100%;
 
-	border: 1px solid #CCC;
+	border: 1px solid #ccc;
 	border-bottom: none;
-	background: #FFF;
+	background: #fff;
 
 	position: absolute;
 	bottom: 0;
@@ -79,18 +79,16 @@
 	box-sizing: border-box;
 	transition-property: left, top, color, background;
 	transition-duration: 0.2s;
-
 }
 
 #session-sync .sorting-method .dropdown .option-list .option:hover {
-	background: #EEE;
-	border-color: #CCC;
+	background: #eee;
+	border-color: #ccc;
 	cursor: pointer;
 	transition-property: left, top;
 }
 
 #session-sync .sorting-method .dropdown .option-list .option[active] {
-	color: #FFF;
-	background: #2D92EB;
+	color: #fff;
+	background: #2d92eb;
 }
-

@@ -4,9 +4,7 @@
 // API
 
 export const HistoryManager = (function HistoryManager() {
-
 	var selectedSessions;
-
 
 	var selectSession = function selectSession(sessionInfo) {
 		selectedSessions = sessionInfo;
@@ -26,5 +24,4 @@ export const HistoryManager = (function HistoryManager() {
 		getSelectedSession: getSelectedSession,
 		getHistoryTab: getHistoryTab
 	};
-
 })();

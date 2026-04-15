@@ -2,7 +2,6 @@
  * Generic CSS
  */
 
-
 #session-sync .css-close-button {
 	width: 2em;
 	height: 2em;
@@ -27,10 +26,10 @@
 
 #session-sync .css-close-button:after,
 #session-sync .css-close-button:before {
-	content: "";
+	content: '';
 	width: 60%;
 	height: 16%;
-	background: #AAA;
+	background: #aaa;
 	position: absolute;
 	top: 42%;
 	left: 20%;

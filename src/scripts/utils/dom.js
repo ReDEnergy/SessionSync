@@ -8,9 +8,10 @@ const NS_HTML = 'http://www.w3.org/1999/xhtml';
 function Node(ns, type, attrs) {
 	var elem = document.createElementNS(ns, type);
 
-	attrs && Object.keys(attrs).forEach(function (attr) {
-		elem.setAttribute(attr, attrs[attr]);
-	});
+	attrs &&
+		Object.keys(attrs).forEach(function (attr) {
+			elem.setAttribute(attr, attrs[attr]);
+		});
 
 	return elem;
 }

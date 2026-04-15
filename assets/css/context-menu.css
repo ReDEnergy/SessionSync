@@ -5,22 +5,22 @@
 #session-sync .context-menu {
 	width: 180px;
 	padding: 5px;
-	background: #FFF;
-	border: 1px #CCC solid;
+	background: #fff;
+	border: 1px #ccc solid;
 
 	display: none;
 	position: fixed;
 	left: 0;
 	top: 0;
 
-	box-shadow: 0px 0px 5px 0 #CCC;
+	box-shadow: 0px 0px 5px 0 #ccc;
 	transform: translateX(5px);
 	z-index: 3000;
 
 	box-sizing: border-box;
 }
 
-#session-sync .context-menu[data-active="true"] {
+#session-sync .context-menu[data-active='true'] {
 	display: block;
 }
 
@@ -28,15 +28,14 @@
 	width: 100%;
 	height: 1px;
 	margin: 3px 0;
-	background: #CCC;
+	background: #ccc;
 }
-
 
 #session-sync .context-menu .button {
 	width: 100%;
 	padding: 5px 5px 5px 30px;
 
-	background-image: url("images/icons/heart.png");
+	background-image: url('images/icons/heart.png');
 	background-size: 20px;
 	background-repeat: no-repeat;
 	background-position: 3px 3px;
@@ -44,57 +43,55 @@
 }
 
 #session-sync .context-menu .button:hover {
-	background-color: #EEE;
+	background-color: #eee;
 	cursor: pointer;
 }
 
-#session-sync .context-menu .button[icon="save"] {
-	background-image: url("images/icons/heart.png");
+#session-sync .context-menu .button[icon='save'] {
+	background-image: url('images/icons/heart.png');
 }
 
-#session-sync .context-menu .button[icon="new-tab"] {
-	background-image: url("images/icons/ribbon.png");
+#session-sync .context-menu .button[icon='new-tab'] {
+	background-image: url('images/icons/ribbon.png');
 }
 
-#session-sync .context-menu .button[icon="same-tab"] {
-	background-image: url("images/icons/recycle.png");
+#session-sync .context-menu .button[icon='same-tab'] {
+	background-image: url('images/icons/recycle.png');
 }
 
-#session-sync .context-menu .button[icon="new-window"] {
-	background-image: url("images/icons/frames.png");
+#session-sync .context-menu .button[icon='new-window'] {
+	background-image: url('images/icons/frames.png');
 }
 
-#session-sync .context-menu .button[icon="replace-current"] {
-	background-image: url("images/material_icons/repeat_one.svg");
+#session-sync .context-menu .button[icon='replace-current'] {
+	background-image: url('images/material_icons/repeat_one.svg');
 }
 
-#session-sync .context-menu .button[icon="replace-all"] {
-	background-image: url("images/material_icons/repeat.svg");
+#session-sync .context-menu .button[icon='replace-all'] {
+	background-image: url('images/material_icons/repeat.svg');
 }
 
-#session-sync .context-menu .button[icon="copy"] {
-	background-image: url("images/icons/clipboard.png");
+#session-sync .context-menu .button[icon='copy'] {
+	background-image: url('images/icons/clipboard.png');
 }
 
-#session-sync .context-menu .button[icon="edit"] {
-	background-image: url("images/icons/document.png");
+#session-sync .context-menu .button[icon='edit'] {
+	background-image: url('images/icons/document.png');
 }
 
-#session-sync .context-menu .button[icon="delete"] {
-	background-image: url("images/icons/denied.png");
+#session-sync .context-menu .button[icon='delete'] {
+	background-image: url('images/icons/denied.png');
 }
 
-#session-sync .context-menu .button[icon="same-window"] {
-	background-image: url("images/icons/stack.png");
+#session-sync .context-menu .button[icon='same-window'] {
+	background-image: url('images/icons/stack.png');
 }
 
-#session-sync .context-menu .button[icon="new-session"] {
-	background-image: url("images/icons/star.png");
+#session-sync .context-menu .button[icon='new-session'] {
+	background-image: url('images/icons/star.png');
 }
 
-#session-sync .context-menu[icons="no"] .button
-{
+#session-sync .context-menu[icons='no'] .button {
 	padding: 5px;
 	background-image: unset;
 }
-

@@ -37,7 +37,6 @@ export function SessionSorting() {
 		var option = DomElem('div', { class: 'option', value: key });
 		option.textContent = options[key].description;
 		optionList.appendChild(option);
-
 	}
 
 	var dropdown = DomElem('div', { class: 'dropdown' });
@@ -78,10 +77,8 @@ export function SessionSorting() {
 	document.addEventListener('click', function (e) {
 		if (e.target.className == 'sorting-method') {
 			toggleState();
-		}
-		else {
-			if (state == true)
-				toggleState();
+		} else {
+			if (state == true) toggleState();
 		}
 	});
 

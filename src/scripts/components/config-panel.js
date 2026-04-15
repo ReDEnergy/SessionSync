@@ -16,8 +16,8 @@ import * as DOMComponent from '../utils/components';
 // Custom Modules
 
 /*
-* Config panel
-*/
+ * Config panel
+ */
 
 export function ConfigPanel() {
 	// Create DomHealper
@@ -46,7 +46,7 @@ export function ConfigPanel() {
 				if (options.callback) {
 					options.callback(value);
 				}
-			},
+			}
 		});
 		options.parent.addItem(optionRG.DOMRoot);
 		AppConfig.onChange(options.key, function (value) {
@@ -55,7 +55,7 @@ export function ConfigPanel() {
 	}
 
 	function ToggleOptionConfig(options) {
-		var isSwitch = (options.type === 'switch');
+		var isSwitch = options.type === 'switch';
 		var Toggle = DOMComponent.ToggleButton;
 		if (isSwitch) {
 			Toggle = DOMComponent.ToggleSwitch;
@@ -73,15 +73,14 @@ export function ConfigPanel() {
 				if (options.callback) {
 					options.callback(value);
 				}
-			},
+			}
 		});
 
 		options.parent.addItem(toggleBtn.DOMRoot);
 		AppConfig.onChange(options.key, function (value) {
 			if (isSwitch) {
 				toggleBtn.setState(value);
-			}
-			else {
+			} else {
 				toggleBtn.setValue(value, false);
 			}
 		});
@@ -106,7 +105,6 @@ export function ConfigPanel() {
 		sectionContainer.appendChild(sectionBody);
 
 		sectionTitle.addEventListener('click', function () {
-
 			// manual mode
 			var isCollapsed = sectionContainer.hasAttribute('collapsed');
 			if (isCollapsed) {
@@ -127,7 +125,6 @@ export function ConfigPanel() {
 	// Section: UI scaling
 
 	(function () {
-
 		var section = new ConfigSection({ title: 'UI Scaling' });
 		panel.appendChild(section.container);
 
@@ -139,14 +136,11 @@ export function ConfigPanel() {
 		RangeOptionConfig({ parent: section, name: 'Toolbar', key: 'style.scale.toolbar', minValue: 10, maxValue: 50 });
 		RangeOptionConfig({ parent: section, name: 'Session list', key: 'style.scale.sessions', minValue: 10, maxValue: 50 });
 		RangeOptionConfig({ parent: section, name: 'Bookmarks list', key: 'style.scale.bookmarks', minValue: 10, maxValue: 50 });
-
 	})();
 
 	// ------------------------
 	// Section: General settings
-
 	(function () {
-
 		var section = new ConfigSection({ title: 'Theme Options' });
 		panel.appendChild(section.container);
 
@@ -154,16 +148,13 @@ export function ConfigPanel() {
 			parent: section,
 			name: 'Grayscale Icons',
 			key: 'theme.toolbar.grayscale',
-			type: 'switch',
+			type: 'switch'
 		});
-
 	});
 
 	// ------------------------
 	// Section: General settings
-
 	(function () {
-
 		var section = new ConfigSection({ title: 'Session Management' });
 		panel.appendChild(section.container);
 
@@ -171,23 +162,20 @@ export function ConfigPanel() {
 			parent: section,
 			name: 'Lazy loading restore',
 			key: 'restore.lazy.loading',
-			type: 'switch',
+			type: 'switch'
 		});
 
 		ToggleOptionConfig({
 			parent: section,
 			name: 'Reverse restore order',
 			key: 'restore.reverse.order',
-			type: 'switch',
+			type: 'switch'
 		});
-
 	})();
 
 	// ------------------------
 	// Section: General settings
-
 	(function () {
-
 		var section = new ConfigSection({ title: 'General' });
 		panel.appendChild(section.container);
 
@@ -196,7 +184,7 @@ export function ConfigPanel() {
 			name: 'Left click',
 			key: 'bookmark.click.newTab',
 			onState: 'New tab',
-			offState: 'Same tab',
+			offState: 'Same tab'
 		});
 
 		ToggleOptionConfig({
@@ -204,7 +192,7 @@ export function ConfigPanel() {
 			name: 'Middle click',
 			key: 'bookmark.middleClick.newTab',
 			onState: 'New tab',
-			offState: 'Same tab',
+			offState: 'Same tab'
 		});
 
 		ToggleOptionConfig({
@@ -213,24 +201,21 @@ export function ConfigPanel() {
 			name: 'Context menu icons',
 			key: 'context.menu.icons',
 			onState: 'Show',
-			offState: 'Disabled',
+			offState: 'Disabled'
 		});
 
 		ToggleOptionConfig({
 			parent: section,
 			name: 'Favicon service',
 			key: 'services.favicon.enabled',
-			type: 'switch',
+			type: 'switch'
 		});
 	})();
 
 	// ------------------------
 	// Section: Hotkeys
-
 	(function () {
-
-		if (typeof browser === 'object' && browser.commands && browser.commands.update == undefined)
-			return;
+		if (typeof browser === 'object' && browser.commands && browser.commands.update == undefined) return;
 
 		var section = new ConfigSection({ title: 'Hotkeys' });
 		panel.appendChild(section.container);
@@ -249,7 +234,7 @@ export function ConfigPanel() {
 							GlobalEvents.emit('hotkey.update', command);
 						}
 					});
-				},
+				}
 			});
 
 			return button.DOMRoot;
@@ -265,9 +250,7 @@ export function ConfigPanel() {
 
 	// ------------------------
 	// Section: History settings
-
 	(function () {
-
 		var section = new ConfigSection({ title: 'Auto-save History', id: 'history-config' });
 		panel.appendChild(section.container);
 
@@ -286,7 +269,7 @@ export function ConfigPanel() {
 					if (value == false) {
 						WindowEvents.emit(document, 'ShowSyncList', { update: true });
 					}
-					WindowEvents.emit(document, 'SetUIState', { 'history': value });
+					WindowEvents.emit(document, 'SetUIState', { history: value });
 				}
 			});
 			section.addItem(contextMenuIconsTB.DOMRoot);
@@ -312,7 +295,7 @@ export function ConfigPanel() {
 				onChange: function (value) {
 					historyConfig.interval = value;
 					SessionHistory.updateConfig(historyConfig);
-				},
+				}
 			});
 			section.addItem(saveIntervalRG.DOMRoot);
 
@@ -324,7 +307,7 @@ export function ConfigPanel() {
 				onChange: function (value) {
 					historyConfig.savingSlots = value;
 					SessionHistory.updateConfig(historyConfig);
-				},
+				}
 			});
 			section.addItem(saveSlotsRG.DOMRoot);
 
@@ -336,13 +319,12 @@ export function ConfigPanel() {
 				onChange: function (value) {
 					historyConfig.expireTimeHours = value;
 					SessionHistory.updateConfig(historyConfig);
-				},
+				}
 			});
 			section.addItem(expireAfterRG.DOMRoot);
 
 			// Events
-			WindowEvents.emit(document, 'SetUIState', { 'history': historyConfig.enabled });
-
+			WindowEvents.emit(document, 'SetUIState', { history: historyConfig.enabled });
 		});
 	})();
 

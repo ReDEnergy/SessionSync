@@ -16,7 +16,6 @@ import { SessionBookmark, SessionTab } from './session-bookmark';
 // API
 
 export function TrashCan() {
-
 	// Create DomHealper
 	var DomElem = HTMLCreator();
 
@@ -42,7 +41,7 @@ export function TrashCan() {
 	var configKey = {
 		hide: 'trashcan.hide',
 		hideCount: 'trashcan.hide-count',
-		undoEvents: 'undo.events',
+		undoEvents: 'undo.events'
 	};
 
 	// ------------------------------------------------------------------------

@@ -71,7 +71,7 @@ const FaviconService = (function FaviconService() {
 
 			browser.tabs.onUpdated.addListener(handle, {
 				tabId: tab.id,
-				properties: ['favIconUrl'],
+				properties: ['favIconUrl']
 			});
 		}
 	};
@@ -91,7 +91,7 @@ const FaviconService = (function FaviconService() {
 	initConfig();
 
 	return {
-		checkTabFaviconSaved: checkTabFaviconSaved,
+		checkTabFaviconSaved: checkTabFaviconSaved
 	};
 })();
 

@@ -6,14 +6,14 @@
  ***********/
 
 body {
-	margin:0;
+	margin: 0;
 
-	background-color: #EBF1F5;
+	background-color: #ebf1f5;
 	background-image: url(../images/grain_header.png), url(../images/grain.png);
 	background-repeat: repeat-x, repeat;
 
 	font-size: 12px;
-	font-family: "Open Sans", "Segoe UI", Arial, Helvetica, sans-serif;
+	font-family: 'Open Sans', 'Segoe UI', Arial, Helvetica, sans-serif;
 
 	cursor: default;
 }
@@ -32,12 +32,11 @@ body {
  * Identity
  */
 
-
 #identity {
 	width: auto;
 	height: 120px;
 	text-align: center;
-	font-family: "Open Sans Light", "Open Sans", Arial, Helvetica, sans-serif;
+	font-family: 'Open Sans Light', 'Open Sans', Arial, Helvetica, sans-serif;
 	position: relative;
 }
 
@@ -45,7 +44,7 @@ body {
 	width: auto;
 	height: auto;
 	font-size: 60px;
-	color: #DF5600;
+	color: #df5600;
 	overflow: visible;
 	text-align: left;
 
@@ -59,7 +58,7 @@ body {
 	margin: 0 auto 0;
 	width: 80px;
 	height: 80px;
-	background-image: url("../images/logo.png");
+	background-image: url('../images/logo.png');
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: contain;
@@ -96,7 +95,7 @@ body {
 #github .logo {
 	width: 50px;
 	height: 100%;
-	background-image: url("../images/github-logo.png");
+	background-image: url('../images/github-logo.png');
 	background-size: 40px;
 	background-repeat: no-repeat;
 	background-position: center center;
@@ -106,7 +105,7 @@ body {
 #github .brand {
 	width: 100px;
 	height: 100%;
-	background-image: url("../images/github.png");
+	background-image: url('../images/github.png');
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center right;
@@ -125,10 +124,12 @@ body {
 #feedback .icon {
 	width: 50px;
 	height: 100%;
-	background-image: url("../images/mail.png");
+	background-image: url('../images/mail.png');
 	background-size: contain;
 	background-repeat: no-repeat;
-	background-position: center right, center left;
+	background-position:
+		center right,
+		center left;
 	float: left;
 }
 
@@ -145,7 +146,6 @@ body {
 	opacity: 1;
 }
 
-
 #tooltip {
 	width: auto;
 	font-size: 14px;
@@ -157,7 +157,7 @@ body {
 	background: rgba(255, 255, 255, 1);
 	text-align: center;
 	line-height: 20px;
-	border: 1px solid #CCC;
+	border: 1px solid #ccc;
 	border-radius: 5px;
 
 	display: none;
@@ -172,14 +172,14 @@ body {
 }
 
 #tooltip:before {
-	content: " ";
+	content: ' ';
 	width: 16px;
 	height: 16px;
 	margin: -8px 0 0 -8px;
 
-	background: #FFF;
+	background: #fff;
 	border-style: solid;
-	border-color: #BBB;
+	border-color: #bbb;
 	border-width: 0 1px 1px 0;
 
 	position: absolute;
@@ -193,7 +193,6 @@ body {
 #tooltip[active] {
 	display: block;
 }
-
 
 /*******************
  *	Box Containers
@@ -225,17 +224,17 @@ body {
 	padding: 0.2em;
 	margin: 0.5em;
 	border-radius: 1em;
-	background: #CCC;
+	background: #ccc;
 	float: left;
 }
 
 #container .bullet[active] {
-	background: #2D92EB;
+	background: #2d92eb;
 	cursor: pointer;
 }
 
 #container .bullet:hover {
-	background: #2D92EB;
+	background: #2d92eb;
 	cursor: pointer;
 }
 
@@ -244,7 +243,7 @@ body {
 	height: 100%;
 	position: absolute;
 	left: 0;
-	transition: 1.0s left ease;
+	transition: 1s left ease;
 }
 
 #container .helpers {
@@ -277,11 +276,11 @@ body {
 }
 
 #container #scroll-left {
-	background-image: url("../images/arrow-left.png");
+	background-image: url('../images/arrow-left.png');
 }
 
 #container #scroll-right {
-	background-image: url("../images/arrow-right.png");
+	background-image: url('../images/arrow-right.png');
 	right: 0;
 }
 
@@ -289,7 +288,7 @@ body {
 	width: 100%;
 	padding: 10px;
 	font-size: 30px;
-	border-bottom: 2px solid #FFF;
+	border-bottom: 2px solid #fff;
 	text-align: center;
 	box-sizing: border-box;
 }
@@ -305,13 +304,13 @@ body {
 
 #container .info {
 	width: 100%;
-	padding: 20px 0 ;
+	padding: 20px 0;
 	font-size: 16px;
 	text-align: center;
 }
 
 #container .highlight {
-	color: #DF5600
+	color: #df5600;
 }
 
 #container a {

@@ -15,8 +15,8 @@ import * as DOMComponent from '../utils/components';
 // API
 
 /*
-* Command bar
-*/
+ * Command bar
+ */
 
 export function SessionToolbar() {
 	// Create DomHealper
@@ -61,7 +61,7 @@ export function SessionToolbar() {
 
 	if (typeof document !== 'undefined') {
 		WindowEvents.on(document, 'SetSessionInfo', function (sessionInfo) {
-			sessionDate.textContent = (new Date(sessionInfo.dateAdded)).toLocaleString();
+			sessionDate.textContent = new Date(sessionInfo.dateAdded).toLocaleString();
 			toolbar.setAttribute('session-type', sessionInfo.type);
 		});
 	}
@@ -112,7 +112,7 @@ SessionToolbar.prototype.createMenu = function createMenu() {
 			class: 'button ' + options.className,
 			'state-current': options.state.current,
 			'state-restore': options.state.restore,
-			'state-history': options.state.history,
+			'state-history': options.state.history
 		});
 		button.setAttribute('tooltip', options.tooltip);
 

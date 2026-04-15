@@ -4,7 +4,7 @@
 
 #session-sync .session-container {
 	height: 100%;
-	background: #FEFEFE;
+	background: #fefefe;
 
 	font-size: 14px;
 	float: right;
@@ -31,14 +31,14 @@
 	height: 3.4em;
 	width: 3.4em;
 
-	background: url("images/icons/heart.png") no-repeat;
+	background: url('images/icons/heart.png') no-repeat;
 	background-size: 2em;
 	background-position: 1em 0.4em;
-	background-color: #F5F5F5;
+	background-color: #f5f5f5;
 
 	border-radius: 0 0 0 100%;
-	border-left: 1px solid #CCC;
-	border-bottom: 1px solid #CCC;
+	border-left: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
 
 	position: absolute;
 	z-index: 1;
@@ -50,7 +50,7 @@
 
 #session-sync .session-container .save-session:hover {
 	cursor: pointer;
-	background-color: #FFF;
+	background-color: #fff;
 	filter: saturate(100%);
 }
 
@@ -78,7 +78,7 @@
 #session-sync .session-container .window-separator {
 	width: 100%;
 	height: 2em;
-	background: #F8F8F8;
+	background: #f8f8f8;
 	color: #555;
 
 	line-height: 1.9em;
@@ -98,7 +98,7 @@
 }
 
 #session-sync .session-container .window-separator:hover:after {
-	content: "(switch to)";
+	content: '(switch to)';
 	position: absolute;
 	font-size: 0.8em;
 	top: 0;
@@ -128,23 +128,23 @@
 }
 
 #session-sync .session-container .bookmark:hover {
-	background: #EEE;
+	background: #eee;
 	cursor: pointer;
 	transition-property: left, top;
 }
 
 #session-sync .session-container .bookmark[highlight] {
 	transition-duration: 0.5s;
-	background: #4396E9 !important;
-	color: #FFF;
+	background: #4396e9 !important;
+	color: #fff;
 }
 
 #session-sync .session-container .bookmark[dragging] {
 	width: 400px;
 	margin: 1px 0 0 1px;
-	background-color: #FBD4B0;
-	background: #4396E9 !important;
-	color: #FFF;
+	background-color: #fbd4b0;
+	background: #4396e9 !important;
+	color: #fff;
 	opacity: 0.9;
 
 	transition: none;
@@ -152,9 +152,9 @@
 	z-index: 1000;
 }
 
-#session-sync .session-container .bookmark[dragging="drop"] {
-	background: #4396E9 !important;
-	color: #FFF;
+#session-sync .session-container .bookmark[dragging='drop'] {
+	background: #4396e9 !important;
+	color: #fff;
 	opacity: 0.9;
 	transition: none;
 	position: absolute;
@@ -167,10 +167,10 @@
 }
 
 #session-sync .session-container .bookmark[pinned]:before {
-	content: "";
+	content: '';
 	width: 1.5em;
 	height: 100%;
-	background-image: url("images/icons/pin.png");
+	background-image: url('images/icons/pin.png');
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center center;
@@ -189,7 +189,7 @@
 #session-sync .session-container .bookmark .favicon {
 	width: 1.33em;
 	height: 100%;
-	background: url("images/icons/globe.png");
+	background: url('images/icons/globe.png');
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center center;
@@ -216,7 +216,7 @@
 	margin-right: 2em;
 	max-width: 10em;
 	border-radius: 1em;
-	color: #FFF;
+	color: #fff;
 	padding: 0 0.5em 0 0.5em;
 	white-space: nowrap;
 	overflow: hidden;
@@ -227,7 +227,7 @@
 
 #session-sync .session-container .bookmark .container .name {
 	height: 100%;
-	padding: 0 0.5em 0 .1em;
+	padding: 0 0.5em 0 0.1em;
 	line-height: 1.5em;
 }
 
@@ -248,7 +248,7 @@
 	width: 100%;
 	height: 2em;
 	line-height: 1.9em;
-	background: #F8F8F8;
+	background: #f8f8f8;
 	color: #555;
 	position: absolute;
 	transition: all 0.2s;

@@ -4,7 +4,6 @@
 // AutoScroll
 
 export const AutoScroll = (function AutoScroll() {
-
 	var autoScroll = false;
 	var prevScroll = 0;
 	var scrollSpeed = 0;
@@ -12,18 +11,15 @@ export const AutoScroll = (function AutoScroll() {
 	var scrollTarget;
 	var scrollDir = 0;
 
-	function scrollingAnimation()
-	{
-		if (autoScroll == false)
-		{
+	function scrollingAnimation() {
+		if (autoScroll == false) {
 			return;
 		}
 
 		prevScroll = scrollingNode.scrollTop;
 		scrollingNode.scrollTop += scrollSpeed;
 
-		if (scrollingNode.scrollTop != prevScroll)
-		{
+		if (scrollingNode.scrollTop != prevScroll) {
 			if (scrollTarget != undefined) {
 				if (scrollDir * scrollingNode.scrollTop > scrollTarget) {
 					scrollingNode.scrollTop = scrollDir * scrollTarget;
@@ -34,20 +30,16 @@ export const AutoScroll = (function AutoScroll() {
 			if (typeof requestAnimationFrame !== 'undefined') {
 				requestAnimationFrame(scrollingAnimation);
 			}
-		}
-		else
-		{
+		} else {
 			autoScroll = false;
 		}
 	}
 
 	// scroll a DOM node with a specified speed
-	function scroll(node, speed)
-	{
+	function scroll(node, speed) {
 		scrollSpeed = speed / 10;
 
-		if (autoScroll == true)
-		{
+		if (autoScroll == true) {
 			return;
 		}
 
@@ -59,20 +51,17 @@ export const AutoScroll = (function AutoScroll() {
 		}
 	}
 
-	function stop()
-	{
+	function stop() {
 		autoScroll = false;
 	}
 
-	function scrollTo(node, offset, time)
-	{
+	function scrollTo(node, offset, time) {
 		if (time == 0) {
 			node.scrollTop = offset;
 			return;
 		}
 
-		if (autoScroll == true)
-		{
+		if (autoScroll == true) {
 			return;
 		}
 
@@ -87,8 +76,8 @@ export const AutoScroll = (function AutoScroll() {
 	}
 
 	return {
-		scroll : scroll,
+		scroll: scroll,
 		scrollTo: scrollTo,
-		stop : stop
+		stop: stop
 	};
 })();

@@ -4,15 +4,15 @@
 #session-sync .field-edit-widget {
 	width: 100%;
 	padding: 10px;
-	background: #FFF;
-	border: 1px solid #CCC;
+	background: #fff;
+	border: 1px solid #ccc;
 
 	opacity: 0;
 
 	position: absolute;
 
 	box-sizing: border-box;
-	box-shadow: 0px 0px 5px 0px #CCC;
+	box-shadow: 0px 0px 5px 0px #ccc;
 
 	bottom: 0;
 	left: 0;
@@ -29,7 +29,7 @@
 	width: 100%;
 	height: 2.4em;
 	margin: 3px 0;
-	line-height: 2.0em;
+	line-height: 2em;
 	float: left;
 	display: flex;
 }
@@ -47,13 +47,13 @@
 	padding: 0 1em 0.2em 1em !important;
 	color: #333;
 	box-sizing: border-box;
-	border: 1px solid #CCC;
+	border: 1px solid #ccc;
 	border-radius: 1.2em !important;
 	flex: 1;
 }
 
 #session-sync .field-edit-widget input:focus {
-	border-color: #2D92EB !important;
+	border-color: #2d92eb !important;
 	box-shadow: 0 0 3px 0 rgba(0, 131, 255, 0.5) inset !important;
 }
 
@@ -65,7 +65,7 @@
 
 	font-size: 14px;
 	text-align: center;
-	color: #FFF;
+	color: #fff;
 	border: unset;
 	border-radius: 1em;
 	background: #999;
@@ -75,14 +75,14 @@
 }
 
 #session-sync .field-edit-widget .button:hover {
-	color: #FFF;
+	color: #fff;
 	cursor: pointer;
 }
 
 #session-sync .field-edit-widget .button.save:hover {
-	background: #23A823;
+	background: #23a823;
 }
 
 #session-sync .field-edit-widget .button.cancel:hover {
-	background: #DC462C;
+	background: #dc462c;
 }

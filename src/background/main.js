@@ -10,7 +10,6 @@ export const Commands = {
 };
 
 const SessionSync = (function () {
-
 	var windowInfoKey = 'style.window.detach';
 	var activeWindow = null;
 	var defaultWindowProperties = {
@@ -49,25 +48,27 @@ const SessionSync = (function () {
 			case Commands.openTutorial:
 				browser.tabs.create({
 					url: 'home/home.html',
-					active: true,
+					active: true
 				});
 				break;
 
 			case Commands.openGithub:
 				browser.tabs.create({
 					url: 'https://github.com/ReDEnergy/SessionSync',
-					active: true,
+					active: true
 				});
 				break;
 		}
 	}
 
 	function leaveFeedback() {
-		browser.tabs.create({
-			url: 'mailto:gabriel.ivanica@gmail.com?Subject=[Session-Sync]%20User%20feedback'
-		}).then(function (tab) {
-			browser.tabs.remove(tab.id);
-		});
+		browser.tabs
+			.create({
+				url: 'mailto:gabriel.ivanica@gmail.com?Subject=[Session-Sync]%20User%20feedback'
+			})
+			.then(function (tab) {
+				browser.tabs.remove(tab.id);
+			});
 	}
 
 	function detachToWindow() {
@@ -84,22 +85,25 @@ const SessionSync = (function () {
 				windowInfo = defaultWindowProperties;
 			}
 
-			browser.windows.create({
-				width: windowInfo.width,
-				height: windowInfo.height,
-				url: 'popup.html',
-				type: 'panel'
-			}).then(function (newWindow) {
-				activeWindow = newWindow;
-			});
+			browser.windows
+				.create({
+					width: windowInfo.width,
+					height: windowInfo.height,
+					url: 'popup.html',
+					type: 'panel'
+				})
+				.then(function (newWindow) {
+					activeWindow = newWindow;
+				});
 		});
 	}
 
 	function detachedToTab() {
-		browser.tabs.query({
-			title: 'Session Sync',
-			windowId: browser.windows.WINDOW_ID_CURRENT
-		})
+		browser.tabs
+			.query({
+				title: 'Session Sync',
+				windowId: browser.windows.WINDOW_ID_CURRENT
+			})
 			.then(function (tabs) {
 				if (tabs.length > 0) {
 					for (let i in tabs) {
@@ -148,20 +152,21 @@ export const WindowUtils = (function () {
 		var properties = {
 			width: window.width,
 			height: window.height,
-			state: window.state,
+			state: window.state
 		};
 
-		browser.windows.update(window.id, {
-			state: 'maximized'
-		}).then(function (window) {
-			resizeAndCenter(window, properties);
-		});
+		browser.windows
+			.update(window.id, {
+				state: 'maximized'
+			})
+			.then(function (window) {
+				resizeAndCenter(window, properties);
+			});
 	}
 
 	return {
 		centerWindow: centerWindow
 	};
-
 })();
 
 // ------------------------------------------------------------------------

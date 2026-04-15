@@ -14,7 +14,7 @@ export const SessionManagement = (function SessionManagement() {
 
 	function getTabInfo(url) {
 		return {
-			url: url,
+			url: url
 		};
 	}
 
@@ -80,7 +80,7 @@ export const SessionManagement = (function SessionManagement() {
 			case 'newWindow': {
 				const windowOptions = {
 					url: options.url,
-					cookieStoreId: options.cookieStoreId,
+					cookieStoreId: options.cookieStoreId
 				};
 
 				browser.windows.create(windowOptions).then(function (windowInfo) {
@@ -99,8 +99,7 @@ export const SessionManagement = (function SessionManagement() {
 					.then((tabs) => browser.tabs.get(tabs[0].id))
 					.then((tab) => {
 						if (
-							(options.cookieStoreId == undefined &&
-								tab.cookieStoreId == FirefoxContainers.defaultContainer) ||
+							(options.cookieStoreId == undefined && tab.cookieStoreId == FirefoxContainers.defaultContainer) ||
 							tab.cookieStoreId === options.cookieStoreId
 						) {
 							delete options.cookieStoreId;
@@ -108,7 +107,7 @@ export const SessionManagement = (function SessionManagement() {
 						} else {
 							browser.tabs.create({
 								url: options.url,
-								cookieStoreId: options.cookieStoreId,
+								cookieStoreId: options.cookieStoreId
 							});
 						}
 					});
@@ -135,11 +134,11 @@ export const SessionManagement = (function SessionManagement() {
 					url: bookmark.url,
 					active: false,
 					windowId: windowId,
-					pinned: info.properties.pinned ? true : false,
+					pinned: info.properties.pinned ? true : false
 				},
 				{
 					discard: lazyLoading,
-					container: info.properties.container,
+					container: info.properties.container
 				},
 				FaviconService.checkTabFaviconSaved
 			);
@@ -154,11 +153,11 @@ export const SessionManagement = (function SessionManagement() {
 					url: tab.url,
 					active: false,
 					windowId: windowId,
-					pinned: tab.pinned ? true : false,
+					pinned: tab.pinned ? true : false
 				},
 				{
 					discard: lazyLoading,
-					container: tab.cookieStoreId,
+					container: tab.cookieStoreId
 				}
 			);
 		});
@@ -177,7 +176,7 @@ export const SessionManagement = (function SessionManagement() {
 									browser.windows
 										.getAll({
 											populate: true,
-											windowTypes: ['normal'],
+											windowTypes: ['normal']
 										})
 										.then(function (windows) {
 											windows.forEach(function (mozWidnow) {
@@ -306,6 +305,6 @@ export const SessionManagement = (function SessionManagement() {
 
 	return {
 		getTabInfo: getTabInfo,
-		init: init,
+		init: init
 	};
 })();

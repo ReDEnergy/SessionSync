@@ -16,26 +16,23 @@ const sessionRoot = 'SessionSync';
 // API
 
 const findSessionSync = function findSessionSync(callback) {
-	BookmarkManager.searchBookmarks({ title: sessionRoot })
-		.then(
-			function success(bookmarks) {
-				if (bookmarks.length == 0) {
+	BookmarkManager.searchBookmarks({ title: sessionRoot }).then(
+		function success(bookmarks) {
+			if (bookmarks.length == 0) {
+				BookmarkManager.createBookmark({
+					title: sessionRoot,
+					parentId: 'menu________'
+				}).then(callback, function error() {
 					BookmarkManager.createBookmark({
-						title: sessionRoot,
-						parentId: 'menu________'
-					}).then(callback, function error() {
-						BookmarkManager.createBookmark({
-							title: sessionRoot,
-						}).then(callback);
-					});
-				}
-				else {
-					callback(bookmarks[0]);
-				}
-			},
-			function fail() {
+						title: sessionRoot
+					}).then(callback);
+				});
+			} else {
+				callback(bookmarks[0]);
 			}
-		);
+		},
+		function fail() {}
+	);
 };
 
 const listSessions = function listSessions() {

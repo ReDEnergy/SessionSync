@@ -57,8 +57,7 @@ export function ContextMenu(options) {
 	var blurMenu = function hideWhenClickOutside(e) {
 		var target = e.target;
 		while (target) {
-			if (target === menu)
-				return;
+			if (target === menu) return;
 			target = target.parentElement;
 		}
 		hideMenu();

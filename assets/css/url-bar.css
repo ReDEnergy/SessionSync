@@ -15,7 +15,7 @@
 	overflow: hidden;
 	opacity: 0;
 
-	color: #FFF;
+	color: #fff;
 
 	position: absolute;
 	top: 0.5em;
@@ -31,14 +31,14 @@
 	height: 100%;
 	display: none;
 
-	background: #FFF;
+	background: #fff;
 	text-align: right;
 	color: #777;
 	float: left;
 }
 
 #session-sync .url-bar .arrow:after {
-	content: " ";
+	content: ' ';
 	width: 2em;
 	height: 2em;
 	margin: 2px 0;
@@ -47,24 +47,24 @@
 	position: absolute;
 	left: 0;
 	z-index: -2;
-	transform:  translate(1em, -0.1em) rotate(45deg);
+	transform: translate(1em, -0.1em) rotate(45deg);
 }
 
 #session-sync .url-bar .url {
 	height: 100%;
 	padding-left: 8em;
-	background: #2D92EB;
+	background: #2d92eb;
 	font-size: 0.75em;
 	line-height: 2em;
 	white-space: nowrap;
 	text-overflow: ellipsis;
 }
 
-#session-sync[search-box-content="true"] .url {
+#session-sync[search-box-content='true'] .url {
 	padding-left: calc(25% + 2.5em);
 }
 
-#session-sync .url-bar[data-active="true"] {
+#session-sync .url-bar[data-active='true'] {
 	opacity: 1;
 	bottom: -1px;
 }
@@ -78,8 +78,8 @@
 	width: 5em;
 	height: 100%;
 
-	background: #38B751;
-	color: #FFF;
+	background: #38b751;
+	color: #fff;
 	text-align: center;
 	font-size: 0.75em;
 	line-height: 2em;

@@ -83,8 +83,7 @@ export function FieldEditWdiget(options) {
 		for (var key in data.fields) {
 			if (data.fields[key]) {
 				fields[key].value = data.fields[key];
-			}
-			else {
+			} else {
 				if (Object.prototype.hasOwnProperty.call(fields, key)) {
 					fields[key].value = '';
 					data.fields[key] = '';

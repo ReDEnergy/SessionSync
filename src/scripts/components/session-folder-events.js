@@ -28,8 +28,7 @@ export function SessionFolderEvents(container) {
 	function getAttribute(target, attribute) {
 		try {
 			return target.getAttribute(attribute);
-		}
-		catch (err) {
+		} catch (err) {
 			console.log(err);
 			return null;
 		}
@@ -79,8 +78,7 @@ export function SessionFolderEvents(container) {
 	};
 
 	var mouseDragging = function mouseMove(e) {
-		if (this != window)
-			return;
+		if (this != window) return;
 		var deltaTime = new Date() - trackingTelemetry;
 		if (deltaTime < 16) {
 			return;
@@ -90,10 +88,9 @@ export function SessionFolderEvents(container) {
 
 		if (tryScroll) {
 			if (e.clientY < offsetRect.top) {
-				AutoScroll.scroll(container, (e.clientY - offsetRect.top));
-			}
-			else if (e.clientY > offsetRect.bottom) {
-				AutoScroll.scroll(container, (e.clientY - offsetRect.bottom));
+				AutoScroll.scroll(container, e.clientY - offsetRect.top);
+			} else if (e.clientY > offsetRect.bottom) {
+				AutoScroll.scroll(container, e.clientY - offsetRect.bottom);
 			} else {
 				AutoScroll.stop();
 			}
@@ -118,16 +115,14 @@ export function SessionFolderEvents(container) {
 						WindowEvents.emit(document, 'SelectSyncSession', bookmarkContext);
 					}
 				}
-			}
-			else {
+			} else {
 				if (AppConfig.get('session.sorting') === 'position-asc') {
 					SessionSyncModel.moveBookmark(bookmarkContext.bookmarkID, sessionID);
-				}
-				else {
+				} else {
 					if (typeof document !== 'undefined') {
 						WindowEvents.emit(document, 'Notification', {
 							message: 'Rearage function available only when items are sorted ascending by position',
-							timeout: 3000,
+							timeout: 3000
 						});
 					}
 				}
@@ -136,8 +131,7 @@ export function SessionFolderEvents(container) {
 
 		if (DragContext.hasContext()) {
 			cancelDragging(e);
-		}
-		else {
+		} else {
 			window.removeEventListener('mousemove', trackDragging);
 		}
 
@@ -187,8 +181,7 @@ export function SessionFolderEvents(container) {
 				context: bookmarkContext.bookmark.id,
 				event: e
 			});
-		}
-		else {
+		} else {
 			WindowEvents.emit(document, 'SessionListMenu-Open', { event: e });
 		}
 	};
@@ -221,10 +214,8 @@ export function SessionFolderEvents(container) {
 // History Session Folder Events - delegated
 
 export function SessionHistoryEvents(container) {
-
 	var onMouseDown = function onMouseDown(e) {
-		if (e.button != 2)
-			return;
+		if (e.button != 2) return;
 
 		var target = e.target;
 		if (target.className == 'history-node') {
@@ -234,8 +225,7 @@ export function SessionHistoryEvents(container) {
 					event: e
 				});
 			}
-		}
-		else {
+		} else {
 			if (typeof document !== 'undefined') {
 				WindowEvents.emit(document, 'HistoryListCtxMenu-Open', { event: e });
 			}

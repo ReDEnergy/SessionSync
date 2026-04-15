@@ -10,8 +10,8 @@ import { HTMLCreator } from '../utils/dom';
 // API
 
 /*
-* Session Hotkeys
-*/
+ * Session Hotkeys
+ */
 
 export function OverlaySystem() {
 	// Create DomHealper
@@ -43,8 +43,7 @@ export function OverlaySystem() {
 	}
 
 	function autoHide() {
-		if (state == true)
-			setState(false);
+		if (state == true) setState(false);
 	}
 
 	// document.addEventListener('click', autoHide);

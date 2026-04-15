@@ -9,7 +9,6 @@ import { WindowEvents } from './global-events';
 // API
 
 export const DragContext = (function DragContext() {
-
 	var context = null;
 
 	function setContext(ctx) {

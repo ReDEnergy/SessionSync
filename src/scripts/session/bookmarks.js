@@ -10,7 +10,6 @@ import { BookmarkProperties } from '../../common/bookmark-properties';
 // API
 
 export const BookmarkManager = (function BookmarkManager() {
-
 	var getHostName = function getHostName(url) {
 		try {
 			return new URL(url).hostname;
@@ -21,12 +20,11 @@ export const BookmarkManager = (function BookmarkManager() {
 
 	var getFaviconUrlFromStorage = function getFaviconUrlFromStorage(favIconUrl, callback) {
 		var key = '@favIconUrl:' + getHostName(favIconUrl);
-		return browser.storage.local.get(key)
-			.then(function (obj) {
-				if (obj[key]) {
-					callback(obj[key]);
-				}
-			});
+		return browser.storage.local.get(key).then(function (obj) {
+			if (obj[key]) {
+				callback(obj[key]);
+			}
+		});
 	};
 
 	var getFaviconUrl = function getFaviconUrl(url, callback) {
@@ -74,7 +72,6 @@ export const BookmarkManager = (function BookmarkManager() {
 			title: title,
 			parentId: parentId
 		});
-
 	};
 
 	var createBookmark = function createBookmark(options) {
@@ -88,7 +85,6 @@ export const BookmarkManager = (function BookmarkManager() {
 	};
 
 	var openBookmark = function openBookmark(url, info) {
-
 		console.log('openBookmark', url, info);
 
 		var options = {
@@ -119,7 +115,6 @@ export const BookmarkManager = (function BookmarkManager() {
 	};
 
 	var openHistoryTab = function openHistoryTab(tab, mode) {
-
 		console.log('openHistoryTab', tab, mode);
 
 		var options = {
@@ -145,44 +140,51 @@ export const BookmarkManager = (function BookmarkManager() {
 	};
 
 	var setTitle = function setTitle(bookmark, title, callback) {
-		browser.bookmarks.update(bookmark.id, {
-			title: title
-		}).then(function success() {
-			bookmark.title = title;
-			bookmark.title_lowercase = title.toLowerCase();
-			if (typeof callback === 'function')
-				callback(true);
-		}, function error() {
-			throw 'error';
-		});
+		browser.bookmarks
+			.update(bookmark.id, {
+				title: title
+			})
+			.then(
+				function success() {
+					bookmark.title = title;
+					bookmark.title_lowercase = title.toLowerCase();
+					if (typeof callback === 'function') callback(true);
+				},
+				function error() {
+					throw 'error';
+				}
+			);
 	};
 
 	var setLocation = function setLocation(bookmark, url) {
-		browser.bookmarks.update(bookmark.id, {
-			url: url
-		}).then(function success() {
-			bookmark.url = url;
-		}, function error() {
-			throw 'error';
-		});
+		browser.bookmarks
+			.update(bookmark.id, {
+				url: url
+			})
+			.then(
+				function success() {
+					bookmark.url = url;
+				},
+				function error() {
+					throw 'error';
+				}
+			);
 	};
 
 	var moveItem = function moveItem(itemID, newParentID, index, callback, errorCallback) {
-		browser.bookmarks.move(itemID, {
-			parentId: newParentID,
-			index: index
-		})
+		browser.bookmarks
+			.move(itemID, {
+				parentId: newParentID,
+				index: index
+			})
 			.then(callback, errorCallback);
 	};
 
 	var deleteItem = function deleteItem(itemID, isFolder, callback, errorCallback) {
 		if (isFolder) {
-			browser.bookmarks.removeTree(itemID)
-				.then(callback, errorCallback);
-		}
-		else {
-			browser.bookmarks.remove(itemID)
-				.then(callback, errorCallback);
+			browser.bookmarks.removeTree(itemID).then(callback, errorCallback);
+		} else {
+			browser.bookmarks.remove(itemID).then(callback, errorCallback);
 		}
 	};
 
@@ -202,5 +204,4 @@ export const BookmarkManager = (function BookmarkManager() {
 
 		getFolderBookmarks: getFolderBookmarks
 	};
-
 })();

@@ -10,8 +10,8 @@ import { WindowEvents } from '../utils/global-events';
 // API
 
 /*
-* Session Hotkeys
-*/
+ * Session Hotkeys
+ */
 
 export function SessionHotkeys() {
 	// ------------------------------------------------------------------------
@@ -63,5 +63,4 @@ export function SessionHotkeys() {
 
 	// ------------------------------------------------------------------------
 	// Public properties
-
 }

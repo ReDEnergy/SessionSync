@@ -7,8 +7,8 @@
 	height: 100%;
 	min-height: 10000px;
 	font-size: 16px;
-	border-right: 1px solid #DDD;
-	background: #F5F5F5;
+	border-right: 1px solid #ddd;
+	background: #f5f5f5;
 	opacity: 0.95;
 	color: #000;
 
@@ -20,11 +20,11 @@
 	transition: all 0.3s;
 }
 
-#session-sync[show="true"] .filter-panel {
+#session-sync[show='true'] .filter-panel {
 	left: 0px;
 }
 
-#session-sync[show="false"] .filter-panel {
+#session-sync[show='false'] .filter-panel {
 	left: -151px;
 }
 
@@ -36,14 +36,13 @@
 	margin: 10px 0;
 	height: 64px;
 	width: 100%;
-	background: url("images/icon64.png") center top no-repeat;
+	background: url('images/icon64.png') center top no-repeat;
 }
 
 #session-sync .filter-panel .separator {
 	margin: 5px 0;
-	border-bottom: 1px solid #DDD;
+	border-bottom: 1px solid #ddd;
 }
-
 
 #session-sync .filter-panel .session-box {
 	padding: 5px 0;
@@ -52,13 +51,13 @@
 }
 
 #session-sync .filter-panel .session-box:hover {
-	background: #DDD;
+	background: #ddd;
 	cursor: pointer;
 }
 
 #session-sync .filter-panel .session-box[active] {
-	background: #2D92EB;
-	color: #FFF;
+	background: #2d92eb;
+	color: #fff;
 }
 
 #session-sync .filter-panel .filters {
@@ -91,10 +90,9 @@
 	display: block;
 }
 
-
 #session-sync .filter-panel .label:hover {
 	cursor: pointer;
-	background: #FFF;
+	background: #fff;
 	transition: none;
 }
 
@@ -112,7 +110,7 @@
 	height: 12px;
 	margin: 3px 10px 3px 0;
 	padding: 3px 0;
-	background: #DDD;
+	background: #ddd;
 	border-radius: 3px;
 	text-align: center;
 	line-height: 100%;
@@ -126,27 +124,27 @@
 }
 
 #session-sync .filter-panel .label[active] {
-	background: #FFF;
+	background: #fff;
 }
 
 #session-sync .filter-panel .label[active] .name {
-	color: #4C91D6;
+	color: #4c91d6;
 	font-weight: bold;
 }
 
 #session-sync .filter-panel .label[active] .count {
-	background: #23A823;
-	color: #FFF;
+	background: #23a823;
+	color: #fff;
 }
 
 #session-sync .filter-panel .label[active]:after {
-	content: " ";
+	content: ' ';
 	width: 3px;
 	height: 100%;
 	position: absolute;
 	right: 0;
 	top: 0;
-	background: #1AB61A;
+	background: #1ab61a;
 }
 
 #session-sync .filter-panel .add-label {
@@ -159,7 +157,6 @@
 
 #session-sync .filter-panel .add-label:hover {
 	cursor: pointer;
-	background: #2D92EB;
-	color: #FFF;
+	background: #2d92eb;
+	color: #fff;
 }
-

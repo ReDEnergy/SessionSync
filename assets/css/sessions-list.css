@@ -11,9 +11,9 @@
 
 	border-width: 0 1px 0 0;
 	border-style: solid;
-	border-color: #CCC;
+	border-color: #ccc;
 	background: hsla(0, 0%, 100%, 0.95);
-	background: #FEFEFE;
+	background: #fefefe;
 	float: left;
 
 	overflow-x: hidden;
@@ -30,14 +30,13 @@
  * List resize
  */
 
-#session-sync .sessions .resize-handle
-{
-	content: " ";
+#session-sync .sessions .resize-handle {
+	content: ' ';
 	width: 4px;
 	height: 24px;
 	margin-top: -12px;
 	position: absolute;
-	background: #DDD;
+	background: #ddd;
 	top: 50%;
 	border: unset;
 	right: 0px;
@@ -45,21 +44,19 @@
 	z-index: 10;
 }
 
-#session-sync .sessions .resize-handle:hover
-{
-	background: #1AB61A;
+#session-sync .sessions .resize-handle:hover {
+	background: #1ab61a;
 }
 
-#session-sync .sessions .resize-handle[resizing]
-{
-	background: #2D92EB !important;
+#session-sync .sessions .resize-handle[resizing] {
+	background: #2d92eb !important;
 }
 
 /*
  * History list
  */
 
-#session-sync[list="history"] .sessions .history-list {
+#session-sync[list='history'] .sessions .history-list {
 	flex: 1;
 }
 
@@ -95,21 +92,21 @@
 }
 
 #session-sync .sessions .history-node:hover {
-	background: #EEE;
+	background: #eee;
 	cursor: pointer;
 	transition-property: left, top;
 }
 
-#session-sync .sessions .history-node[active="true"] {
-	background: #2D92EB;
-	color: #FFF;
+#session-sync .sessions .history-node[active='true'] {
+	background: #2d92eb;
+	color: #fff;
 }
 
 /*
  * Session list
  */
 
-#session-sync[list="history"] .sessions .session-list {
+#session-sync[list='history'] .sessions .session-list {
 	flex: 0;
 }
 
@@ -150,7 +147,7 @@
 }
 
 #session-sync .sessions .folder:hover {
-	background: #EEE;
+	background: #eee;
 	cursor: pointer;
 	transition-property: left, top;
 }
@@ -158,8 +155,8 @@
 #session-sync .sessions .folder[dragging] {
 	width: 200px;
 	margin: 1px 0 0 1px;
-	background: #4396E9 !important;
-	color: #FFF;
+	background: #4396e9 !important;
+	color: #fff;
 	opacity: 0.9;
 
 	transition: none;
@@ -171,9 +168,9 @@
 	cursor: default;
 }
 
-#session-sync .sessions .folder[dragging="drop"] {
-	background: #4396E9 !important;
-	color: #FFF;
+#session-sync .sessions .folder[dragging='drop'] {
+	background: #4396e9 !important;
+	color: #fff;
 	opacity: 0.9;
 	transition: none;
 	position: absolute;
@@ -181,9 +178,9 @@
 	z-index: 1000;
 }
 
-#session-sync .sessions .folder[active="true"] {
-	background: #2D92EB;
-	color: #FFF;
+#session-sync .sessions .folder[active='true'] {
+	background: #2d92eb;
+	color: #fff;
 }
 
 #session-sync .sessions .folder[filter] {
@@ -192,22 +189,21 @@
 }
 
 #session-sync .sessions .folder[type='separator']:after {
-	content: " ";
+	content: ' ';
 	width: 100%;
 	height: 2px;
 	margin: -1px 0 0 0;
-	background: #CCC;
+	background: #ccc;
 	position: absolute;
 	box-sizing: border-box;
 	top: 50%;
 	left: 1px;
 }
 
-#session-sync .sessions .folder[active="true"][type='separator']:after {
-	background: #FFF;
+#session-sync .sessions .folder[active='true'][type='separator']:after {
+	background: #fff;
 }
 
 #session-sync .sessions .folder[type='bookmark'] {
 	text-decoration: underline;
 }
-

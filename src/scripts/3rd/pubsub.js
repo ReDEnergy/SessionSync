@@ -3,7 +3,6 @@
 // Modified version of https://github.com/mroderick/PubSubJS to return different PubSub objects
 
 export function PubSub() {
-
 	var messages = {},
 		lastUid = -1;
 
@@ -20,8 +19,8 @@ export function PubSub() {
 
 	/**
 	 *	Returns a function that throws the passed exception, for use as argument for setTimeout
-	*	@param { Object } ex An Error object
-	*/
+	 *	@param { Object } ex An Error object
+	 */
 	function throwException(ex) {
 		return function reThrowException() {
 			throw ex;
@@ -107,31 +106,31 @@ export function PubSub() {
 
 	/**
 	 *	PubSub.publish( message[, data] ) -> Boolean
-	*	- message (String): The message to publish
-	*	- data: The data to pass to subscribers
-	*	Publishes the the message, passing the data to it's subscribers
-	**/
+	 *	- message (String): The message to publish
+	 *	- data: The data to pass to subscribers
+	 *	Publishes the the message, passing the data to it's subscribers
+	 **/
 	this.publish = function (message, data) {
 		return publish(message, data, false, this.immediateExceptions);
 	};
 
 	/**
 	 *	PubSub.publishSync( message[, data] ) -> Boolean
-	*	- message (String): The message to publish
-	*	- data: The data to pass to subscribers
-	*	Publishes the the message synchronously, passing the data to it's subscribers
-	**/
+	 *	- message (String): The message to publish
+	 *	- data: The data to pass to subscribers
+	 *	Publishes the the message synchronously, passing the data to it's subscribers
+	 **/
 	this.publishSync = function (message, data) {
 		return publish(message, data, true, this.immediateExceptions);
 	};
 
 	/**
 	 *	PubSub.subscribe( message, func ) -> String
-	*	- message (String): The message to subscribe to
-	*	- func (Function): The function to call when a new message is published
-	*	Subscribes the passed function to the passed message. Every returned token is unique and should be stored if
-	*	you need to unsubscribe
-	**/
+	 *	- message (String): The message to subscribe to
+	 *	- func (Function): The function to call when a new message is published
+	 *	Subscribes the passed function to the passed message. Every returned token is unique and should be stored if
+	 *	you need to unsubscribe
+	 **/
 	this.subscribe = function (message, func) {
 		if (typeof func !== 'function') {
 			return false;
@@ -152,36 +151,38 @@ export function PubSub() {
 	};
 
 	/* Public: Clears all subscriptions
-	*/
+	 */
 	this.clearAllSubscriptions = function clearSubscriptions() {
 		messages = {};
 	};
 
 	/* Public: removes subscriptions.
-	* When passed a token, removes a specific subscription.
-	* When passed a function, removes all subscriptions for that function
-	* When passed a topic, removes all subscriptions for that topic (hierarchy)
-	*
-	* value - A token, function or topic to unsubscribe.
-	*
-	* Examples
-	*
-	*		// Example 1 - unsubscribing with a token
-	*		var token = PubSub.subscribe('mytopic', myFunc);
-	*		PubSub.unsubscribe(token);
-	*
-	*		// Example 2 - unsubscribing with a function
-	*		PubSub.unsubscribe(myFunc);
-	*
-	*		// Example 3 - unsubscribing a topic
-	*		PubSub.unsubscribe('mytopic');
-	*/
+	 * When passed a token, removes a specific subscription.
+	 * When passed a function, removes all subscriptions for that function
+	 * When passed a topic, removes all subscriptions for that topic (hierarchy)
+	 *
+	 * value - A token, function or topic to unsubscribe.
+	 *
+	 * Examples
+	 *
+	 *		// Example 1 - unsubscribing with a token
+	 *		var token = PubSub.subscribe('mytopic', myFunc);
+	 *		PubSub.unsubscribe(token);
+	 *
+	 *		// Example 2 - unsubscribing with a function
+	 *		PubSub.unsubscribe(myFunc);
+	 *
+	 *		// Example 3 - unsubscribing a topic
+	 *		PubSub.unsubscribe('mytopic');
+	 */
 	this.unsubscribe = function (value) {
 		var isTopic = typeof value === 'string' && messages.hasOwnProperty(value),
 			isToken = !isTopic && typeof value === 'string',
 			isFunction = typeof value === 'function',
 			result = false,
-			m, message, t;
+			m,
+			message,
+			t;
 
 		if (isTopic) {
 			delete messages[value];

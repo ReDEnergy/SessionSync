@@ -11,8 +11,8 @@ import { HTMLCreator } from '../utils/dom';
 // API
 
 /*
-* SessionFiltering
-*/
+ * SessionFiltering
+ */
 
 export function SessionFiltering() {
 	var DomElem = HTMLCreator();
@@ -53,8 +53,7 @@ export function SessionFiltering() {
 	};
 
 	var onKeyDown = function () {
-		if (prevValue == searchInput.value)
-			return;
+		if (prevValue == searchInput.value) return;
 
 		prevValue = searchInput.value;
 		panel.setAttribute('match', 'false');
@@ -85,7 +84,7 @@ export function SessionFiltering() {
 	createSession.addEventListener('mouseover', function (e) {
 		WindowEvents.emit(document, 'ShowTooltip', {
 			node: e.target,
-			message: 'Create new session',
+			message: 'Create new session'
 		});
 	});
 

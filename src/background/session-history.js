@@ -10,7 +10,7 @@ function BrowserSession() {
 	this.timer = undefined;
 	this.active = true;
 	this.tabCount = 0;
-	this.startTime = (new Date()).getTime();
+	this.startTime = new Date().getTime();
 	this.lastSave = this.startTime;
 	this.windows = {};
 }
@@ -19,57 +19,60 @@ function WindowSession(id) {
 	this.id = id;
 	this.tabs = [];
 	this.active = true;
-	this.saveTime = (new Date()).getTime();
+	this.saveTime = new Date().getTime();
 }
 
 BrowserSession.prototype.update = function update() {
 	if (typeof browser === 'undefined' || !browser.windows) return;
 
 	// Prepare session information
-	browser.windows.getAll({
-		populate: true,
-		windowTypes: ['normal']
-	}).then(function (mozWindows) {
-		var tabCount = 0;
+	browser.windows
+		.getAll({
+			populate: true,
+			windowTypes: ['normal']
+		})
+		.then(
+			function (mozWindows) {
+				var tabCount = 0;
 
-		for (var key in this.windows) {
-			this.windows[key].active = false;
-		}
+				for (var key in this.windows) {
+					this.windows[key].active = false;
+				}
 
-		for (let mozWindow of mozWindows) {
-			if (mozWindow.incognito && (this.config && this.config.savePrivate == false)) {
-				delete this.windows[mozWindow.id];
-				continue;
-			}
+				for (let mozWindow of mozWindows) {
+					if (mozWindow.incognito && this.config && this.config.savePrivate == false) {
+						delete this.windows[mozWindow.id];
+						continue;
+					}
 
-			var windowInfo = new WindowSession(mozWindow.id);
+					var windowInfo = new WindowSession(mozWindow.id);
 
-			// Add window tabs
-			for (var i in mozWindow.tabs) {
-				var tab = mozWindow.tabs[i];
-				var sessionTab = {
-					title: tab.title,
-					url: tab.url,
-					pinned: tab.pinned,
-					cookieStoreId: tab.cookieStoreId,
-				};
-				tabCount++;
-				windowInfo.tabs[tab.index] = sessionTab;
-			}
+					// Add window tabs
+					for (var i in mozWindow.tabs) {
+						var tab = mozWindow.tabs[i];
+						var sessionTab = {
+							title: tab.title,
+							url: tab.url,
+							pinned: tab.pinned,
+							cookieStoreId: tab.cookieStoreId
+						};
+						tabCount++;
+						windowInfo.tabs[tab.index] = sessionTab;
+					}
 
-			this.windows[mozWindow.id] = windowInfo;
-		}
+					this.windows[mozWindow.id] = windowInfo;
+				}
 
-		// Update internal storage
-		this.lastSave = (new Date()).getTime();
-		this.tabCount = tabCount;
+				// Update internal storage
+				this.lastSave = new Date().getTime();
+				this.tabCount = tabCount;
 
-		// Save new session
-		if (browser.storage && browser.storage.local) {
-			browser.storage.local.set({ [storageKey.active]: this });
-		}
-
-	}.bind(this));
+				// Save new session
+				if (browser.storage && browser.storage.local) {
+					browser.storage.local.set({ [storageKey.active]: this });
+				}
+			}.bind(this)
+		);
 };
 
 BrowserSession.prototype.clear = function clear() {
@@ -117,8 +120,8 @@ let config = {
 	interval: 15,
 	saveBuffer: 3,
 	savingSlots: 20,
-	expireTimeHours: 48,	// hours
-	savePrivate: false,
+	expireTimeHours: 48, // hours
+	savePrivate: false
 };
 
 const upgradeStorage = function upgradeStorage() {
@@ -149,10 +152,8 @@ const updateStorage = function updateStorage() {
 	sessions.forEach(function (session) {
 		if (session != undefined && (removeCount <= 0 || session.lastSave > expireTime)) {
 			list.push(session);
-		}
-		else {
-			if (removeCount > 0)
-				removeCount--;
+		} else {
+			if (removeCount > 0) removeCount--;
 		}
 	});
 
@@ -173,30 +174,27 @@ const saveSessionsList = function saveSessionsList() {
 const internalInit = function internalInit() {
 	if (typeof browser === 'undefined' || !browser.storage || !browser.storage.local) return;
 
-	browser.storage.local.get([storageKey.list])
-		.then(function (obj) {
+	browser.storage.local.get([storageKey.list]).then(function (obj) {
+		if (obj[storageKey.list]) {
+			sessions = obj[storageKey.list];
+			updateStorage();
+		}
 
-			if (obj[storageKey.list]) {
-				sessions = obj[storageKey.list];
-				updateStorage();
+		// console.log(sessions);
+		saveSessionsList();
+
+		browser.storage.local.get([storageKey.active]).then(function (data) {
+			var session = data[storageKey.active];
+			if (session) {
+				session.windows = Object.values(session.windows);
+				delete session.active;
+				sessions.push(session);
+				saveSessionsList();
 			}
-
-			// console.log(sessions);
-			saveSessionsList();
-
-			browser.storage.local.get([storageKey.active])
-				.then(function (data) {
-					var session = data[storageKey.active];
-					if (session) {
-						session.windows = Object.values(session.windows);
-						delete session.active;
-						sessions.push(session);
-						saveSessionsList();
-					}
-				});
-
-			activeSession.setConfig(config);
 		});
+
+		activeSession.setConfig(config);
+	});
 };
 
 const onConfigChanged = function onConfigChanged(object) {
@@ -211,21 +209,23 @@ export const SessionAutoSave = {
 	init: function () {
 		if (typeof browser === 'undefined' || !browser.storage || !browser.storage.local) return;
 
-		browser.storage.local.get(storageKey.config)
-			.then(function onSuccess(obj) {
+		browser.storage.local.get(storageKey.config).then(
+			function onSuccess(obj) {
 				if (obj[storageKey.config]) {
 					config = obj[storageKey.config];
 					internalInit();
+				} else {
+					browser.storage.local
+						.set({
+							[storageKey.config]: config
+						})
+						.then(internalInit);
 				}
-				else {
-					browser.storage.local.set({
-						[storageKey.config]: config
-					}).then(internalInit);
-				}
-
-			}, function onError() {
+			},
+			function onError() {
 				internalInit();
-			});
+			}
+		);
 
 		try {
 			if (browser.runtime && browser.runtime.onMessage) {

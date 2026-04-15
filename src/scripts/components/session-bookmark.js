@@ -27,9 +27,9 @@ function configureHoverItem(item, url) {
 }
 
 /*
-* Session Bookmark
-* Used for interacting with a Firefox bookmark item
-*/
+ * Session Bookmark
+ * Used for interacting with a Firefox bookmark item
+ */
 
 export class SessionBookmark {
 	constructor(bookmark) {
@@ -114,9 +114,9 @@ export class SessionBookmark {
 }
 
 /*
-* SessionWindow
-* Used as separator for different windows
-*/
+ * SessionWindow
+ * Used as separator for different windows
+ */
 export class SessionWindow {
 	constructor(windowID, windowIndex, index) {
 		const DomElem = HTMLCreator();
@@ -135,9 +135,9 @@ export class SessionWindow {
 }
 
 /*
-* SessionTab
-* Used for displaying tabs from the current window
-*/
+ * SessionTab
+ * Used for displaying tabs from the current window
+ */
 export class SessionTab {
 	constructor(tab, indexOffset) {
 		const DomElem = HTMLCreator();
@@ -191,9 +191,9 @@ export class SessionTab {
 }
 
 /*
-* HistoryWindow
-* Used as separator for different windows
-*/
+ * HistoryWindow
+ * Used as separator for different windows
+ */
 export class HistoryWindow {
 	constructor(sessionWindowInfo, windowID, index) {
 		const DomElem = HTMLCreator();
@@ -217,9 +217,9 @@ export class HistoryWindow {
 }
 
 /*
-* HistoryTab
-* Used for displaying tabs from the history windows
-*/
+ * HistoryTab
+ * Used for displaying tabs from the history windows
+ */
 export class HistoryTab {
 	constructor(tab, indexOffset) {
 		const DomElem = HTMLCreator();

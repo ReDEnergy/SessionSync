@@ -34,7 +34,7 @@ export function ConfirmBox(options) {
 	panel.appendChild(controls);
 
 	var callback;
-	var defaultCallback = function defaultCallback() { };
+	var defaultCallback = function defaultCallback() {};
 
 	// ------------------------------------------------------------------------
 	// Events
@@ -57,7 +57,6 @@ export function ConfirmBox(options) {
 
 		info.textContent = options.message;
 		setCallback(options.callback);
-
 	};
 
 	var hidePanel = function hidePanel() {
@@ -69,8 +68,7 @@ export function ConfirmBox(options) {
 	var blurMenu = function hideWhenClickOutside(e) {
 		var target = e.target;
 		while (target) {
-			if (target === panel)
-				return;
+			if (target === panel) return;
 			target = target.parentElement;
 		}
 		hidePanel();

@@ -6,8 +6,8 @@
 	width: auto;
 	padding: 15px;
 	margin: -40px 0 0 0;
-	background: #FFF;
-	border: 1px #CCC solid;
+	background: #fff;
+	border: 1px #ccc solid;
 
 	display: none;
 	position: fixed;
@@ -15,7 +15,7 @@
 	top: 0;
 	overflow: auto;
 
-	box-shadow: 3px 3px 5px 0 #CCC;
+	box-shadow: 3px 3px 5px 0 #ccc;
 	transform: translate(-50%, 0);
 	z-index: 1;
 
@@ -25,7 +25,7 @@
 	left: 321px; */
 }
 
-#session-sync .confirm-box[data-active="true"] {
+#session-sync .confirm-box[data-active='true'] {
 	display: block;
 	z-index: 1001;
 }
@@ -41,7 +41,7 @@
 
 #session-sync .confirm-box .controls {
 	padding: 10px 0 0 0;
-	border-top: 1px solid #DDD;
+	border-top: 1px solid #ddd;
 	overflow: hidden;
 	display: flex;
 }
@@ -52,16 +52,16 @@
 
 #session-sync .confirm-box .ok {
 	margin: 0 10px 0 0;
-	color: #FFF;
-	background: #E86A5C; /*#EA5F4D;*/
+	color: #fff;
+	background: #e86a5c; /*#EA5F4D;*/
 }
 
 #session-sync .confirm-box .ok:hover {
-	background: #DC462C;
+	background: #dc462c;
 }
 
 #session-sync .confirm-box .cancel {
-	color: #FFF;
+	color: #fff;
 	background: #999;
 }
 

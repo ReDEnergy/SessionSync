@@ -9,23 +9,22 @@ import { WindowEvents } from './global-events';
 // *****************************************************************************
 // ActionPopup
 
-export function ActionPopup(options)
-{
+export function ActionPopup(options) {
 	var DomElem = HTMLCreator();
 
-	var panel = DomElem('div', {class : 'action-popoup'});
+	var panel = DomElem('div', { class: 'action-popoup' });
 
-	var info = DomElem('div', {class : 'info'});
-	var controls = DomElem('div', {class : 'controls'});
+	var info = DomElem('div', { class: 'info' });
+	var controls = DomElem('div', { class: 'controls' });
 
-	var ok = DomElem('div', {class : 'button ok'});
+	var ok = DomElem('div', { class: 'button ok' });
 	ok.textContent = 'Confirm';
 
-	var cancel = DomElem('div', {class : 'button cancel'});
+	var cancel = DomElem('div', { class: 'button cancel' });
 	cancel.textContent = 'Cancel';
 
-	var flexArea1 = DomElem('div', {class : 'flex'});
-	var flexArea2 = DomElem('div', {class : 'flex'});
+	var flexArea1 = DomElem('div', { class: 'flex' });
+	var flexArea2 = DomElem('div', { class: 'flex' });
 
 	controls.appendChild(flexArea1);
 	controls.appendChild(ok);
@@ -40,17 +39,16 @@ export function ActionPopup(options)
 	// ------------------------------------------------------------------------
 	// Events
 
-	ok.addEventListener('click', function() {
+	ok.addEventListener('click', function () {
 		callback();
 		hidePanel();
 	});
 
-	cancel.addEventListener('click', function() {
+	cancel.addEventListener('click', function () {
 		hidePanel();
 	});
 
-	var openPanel = function openPanel(options)
-	{
+	var openPanel = function openPanel(options) {
 		panel.setAttribute('data-active', 'true');
 		panel.style.left = options.event.pageX + 'px';
 		panel.style.top = options.event.pageY + 'px';
@@ -63,8 +61,7 @@ export function ActionPopup(options)
 		setCallback(options.callback);
 	};
 
-	var hidePanel = function hidePanel()
-	{
+	var hidePanel = function hidePanel() {
 		panel.removeAttribute('data-active');
 		if (typeof document !== 'undefined') {
 			document.removeEventListener('mousedown', blurMenu);
@@ -72,12 +69,10 @@ export function ActionPopup(options)
 		callback = defaultCallback;
 	};
 
-	var blurMenu = function hideWhenClickOutside(e)
-	{
+	var blurMenu = function hideWhenClickOutside(e) {
 		var target = e.target;
 		while (target) {
-			if (target === panel)
-				return;
+			if (target === panel) return;
 			target = target.parentElement;
 		}
 		hidePanel();

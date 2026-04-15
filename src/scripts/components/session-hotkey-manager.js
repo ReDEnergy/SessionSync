@@ -14,8 +14,8 @@ import { WindowEvents } from '../utils/global-events';
 // API
 
 /*
-* Session Hotkeys
-*/
+ * Session Hotkeys
+ */
 
 export function SessionHotkeyManager() {
 	// Create DomHealper
@@ -195,12 +195,10 @@ export function SessionHotkeyManager() {
 	});
 
 	function changeHotKey(options) {
-
 		changeCallback = options.callback;
 		var tokens = options.shortcut.split('+');
 
-		header.textContent = options.title,
-		currentHotKey.setValue(tokens.join(' + '));
+		((header.textContent = options.title), currentHotKey.setValue(tokens.join(' + ')));
 		newHotKey.setValue('');
 		modifierKey.setValue(tokens[0]);
 		optionalModifier.setValue(tokens.length == 3 ? tokens[1] : '');

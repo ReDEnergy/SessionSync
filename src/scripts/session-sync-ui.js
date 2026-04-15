@@ -42,7 +42,6 @@ import { BookmarkManager } from './session/bookmarks';
 // UI initilization
 
 export const SessionSyncUI = function SessionSyncUI() {
-
 	var DomElem = HTMLCreator();
 
 	document.body.setAttribute('panel', AppConfig.isPanel());
@@ -258,7 +257,7 @@ export const SessionSyncUI = function SessionSyncUI() {
 					WindowEvents.emit(document, 'SessionFolderEditWidget-Invoke', {
 						context: sessionID,
 						fields: {
-							title: SessionSyncModel.bookmarks[sessionID].title,
+							title: SessionSyncModel.bookmarks[sessionID].title
 						}
 					});
 					break;
@@ -282,7 +281,7 @@ export const SessionSyncUI = function SessionSyncUI() {
 			context: bookmarkID,
 			fields: {
 				title: SessionSyncModel.bookmarks[bookmarkID].title,
-				url: SessionSyncModel.bookmarks[bookmarkID].url,
+				url: SessionSyncModel.bookmarks[bookmarkID].url
 			}
 		});
 	}
@@ -425,8 +424,7 @@ export const SessionSyncUI = function SessionSyncUI() {
 		AppConfig.onChange('style.panel.height', setPanelHeight);
 
 		resizeHandle.addEventListener('mousedown', startResize);
-	}
-	else {
+	} else {
 		window.addEventListener('resize', function () {
 			var newWidth = Math.max(window.innerWidth, 500);
 			var newHeight = Math.max(window.innerHeight, 400);
@@ -451,11 +449,9 @@ export const SessionSyncUI = function SessionSyncUI() {
 	document.body.addEventListener('contextmenu', preventDefault);
 	document.body.addEventListener('mousedown', function (e) {
 		// Middle Click
-		if (e.button == 1)
-			preventDefault(e);
+		if (e.button == 1) preventDefault(e);
 	});
 
 	// ------------------------------------------------------------------------
 	// App Init
-
 };

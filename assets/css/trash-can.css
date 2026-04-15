@@ -6,21 +6,21 @@
 	width: 8em;
 	height: 8em;
 
-	background-image: url("images/trash-can.png");
+	background-image: url('images/trash-can.png');
 	background-position: bottom 1.5em right 1.5em;
 	background-repeat: no-repeat;
 	background-size: 50%;
-	background-color: #FFF;
+	background-color: #fff;
 
 	border-top-left-radius: 8em;
 
 	font-size: 12px;
 
-	border: 1px solid #CCC;
+	border: 1px solid #ccc;
 	border-bottom: none;
 	border-right: none;
 
-	box-shadow: 0 0 5px 0 #FFF;
+	box-shadow: 0 0 5px 0 #fff;
 
 	opacity: 0;
 
@@ -33,24 +33,24 @@
 	transition: all 0.2s ease-out;
 }
 
-#session-sync[show="true"] .trash-can {
+#session-sync[show='true'] .trash-can {
 	display: block;
 }
 
-#session-sync[show="false"] .trash-can {
+#session-sync[show='false'] .trash-can {
 	display: none;
 }
 
-#session-sync .trash-can[droppable="true"] {
+#session-sync .trash-can[droppable='true'] {
 	opacity: 1 !important;
 }
 
-#session-sync .trash-can[action="enter"] {
+#session-sync .trash-can[action='enter'] {
 	opacity: 1;
 	cursor: pointer;
 }
 
-#session-sync .trash-can:not([items="0"]) {
+#session-sync .trash-can:not([items='0']) {
 	opacity: 1;
 }
 
@@ -64,10 +64,10 @@
 	width: 2em;
 	height: 2em;
 
-	background: #E54828;
+	background: #e54828;
 	text-align: center;
 	line-height: 1.9em;
-	color: #FFF;
+	color: #fff;
 	border-radius: 100%;
 	opacity: 1;
 
@@ -79,11 +79,11 @@
 	transition: background 0.5s ease-out;
 }
 
-#session-sync .trash-can[items="0"] .count {
-	background: #1AB61A;
+#session-sync .trash-can[items='0'] .count {
+	background: #1ab61a;
 }
 
-#session-sync .trash-can[items="0"] .dismiss {
+#session-sync .trash-can[items='0'] .dismiss {
 	display: none;
 }
 
@@ -92,14 +92,14 @@
 	right: 0.5em;
 }
 
-#session-sync .trash-can[dismiss="true"] {
+#session-sync .trash-can[dismiss='true'] {
 	opacity: 0;
 }
 
-#session-sync .trash-can[dismiss="true"] .dismiss {
+#session-sync .trash-can[dismiss='true'] .dismiss {
 	display: none;
 }
 
-#session-sync .trash-can[dismiss="true"]:hover {
+#session-sync .trash-can[dismiss='true']:hover {
 	opacity: 1;
 }

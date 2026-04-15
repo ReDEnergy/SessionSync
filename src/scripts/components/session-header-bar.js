@@ -60,7 +60,7 @@ export function SessionHeaderBar() {
 			if (typeof document !== 'undefined') {
 				WindowEvents.emit(document, 'ShowTooltip', {
 					node: e.target,
-					message: e.target.getAttribute('tooltip'),
+					message: e.target.getAttribute('tooltip')
 				});
 			}
 		} else {
@@ -116,10 +116,7 @@ var CreateHeaderMenu = function CreateHeaderMenu() {
 		icon.style.backgroundImage = url;
 
 		// Events
-		var callback =
-			typeof JSUtils.getValidFunction === 'function'
-				? JSUtils.getValidFunction(options.callback)
-				: options.callback;
+		var callback = typeof JSUtils.getValidFunction === 'function' ? JSUtils.getValidFunction(options.callback) : options.callback;
 		button.addEventListener('click', callback);
 
 		button.appendChild(icon);
@@ -136,7 +133,7 @@ var CreateHeaderMenu = function CreateHeaderMenu() {
 				var state = model.state['config'] == undefined ? 'on' : undefined;
 				WindowEvents.emit(document, 'SetUIState', { config: state });
 			}
-		},
+		}
 	});
 
 	var openTutorial = MenuButton({
@@ -146,7 +143,7 @@ var CreateHeaderMenu = function CreateHeaderMenu() {
 			if (typeof browser !== 'undefined' && browser.runtime) {
 				browser.runtime.sendMessage({ event: 'session_sync_tutorial' });
 			}
-		},
+		}
 	});
 
 	var leaveFeedback = MenuButton({
@@ -156,7 +153,7 @@ var CreateHeaderMenu = function CreateHeaderMenu() {
 			if (typeof browser !== 'undefined' && browser.runtime) {
 				browser.runtime.sendMessage({ event: 'session_sync_leave_feedback' });
 			}
-		},
+		}
 	});
 
 	var exportImport = MenuButton({
@@ -166,10 +163,10 @@ var CreateHeaderMenu = function CreateHeaderMenu() {
 			if (typeof browser !== 'undefined' && browser.tabs) {
 				browser.tabs.create({
 					url: 'home/home.html#export-import',
-					active: true,
+					active: true
 				});
 			}
-		},
+		}
 	});
 
 	var buttonDetachInTab = MenuButton({
@@ -179,7 +176,7 @@ var CreateHeaderMenu = function CreateHeaderMenu() {
 			if (typeof browser !== 'undefined' && browser.runtime) {
 				browser.runtime.sendMessage({ event: 'session_sync_detach_tab' });
 			}
-		},
+		}
 	});
 
 	var buttonDetachInWindow = MenuButton({
@@ -189,7 +186,7 @@ var CreateHeaderMenu = function CreateHeaderMenu() {
 			if (typeof browser !== 'undefined' && browser.runtime) {
 				browser.runtime.sendMessage({ event: 'session_sync_detach_window' });
 			}
-		},
+		}
 	});
 
 	var githubPage = MenuButton({
@@ -199,7 +196,7 @@ var CreateHeaderMenu = function CreateHeaderMenu() {
 			if (typeof browser !== 'undefined' && browser.runtime) {
 				browser.runtime.sendMessage({ event: 'session_sync_open_github' });
 			}
-		},
+		}
 	});
 
 	menuRow1.appendChild(openConfig);
@@ -229,7 +226,7 @@ var CreateHeaderMenu = function CreateHeaderMenu() {
 					this.manualTrigger = 0;
 				}
 			}
-		},
+		}
 	};
 
 	function initDevMode() {
@@ -247,7 +244,7 @@ var CreateHeaderMenu = function CreateHeaderMenu() {
 							console.log(tab);
 						});
 				}
-			},
+			}
 		});
 
 		var localStorage = MenuButton({
@@ -259,7 +256,7 @@ var CreateHeaderMenu = function CreateHeaderMenu() {
 						console.log(data);
 					});
 				}
-			},
+			}
 		});
 
 		var clearFaviconCache = MenuButton({
@@ -275,7 +272,7 @@ var CreateHeaderMenu = function CreateHeaderMenu() {
 						}
 					});
 				}
-			},
+			}
 		});
 
 		devRow1.appendChild(activeTabInfo);

@@ -10,7 +10,6 @@ var tooltip;
 window.addEventListener('load', load);
 
 function load() {
-
 	Carousel = document.getElementById('carousel');
 	bullets = document.getElementById('bullets');
 	tooltip = document.getElementById('tooltip');
@@ -35,9 +34,7 @@ function load() {
 }
 
 var initTutorial = function initTutorial() {
-
-	if (inited)
-		return;
+	if (inited) return;
 
 	inited = true;
 
@@ -48,7 +45,6 @@ var initTutorial = function initTutorial() {
 
 	initCarousel();
 	updateActiveBullet(bullets.firstElementChild.firstElementChild);
-
 };
 
 function updateActiveBullet(node) {
@@ -64,7 +60,7 @@ function updateActiveBullet(node) {
 }
 
 function setCarouselTo(index) {
-	if (index < 0 || index > (size - 1)) {
+	if (index < 0 || index > size - 1) {
 		return;
 	}
 
@@ -206,7 +202,7 @@ var TutorialEntries = (function TutorialEntries() {
 		{
 			title: 'Export/Import Sessions',
 			key: 'export-import'
-		},
+		}
 	];
 
 	function init() {
@@ -237,7 +233,6 @@ var TutorialEntries = (function TutorialEntries() {
 		getEntryByIndex: getEntryByIndex,
 		getEntryByKey: getEntryByKey
 	};
-
 })();
 
 // browser.commands.getAll().

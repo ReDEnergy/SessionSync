@@ -10,8 +10,8 @@ import * as JSUtils from './general';
 // API
 
 /*
-* Toggle switch
-*/
+ * Toggle switch
+ */
 
 export function ToggleSwitch(options) {
 	var DomElem = HTMLCreator();
@@ -43,8 +43,7 @@ export function ToggleSwitch(options) {
 	entry.appendChild(button);
 
 	function setState(newState) {
-		if (state == newState)
-			return;
+		if (state == newState) return;
 
 		state = newState;
 		options.callback(state);
@@ -109,8 +108,8 @@ export function ToggleButton(options) {
 }
 
 /*
-* Action Button
-*/
+ * Action Button
+ */
 
 export function ActionButton(options) {
 	var DomElem = HTMLCreator();
@@ -152,8 +151,8 @@ export function ActionButton(options) {
 }
 
 /*
-* RageControl
-*/
+ * RageControl
+ */
 
 export function RangeControl(options) {
 	var DomElem = HTMLCreator();
@@ -189,8 +188,12 @@ export function RangeControl(options) {
 		}
 
 		// restrict to specified range
-		if (options.minValue > newValue) { newValue = options.minValue; }
-		if (options.maxValue < newValue) { newValue = options.maxValue; }
+		if (options.minValue > newValue) {
+			newValue = options.minValue;
+		}
+		if (options.maxValue < newValue) {
+			newValue = options.maxValue;
+		}
 
 		if (newValue % step != 0) {
 			newValue -= newValue % step;
@@ -261,12 +264,11 @@ export function DropDown(options) {
 	select.appendChild(dropList);
 
 	function addOption(label, options) {
-		if (options == undefined)
-			options = {};
+		if (options == undefined) options = {};
 
 		var option = DomElem('div', { class: 'option' });
 		option.textContent = label;
-		option.setAttribute('value', (options.value != undefined) ? options.value : label);
+		option.setAttribute('value', options.value != undefined ? options.value : label);
 
 		if (options.property) {
 			option.setAttribute(options.property, '');
@@ -300,8 +302,7 @@ export function DropDown(options) {
 	};
 
 	var setSelected = function setSelected(node, trigger) {
-		if (selectedOption)
-			selectedOption.removeAttribute('selected');
+		if (selectedOption) selectedOption.removeAttribute('selected');
 
 		selectedOption = node;
 

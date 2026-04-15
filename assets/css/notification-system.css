@@ -14,13 +14,12 @@
 	transform: translateX(-50%);
 }
 
-#session-sync .notification-system .info
-{
+#session-sync .notification-system .info {
 	width: 100%;
 	padding: 0.5em 2em;
 	padding-left: 3.5em;
-	background: #2D92EB;
-	color: #FFF;
+	background: #2d92eb;
+	color: #fff;
 	/* background: #F5F5F5; */
 	/* color: #333; */
 	word-break: break-all;
@@ -35,18 +34,17 @@
 	transform: translateX(0);
 }
 
-#session-sync .notification-system .info[active]
-{
+#session-sync .notification-system .info[active] {
 	opacity: 1;
 	top: -1px;
-	border: 1px solid #CCC;
+	border: 1px solid #ccc;
 }
 
 #session-sync .notification-system .info:after {
-	content: " ";
+	content: ' ';
 	width: 24px;
 	height: 24px;
-	background: url("images/logo.png") center no-repeat;
+	background: url('images/logo.png') center no-repeat;
 	background-size: contain;
 	top: 50%;
 	left: 20px;

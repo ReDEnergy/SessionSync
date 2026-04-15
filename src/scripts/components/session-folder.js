@@ -10,9 +10,9 @@ import { HTMLCreator } from '../utils/dom';
 // API
 
 /*
-* Session Folder
-* Used for interacting with a Firefox bookmark item
-*/
+ * Session Folder
+ * Used for interacting with a Firefox bookmark item
+ */
 export class SessionFolder {
 	static folderOffset = 2.7; // em;
 
@@ -89,9 +89,9 @@ export const SessionFolderSortBy = {
 };
 
 /*
-* SessionHistoryFolder
-* Used as separator for different windows
-*/
+ * SessionHistoryFolder
+ * Used as separator for different windows
+ */
 export class SessionHistoryFolder {
 	constructor(sessionInfo, index) {
 		const DomElem = HTMLCreator();

@@ -49,14 +49,14 @@ export class BookmarkProperties {
 			if (Array.isArray(properties) && properties.length == 1) {
 				return {
 					title: title.substring(0, match.index),
-					properties: properties[0],
+					properties: properties[0]
 				};
 			}
 		}
 
 		return {
 			title: title,
-			properties: {},
+			properties: {}
 		};
 	}
 }

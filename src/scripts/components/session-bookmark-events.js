@@ -30,8 +30,7 @@ export function SessionBookmarkEvents(container) {
 	function getAttribute(target, attribute) {
 		try {
 			return target.getAttribute(attribute);
-		}
-		catch (err) {
+		} catch (err) {
 			console.log(err);
 			return null;
 		}
@@ -86,8 +85,7 @@ export function SessionBookmarkEvents(container) {
 			// Bookmark entry
 			case 'restore': {
 				var bookmarkID = getBookmarkID(e);
-				if (!bookmarkID || bookmarkHoverContextID == bookmarkID)
-					return;
+				if (!bookmarkID || bookmarkHoverContextID == bookmarkID) return;
 
 				bookmarkHoverContextID = bookmarkID;
 				WindowEvents.emit(document, 'ShowUrlBar', SessionSyncModel.bookmarks[bookmarkID].url);
@@ -159,8 +157,7 @@ export function SessionBookmarkEvents(container) {
 	};
 
 	var mouseDragging = function mouseMove(e) {
-		if (this != window)
-			return;
+		if (this != window) return;
 
 		var deltaTime = new Date() - trackingTelemetry;
 		if (deltaTime < 16) {
@@ -171,10 +168,9 @@ export function SessionBookmarkEvents(container) {
 
 		if (tryScroll) {
 			if (e.clientY < offsetRect.top) {
-				AutoScroll.scroll(container, (e.clientY - offsetRect.top));
-			}
-			else if (e.clientY > offsetRect.bottom) {
-				AutoScroll.scroll(container, (e.clientY - offsetRect.bottom));
+				AutoScroll.scroll(container, e.clientY - offsetRect.top);
+			} else if (e.clientY > offsetRect.bottom) {
+				AutoScroll.scroll(container, e.clientY - offsetRect.bottom);
 			} else {
 				AutoScroll.stop();
 			}
@@ -205,14 +201,12 @@ export function SessionBookmarkEvents(container) {
 								favicon: true
 							});
 						}
-					}
-					else {
+					} else {
 						if (SessionSyncModel.bookmarks[bookmarkID] != undefined) {
 							SessionSyncModel.moveBookmark(bookmarkContext.bookmarkID, bookmarkID);
 						}
 					}
-				}
-				else {
+				} else {
 					if (getTargetType(e) === 'folder') {
 						var sessionID = getSessionID(e);
 						if (sessionID != null && SessionSyncModel.bookmarks[sessionID] != undefined) {
@@ -230,8 +224,7 @@ export function SessionBookmarkEvents(container) {
 				if (tabContext) {
 					if (tabContext != bookmarkContext) {
 						SessionManager.moveTab(bookmarkContext.tab.id, tabContext.tab.index, tabContext.tab.windowId);
-					}
-					else {
+					} else {
 						if (tabID) {
 							SessionManager.activateTab(tabID);
 							var windowID = getWindowID(e);
@@ -240,19 +233,17 @@ export function SessionBookmarkEvents(container) {
 							}
 						}
 					}
-				}
-				else {
+				} else {
 					if (getTargetType(e) === 'folder') {
 						var savingSessionID = getSessionID(e);
 						if (savingSessionID != null) {
-							BookmarkManager.createBookmarkFromTab(bookmarkContext.tab, savingSessionID)
-								.then(function () {
-									if (typeof document !== 'undefined') {
-										WindowEvents.emit(document, 'Notification', {
-											message: 'Saved',
-										});
-									}
-								});
+							BookmarkManager.createBookmarkFromTab(bookmarkContext.tab, savingSessionID).then(function () {
+								if (typeof document !== 'undefined') {
+									WindowEvents.emit(document, 'Notification', {
+										message: 'Saved'
+									});
+								}
+							});
 						}
 					}
 				}
@@ -261,8 +252,7 @@ export function SessionBookmarkEvents(container) {
 
 		if (DragContext.hasContext()) {
 			cancelDragging(e);
-		}
-		else {
+		} else {
 			window.removeEventListener('mousemove', trackDragging);
 		}
 
@@ -309,7 +299,6 @@ export function SessionBookmarkEvents(container) {
 
 			// If active session preview
 			case 'current': {
-
 				if (e.button == 0) {
 					let tabID = getTabID(e);
 					if (tabID != undefined) {
@@ -320,8 +309,7 @@ export function SessionBookmarkEvents(container) {
 							window.addEventListener('mouseup', mouseUp);
 							return;
 						}
-					}
-					else {
+					} else {
 						let windowID = getWindowID(e);
 						if (windowID) {
 							SessionManager.activateWindow(windowID);
@@ -346,8 +334,7 @@ export function SessionBookmarkEvents(container) {
 							break;
 						}
 					}
-				}
-				else {
+				} else {
 					if (e.button == 0) {
 						let windowID = getWindowID(e);
 						if (windowID != undefined && typeof document !== 'undefined') {
@@ -366,8 +353,7 @@ export function SessionBookmarkEvents(container) {
 		switch (SyncModel.state.session) {
 			case 'restore': {
 				var bookmarkID = getBookmarkID(e);
-				if (bookmarkID == null)
-					return;
+				if (bookmarkID == null) return;
 
 				WindowEvents.emit(document, 'BookmarkCtxMenu-Open', {
 					context: bookmarkID,
@@ -390,7 +376,6 @@ export function SessionBookmarkEvents(container) {
 
 	// --------------------------------------------------------------
 	// App Events
-
 
 	// ------------------------------------------------------------------------
 	// Init Code Events

@@ -9,7 +9,6 @@ import { WindowEvents, GlobalEvents } from '../utils/global-events';
 // API
 
 export const SessionHistory = (function SessionHistory() {
-
 	var storageKey = {
 		config: 'history.config',
 		active: 'history.active',
@@ -39,8 +38,7 @@ export const SessionHistory = (function SessionHistory() {
 	var getHistorySession = function getHistorySession(index, callback) {
 		if (index >= 0 && index < sessions.length) {
 			callback(sessions[index]);
-		}
-		else if (typeof browser !== 'undefined' && browser.storage) {
+		} else if (typeof browser !== 'undefined' && browser.storage) {
 			browser.storage.local.get(storageKey.active).then(function (obj) {
 				callback(obj[storageKey.active]);
 			});
@@ -63,10 +61,9 @@ export const SessionHistory = (function SessionHistory() {
 
 	var updateSessions = function updateSessions(sessions) {
 		if (typeof browser !== 'undefined' && browser.storage) {
-			browser.storage.local.set({ [storageKey.list]: sessions })
-				.then(function () {
-					WindowEvents.emit(document, 'ShowHistoryList');
-				});
+			browser.storage.local.set({ [storageKey.list]: sessions }).then(function () {
+				WindowEvents.emit(document, 'ShowHistoryList');
+			});
 		}
 	};
 
@@ -81,8 +78,7 @@ export const SessionHistory = (function SessionHistory() {
 			if (typeof browser !== 'undefined' && browser.runtime) {
 				browser.runtime.sendMessage({ event: 'history.deleteActive' });
 			}
-		}
-		else {
+		} else {
 			getFullHistory(function (sessions) {
 				if (index >= 0 && index < sessions.length) {
 					sessions.splice(index, 1);
@@ -115,5 +111,4 @@ export const SessionHistory = (function SessionHistory() {
 		getHistorySession: getHistorySession,
 		updateConfig: updateConfig
 	};
-
 })();

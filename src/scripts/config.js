@@ -12,7 +12,6 @@ import { GlobalEvents } from './utils/global-events';
 // API
 
 const Config = (function () {
-
 	const defaults = {
 		'style.panel.width': 800,
 		'style.panel.height': 600,
@@ -48,7 +47,7 @@ const Config = (function () {
 		'trashcan.hide': true,
 		'trashcan.hide-count': 0,
 		'undo.events': [],
-		'troubleshooting': false,
+		troubleshooting: false,
 		'theme.toolbar.grayscale': false
 	};
 
@@ -56,7 +55,7 @@ const Config = (function () {
 	var initConfig = true;
 	var localSettings = defaults;
 	var configEvents = new PubSub();
-	var isPanelUI = (typeof document !== 'undefined' && document.body) ? (document.body.clientWidth == 0) : false;
+	var isPanelUI = typeof document !== 'undefined' && document.body ? document.body.clientWidth == 0 : false;
 
 	// ------------------------------------------------------------------------
 	// API
@@ -84,17 +83,19 @@ const Config = (function () {
 			return;
 		}
 
-		browser.storage.local.set({ [key]: value })
-			.then(function success() {
+		browser.storage.local.set({ [key]: value }).then(
+			function success() {
 				localSettings[key] = value;
 				// console.log('[Change config]', key, value);
 				configEvents.publish(key, value);
 				if (typeof onSuccess === 'function') {
 					onSuccess();
 				}
-			}, function onError(error) {
+			},
+			function onError(error) {
 				console.log(error);
-			});
+			}
+		);
 	};
 
 	var get = function get(key) {
@@ -137,15 +138,13 @@ const Config = (function () {
 		console.log(localSettings);
 
 		if (isAddonContext()) {
-			browser.commands.getAll().
-				then(function (commands) {
-					configEvents.publish('config.hotkey.init', commands);
-				});
+			browser.commands.getAll().then(function (commands) {
+				configEvents.publish('config.hotkey.init', commands);
+			});
 		}
 	};
 
 	if (isAddonContext()) {
-
 		// console.log('');
 		// console.log('------------------------------------------');
 

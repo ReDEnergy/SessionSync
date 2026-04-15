@@ -6,8 +6,8 @@
 	width: 350px;
 	padding: 30px 0 0 0;
 	font-size: 12px;
-	border-right: 1px solid #CCC;
-	background: #F5F5F5;
+	border-right: 1px solid #ccc;
+	background: #f5f5f5;
 	opacity: 0.95;
 	color: #000;
 
@@ -17,7 +17,7 @@
 	bottom: 1px;
 	right: -355px;
 	z-index: 2000;
-	box-shadow: 0 0 10px 0 #CCC;
+	box-shadow: 0 0 10px 0 #ccc;
 
 	transition: all 0.25s ease-out;
 	opacity: 0.5;
@@ -28,7 +28,7 @@
 	opacity: 1;
 }
 
-#session-sync[show="false"] .config-panel {
+#session-sync[show='false'] .config-panel {
 	right: -355px !important;
 }
 
@@ -39,8 +39,8 @@
 #session-sync .config-panel .css-close-button {
 	width: 2.4em;
 	height: 2.4em;
-	top: .5em;
-	right: .5em;
+	top: 0.5em;
+	right: 0.5em;
 	opacity: 0.85 !important;
 	transition: all 0.2s ease-out;
 }
@@ -60,7 +60,7 @@
 	margin: 2em auto;
 	padding: 0;
 	border: none;
-	background: url("images/icon64.png") center top no-repeat;
+	background: url('images/icon64.png') center top no-repeat;
 }
 
 #session-sync .config-panel .logo:hover {
@@ -74,7 +74,7 @@
 #session-sync .config-panel .section-container {
 	height: auto;
 	padding: 1em 0 0 0;
-	border-bottom: 1px dashed #CCC;
+	border-bottom: 1px dashed #ccc;
 	border: none;
 	position: relative;
 }
@@ -85,7 +85,7 @@
 	font-weight: 600;
 	text-align: left;
 	color: #333;
-	border-bottom: 1px solid #DDD;
+	border-bottom: 1px solid #ddd;
 	border-top: none;
 	font-size: 14px;
 }
@@ -107,13 +107,13 @@
 	width: 1.5em;
 	height: 1.5em;
 	margin: 0 0.5em;
-	background-image: url("images/arrow-up.png");
+	background-image: url('images/arrow-up.png');
 	background-size: contain;
 	float: left;
 }
 
 #session-sync .config-panel .section-container[collapsed] .drop-icon {
-	background-image: url("images/arrow-down.png");
+	background-image: url('images/arrow-down.png');
 	background-size: contain;
 }
 
@@ -134,8 +134,7 @@
 	box-sizing: border-box;
 }
 
-#session-sync .config-panel .comp-range-control .label
-{
+#session-sync .config-panel .comp-range-control .label {
 	height: 100%;
 	font-size: 1em;
 	color: #555;
@@ -147,7 +146,6 @@
 	flex: 1;
 	box-sizing: border-box;
 }
-
 
 #session-sync .config-panel .comp-range-control .range-input {
 	width: 8em;
@@ -179,13 +177,12 @@
 }
 
 #session-sync .config-panel .comp-range-control .button.inc {
-	background: url("images/arrow-right.png") center top no-repeat;
+	background: url('images/arrow-right.png') center top no-repeat;
 	background-size: 100%;
 }
 
-#session-sync .config-panel .comp-range-control .button.dec
-{
-	background: url("images/arrow-left.png") center top no-repeat;
+#session-sync .config-panel .comp-range-control .button.dec {
+	background: url('images/arrow-left.png') center top no-repeat;
 	background-size: 100%;
 }
 
@@ -194,23 +191,23 @@
 	margin: 0 0.2em;
 	padding: 0;
 
-	background: #FFF;
-	border: 1px solid #CCC;
+	background: #fff;
+	border: 1px solid #ccc;
 
 	font-size: 1.1em;
 	text-align: center;
 	line-height: 1.8em;
-	color: #2D92EB;
+	color: #2d92eb;
 }
 
 /*
  * Toggle control
  */
 
- #session-sync .config-panel .comp-button,
- #session-sync .config-panel .comp-dropdown,
- #session-sync .config-panel .comp-toggle-switch,
- #session-sync .config-panel .comp-toggle-button {
+#session-sync .config-panel .comp-button,
+#session-sync .config-panel .comp-dropdown,
+#session-sync .config-panel .comp-toggle-switch,
+#session-sync .config-panel .comp-toggle-button {
 	width: 100%;
 	height: 2em;
 	margin: 5px 0;
@@ -254,16 +251,16 @@
 	cursor: pointer;
 }
 
-#session-sync .config-panel .comp-toggle-button .button[state="true"] {
-	background: #38B751;
+#session-sync .config-panel .comp-toggle-button .button[state='true'] {
+	background: #38b751;
 }
 
-#session-sync .config-panel .comp-toggle-button .button[state="false"] {
-	background: #66AAEF;
+#session-sync .config-panel .comp-toggle-button .button[state='false'] {
+	background: #66aaef;
 }
 
-#session-sync .config-panel .comp-toggle-button .button[state="disable"] {
-	background: #66AAEF;
+#session-sync .config-panel .comp-toggle-button .button[state='disable'] {
+	background: #66aaef;
 }
 
 /*
@@ -291,7 +288,7 @@
 	width: 8em;
 	height: 100%;
 	margin: 0 1em 0 0;
-	background: #38B751;
+	background: #38b751;
 	border-radius: 1em;
 	line-height: 1.9em;
 	color: white;
@@ -303,13 +300,13 @@
 
 #session-sync .config-panel .comp-dropdown .select:hover {
 	cursor: pointer;
-	background: #66AAEF;
+	background: #66aaef;
 }
 
 /*
  * Custom states
  */
 
-#session-sync[history="false"] .config-panel .section-container[id="history-config"] .comp-range-control {
+#session-sync[history='false'] .config-panel .section-container[id='history-config'] .comp-range-control {
 	display: none;
 }

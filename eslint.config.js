@@ -6,25 +6,21 @@ import stylistic from '@stylistic/eslint-plugin';
 /** @type {import('eslint').Linter.Config[]} */
 export default [
 	{
-		ignores: [
-			'.output/**',
-			'.wxt/**',
-			'node_modules/**',
-		],
+		ignores: ['.output/**', '.wxt/**', 'node_modules/**']
 	},
 	js.configs.recommended,
 	autoImports,
 	{
 		plugins: {
-			'@stylistic': stylistic,
+			'@stylistic': stylistic
 		},
 		languageOptions: {
 			globals: {
 				...globals.browser,
-				...globals.webextensions,
+				...globals.webextensions
 			},
 			ecmaVersion: 'latest',
-			sourceType: 'module',
+			sourceType: 'module'
 		},
 		rules: {
 			// Stylistic Rules
@@ -32,25 +28,16 @@ export default [
 				'error',
 				'tab',
 				{
-					'SwitchCase': 1,
-				},
+					SwitchCase: 1
+				}
 			],
-			'@stylistic/linebreak-style': [
-				'error',
-				'windows',
-			],
-			'@stylistic/quotes': [
-				'error',
-				'single',
-			],
-			'@stylistic/semi': [
-				'error',
-				'always',
-			],
+			'@stylistic/linebreak-style': ['error', 'windows'],
+			'@stylistic/quotes': ['error', 'single'],
+			'@stylistic/semi': ['error', 'always'],
 
 			// Core Logic Rules
 			'no-console': 'off',
-			'no-undef': 'off',
-		},
-	},
+			'no-undef': 'off'
+		}
+	}
 ];

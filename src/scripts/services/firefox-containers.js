@@ -6,11 +6,10 @@ import { DomElem } from '../utils/dom';
 // API
 
 /*
-* Bookmark Properties
-*/
+ * Bookmark Properties
+ */
 
 export class FirefoxContainers {
-
 	static defaultContainer = 'firefox-default';
 	static containers = [];
 	static domContainers = {};
@@ -28,7 +27,6 @@ export class FirefoxContainers {
 
 		// create dom containers
 		for (const container of contexts) {
-
 			const domContainer = DomElem('div', { class: 'container' });
 			domContainer.style.backgroundColor = container.colorCode;
 
@@ -59,6 +57,6 @@ export class FirefoxContainers {
 	}
 
 	static getContainerInfo(cookieStoreId) {
-		return FirefoxContainers.containers.find(container => container.cookieStoreId === cookieStoreId);
+		return FirefoxContainers.containers.find((container) => container.cookieStoreId === cookieStoreId);
 	}
 }

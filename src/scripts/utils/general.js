@@ -11,7 +11,7 @@ export function copyProperties(source, destination) {
 // Test if object is a valid javascript function
 // Returns the same object if true or a new function otherwise
 export function getValidFunction(object) {
-	var value = (typeof object === 'function' ? object : function () { });
+	var value = typeof object === 'function' ? object : function () {};
 	return value;
 }
 

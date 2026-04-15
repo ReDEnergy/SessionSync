@@ -7,10 +7,10 @@
 	margin: -16px 0 0 0;
 
 	color: #555;
-	background: #FFF;
+	background: #fff;
 	text-align: center;
 	line-height: 20px;
-	border: 1px solid #CCC;
+	border: 1px solid #ccc;
 	border-radius: 5px;
 
 	display: none;
@@ -19,19 +19,19 @@
 	left: 0;
 	z-index: 2000;
 
-	box-shadow: 0 5px 7px 1px #CCC;
+	box-shadow: 0 5px 7px 1px #ccc;
 	box-sizing: border-box;
 }
 
 #session-sync .tooltip-system:after {
-	content: " ";
+	content: ' ';
 	width: 16px;
 	height: 16px;
 	margin: -8px 0 0 -9px;
 
-	background: #FFF;
+	background: #fff;
 	border-style: solid;
-	border-color: #BBB;
+	border-color: #bbb;
 	border-width: 0 1px 1px 0;
 
 	position: absolute;

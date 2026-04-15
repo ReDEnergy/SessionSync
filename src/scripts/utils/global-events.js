@@ -9,19 +9,17 @@ import { PubSub } from '../3rd/pubsub';
 // API
 
 const GlobalEventSystem = (function GlobalEventSystem() {
-
 	const globalEvents = new PubSub();
 
 	return {
 		on: globalEvents.subscribe.bind(globalEvents),
 		off: globalEvents.unsubscribe.bind(globalEvents),
-		emit: globalEvents.publish.bind(globalEvents),
+		emit: globalEvents.publish.bind(globalEvents)
 	};
 })();
 
 // Handles collection of PubSub events separated by diffrent namespaces
 function NamespaceEvents() {
-
 	var map = new Map();
 
 	//-------------------------------------------------------------------------
@@ -73,7 +71,7 @@ function NamespaceEvents() {
 	};
 }
 
-// WindowEvents based on window.document topic 
+// WindowEvents based on window.document topic
 
 const WindowEvents = new NamespaceEvents();
 

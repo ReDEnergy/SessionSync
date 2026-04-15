@@ -18,9 +18,9 @@ import { SessionHistory } from './session-history';
 // API
 
 /*
-* Session List
-* UI Module for interacting with all the session
-*/
+ * Session List
+ * UI Module for interacting with all the session
+ */
 
 export class SessionList {
 	constructor() {
@@ -80,72 +80,107 @@ export class SessionList {
 		if (typeof document !== 'undefined') {
 			WindowEvents.on(document, 'ListSessions', this.setSessions.bind(this));
 
-			WindowEvents.on(document, 'SetPromiseSession', function (sessionInfo) {
-				this.promiseInfo = sessionInfo;
-				WindowEvents.emit(document, 'ShowSyncList', { update: sessionInfo.update });
-			}.bind(this));
+			WindowEvents.on(
+				document,
+				'SetPromiseSession',
+				function (sessionInfo) {
+					this.promiseInfo = sessionInfo;
+					WindowEvents.emit(document, 'ShowSyncList', { update: sessionInfo.update });
+				}.bind(this)
+			);
 
-			WindowEvents.on(document, 'SelectSyncSession', function (context) {
-				this.selectSyncSession(context, false);
-			}.bind(this));
+			WindowEvents.on(
+				document,
+				'SelectSyncSession',
+				function (context) {
+					this.selectSyncSession(context, false);
+				}.bind(this)
+			);
 
 			WindowEvents.on(document, 'FilterSessions', this.filterSessions.bind(this));
 			WindowEvents.on(document, 'SortSessionsBy', this.sortSessionsBy.bind(this));
 
-			WindowEvents.on(document, 'SessionsPositionChanged', function (indices) {
-				if (AppConfig.get('session.sorting') == 'position-asc' && AppConfig.get('session.active.filter').length == 0) {
-					var len = indices.length;
-					for (var i = 0; i < len; i++) {
-						var node = this.SyncModel.getBookmark(indices[i]);
-						node.setVirtualPosition(SessionSyncModel.bookmarks[node.bookmarkID].index);
-					}
-				}
-			}.bind(this));
-
-			WindowEvents.on(document, 'ShowCurrentSession', function () {
-				if (AppConfig.get('session.selected') != null) {
-					AppConfig.set('session.selected', null);
-					AppConfig.set('state.scrollTop.current', 0);
-				}
-				this.setState('active');
-				this.setSelectedNode(undefined);
-			}.bind(this));
-
-			WindowEvents.on(document, 'ShowSyncList', function (options) {
-				// Select first visible session
-				if (this.promiseInfo.sessionID == null) {
-					for (var i = 0; i < this.sessions.length; i++) {
-						if (this.sessions[i].isVisible()) {
-							this.selectSyncSession(this.sessions[i], true, false);
-							break;
+			WindowEvents.on(
+				document,
+				'SessionsPositionChanged',
+				function (indices) {
+					if (AppConfig.get('session.sorting') == 'position-asc' && AppConfig.get('session.active.filter').length == 0) {
+						var len = indices.length;
+						for (var i = 0; i < len; i++) {
+							var node = this.SyncModel.getBookmark(indices[i]);
+							node.setVirtualPosition(SessionSyncModel.bookmarks[node.bookmarkID].index);
 						}
 					}
-				}
+				}.bind(this)
+			);
 
-				this.setState('sync');
-				if (options.update == true) {
-					GlobalEvents.emit('update-sessions');
-				}
-			}.bind(this));
+			WindowEvents.on(
+				document,
+				'ShowCurrentSession',
+				function () {
+					if (AppConfig.get('session.selected') != null) {
+						AppConfig.set('session.selected', null);
+						AppConfig.set('state.scrollTop.current', 0);
+					}
+					this.setState('active');
+					this.setSelectedNode(undefined);
+				}.bind(this)
+			);
 
-			WindowEvents.on(document, 'SessionDescriptionChanged', function () {
-				this.sortSessionsBy(AppConfig.get('session.sorting'));
-				this.scrollToSelected();
-			}.bind(this));
+			WindowEvents.on(
+				document,
+				'ShowSyncList',
+				function (options) {
+					// Select first visible session
+					if (this.promiseInfo.sessionID == null) {
+						for (var i = 0; i < this.sessions.length; i++) {
+							if (this.sessions[i].isVisible()) {
+								this.selectSyncSession(this.sessions[i], true, false);
+								break;
+							}
+						}
+					}
 
-			WindowEvents.on(document, 'SessionScrollToSelected', function () {
-				this.scrollToSelected();
-			}.bind(this));
+					this.setState('sync');
+					if (options.update == true) {
+						GlobalEvents.emit('update-sessions');
+					}
+				}.bind(this)
+			);
 
-			GlobalEvents.on('BookmarkDeleted', function (itemID) {
-				if (AppConfig.get('session.selected') == itemID) {
-					WindowEvents.emit(this.document, 'ShowCurrentSession');
-				}
-			}.bind(this));
+			WindowEvents.on(
+				document,
+				'SessionDescriptionChanged',
+				function () {
+					this.sortSessionsBy(AppConfig.get('session.sorting'));
+					this.scrollToSelected();
+				}.bind(this)
+			);
 
-			WindowEvents.on(document, 'SelectHistorySession', function (context) {
-				this.selectHistorySession(context);
-			}.bind(this));
+			WindowEvents.on(
+				document,
+				'SessionScrollToSelected',
+				function () {
+					this.scrollToSelected();
+				}.bind(this)
+			);
+
+			GlobalEvents.on(
+				'BookmarkDeleted',
+				function (itemID) {
+					if (AppConfig.get('session.selected') == itemID) {
+						WindowEvents.emit(this.document, 'ShowCurrentSession');
+					}
+				}.bind(this)
+			);
+
+			WindowEvents.on(
+				document,
+				'SelectHistorySession',
+				function (context) {
+					this.selectHistorySession(context);
+				}.bind(this)
+			);
 		}
 
 		AppConfig.onChange('session.selected', function (value) {
@@ -197,7 +232,6 @@ export class SessionList {
 
 			historyList.textContent = '';
 			SessionHistory.getFullHistory((historySessions, activeSession) => {
-
 				if (activeSession) {
 					let activeSnapshot = new SessionHistoryFolder(activeSession, -1);
 					activeSnapshot.setTitle('Active snapshot');
@@ -211,7 +245,11 @@ export class SessionList {
 
 						if (i == selectedIndex) {
 							var node = historySession.DOMRoot;
-							AutoScroll.scrollTo(historyList, node.offsetTop - historyList.parentNode.clientHeight / 2 + node.clientHeight, snap === true ? 0 : 0.25);
+							AutoScroll.scrollTo(
+								historyList,
+								node.offsetTop - historyList.parentNode.clientHeight / 2 + node.clientHeight,
+								snap === true ? 0 : 0.25
+							);
 						}
 					}
 				}
@@ -264,36 +302,35 @@ export class SessionList {
 		var selectedSession;
 		var filterExpression = AppConfig.get('session.active.filter');
 
-		SessionSyncModel.sessions.forEach(function (session) {
+		SessionSyncModel.sessions.forEach(
+			function (session) {
+				SessionSyncModel.bookmarks[session.id] = session;
 
-			SessionSyncModel.bookmarks[session.id] = session;
-
-			// find if a cache instance is already created and update it
-			var sessionFolder = this.SyncModel.getBookmark(session.id);
-			if (sessionFolder instanceof SessionFolder) {
-				sessionFolder.updateFrom(session);
-			}
-			else {
-				sessionFolder = new SessionFolder(session);
-				sessionFolder.setVirtualPosition(session.index);
-				this.SyncModel.setBookmark(session.id, sessionFolder);
-			}
-
-			if (session.id === this.promiseInfo.sessionID) {
-				selectedSession = sessionFolder;
-			}
-
-			if (filterExpression.length > 0) {
-				if (sessionFolder.match(filterExpression)) {
-					sessionFolder.setVirtualPosition(position);
-					position++;
+				// find if a cache instance is already created and update it
+				var sessionFolder = this.SyncModel.getBookmark(session.id);
+				if (sessionFolder instanceof SessionFolder) {
+					sessionFolder.updateFrom(session);
+				} else {
+					sessionFolder = new SessionFolder(session);
+					sessionFolder.setVirtualPosition(session.index);
+					this.SyncModel.setBookmark(session.id, sessionFolder);
 				}
-			}
 
-			this.sessions.push(sessionFolder);
-			this.DOMList.appendChild(sessionFolder.DOMRoot);
+				if (session.id === this.promiseInfo.sessionID) {
+					selectedSession = sessionFolder;
+				}
 
-		}.bind(this));
+				if (filterExpression.length > 0) {
+					if (sessionFolder.match(filterExpression)) {
+						sessionFolder.setVirtualPosition(position);
+						position++;
+					}
+				}
+
+				this.sessions.push(sessionFolder);
+				this.DOMList.appendChild(sessionFolder.DOMRoot);
+			}.bind(this)
+		);
 
 		if (filterExpression.length > 0) {
 			this.filterSessions(filterExpression);
@@ -321,8 +358,9 @@ export class SessionList {
 	}
 
 	scrollToSelected(snap) {
-		if (this.selectedNode == undefined)
+		if (this.selectedNode == undefined) {
 			return;
+		}
 
 		var offset = this.selectedNode.offsetTop - this.DOMList.clientHeight / 2 + this.selectedNode.clientHeight;
 
@@ -388,8 +426,7 @@ export class SessionList {
 			if (doc) {
 				WindowEvents.emit(doc, 'FilterSessionsExactMatch', exactMatch);
 			}
-		}
-		else {
+		} else {
 			this.sessions.forEach(function (session) {
 				session.setVisible();
 			});
