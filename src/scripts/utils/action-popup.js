@@ -97,4 +97,4 @@ export function ActionPopup(options)
 	// Public properties
 
 	this.DOMRoot = panel;
-}
+}

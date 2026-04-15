@@ -8,17 +8,26 @@
 	"scripts": {
 		"dev": "wxt",
 		"dev:chrome": "wxt -b chrome --mv3 --host 127.0.0.1",
-		"dev:firefox": "wxt -b firefox --mv2 --host 127.0.0.1",
+		"dev:firefox": "wxt -b firefox --mv3 --host 127.0.0.1",
 		"build": "wxt build",
 		"build:chrome": "wxt build -b chrome --mv3",
-		"build:firefox": "wxt build -b firefox --mv2",
+		"build:firefox": "wxt build -b firefox --mv3",
 		"clean": "wxt clean",
 		"zip": "wxt zip",
 		"zip:chrome": "wxt zip -b chrome --mv3",
-		"zip:firefox": "wxt zip -b firefox --mv2",
+		"zip:firefox": "wxt zip -b firefox --mv3",
+		"lint": "eslint .",
+		"lint:fix": "eslint . --fix",
+		"format": "prettier --write .",
 		"postinstall": "wxt prepare"
 	},
 	"devDependencies": {
+		"@eslint/js": "^9.39.4",
+		"@stylistic/eslint-plugin": "^5.10.0",
+		"eslint": "^9.39.4",
+		"eslint-config-prettier": "^10.1.8",
+		"globals": "^17.5.0",
+		"prettier": "^3.8.3",
 		"wxt": "^0.20.20"
 	}
 }

@@ -18,8 +18,7 @@ import { DragContext } from '../utils/drag-context';
 // ----------------------------------------------------------------------------
 // Session Folder Events - delegated
 
-export function SessionFolderEvents(container)
-{
+export function SessionFolderEvents(container) {
 	var startDragEvent = null;
 	var trackingTelemetry;
 	var offsetRect = {};
@@ -43,8 +42,7 @@ export function SessionFolderEvents(container)
 	// --------------------------------------------------------------
 	// Drag Events
 
-	var trackDragging = function _mouseMove(e)
-	{
+	var trackDragging = function _mouseMove(e) {
 		var delta = Math.abs(startDragEvent.clientX - e.clientX) > 5 || Math.abs(startDragEvent.clientY - e.clientY) > 5;
 		if (delta) {
 			DragContext.setContext(bookmarkContext);
@@ -55,7 +53,7 @@ export function SessionFolderEvents(container)
 			offsetRect.relativeX = offsetRect.x - container.parentElement.offsetLeft;
 
 			bookmarkContext.DOMRoot.style.top = e.clientY - offsetRect.relativeY + 'px';
-			bookmarkContext.DOMRoot.style.left = e.clientX - offsetRect.relativeX  + 'px';
+			bookmarkContext.DOMRoot.style.left = e.clientX - offsetRect.relativeX + 'px';
 			bookmarkContext.DOMRoot.setAttribute('dragging', '');
 
 			// Events
@@ -64,15 +62,14 @@ export function SessionFolderEvents(container)
 		}
 	};
 
-	var cancelDragging = function cancelDragging(e)
-	{
+	var cancelDragging = function cancelDragging(e) {
 		AutoScroll.stop();
 
 		bookmarkContext.DOMRoot.setAttribute('dragging', 'drop');
 		bookmarkContext.DOMRoot.style.top = e.clientY - offsetRect.y + container.scrollTop + 'px';
 		bookmarkContext.DOMRoot.style.left = e.clientX - offsetRect.x + 'px';
 
-		setTimeout(function() {
+		setTimeout(function () {
 			bookmarkContext.DOMRoot.removeAttribute('dragging');
 			bookmarkContext.restorePosition();
 		}, 50);
@@ -81,8 +78,7 @@ export function SessionFolderEvents(container)
 		DragContext.clearContext();
 	};
 
-	var mouseDragging = function mouseMove(e)
-	{
+	var mouseDragging = function mouseMove(e) {
 		if (this != window)
 			return;
 		var deltaTime = new Date() - trackingTelemetry;
@@ -92,8 +88,7 @@ export function SessionFolderEvents(container)
 
 		var tryScroll = e.clientX > offsetRect.left && e.clientX < offsetRect.right;
 
-		if (tryScroll)
-		{
+		if (tryScroll) {
 			if (e.clientY < offsetRect.top) {
 				AutoScroll.scroll(container, (e.clientY - offsetRect.top));
 			}
@@ -107,34 +102,28 @@ export function SessionFolderEvents(container)
 		}
 
 		bookmarkContext.DOMRoot.style.top = e.clientY - offsetRect.relativeY + 'px';
-		bookmarkContext.DOMRoot.style.left = e.clientX - offsetRect.relativeX  + 'px';
+		bookmarkContext.DOMRoot.style.left = e.clientX - offsetRect.relativeX + 'px';
 		trackingTelemetry = new Date();
 	};
 
-	var mouseUp = function _mouseUp(e)
-	{
+	var mouseUp = function _mouseUp(e) {
 		// Test if changing
-		if (e.target.className == 'folder')
-		{
+		if (e.target.className == 'folder') {
 			var sessionID = getBookmarkID(e);
 
 			// Preview the content if a click event was registered (mouse-up on the same DOM node)
-			if (bookmarkContext.bookmarkID == sessionID)
-			{
+			if (bookmarkContext.bookmarkID == sessionID) {
 				if (!DragContext.hasContext()) {
 					if (typeof document !== 'undefined') {
 						WindowEvents.emit(document, 'SelectSyncSession', bookmarkContext);
 					}
 				}
 			}
-			else
-			{
-				if (AppConfig.get('session.sorting') === 'position-asc')
-				{
+			else {
+				if (AppConfig.get('session.sorting') === 'position-asc') {
 					SessionSyncModel.moveBookmark(bookmarkContext.bookmarkID, sessionID);
 				}
-				else
-				{
+				else {
 					if (typeof document !== 'undefined') {
 						WindowEvents.emit(document, 'Notification', {
 							message: 'Rearage function available only when items are sorted ascending by position',
@@ -145,20 +134,17 @@ export function SessionFolderEvents(container)
 			}
 		}
 
-		if (DragContext.hasContext())
-		{
+		if (DragContext.hasContext()) {
 			cancelDragging(e);
 		}
-		else
-		{
+		else {
 			window.removeEventListener('mousemove', trackDragging);
 		}
 
 		window.removeEventListener('mouseup', mouseUp);
 	};
 
-	var folderMouseDown = function _folderMouseDown(e)
-	{
+	var folderMouseDown = function _folderMouseDown(e) {
 		if (DragContext.hasContext()) {
 			cancelDragging(e);
 			return;
@@ -175,15 +161,12 @@ export function SessionFolderEvents(container)
 		}
 	};
 
-	var folderContextMenu = function folderContextMenu(e)
-	{
+	var folderContextMenu = function folderContextMenu(e) {
 		if (typeof document === 'undefined') return;
 
-		if (bookmarkContext)
-		{
+		if (bookmarkContext) {
 			var contextMenu = undefined;
-			switch (bookmarkContext.bookmark.type)
-			{
+			switch (bookmarkContext.bookmark.type) {
 				case 'folder':
 					contextMenu = 'SessionContextMenu';
 					break;
@@ -210,14 +193,11 @@ export function SessionFolderEvents(container)
 		}
 	};
 
-	var sessionDblClick = function sessionDblClick(e)
-	{
+	var sessionDblClick = function sessionDblClick(e) {
 		if (typeof document === 'undefined') return;
 
-		if (bookmarkContext)
-		{
-			switch (bookmarkContext.bookmark.type)
-			{
+		if (bookmarkContext) {
+			switch (bookmarkContext.bookmark.type) {
 				case 'folder':
 					WindowEvents.emit(document, 'SessionContextMenu-EditSession', bookmarkContext.bookmarkID);
 					break;
@@ -240,22 +220,9 @@ export function SessionFolderEvents(container)
 // ----------------------------------------------------------------------------
 // History Session Folder Events - delegated
 
-export function SessionHistoryEvents(container)
-{
-	var historyContext = null;
+export function SessionHistoryEvents(container) {
 
-	function getAttribute(target, attribute) {
-		try {
-			return target.getAttribute(attribute);
-		}
-		catch (err) {
-			console.log(err);
-			return null;
-		}
-	}
-
-	var onMouseDown = function onMouseDown(e)
-	{
+	var onMouseDown = function onMouseDown(e) {
 		if (e.button != 2)
 			return;
 
@@ -268,18 +235,15 @@ export function SessionHistoryEvents(container)
 				});
 			}
 		}
-		else
-		{
+		else {
 			if (typeof document !== 'undefined') {
-				WindowEvents.emit(document, 'HistoryListCtxMenu-Open', {event: e });
+				WindowEvents.emit(document, 'HistoryListCtxMenu-Open', { event: e });
 			}
 		}
 	};
 
-	var onClick = function onClick(e)
-	{
-		if (e.target.className === 'history-node')
-		{
+	var onClick = function onClick(e) {
+		if (e.target.className === 'history-node') {
 			// WindowEvents.emit(document, 'HistoryListCtxMenu-Open', {event: e });
 			// this.selectHistorySession(e.target);
 		}
@@ -290,4 +254,4 @@ export function SessionHistoryEvents(container)
 
 	container.addEventListener('click', onClick);
 	container.addEventListener('mousedown', onMouseDown);
-}
+}

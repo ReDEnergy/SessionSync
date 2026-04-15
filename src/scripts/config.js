@@ -126,7 +126,7 @@ const Config = (function () {
 	};
 
 	var onChange = function onChange(topic, callback) {
-		configEvents.subscribe(topic, callback)
+		configEvents.subscribe(topic, callback);
 	};
 
 	// ------------------------------------------------------------------------

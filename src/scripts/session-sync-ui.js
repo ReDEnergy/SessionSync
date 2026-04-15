@@ -37,7 +37,6 @@ import { SessionToolbar } from './components/session-toolbar';
 // Bookmarks
 import { SessionManager } from './session/management';
 import { BookmarkManager } from './session/bookmarks';
-import { BookmarkProperties } from '../common/bookmark-properties';
 
 // ************************************************************************
 // UI initilization

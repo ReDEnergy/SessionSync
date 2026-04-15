@@ -216,7 +216,7 @@ export class SessionList {
 					}
 				}
 			});
-		}
+		};
 
 		GlobalEvents.on('UpdateHistoryList', function () {
 			refreshHistoryList();

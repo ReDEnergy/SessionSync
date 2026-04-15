@@ -14,7 +14,7 @@ export const SessionManagement = (function SessionManagement() {
 
 	function getTabInfo(url) {
 		return {
-			url: url
+			url: url,
 		};
 	}
 
@@ -22,7 +22,6 @@ export const SessionManagement = (function SessionManagement() {
 		if (typeof browser === 'undefined' || !browser.tabs) return;
 
 		var tryCreate = function (withContainer) {
-
 			var tabOptions = Object.assign({}, options);
 
 			if (withContainer && info.container) {
@@ -59,19 +58,17 @@ export const SessionManagement = (function SessionManagement() {
 	var initConfig = function initConfig() {
 		if (typeof browser === 'undefined' || !browser.storage || !browser.storage.local) return;
 
-		browser.storage.local.get(lazyLoadingKey)
-			.then(function (obj) {
-				setLazyLoading(obj[lazyLoadingKey]);
-			});
+		browser.storage.local.get(lazyLoadingKey).then(function (obj) {
+			setLazyLoading(obj[lazyLoadingKey]);
+		});
 
-		browser.storage.local.get(reverseOrderKey)
-			.then(function (obj) {
-				reverseOrder = (obj[reverseOrderKey] == true);
-			});
+		browser.storage.local.get(reverseOrderKey).then(function (obj) {
+			reverseOrder = obj[reverseOrderKey] == true;
+		});
 	};
 
 	var openTab = function openTab(options, info) {
-		var checkFavicon = options.favicon === true ? FaviconService.checkTabFaviconSaved : () => { };
+		var checkFavicon = options.favicon === true ? FaviconService.checkTabFaviconSaved : () => {};
 		delete options.favicon;
 
 		switch (info.mode) {
@@ -83,7 +80,7 @@ export const SessionManagement = (function SessionManagement() {
 			case 'newWindow': {
 				const windowOptions = {
 					url: options.url,
-					cookieStoreId: options.cookieStoreId
+					cookieStoreId: options.cookieStoreId,
 				};
 
 				browser.windows.create(windowOptions).then(function (windowInfo) {
@@ -97,17 +94,21 @@ export const SessionManagement = (function SessionManagement() {
 			}
 
 			case 'activeTab': {
-				browser.tabs.query({ active: true, windowId: browser.windows.WINDOW_ID_CURRENT })
-					.then(tabs => browser.tabs.get(tabs[0].id))
-					.then(tab => {
-						if ((options.cookieStoreId == undefined && tab.cookieStoreId == FirefoxContainers.defaultContainer) ||
-							(tab.cookieStoreId === options.cookieStoreId)) {
+				browser.tabs
+					.query({ active: true, windowId: browser.windows.WINDOW_ID_CURRENT })
+					.then((tabs) => browser.tabs.get(tabs[0].id))
+					.then((tab) => {
+						if (
+							(options.cookieStoreId == undefined &&
+								tab.cookieStoreId == FirefoxContainers.defaultContainer) ||
+							tab.cookieStoreId === options.cookieStoreId
+						) {
 							delete options.cookieStoreId;
 							browser.tabs.update(tab.id, options).then(checkFavicon);
 						} else {
 							browser.tabs.create({
 								url: options.url,
-								cookieStoreId: options.cookieStoreId
+								cookieStoreId: options.cookieStoreId,
 							});
 						}
 					});
@@ -121,7 +122,7 @@ export const SessionManagement = (function SessionManagement() {
 
 	var checkReverseOrder = function checkReverseOrder(bookmarks) {
 		if (reverseOrder === true) {
-			bookmarks = bookmarks.reverse();
+			bookmarks.reverse();
 		}
 	};
 
@@ -134,11 +135,11 @@ export const SessionManagement = (function SessionManagement() {
 					url: bookmark.url,
 					active: false,
 					windowId: windowId,
-					pinned: info.properties.pinned ? true : false
+					pinned: info.properties.pinned ? true : false,
 				},
 				{
 					discard: lazyLoading,
-					container: info.properties.container
+					container: info.properties.container,
 				},
 				FaviconService.checkTabFaviconSaved
 			);
@@ -153,11 +154,11 @@ export const SessionManagement = (function SessionManagement() {
 					url: tab.url,
 					active: false,
 					windowId: windowId,
-					pinned: tab.pinned ? true : false
+					pinned: tab.pinned ? true : false,
 				},
 				{
 					discard: lazyLoading,
-					container: tab.cookieStoreId
+					container: tab.cookieStoreId,
 				}
 			);
 		});
@@ -166,17 +167,18 @@ export const SessionManagement = (function SessionManagement() {
 	var restoreSession = function restoreSession(folderID, options) {
 		if (typeof browser === 'undefined' || !browser.bookmarks) return;
 
-		browser.bookmarks.getChildren(folderID)
-			.then(function (bookmarks) {
+		browser.bookmarks.getChildren(folderID).then(
+			function (bookmarks) {
 				if (options && options.newWindow) {
-					createSessionWindow((windowID) => createTabsFromBookmarks(bookmarks, windowID))
-						.then(function (createdWindow) {
+					createSessionWindow((windowID) => createTabsFromBookmarks(bookmarks, windowID)).then(
+						function (createdWindow) {
 							if (createdWindow) {
 								if (options.closeAll) {
-									browser.windows.getAll({
-										populate: true,
-										windowTypes: ['normal']
-									})
+									browser.windows
+										.getAll({
+											populate: true,
+											windowTypes: ['normal'],
+										})
 										.then(function (windows) {
 											windows.forEach(function (mozWidnow) {
 												if (mozWidnow.id != createdWindow.id) {
@@ -190,30 +192,31 @@ export const SessionManagement = (function SessionManagement() {
 									browser.windows.remove(options.closeWindow);
 								}
 							}
-						}, function onError() {
+						},
+						function onError() {
 							console.log('strage error');
-						});
-				}
-				else {
+						}
+					);
+				} else {
 					createTabsFromBookmarks(bookmarks, browser.windows.WINDOW_ID_CURRENT);
 				}
 			},
-				function fail() {
-					console.log('Error getting bookmarks from folder ID: ', folderID);
-				});
+			function fail() {
+				console.log('Error getting bookmarks from folder ID: ', folderID);
+			}
+		);
 	};
 
 	var createSessionWindow = function createSessionWindow(callback) {
 		var action = new Promise((resolve, reject) => {
 			if (typeof browser === 'undefined' || !browser.windows) return reject();
 
-			browser.windows.create({})
-				.then(function (mozWindow) {
-					resolve(mozWindow);
-					var windowID = mozWindow.id;
-					windowsTabsToKill[windowID] = mozWindow.tabs[0].id;
-					callback(windowID);
-				});
+			browser.windows.create({}).then(function (mozWindow) {
+				resolve(mozWindow);
+				var windowID = mozWindow.id;
+				windowsTabsToKill[windowID] = mozWindow.tabs[0].id;
+				callback(windowID);
+			});
 		});
 		return action;
 	};
@@ -303,7 +306,6 @@ export const SessionManagement = (function SessionManagement() {
 
 	return {
 		getTabInfo: getTabInfo,
-		init: init
+		init: init,
 	};
-
 })();

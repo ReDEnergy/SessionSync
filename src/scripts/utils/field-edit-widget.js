@@ -118,10 +118,6 @@ export function FieldEditWdiget(options) {
 		hideWidget();
 	}
 
-	function destroy() {
-		GlobalEvents.off('BookmarkRemoved', hideWidget);
-	}
-
 	// ------------------------------------------------------------------------
 	// Create UI
 

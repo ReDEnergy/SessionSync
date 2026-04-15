@@ -68,7 +68,6 @@ export class SessionSyncDOMModel {
 export const SessionSyncModel = (function SessionSync() {
 
 	// Bookmarks storage
-	var sessions = {};
 	var bookmarks = {};
 
 	// Per document DOM cache
@@ -77,8 +76,7 @@ export const SessionSyncModel = (function SessionSync() {
 	// ------------------------------------------------------------------------
 	// API
 
-	var getModel = function getModel(doc)
-	{
+	var getModel = function getModel(doc) {
 		var model = domModels.get(doc);
 		if ((model instanceof SessionSyncDOMModel) === false) {
 			model = new SessionSyncDOMModel(doc);
@@ -86,23 +84,20 @@ export const SessionSyncModel = (function SessionSync() {
 		return model;
 	};
 
-	var registerModel = function registerModel(doc, model)
-	{
+	var registerModel = function registerModel(doc, model) {
 		if (model instanceof SessionSyncDOMModel) {
 			domModels.set(doc, model);
 		}
 	};
 
-	var unregisterModel = function unregisterModel(doc)
-	{
+	var unregisterModel = function unregisterModel(doc) {
 		var model = domModels.get(doc);
 		if (model instanceof SessionSyncDOMModel) {
 			domModels.delete(doc);
 		}
 	};
 
-	function onActionError()
-	{
+	function onActionError() {
 		WindowEvents.emitLocal('Notification', {
 			message: 'Error when updating bookmarks'
 		});
@@ -113,8 +108,7 @@ export const SessionSyncModel = (function SessionSync() {
 	}
 
 	// Assumes moving in the same parent directory
-	var moveBookmark = function moveBookmark(idA, idB)
-	{
+	var moveBookmark = function moveBookmark(idA, idB) {
 		var parentID = bookmarks[idA].parentId;
 		var indexA = bookmarks[idA].index;
 		var indexB = bookmarks[idB].index;
@@ -122,17 +116,14 @@ export const SessionSyncModel = (function SessionSync() {
 
 		BookmarkManager.moveItem(idA, parentID, indexA < indexB ? indexB : indexB, onSuccessMove, onActionError);
 
-		function onSuccessMove()
-		{
+		function onSuccessMove() {
 			var indices = [];
 			var min = Math.min(indexA, indexB);
 			var max = Math.max(indexA, indexB);
 
-			for (var id in bookmarks)
-			{
+			for (var id in bookmarks) {
 				var B = bookmarks[id];
-				if (B.parentId == parentID && B.index > min && B.index < max)
-				{
+				if (B.parentId == parentID && B.index > min && B.index < max) {
 					indices.push(B.id);
 					B.index += direction;
 				}
@@ -148,16 +139,14 @@ export const SessionSyncModel = (function SessionSync() {
 	};
 
 	// Moving a bookmark to a new session directory
-	var moveBookmarkTo = function moveBookmarkTo(bookmarkID, folderID)
-	{
+	var moveBookmarkTo = function moveBookmarkTo(bookmarkID, folderID) {
 		var parentID = bookmarks[bookmarkID].parentId;
 		if (parentID == folderID)
 			return;
 
 		BookmarkManager.moveItem(bookmarkID, folderID, undefined, onSuccess, onActionError);
 
-		function onSuccess()
-		{
+		function onSuccess() {
 			bookmarks[bookmarkID].parentId = folderID;
 
 			// TODO: set position based on the length of the new parent list
@@ -173,11 +162,9 @@ export const SessionSyncModel = (function SessionSync() {
 
 			// Reorder all bookmarks after the removed one
 			var indices = [];
-			for (var id in bookmarks)
-			{
+			for (var id in bookmarks) {
 				var B = bookmarks[id];
-				if (B.parentId == parentID && B.index > index)
-				{
+				if (B.parentId == parentID && B.index > index) {
 					indices.push(B.id);
 					B.index--;
 				}
@@ -189,10 +176,8 @@ export const SessionSyncModel = (function SessionSync() {
 	};
 
 	// all items must have the same parent
-	var deleteBookmarkList = function deleteBookmarkList(bookmarkIDs, parentID, callback)
-	{
-		if (bookmarkIDs.length == 0)
-		{
+	var deleteBookmarkList = function deleteBookmarkList(bookmarkIDs, parentID, callback) {
+		if (bookmarkIDs.length == 0) {
 			callback();
 			return;
 		}
@@ -200,8 +185,7 @@ export const SessionSyncModel = (function SessionSync() {
 		var reorderList = [];
 
 		// Get position ordered list of all bookmarks from the parrentID folder
-		for (var id in bookmarks)
-		{
+		for (var id in bookmarks) {
 			var B = bookmarks[id];
 			if (B.parentId == parentID) {
 				reorderList[B.index] = B;
@@ -210,13 +194,11 @@ export const SessionSyncModel = (function SessionSync() {
 
 		var updateEvent = new LimitCounter(bookmarkIDs.length, onFinish);
 
-		bookmarkIDs.forEach(function(bookmarkID)
-		{
+		bookmarkIDs.forEach(function (bookmarkID) {
 			BookmarkManager.deleteItem(bookmarkID, false, onDeleteSuccess.bind(null, bookmarkID), updateEvent.advance);
 		});
 
-		function onFinish()
-		{
+		function onFinish() {
 			// compute reordering
 			var indices = [];
 			var position = 0;
@@ -228,8 +210,7 @@ export const SessionSyncModel = (function SessionSync() {
 				}
 			}
 
-			if (indices.length)
-			{
+			if (indices.length) {
 				// Trigger reordering
 				WindowEvents.broadcast('BookmarksPositionChanged', indices);
 			}
@@ -237,8 +218,7 @@ export const SessionSyncModel = (function SessionSync() {
 			callback();
 		}
 
-		function onDeleteSuccess(bookmarkID)
-		{
+		function onDeleteSuccess(bookmarkID) {
 			var index = bookmarks[bookmarkID].index;
 
 			// Remove the bookmark from all UIs
@@ -254,13 +234,11 @@ export const SessionSyncModel = (function SessionSync() {
 		}
 	};
 
-	var deleteBookmarkItem = function deleteBookmarkItem(bookmarkID)
-	{
+	var deleteBookmarkItem = function deleteBookmarkItem(bookmarkID) {
 		var isFolder = bookmarks[bookmarkID].type === 'folder';
 		BookmarkManager.deleteItem(bookmarkID, isFolder, onDeleteSuccess, onActionError);
 
-		function onDeleteSuccess()
-		{
+		function onDeleteSuccess() {
 			var parentID = bookmarks[bookmarkID].parentId;
 			var index = bookmarks[bookmarkID].index;
 
@@ -271,8 +249,7 @@ export const SessionSyncModel = (function SessionSync() {
 
 			// Reorder all bookmarks after the removed one
 			var indices = [];
-			for (let id in bookmarks)
-			{
+			for (let id in bookmarks) {
 				let B = bookmarks[id];
 				if (B.parentId == parentID && B.index > index) {
 					indices.push(B.id);
@@ -283,11 +260,9 @@ export const SessionSyncModel = (function SessionSync() {
 			// Save undo history
 			var undoEvent = { type: 'delete', bookmark: bookmarks[bookmarkID], items: [] };
 
-			if (isFolder)
-			{
+			if (isFolder) {
 				var folderID = bookmarks[bookmarkID].id;
-				for (let id in bookmarks)
-				{
+				for (let id in bookmarks) {
 					let B = bookmarks[id];
 					if (B.parentId == folderID) {
 						undoEvent.items.push(Object.assign({}, B));
@@ -297,7 +272,7 @@ export const SessionSyncModel = (function SessionSync() {
 
 			// Remove model references
 			delete bookmarks[bookmarkID];
-			undoEvent.items.forEach(function(B) {
+			undoEvent.items.forEach(function (B) {
 				delete bookmarks[B.id];
 			});
 
@@ -313,11 +288,10 @@ export const SessionSyncModel = (function SessionSync() {
 		}
 	};
 
-	var updateBookmarkItem = function updateBookmarkItem(bookmarkID, options)
-	{
+	var updateBookmarkItem = function updateBookmarkItem(bookmarkID, options) {
 		try {
 			if (options.title) {
-				BookmarkManager.setTitle(bookmarks[bookmarkID], options.title, function() {
+				BookmarkManager.setTitle(bookmarks[bookmarkID], options.title, function () {
 					WindowEvents.broadcast('BookmarkTitleChanged', bookmarkID);
 					WindowEvents.broadcast('SessionDescriptionChanged', bookmarkID);
 				});
@@ -331,7 +305,7 @@ export const SessionSyncModel = (function SessionSync() {
 				message: 'Success'
 			});
 
-		} catch(err) {
+		} catch (err) {
 			console.log(err);
 			WindowEvents.emitLocal('Notification', {
 				message: 'Error while saving bookmark'
@@ -342,8 +316,7 @@ export const SessionSyncModel = (function SessionSync() {
 	// ------------------------------------------------------------------------
 	// Events
 
-	var recreateBookmark = function recreateBookmark(item)
-	{
+	var recreateBookmark = function recreateBookmark(item) {
 		delete item.id;
 		delete item.dateAdded;
 		delete item.dateGroupModified;
@@ -351,33 +324,28 @@ export const SessionSyncModel = (function SessionSync() {
 		return BookmarkManager.createBookmark(item);
 	};
 
-	var undoHistoryEvent = function undoHistoryEvent()
-	{
+	var undoHistoryEvent = function undoHistoryEvent() {
 		var sessionID = undefined;
 		var undoEvents = AppConfig.get('undo.events');
 
-		function onSuccess()
-		{
+		function onSuccess() {
 			AppConfig.set('undo.events', undoEvents);
 			WindowEvents.emit(document, 'SetPromiseSession', { sessionID: sessionID, update: false });
 			GlobalEvents.emit('update-sessions');
 		}
 
-		if (undoEvents.length)
-		{
+		if (undoEvents.length) {
 			var historyEvent = undoEvents.pop();
 
-			if (historyEvent.type == 'delete')
-			{
-				switch (historyEvent.bookmark.type)
-				{
+			if (historyEvent.type == 'delete') {
+				switch (historyEvent.bookmark.type) {
 					case 'bookmark':
 					case 'separator': {
 						recreateBookmark(historyEvent.bookmark)
-						.then(function (bookmark) {
-							sessionID = (bookmark.parentId == AppConfig.get('storageID')) ? bookmark.id : bookmark.parentId;
-							onSuccess();
-						});
+							.then(function (bookmark) {
+								sessionID = (bookmark.parentId == AppConfig.get('storageID')) ? bookmark.id : bookmark.parentId;
+								onSuccess();
+							});
 						break;
 					}
 
@@ -386,35 +354,34 @@ export const SessionSyncModel = (function SessionSync() {
 						var oldID = historyEvent.bookmark.id;
 
 						recreateBookmark(historyEvent.bookmark)
-						.then(function (node) {
-							sessionID = node.id;
-							var newID = node.id;
-							var updateEvent = new LimitCounter(historyEvent.items.length, onSuccess);
+							.then(function (node) {
+								sessionID = node.id;
+								var newID = node.id;
+								var updateEvent = new LimitCounter(historyEvent.items.length, onSuccess);
 
-							// correct parent for each bookmark
-							if (oldID != newID)
-							{
-								// correct restore event
-								historyEvent.items.forEach(function (bookmark) {
-									bookmark.parentId = newID;
-									recreateBookmark(bookmark)
-									.then(updateEvent.advance, updateEvent.advance);
-								});
-
-								// correct all undo events
-								undoEvents.forEach(function (event) {
-									event.items.forEach(function (bookmark) {
-										if (bookmark.parentId == oldID) {
-											bookmark.parentId = newID;
-										}
+								// correct parent for each bookmark
+								if (oldID != newID) {
+									// correct restore event
+									historyEvent.items.forEach(function (bookmark) {
+										bookmark.parentId = newID;
+										recreateBookmark(bookmark)
+											.then(updateEvent.advance, updateEvent.advance);
 									});
-								});
-							}
 
-							if (historyEvent.items.length == 0) {
-								onSuccess();
-							}
-						});
+									// correct all undo events
+									undoEvents.forEach(function (event) {
+										event.items.forEach(function (bookmark) {
+											if (bookmark.parentId == oldID) {
+												bookmark.parentId = newID;
+											}
+										});
+									});
+								}
+
+								if (historyEvent.items.length == 0) {
+									onSuccess();
+								}
+							});
 						break;
 					}
 				}
@@ -443,4 +410,4 @@ export const SessionSyncModel = (function SessionSync() {
 		updateBookmarkItem: updateBookmarkItem,
 	};
 
-})();
+})();

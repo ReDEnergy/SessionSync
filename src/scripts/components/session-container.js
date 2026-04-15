@@ -188,7 +188,7 @@ export class SessionContainer {
 			container.style.fontSize = size + 'px';
 		});
 
-		AppConfig.onChange('session.save', (obj) => {
+		AppConfig.onChange('session.save', () => {
 			if (this.SyncModel.state.session == 'current') {
 				this.showCurrentSession();
 			}

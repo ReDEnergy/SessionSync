@@ -6,7 +6,7 @@
 // Utils
 import { AppConfig } from '../config';
 import { HTMLCreator } from '../utils/dom';
-import { WindowEvents, GlobalEvents } from '../utils/global-events';
+import { WindowEvents } from '../utils/global-events';
 
 // *****************************************************************************
 // API
