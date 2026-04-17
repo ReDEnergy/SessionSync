@@ -22,57 +22,71 @@ function WindowSession(id) {
 	this.saveTime = new Date().getTime();
 }
 
-BrowserSession.prototype.update = function update() {
+BrowserSession.prototype.update = async function update() {
 	if (typeof browser === 'undefined' || !browser.windows) return;
 
 	// Prepare session information
-	browser.windows
-		.getAll({
+	try {
+		const mozWindows = await browser.windows.getAll({
 			populate: true,
 			windowTypes: ['normal']
-		})
-		.then(
-			function (mozWindows) {
-				var tabCount = 0;
+		});
 
-				for (var key in this.windows) {
-					this.windows[key].active = false;
-				}
+		let groupMap = new Map();
+		if (browser.tabGroups) {
+			try {
+				const groups = await browser.tabGroups.query({});
+				groups.forEach((g) => groupMap.set(g.id, g));
+			} catch (e) {
+				console.log('Error fetching groups in history update', e);
+			}
+		}
 
-				for (let mozWindow of mozWindows) {
-					if (mozWindow.incognito && this.config && this.config.savePrivate == false) {
-						delete this.windows[mozWindow.id];
-						continue;
-					}
+		var tabCount = 0;
 
-					var windowInfo = new WindowSession(mozWindow.id);
+		for (var key in this.windows) {
+			this.windows[key].active = false;
+		}
 
-					// Add window tabs
-					for (var i in mozWindow.tabs) {
-						var tab = mozWindow.tabs[i];
-						var sessionTab = {
-							title: tab.title,
-							url: tab.url,
-							pinned: tab.pinned,
-							cookieStoreId: tab.cookieStoreId
-						};
-						tabCount++;
-						windowInfo.tabs[tab.index] = sessionTab;
-					}
+		for (let mozWindow of mozWindows) {
+			if (mozWindow.incognito && this.config && this.config.savePrivate == false) {
+				delete this.windows[mozWindow.id];
+				continue;
+			}
 
-					this.windows[mozWindow.id] = windowInfo;
-				}
+			var windowInfo = new WindowSession(mozWindow.id);
 
-				// Update internal storage
-				this.lastSave = new Date().getTime();
-				this.tabCount = tabCount;
+			// Add window tabs
+			for (var i in mozWindow.tabs) {
+				var tab = mozWindow.tabs[i];
+				var group = groupMap.get(tab.groupId);
+				var sessionTab = {
+					title: tab.title,
+					url: tab.url,
+					pinned: tab.pinned,
+					cookieStoreId: tab.cookieStoreId,
+					groupId: tab.groupId,
+					groupTitle: group ? group.title : undefined,
+					groupColor: group ? group.color : undefined
+				};
+				tabCount++;
+				windowInfo.tabs[tab.index] = sessionTab;
+			}
 
-				// Save new session
-				if (browser.storage && browser.storage.local) {
-					browser.storage.local.set({ [storageKey.active]: this });
-				}
-			}.bind(this)
-		);
+			this.windows[mozWindow.id] = windowInfo;
+		}
+
+		// Update internal storage
+		this.lastSave = new Date().getTime();
+		this.tabCount = tabCount;
+
+		// Save new session
+		if (browser.storage && browser.storage.local) {
+			browser.storage.local.set({ [storageKey.active]: this });
+		}
+	} catch (err) {
+		console.log('Error in BrowserSession.update', err);
+	}
 };
 
 BrowserSession.prototype.clear = function clear() {

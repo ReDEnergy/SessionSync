@@ -8,7 +8,8 @@ import { WindowEvents, GlobalEvents } from './utils/global-events';
 import { SessionSyncUI } from './session-sync-ui';
 import { SessionSyncModel } from './components/session-sync-model';
 import { BookmarkManager } from './session/bookmarks';
-import { FirefoxContainers } from './services/firefox-containers';
+import { FirefoxContainers } from '../common/services/firefox-containers';
+import { BrowserTabGroups } from '../common/services/tab-groups';
 
 const sessionRoot = 'SessionSync';
 
@@ -53,6 +54,7 @@ export const init = function init() {
 
 	AppConfig.init();
 	FirefoxContainers.loadContainers();
+	BrowserTabGroups.initTabGroups();
 
 	GlobalEvents.on('update-sessions', listSessions.bind(null, false, false));
 };

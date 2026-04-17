@@ -227,21 +227,13 @@ export function SessionHistoryEvents(container) {
 			}
 		} else {
 			if (typeof document !== 'undefined') {
-				WindowEvents.emit(document, 'HistoryListCtxMenu-Open', { event: e });
+				WindowEvents.emit(document, 'HistoryListCtxMenu-Open', { event: e, context: e });
 			}
-		}
-	};
-
-	var onClick = function onClick(e) {
-		if (e.target.className === 'history-node') {
-			// WindowEvents.emit(document, 'HistoryListCtxMenu-Open', {event: e });
-			// this.selectHistorySession(e.target);
 		}
 	};
 
 	// ------------------------------------------------------------------------
 	// Init Code Events
 
-	container.addEventListener('click', onClick);
 	container.addEventListener('mousedown', onMouseDown);
 }

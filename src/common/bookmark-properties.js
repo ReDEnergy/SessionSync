@@ -11,14 +11,21 @@ export class BookmarkProperties {
 	// ------------------------------------------------------------------------
 	// Public properties
 
-	static encode(bookmark) {
+	static encode(tab) {
 		var properties = {};
 
-		if (bookmark.cookieStoreId) {
-			properties.container = bookmark.cookieStoreId;
+		if (tab.cookieStoreId) {
+			properties.container = tab.cookieStoreId;
 		}
 
-		if (bookmark.pinned) {
+		if (tab.groupId !== undefined && tab.groupId > -1) {
+			properties.group = {
+				title: tab.groupTitle,
+				color: tab.groupColor
+			};
+		}
+
+		if (tab.pinned) {
 			properties.pinned = 1;
 		}
 
@@ -31,14 +38,6 @@ export class BookmarkProperties {
 		} catch {
 			return [];
 		}
-	}
-
-	static getTitle(bookmark) {
-		return splitTitle(bookmark.title).title;
-	}
-
-	static getBookmarkProperties(bookmark) {
-		return splitTitle(bookmark.title).properties;
 	}
 
 	static parseTitle(title) {

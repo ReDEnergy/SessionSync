@@ -72,18 +72,21 @@ export function ContextMenu(options) {
 				hideMenu();
 			};
 		}
+
 		if (opt.callback) {
 			return function actionEvent(e) {
 				opt.callback(context, e);
 				hideMenu();
 			};
 		}
+
 		if (opt.globalEvent) {
 			return function action() {
 				GlobalEvents.emit(opt.globalEvent, context);
 				hideMenu();
 			};
 		}
+
 		return function action() {
 			WindowEvents.emit(document, options.name + '-' + opt.event, context);
 			hideMenu();

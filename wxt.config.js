@@ -42,7 +42,16 @@ export default defineConfig(() => {
 					}
 				}
 			},
-			permissions: ['storage', 'bookmarks', 'tabs', 'clipboardWrite', 'unlimitedStorage', 'cookies', 'contextualIdentities', 'favicon'],
+			permissions: [
+				'storage',
+				'bookmarks',
+				'tabs',
+				'clipboardWrite',
+				'unlimitedStorage',
+				'cookies',
+				'contextualIdentities',
+				'tabGroups'
+			],
 			action: {
 				default_icon: {
 					16: 'images/icon16.png',

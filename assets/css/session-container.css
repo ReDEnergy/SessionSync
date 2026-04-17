@@ -166,21 +166,9 @@
 	cursor: default;
 }
 
-#session-sync .session-container .bookmark[pinned]:before {
-	content: '';
-	width: 1.5em;
-	height: 100%;
-	background-image: url('images/icons/pin.png');
-	background-size: contain;
-	background-repeat: no-repeat;
-	background-position: center center;
-	color: green;
-	position: absolute;
-	top: 0;
-	right: 0.35em;
-	z-index: 0;
-	opacity: 0.85;
-}
+/*
+ * Bookmark Properties
+ */
 
 #session-sync .session-container .bookmark * {
 	float: left;
@@ -211,9 +199,26 @@
 	margin-top: 0.2em;
 }
 
+#session-sync .session-container .bookmark .properties > div:not(:last-child) {
+	margin-right: 0.5em;
+}
+
+/* Bookmark Pin */
+
+#session-sync .session-container .bookmark .pin {
+	width: 1.5em;
+	height: 100%;
+	background-image: url('images/icons/pin.png');
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center center;
+	color: #fff;
+}
+
+/* Bookmark Container */
+
 #session-sync .session-container .bookmark .container {
 	height: 100%;
-	margin-right: 2em;
 	max-width: 10em;
 	border-radius: 1em;
 	color: #fff;
@@ -238,6 +243,66 @@
 	background-size: 1.25em !important;
 	background-repeat: no-repeat !important;
 	background-position: center center !important;
+}
+
+/* Tab Groups */
+
+#session-sync .session-container .bookmark .tab-group-tag {
+	height: 100%;
+	max-width: 12em;
+	padding: 0 0.6em;
+
+	/* padding: 0 0.6em 0 1.8em;
+	background-image: url('images/material_icons/tab_group.svg');
+	background-size: 1em;
+	background-repeat: no-repeat;
+	background-position: 0.4em center; */
+
+	color: #fff;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	font-weight: 500;
+	font-size: 0.9em;
+	overflow: hidden;
+
+	border-radius: 4px;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+
+	box-sizing: border-box;
+	display: flex;
+}
+
+#session-sync .session-container .bookmark .tab-group-tag[color='grey'] {
+	background-color: #5f6368;
+}
+#session-sync .session-container .bookmark .tab-group-tag[color='blue'] {
+	background-color: #1a73e8;
+}
+#session-sync .session-container .bookmark .tab-group-tag[color='red'] {
+	background-color: #d93025;
+}
+#session-sync .session-container .bookmark .tab-group-tag[color='yellow'] {
+	background-color: #f29900;
+	color: #202124;
+}
+#session-sync .session-container .bookmark .tab-group-tag[color='green'] {
+	background-color: #1e8e3e;
+}
+#session-sync .session-container .bookmark .tab-group-tag[color='pink'] {
+	background-color: #d01884;
+}
+#session-sync .session-container .bookmark .tab-group-tag[color='purple'] {
+	background-color: #9334e6;
+}
+#session-sync .session-container .bookmark .tab-group-tag[color='cyan'] {
+	background-color: #007b83;
+}
+#session-sync .session-container .bookmark .tab-group-tag[color='orange'] {
+	background-color: #fa903e;
+}
+
+#session-sync .session-container .bookmark .tab-group-tag .name {
+	line-height: 1.5em;
 }
 
 /*

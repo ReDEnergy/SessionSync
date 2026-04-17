@@ -2,7 +2,8 @@
 
 import { FaviconService } from './favicon-service';
 import { BookmarkProperties } from '../common/bookmark-properties';
-import { FirefoxContainers } from '../scripts/services/firefox-containers';
+import { FirefoxContainers } from '../common/services/firefox-containers';
+import { BrowserTabGroups } from '../common/services/tab-groups';
 
 export const SessionManagement = (function SessionManagement() {
 	var lazyLoadingKey = 'restore.lazy.loading';
@@ -29,10 +30,15 @@ export const SessionManagement = (function SessionManagement() {
 			}
 
 			return browser.tabs.create(tabOptions).then(
-				function (tabInfo) {
+				async function (tabInfo) {
 					if (info.discard) {
 						browser.tabs.discard(tabInfo.id);
 					}
+
+					if (info.group) {
+						BrowserTabGroups.setTabsGroup([tabInfo.id], info.group.title, info.group.color);
+					}
+
 					if (onSuccess) onSuccess(tabInfo);
 				},
 				function (err) {
@@ -67,9 +73,11 @@ export const SessionManagement = (function SessionManagement() {
 		});
 	};
 
-	var openTab = function openTab(options, info) {
+	var openTab = async function openTab(options, info) {
 		var checkFavicon = options.favicon === true ? FaviconService.checkTabFaviconSaved : () => {};
 		delete options.favicon;
+
+		console.log('openTab', options, info);
 
 		switch (info.mode) {
 			case 'newTab': {
@@ -88,29 +96,29 @@ export const SessionManagement = (function SessionManagement() {
 					if (options.pinned) {
 						browser.tabs.update(tab.id, { pinned: true });
 					}
+
+					if (info.group) {
+						BrowserTabGroups.createGroup([tab.id], info.group.title, info.group.color);
+					}
+
 					checkFavicon(tab);
 				});
 				break;
 			}
 
 			case 'activeTab': {
-				browser.tabs
-					.query({ active: true, windowId: browser.windows.WINDOW_ID_CURRENT })
-					.then((tabs) => browser.tabs.get(tabs[0].id))
-					.then((tab) => {
-						if (
-							(options.cookieStoreId == undefined && tab.cookieStoreId == FirefoxContainers.defaultContainer) ||
-							tab.cookieStoreId === options.cookieStoreId
-						) {
-							delete options.cookieStoreId;
-							browser.tabs.update(tab.id, options).then(checkFavicon);
-						} else {
-							browser.tabs.create({
-								url: options.url,
-								cookieStoreId: options.cookieStoreId
-							});
-						}
-					});
+				const tabs = await browser.tabs.query({ active: true, windowId: browser.windows.WINDOW_ID_CURRENT });
+				const tab = await browser.tabs.get(tabs[0].id);
+
+				if (
+					(options.cookieStoreId == undefined && tab.cookieStoreId == FirefoxContainers.defaultContainer) ||
+					tab.cookieStoreId === options.cookieStoreId
+				) {
+					delete options.cookieStoreId;
+					browser.tabs.update(tab.id, options).then(checkFavicon);
+				} else {
+					createTab(options, info, checkFavicon);
+				}
 				break;
 			}
 
@@ -125,42 +133,115 @@ export const SessionManagement = (function SessionManagement() {
 		}
 	};
 
-	var createTabsFromBookmarks = function createTabsFromBookmarks(bookmarks, windowId) {
+	// After all tabs are created, group them according to their saved group metadata.
+	// Groups are keyed by their title+color so that separate groups with the same
+	// name are treated as one group within the restored window.
+	async function assignTabGroups(pendingTabs, windowId) {
+		if (typeof browser === 'undefined' || !browser.tabGroups) return;
+
+		// Collect unique groups keyed by "title|color"
+		const groupMap = new Map(); // key -> { title, color, tabIds[] }
+
+		for (const { tabPromise, groupTitle, groupColor } of pendingTabs) {
+			if (!groupTitle && !groupColor) continue;
+			const key = (groupTitle || '') + '|' + (groupColor || 'grey');
+			if (!groupMap.has(key)) {
+				groupMap.set(key, { title: groupTitle || '', color: groupColor || 'grey', tabIds: [] });
+			}
+			try {
+				const tabInfo = await tabPromise;
+				if (tabInfo) {
+					groupMap.get(key).tabIds.push(tabInfo.id);
+				}
+			} catch (e) {
+				// Tab creation failed; skip
+			}
+		}
+
+		for (const { title, color, tabIds } of groupMap.values()) {
+			if (tabIds.length === 0) continue;
+			try {
+				const groupId = await browser.tabs.group({ tabIds, createProperties: { windowId } });
+				await browser.tabGroups.update(groupId, { title, color });
+			} catch (e) {
+				console.log('Error assigning tab group during restore:', e);
+			}
+		}
+	}
+
+	var createTabsFromBookmarks = async function createTabsFromBookmarks(bookmarks, windowId) {
 		checkReverseOrder(bookmarks);
+
+		const pendingTabs = [];
+
 		bookmarks.forEach(function (bookmark) {
 			const info = BookmarkProperties.parseTitle(bookmark.title);
-			createTab(
-				{
-					url: bookmark.url,
-					active: false,
-					windowId: windowId,
-					pinned: info.properties.pinned ? true : false
-				},
-				{
-					discard: lazyLoading,
-					container: info.properties.container
-				},
-				FaviconService.checkTabFaviconSaved
-			);
+			console.log(info.properties);
+
+			// Wrap createTab in a Promise so we can await the created tab ID
+			const tabPromise = new Promise((resolve) => {
+				createTab(
+					{
+						url: bookmark.url,
+						active: false,
+						windowId: windowId,
+						pinned: info.properties.pinned ? true : false
+					},
+					{
+						discard: lazyLoading,
+						container: info.properties.container
+					},
+					(tabInfo) => {
+						FaviconService.checkTabFaviconSaved(tabInfo);
+						resolve(tabInfo);
+					},
+					() => resolve(null)
+				);
+			});
+
+			if (info.properties.group) {
+				pendingTabs.push({
+					tabPromise,
+					groupTitle: info.properties.group.title,
+					groupColor: info.properties.group.color
+				});
+			}
 		});
+
+		await assignTabGroups(pendingTabs, windowId);
 	};
 
-	var createTabsFromHistoryTabs = function createTabsFromHistoryTabs(tabs, windowId) {
+	var createTabsFromHistoryTabs = async function createTabsFromHistoryTabs(tabs, windowId) {
 		checkReverseOrder(tabs);
+
+		const pendingTabs = [];
+
 		tabs.forEach(function (tab) {
-			createTab(
-				{
-					url: tab.url,
-					active: false,
-					windowId: windowId,
-					pinned: tab.pinned ? true : false
-				},
-				{
-					discard: lazyLoading,
-					container: tab.cookieStoreId
-				}
-			);
+			const tabPromise = new Promise((resolve) => {
+				createTab(
+					{
+						url: tab.url,
+						active: false,
+						windowId: windowId,
+						pinned: tab.pinned ? true : false
+					},
+					{
+						discard: lazyLoading,
+						container: tab.cookieStoreId
+					},
+					(tabInfo) => resolve(tabInfo),
+					() => resolve(null)
+				);
+			});
+
+			pendingTabs.push({
+				tabPromise,
+				groupTitle: tab.groupTitle,
+				groupColor: tab.groupColor
+			});
 		});
+
+		await assignTabGroups(pendingTabs, windowId);
 	};
 
 	var restoreSession = function restoreSession(folderID, options) {

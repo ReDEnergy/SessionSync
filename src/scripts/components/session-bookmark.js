@@ -7,7 +7,8 @@ import { HTMLCreator } from '../utils/dom';
 import { AutoScroll } from '../utils/auto-scroll';
 import { BookmarkManager } from '../session/bookmarks';
 import { BookmarkProperties } from '../../common/bookmark-properties';
-import { FirefoxContainers } from '../services/firefox-containers';
+import { FirefoxContainers } from '../../common/services/firefox-containers';
+import { BrowserTabGroups } from '../../common/services/tab-groups';
 
 // *****************************************************************************
 // API
@@ -40,10 +41,6 @@ export class SessionBookmark {
 
 		const box = DomElem('div', { class: 'bookmark' });
 
-		if (bookmark.pinned || info.properties.pinned) {
-			box.setAttribute('pinned', 'true');
-		}
-
 		const favicon = DomElem('div', { class: 'favicon' });
 		favicon.setAttribute('bookmarkID', bookmark.id);
 		favicon.setAttribute('over', '');
@@ -56,10 +53,22 @@ export class SessionBookmark {
 		const propertiesBox = DomElem('div', { class: 'properties' });
 		propertiesBox.setAttribute('over', '');
 
+		if (bookmark.pinned || info.properties.pinned) {
+			const pin = DomElem('div', { class: 'pin' });
+			propertiesBox.appendChild(pin);
+		}
+
 		if (info.properties.container) {
 			const container = FirefoxContainers.getContainerElement(info.properties.container);
 			if (container) {
 				propertiesBox.appendChild(container);
+			}
+		}
+
+		if (info.properties.group) {
+			const groupTag = BrowserTabGroups.getGroupElement(info.properties.group.title, info.properties.group.color);
+			if (groupTag) {
+				propertiesBox.appendChild(groupTag);
 			}
 		}
 
@@ -146,10 +155,6 @@ export class SessionTab {
 		box.style.top = (tab.index + indexOffset) * bookmarkOffset + 'em';
 		box.setAttribute('url', tab.url);
 
-		if (tab.pinned) {
-			box.setAttribute('pinned', 'true');
-		}
-
 		const favicon = DomElem('div', { class: 'favicon' });
 		favicon.setAttribute('tabID', tab.id);
 		favicon.setAttribute('windowID', tab.windowId);
@@ -166,7 +171,19 @@ export class SessionTab {
 		}
 
 		const propertiesBox = DomElem('div', { class: 'properties' });
-		propertiesBox.setAttribute('over', '');
+
+		if (tab.pinned) {
+			const pin = DomElem('div', { class: 'pin' });
+			propertiesBox.appendChild(pin);
+		}
+
+		if (tab.groupId !== undefined && tab.groupId > -1) {
+			const group = BrowserTabGroups.getGroup(tab.groupId);
+			const groupTag = BrowserTabGroups.getGroupElement(group?.title, group?.color);
+			if (groupTag) {
+				propertiesBox.appendChild(groupTag);
+			}
+		}
 
 		if (tab.cookieStoreId) {
 			const container = FirefoxContainers.getContainerElement(tab.cookieStoreId);
@@ -228,10 +245,6 @@ export class HistoryTab {
 		box.style.top = (tab.index + indexOffset) * bookmarkOffset + 'em';
 		box.setAttribute('url', tab.url);
 
-		if (tab.pinned) {
-			box.setAttribute('pinned', 'true');
-		}
-
 		const favicon = DomElem('div', { class: 'favicon' });
 		configureHoverItem(favicon, tab.url);
 
@@ -253,6 +266,18 @@ export class HistoryTab {
 			if (container) {
 				propertiesBox.appendChild(container);
 			}
+		}
+
+		if (tab.groupId > -1) {
+			const groupTag = BrowserTabGroups.getGroupElement(tab.groupTitle, tab.groupColor);
+			if (groupTag) {
+				propertiesBox.appendChild(groupTag);
+			}
+		}
+
+		if (tab.pinned) {
+			const pin = DomElem('div', { class: 'pin' });
+			propertiesBox.appendChild(pin);
 		}
 
 		box.appendChild(favicon);

@@ -1,6 +1,6 @@
 'use strict';
 
-import { DomElem } from '../utils/dom';
+import { DomElem } from '../../scripts/utils/dom';
 
 // *****************************************************************************
 // API
@@ -17,8 +17,11 @@ export class FirefoxContainers {
 	// ------------------------------------------------------------------------
 	// Public properties
 
-	static loadContainers() {
-		browser.contextualIdentities.query({}).then(FirefoxContainers.onGot, FirefoxContainers.onError);
+	static async loadContainers() {
+		if (typeof browser === 'undefined' || !browser.contextualIdentities) return;
+
+		const identities = await browser.contextualIdentities.query({});
+		FirefoxContainers.onGot(identities);
 	}
 
 	static onGot(contexts) {

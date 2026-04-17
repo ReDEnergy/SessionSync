@@ -54,12 +54,12 @@ export function SessionBookmarkEvents(container) {
 
 	function getTabID(e) {
 		var ID = getAttribute(e.target, 'tabID');
-		return ID ? ID | 0 : undefined;
+		return ID ? ID | 0 : null;
 	}
 
 	function getWindowID(e) {
 		var ID = getAttribute(e.target, 'windowID');
-		return ID ? ID | 0 : undefined;
+		return ID ? ID | 0 : null;
 	}
 
 	// --------------------------------------------------------------
@@ -366,7 +366,7 @@ export function SessionBookmarkEvents(container) {
 				let url = getTabURL(e);
 				if (url) {
 					WindowEvents.emit(document, 'HistoryMarksCtxMenu-Open', {
-						context: url,
+						context: e,
 						event: e
 					});
 				}

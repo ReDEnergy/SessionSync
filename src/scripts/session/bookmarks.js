@@ -5,6 +5,7 @@
 
 import { AppConfig } from '../config';
 import { BookmarkProperties } from '../../common/bookmark-properties';
+import { HistoryManager } from './history';
 
 // ************************************************************************
 // API
@@ -57,13 +58,24 @@ export const BookmarkManager = (function BookmarkManager() {
 		return state ? 'newTab' : 'activeTab';
 	};
 
-	var createBookmarkFromTab = function createBookmarkFromTab(tab, parentId) {
+	var createBookmarkFromTab = async function createBookmarkFromTab(tab, parentId) {
 		var url = tab.url;
 		browser.runtime.sendMessage({ event: 'save-favicon', tab: tab });
 
 		var title = tab.title;
 		console.log('tab', tab);
-		if (tab.cookieStoreId || tab.pinned) {
+
+		if (tab.groupId !== undefined && tab.groupId > -1 && !tab.groupTitle && typeof browser !== 'undefined' && browser.tabGroups) {
+			try {
+				const group = await browser.tabGroups.get(tab.groupId);
+				tab.groupTitle = group.title;
+				tab.groupColor = group.color;
+			} catch (e) {
+				console.log('Error fetching tab group info', e);
+			}
+		}
+
+		if (tab.cookieStoreId || tab.pinned || (tab.groupId !== undefined && tab.groupId > -1)) {
 			title += BookmarkProperties.encode(tab);
 		}
 
@@ -85,8 +97,6 @@ export const BookmarkManager = (function BookmarkManager() {
 	};
 
 	var openBookmark = function openBookmark(url, info) {
-		console.log('openBookmark', url, info);
-
 		var options = {
 			url: url
 		};
@@ -108,10 +118,33 @@ export const BookmarkManager = (function BookmarkManager() {
 				options.pinned = true;
 			}
 
+			if (bookmarkInfo.properties.group) {
+				info.group = bookmarkInfo.properties.group;
+			}
+
 			delete options.title;
 		}
 
 		browser.runtime.sendMessage({ event: 'open-tab', options: options, info: info });
+	};
+
+	function getTabID(e) {
+		var ID = e.target.getAttribute('tabID');
+		return ID ? ID | 0 : null;
+	}
+
+	function getWindowID(e) {
+		var ID = e.target.getAttribute('windowID');
+		return ID ? ID | 0 : null;
+	}
+
+	var openHistoryTabFromContext = function openHistoryTabFromContext(e, mode) {
+		let windowID = getWindowID(e);
+		let tabID = getTabID(e);
+		let tab = HistoryManager.getHistoryTab(windowID, tabID);
+		if (tab) {
+			openHistoryTab(tab, mode);
+		}
 	};
 
 	var openHistoryTab = function openHistoryTab(tab, mode) {
@@ -120,6 +153,8 @@ export const BookmarkManager = (function BookmarkManager() {
 		var options = {
 			url: tab.url
 		};
+
+		var info = { mode: mode };
 
 		if (AppConfig.isPanel() == false) {
 			options.active = false;
@@ -136,7 +171,14 @@ export const BookmarkManager = (function BookmarkManager() {
 			options.pinned = true;
 		}
 
-		browser.runtime.sendMessage({ event: 'open-tab', options: options, info: { mode: mode } });
+		if (tab.groupId) {
+			info.group = {
+				title: tab.groupTitle,
+				color: tab.groupColor
+			};
+		}
+
+		browser.runtime.sendMessage({ event: 'open-tab', options: options, info: info });
 	};
 
 	var setTitle = function setTitle(bookmark, title, callback) {
@@ -193,6 +235,7 @@ export const BookmarkManager = (function BookmarkManager() {
 		getOpenMode: getOpenMode,
 		openBookmark: openBookmark,
 		openHistoryTab: openHistoryTab,
+		openHistoryTabFromContext: openHistoryTabFromContext,
 		createBookmark: createBookmark,
 		createBookmarkFromTab: createBookmarkFromTab,
 		searchBookmarks: searchBookmarks,

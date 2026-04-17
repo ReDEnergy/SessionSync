@@ -129,13 +129,45 @@ export function ConfigPanel() {
 		panel.appendChild(section.container);
 
 		if (AppConfig.isPanel()) {
-			RangeOptionConfig({ parent: section, name: 'Panel width (px)', key: 'style.panel.width', minValue: 500, maxValue: 800, step: 5 });
-			RangeOptionConfig({ parent: section, name: 'Panel height (px)', key: 'style.panel.height', minValue: 400, maxValue: 600, step: 5 });
+			RangeOptionConfig({
+				parent: section,
+				name: 'Panel width (px)',
+				key: 'style.panel.width',
+				minValue: 500,
+				maxValue: 800,
+				step: 5
+			});
+			RangeOptionConfig({
+				parent: section,
+				name: 'Panel height (px)',
+				key: 'style.panel.height',
+				minValue: 400,
+				maxValue: 600,
+				step: 5
+			});
 		}
-		RangeOptionConfig({ parent: section, name: 'Header bar', key: 'style.scale.header', minValue: 10, maxValue: 50 });
+		RangeOptionConfig({
+			parent: section,
+			name: 'Header bar',
+			key: 'style.scale.header',
+			minValue: 10,
+			maxValue: 50
+		});
 		RangeOptionConfig({ parent: section, name: 'Toolbar', key: 'style.scale.toolbar', minValue: 10, maxValue: 50 });
-		RangeOptionConfig({ parent: section, name: 'Session list', key: 'style.scale.sessions', minValue: 10, maxValue: 50 });
-		RangeOptionConfig({ parent: section, name: 'Bookmarks list', key: 'style.scale.bookmarks', minValue: 10, maxValue: 50 });
+		RangeOptionConfig({
+			parent: section,
+			name: 'Session list',
+			key: 'style.scale.sessions',
+			minValue: 10,
+			maxValue: 50
+		});
+		RangeOptionConfig({
+			parent: section,
+			name: 'Bookmarks list',
+			key: 'style.scale.bookmarks',
+			minValue: 10,
+			maxValue: 50
+		});
 	})();
 
 	// ------------------------

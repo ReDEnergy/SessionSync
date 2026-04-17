@@ -174,6 +174,12 @@ export class SessionContainer {
 					this.updateSessionInfo();
 				}
 			});
+
+			WindowEvents.on(document, 'TabGroupsLoaded', () => {
+				if (this.SyncModel.state.session == 'current') {
+					this.showCurrentSession();
+				}
+			});
 		}
 
 		GlobalEvents.on('UpdateCurrentSession', () => {

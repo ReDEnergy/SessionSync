@@ -140,20 +140,35 @@ export const SessionSyncUI = function SessionSyncUI() {
 	SM.addMenuEntry({ value: 'Restore (close all)', event: 'ReplaceSessionAll', icon: 'replace-all' });
 	SM.addMenuEntry({ value: 'Edit', event: 'EditSession', icon: 'edit' });
 	SM.addMenuEntry({ value: 'Delete', globalEvent: 'DeleteBookmarkItem', icon: 'delete' });
-	SM.addMenuEntry({ value: 'Create new session', callback: SessionManager.createNewSession, icon: 'new-session', separator: 'top' });
+	SM.addMenuEntry({
+		value: 'Create new session',
+		callback: SessionManager.createNewSession,
+		icon: 'new-session',
+		separator: 'top'
+	});
 	SM.addMenuEntry({ value: 'Insert separator', callback: SessionManager.createSeparator, icon: 'new-session' });
 	content.appendChild(SM.DOMRoot);
 
 	var SCBM = new ContextMenu({ name: 'SessionContextBookmarkMenu' });
 	SCBM.addMenuEntry({ value: 'Edit', event: 'EditBookmark', icon: 'edit' });
 	SCBM.addMenuEntry({ value: 'Delete', globalEvent: 'DeleteBookmarkItem', icon: 'delete' });
-	SCBM.addMenuEntry({ value: 'Create new session', callback: SessionManager.createNewSession, icon: 'new-session', separator: 'top' });
+	SCBM.addMenuEntry({
+		value: 'Create new session',
+		callback: SessionManager.createNewSession,
+		icon: 'new-session',
+		separator: 'top'
+	});
 	SCBM.addMenuEntry({ value: 'Insert separator', callback: SessionManager.createSeparator, icon: 'new-session' });
 	content.appendChild(SCBM.DOMRoot);
 
 	var SCSM = new ContextMenu({ name: 'SessionContextSeparatorMenu' });
 	SCSM.addMenuEntry({ value: 'Delete', globalEvent: 'DeleteBookmarkItem', icon: 'delete' });
-	SCSM.addMenuEntry({ value: 'Create new session', callback: SessionManager.createNewSession, icon: 'new-session', separator: 'top' });
+	SCSM.addMenuEntry({
+		value: 'Create new session',
+		callback: SessionManager.createNewSession,
+		icon: 'new-session',
+		separator: 'top'
+	});
 	SCSM.addMenuEntry({ value: 'Insert separator', callback: SessionManager.createSeparator, icon: 'new-session' });
 	content.appendChild(SCSM.DOMRoot);
 
@@ -330,22 +345,16 @@ export const SessionSyncUI = function SessionSyncUI() {
 		WindowEvents.emit(document, 'CopyURL', url);
 	});
 
-	WindowEvents.on(document, 'HistoryMarksCtxMenu-OpenInNewTab', function (url) {
-		BookmarkManager.openBookmark(url, {
-			mode: 'newTab'
-		});
+	WindowEvents.on(document, 'HistoryMarksCtxMenu-OpenInNewTab', function (e) {
+		BookmarkManager.openHistoryTabFromContext(e, 'newTab');
 	});
 
-	WindowEvents.on(document, 'HistoryMarksCtxMenu-OpenInActiveTab', function (url) {
-		BookmarkManager.openBookmark(url, {
-			mode: 'activeTab'
-		});
+	WindowEvents.on(document, 'HistoryMarksCtxMenu-OpenInActiveTab', function (e) {
+		BookmarkManager.openHistoryTabFromContext(e, 'activeTab');
 	});
 
-	WindowEvents.on(document, 'HistoryMarksCtxMenu-OpenInNewWindow', function (url) {
-		BookmarkManager.openBookmark(url, {
-			mode: 'newWindow'
-		});
+	WindowEvents.on(document, 'HistoryMarksCtxMenu-OpenInNewWindow', function (e) {
+		BookmarkManager.openHistoryTabFromContext(e, 'newWindow');
 	});
 
 	// HistorySessionCtxMenu events

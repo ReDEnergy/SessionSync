@@ -76,11 +76,15 @@ function NamespaceEvents() {
 const WindowEvents = new NamespaceEvents();
 
 WindowEvents.onLocal = function onLocal(topic, callback) {
-	this.on(document, topic, callback);
+	if (typeof document !== 'undefined') {
+		this.on(document, topic, callback);
+	}
 };
 
 WindowEvents.emitLocal = function emitLocal(topic, object) {
-	this.emit(document, topic, object);
+	if (typeof document !== 'undefined') {
+		this.emit(document, topic, object);
+	}
 };
 
 export { GlobalEventSystem as GlobalEvents, WindowEvents };
