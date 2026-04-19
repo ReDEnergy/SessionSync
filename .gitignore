@@ -6,7 +6,8 @@
 .wxt
 .output
 
-/dev/tutorial
+/package-lock.json
+
 /dev/experiments
 /releases
 /data/session-sync.css

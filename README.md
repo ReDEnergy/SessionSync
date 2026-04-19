@@ -1,5 +1,4 @@
-SessionSync [![Session Sync](/data/images/icon32.png)](https://addons.mozilla.org/en-US/firefox/addon/session-sync/)
-===========
+# SessionSync [![Session Sync](/data/images/icon32.png)](https://addons.mozilla.org/en-US/firefox/addon/session-sync/)
 
 ##### Firefox Add-on for storing browser sessions into bookmarks and sync them across multiple devices
 
@@ -10,35 +9,41 @@ SessionSync [![Session Sync](/data/images/icon32.png)](https://addons.mozilla.or
 Save sessions as bookmarks and sync them using Firefox Sync (or any other sync engine)  
 Session-Sync will automatically detect updates and display updated sessions across multiple machines.
 Session-Sync provides a rich interface for sessions management
-  - edit sessions and bookmarks (save, delete, restore, merge, replace, etc)
-  - order sessions and book using drag-n-drop actions
-  - use auto-save feature to inspect history sessions
-  
+
+- edit sessions and bookmarks (save, delete, restore, merge, replace, etc)
+- order sessions and book using drag-n-drop actions
+- use auto-save feature to inspect history sessions
+
 [![Session Sync](/data/images/tutorial/session-menu.png)](https://addons.mozilla.org/en-US/firefox/addon/session-sync/)
 
 #### Version 3 - WebExtensions
 
- - improved UI support for widget based interaction
- - multiple UI/UX improvements
- - added optional Tab/Window Detach mode
+- improved UI support for widget based interaction
+- multiple UI/UX improvements
+- added optional Tab/Window Detach mode
 
 #### General Features - Advanced UI and Management Features
 
-  - improved bookmark management
+- improved bookmark management
     - added support for pinned tabs and other features such as merge, replace,
     - session auto-saving
     - history list - session can be saved later as classic bookmark sessions
     - private windows are ignored by auto-save
-  - speed improvement and bookmark cache optimizations
+- speed improvement and bookmark cache optimizations
 
 ##### UI/UX
-  - resizable UI
-  - icon set and tooltip system
-  - advance UI scaling for individual UI areas (session list, bookmark list, session header and toolbar)
-  - customization panel
-  - support for touch input
-  - session sorting by name/position/date
-  - session filtering
-  - advanced drag-n-drop support with fluid animations
-  
 
+- resizable UI
+- icon set and tooltip system
+- advance UI scaling for individual UI areas (session list, bookmark list, session header and toolbar)
+- customization panel
+- support for touch input
+- session sorting by name/position/date
+- session filtering
+- advanced drag-n-drop support with fluid animations
+
+## Development
+
+```bash
+npm run dev:firefox
+```
