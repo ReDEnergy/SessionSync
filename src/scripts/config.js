@@ -55,7 +55,6 @@ const Config = (function () {
 	var initConfig = true;
 	var localSettings = defaults;
 	var configEvents = new PubSub();
-	var isPanelUI = typeof document !== 'undefined' && document.body ? document.body.clientWidth == 0 : false;
 
 	// ------------------------------------------------------------------------
 	// API
@@ -115,7 +114,10 @@ const Config = (function () {
 	};
 
 	var isPanel = function isPanel() {
-		return isPanelUI;
+		if (typeof browser === 'undefined' || !browser.extension || !browser.extension.getViews) {
+			return false;
+		}
+		return browser.extension.getViews({ type: 'popup' }).includes(window);
 	};
 
 	var devMode = function devMode() {
@@ -135,7 +137,6 @@ const Config = (function () {
 
 	var init = function init() {
 		setupConfig();
-		console.log(localSettings);
 
 		if (isAddonContext()) {
 			browser.commands.getAll().then(function (commands) {
