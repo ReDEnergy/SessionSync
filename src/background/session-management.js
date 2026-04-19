@@ -2,14 +2,13 @@
 
 import { FaviconService } from './favicon-service';
 import { BookmarkProperties } from '../common/bookmark-properties';
-import { FirefoxContainers } from '../common/services/firefox-containers';
-import { BrowserTabGroups } from '../common/services/tab-groups';
 
 export const SessionManagement = (function SessionManagement() {
 	var lazyLoadingKey = 'restore.lazy.loading';
 	var lazyLoading = false;
 	var windowsTabsToKill = [];
 
+	const defaultContainer = 'firefox-default';
 	var reverseOrderKey = 'restore.reverse.order';
 	var reverseOrder = false;
 
@@ -36,7 +35,7 @@ export const SessionManagement = (function SessionManagement() {
 					}
 
 					if (info.group) {
-						BrowserTabGroups.setTabsGroup([tabInfo.id], info.group.title, info.group.color);
+						setTabsGroup([tabInfo.id], info.group.title, info.group.color);
 					}
 
 					if (onSuccess) onSuccess(tabInfo);
@@ -55,6 +54,26 @@ export const SessionManagement = (function SessionManagement() {
 
 		tryCreate(info.container != null);
 	}
+
+	var createGroup = async function createGroup(tabs, title, color) {
+		const groupId = await browser.tabs.group({ tabIds: tabs });
+		await browser.tabGroups.update(groupId, { title, color });
+	};
+
+	var setTabsGroup = async function setTabsGroup(tabs, title, color) {
+		const group = await browser.tabGroups.query({ title: title, color: color });
+		let groupId = null;
+		if (group.length > 0) {
+			await browser.tabs.group({ tabIds: tabs, groupId: group[0].id });
+		} else {
+			groupId = await browser.tabs.group({ tabIds: tabs });
+			await browser.tabGroups.update(groupId, { title, color });
+		}
+
+		if (groupId) {
+			browser.tabGroups.update(groupId, { collapsed: false });
+		}
+	};
 
 	var setLazyLoading = function setLazyLoading(state) {
 		if (typeof browser === 'undefined' || !browser.tabs) return;
@@ -98,7 +117,7 @@ export const SessionManagement = (function SessionManagement() {
 					}
 
 					if (info.group) {
-						BrowserTabGroups.createGroup([tab.id], info.group.title, info.group.color);
+						createGroup([tab.id], info.group.title, info.group.color);
 					}
 
 					checkFavicon(tab);
@@ -111,7 +130,7 @@ export const SessionManagement = (function SessionManagement() {
 				const tab = await browser.tabs.get(tabs[0].id);
 
 				if (
-					(options.cookieStoreId == undefined && tab.cookieStoreId == FirefoxContainers.defaultContainer) ||
+					(options.cookieStoreId == undefined && tab.cookieStoreId == defaultContainer) ||
 					tab.cookieStoreId === options.cookieStoreId
 				) {
 					delete options.cookieStoreId;

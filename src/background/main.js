@@ -1,7 +1,6 @@
 'use strict';
 
 export const Commands = {
-	openPopup: '_execute_browser_action',
 	openTutorial: 'session_sync_tutorial',
 	detachToTab: 'session_sync_detach_tab',
 	detachToWindow: 'session_sync_detach_window',
@@ -9,27 +8,13 @@ export const Commands = {
 	openGithub: 'session_sync_open_github'
 };
 
-const SessionSync = (function () {
+export const SessionSync = (function () {
 	var windowInfoKey = 'style.window.detach';
 	var activeWindow = null;
 	var defaultWindowProperties = {
 		width: 800,
 		height: 600
 	};
-
-	function init() {
-		try {
-			if (typeof browser !== 'undefined' && browser.windows && browser.windows.onRemoved) {
-				browser.windows.onRemoved.addListener(function (windowID) {
-					if (activeWindow && windowID === activeWindow.id) {
-						activeWindow = null;
-					}
-				});
-			}
-		} catch (err) {
-			console.warn('browser.windows.onRemoved.addListener failed', err);
-		}
-	}
 
 	function checkEvent(event) {
 		switch (event) {
@@ -89,7 +74,7 @@ const SessionSync = (function () {
 				.create({
 					width: windowInfo.width,
 					height: windowInfo.height,
-					url: 'popup.html',
+					url: 'session-sync.html',
 					type: 'panel'
 				})
 				.then(function (newWindow) {
@@ -117,9 +102,57 @@ const SessionSync = (function () {
 				}
 
 				browser.tabs.create({
-					url: 'popup.html'
+					url: 'session-sync.html'
 				});
 			});
+	}
+
+	function init() {
+		try {
+			if (typeof browser !== 'undefined' && browser.windows && browser.windows.onRemoved) {
+				browser.windows.onRemoved.addListener(function (windowID) {
+					if (activeWindow && windowID === activeWindow.id) {
+						activeWindow = null;
+					}
+				});
+			}
+		} catch (err) {
+			console.warn('browser.windows.onRemoved.addListener failed', err);
+		}
+
+		try {
+			if (typeof browser !== 'undefined' && browser.runtime && browser.runtime.onInstalled) {
+				browser.runtime.onInstalled.addListener(function (startInfo) {
+					if (startInfo.reason == 'install') {
+						SessionSync.checkEvent(Commands.openTutorial);
+					}
+				});
+			}
+		} catch (err) {
+			console.warn('browser.runtime.onInstalled.addListener failed', err);
+		}
+
+		try {
+			if (typeof browser !== 'undefined' && browser.runtime && browser.runtime.onMessage) {
+				browser.runtime.onMessage.addListener(function (message) {
+					if (message && message.event) {
+						SessionSync.checkEvent(message.event);
+					}
+				});
+			}
+		} catch (err) {
+			console.warn('browser.runtime.onMessage.addListener failed', err);
+		}
+
+		try {
+			if (typeof browser !== 'undefined' && browser.commands && browser.commands.onCommand) {
+				browser.commands.onCommand.addListener(function (command) {
+					SessionSync.checkEvent(command);
+				});
+			}
+		} catch (err) {
+			console.warn('browser.commands.onCommand.addListener failed', err);
+		}
 	}
 
 	return {
@@ -127,8 +160,6 @@ const SessionSync = (function () {
 		init: init
 	};
 })();
-
-export { SessionSync };
 
 export const WindowUtils = (function () {
 	var windowMargins = {
@@ -168,54 +199,3 @@ export const WindowUtils = (function () {
 		centerWindow: centerWindow
 	};
 })();
-
-// ------------------------------------------------------------------------
-// App Init logic (to be called in background entry point)
-export function initBackground() {
-	// Initialize SessionSync internal listeners
-	SessionSync.init();
-
-	try {
-		if (typeof browser !== 'undefined' && browser.runtime && browser.runtime.onInstalled) {
-			browser.runtime.onInstalled.addListener(function (startInfo) {
-				if (startInfo.reason == 'install') {
-					SessionSync.checkEvent(Commands.openTutorial);
-				}
-			});
-		}
-	} catch (err) {
-		console.warn('browser.runtime.onInstalled.addListener failed', err);
-	}
-
-	try {
-		if (typeof browser !== 'undefined' && browser.runtime && browser.runtime.onMessage) {
-			browser.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-				if (message && message.event) {
-					SessionSync.checkEvent(message.event);
-				}
-			});
-		}
-	} catch (err) {
-		console.warn('browser.runtime.onMessage.addListener failed', err);
-	}
-
-	try {
-		if (typeof browser !== 'undefined' && browser.commands && browser.commands.onCommand) {
-			browser.commands.onCommand.addListener(function (command) {
-				SessionSync.checkEvent(command);
-			});
-		}
-	} catch (err) {
-		console.warn('browser.commands.onCommand.addListener failed', err);
-	}
-
-	// Delete previous undo events
-	if (typeof browser !== 'undefined' && browser.storage && browser.storage.local) {
-		browser.storage.local.set({ 'undo.events': [] });
-		browser.storage.local.set({ 'trashcan.hide': true });
-		browser.storage.local.set({ 'trashcan.hide-count': 0 });
-		browser.storage.local.set({ 'session.active.filter': '' });
-		browser.storage.local.set({ 'session.selected': null });
-		browser.storage.local.set({ 'session.history.selected': null });
-	}
-}

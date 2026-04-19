@@ -14,6 +14,18 @@ export default defineConfig(() => {
 			}
 		},
 		vite: () => ({
+			build: {
+				minify: false,
+				cssMinify: false,
+				modulePreload: false,
+				rollupOptions: {
+					output: {
+						entryFileNames: '[name].js',
+						chunkFileNames: '[name].js',
+						assetFileNames: 'assets/[name].[ext]'
+					}
+				}
+			},
 			optimizeDeps: {
 				entries: ['src/entrypoints/session-sync.js', 'src/entrypoints/background.js']
 			}
@@ -28,7 +40,7 @@ export default defineConfig(() => {
 		},
 		manifest: {
 			name: 'Session Sync',
-			version: '3.2.0',
+			version: '3.2.3',
 			author: 'Gabriel Ivanica',
 			description:
 				'Save sessions as bookmarks and sync them through Firefox Sync (or any other sync engine).\nPowerful session management - organize, edit, change, save, restore, etc\n',
@@ -74,8 +86,7 @@ export default defineConfig(() => {
 				_execute_action: {
 					suggested_key: {
 						default: 'Ctrl+Shift+F'
-					},
-					description: 'Toggle Widget'
+					}
 				},
 				session_sync_detach_tab: {
 					suggested_key: {

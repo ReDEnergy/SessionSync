@@ -10,7 +10,6 @@ import { DomElem } from '../../scripts/utils/dom';
  */
 
 export class FirefoxContainers {
-	static defaultContainer = 'firefox-default';
 	static containers = [];
 	static domContainers = {};
 
@@ -26,7 +25,6 @@ export class FirefoxContainers {
 
 	static onGot(contexts) {
 		FirefoxContainers.containers = contexts;
-		console.log('FirefoxContainers.containers', FirefoxContainers.containers);
 
 		// create dom containers
 		for (const container of contexts) {

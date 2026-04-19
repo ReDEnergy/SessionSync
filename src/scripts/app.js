@@ -43,7 +43,7 @@ const listSessions = function listSessions() {
 	});
 };
 
-export const init = function init() {
+(function init() {
 	SessionSyncUI();
 
 	findSessionSync(function (bookmark) {
@@ -57,4 +57,4 @@ export const init = function init() {
 	BrowserTabGroups.initTabGroups();
 
 	GlobalEvents.on('update-sessions', listSessions.bind(null, false, false));
-};
+})();

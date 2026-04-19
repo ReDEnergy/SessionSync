@@ -15,6 +15,8 @@ export class BrowserTabGroups {
 
 	static async initTabGroups() {
 		try {
+			if (!browser.tabGroups) return;
+
 			const groups = await browser.tabGroups.query({});
 			BrowserTabGroups.onGot(groups);
 
@@ -37,8 +39,6 @@ export class BrowserTabGroups {
 	}
 
 	static onGot(groups) {
-		console.log('TabGroupsLoaded', groups);
-
 		for (const group of groups) {
 			BrowserTabGroups.groups.set(group.id, group);
 		}

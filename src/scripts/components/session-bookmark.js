@@ -58,17 +58,17 @@ export class SessionBookmark {
 			propertiesBox.appendChild(pin);
 		}
 
-		if (info.properties.container) {
-			const container = FirefoxContainers.getContainerElement(info.properties.container);
-			if (container) {
-				propertiesBox.appendChild(container);
-			}
-		}
-
 		if (info.properties.group) {
 			const groupTag = BrowserTabGroups.getGroupElement(info.properties.group.title, info.properties.group.color);
 			if (groupTag) {
 				propertiesBox.appendChild(groupTag);
+			}
+		}
+
+		if (info.properties.container) {
+			const container = FirefoxContainers.getContainerElement(info.properties.container);
+			if (container) {
+				propertiesBox.appendChild(container);
 			}
 		}
 
@@ -177,18 +177,18 @@ export class SessionTab {
 			propertiesBox.appendChild(pin);
 		}
 
+		if (tab.cookieStoreId) {
+			const container = FirefoxContainers.getContainerElement(tab.cookieStoreId);
+			if (container) {
+				propertiesBox.appendChild(container);
+			}
+		}
+
 		if (tab.groupId !== undefined && tab.groupId > -1) {
 			const group = BrowserTabGroups.getGroup(tab.groupId);
 			const groupTag = BrowserTabGroups.getGroupElement(group?.title, group?.color);
 			if (groupTag) {
 				propertiesBox.appendChild(groupTag);
-			}
-		}
-
-		if (tab.cookieStoreId) {
-			const container = FirefoxContainers.getContainerElement(tab.cookieStoreId);
-			if (container) {
-				propertiesBox.appendChild(container);
 			}
 		}
 
