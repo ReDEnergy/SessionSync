@@ -15,7 +15,7 @@ export default defineConfig(() => {
 		},
 		vite: () => ({
 			optimizeDeps: {
-				entries: ['src/entrypoints/popup/main.js', 'src/entrypoints/background.js']
+				entries: ['src/entrypoints/session-sync.js', 'src/entrypoints/background.js']
 			}
 		}),
 		browser: 'firefox',
@@ -59,7 +59,8 @@ export default defineConfig(() => {
 					48: 'images/icon48.png',
 					128: 'images/icon128.png'
 				},
-				default_title: 'Session Sync'
+				default_title: 'Session Sync',
+				default_popup: 'session-sync.html'
 			},
 			icons: {
 				16: 'images/icon16.png',

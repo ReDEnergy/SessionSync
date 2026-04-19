@@ -44,7 +44,7 @@
 	content: ' ';
 	width: 24px;
 	height: 24px;
-	background: url('images/logo.png') center no-repeat;
+	background: url('../images/logo.png') center no-repeat;
 	background-size: contain;
 	top: 50%;
 	left: 20px;

@@ -6,7 +6,7 @@
 	width: 8em;
 	height: 8em;
 
-	background-image: url('images/trash-can.png');
+	background-image: url('../images/trash-can.png');
 	background-position: bottom 1.5em right 1.5em;
 	background-repeat: no-repeat;
 	background-size: 50%;

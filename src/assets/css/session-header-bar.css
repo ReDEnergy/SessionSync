@@ -21,7 +21,7 @@
 
 #session-sync .header-bar .active-session-btn {
 	width: 2.5em;
-	background: url('images/icon128.png') no-repeat center;
+	background: url('../images/icon128.png') no-repeat center;
 	background-size: 1em;
 	height: 60%;
 	opacity: 0.5;
@@ -65,7 +65,7 @@
 #session-sync .header-bar .addon-config {
 	width: 1.8em;
 	height: 1.8em;
-	background-image: url('images/menu.png');
+	background-image: url('../images/menu.png');
 	background-size: 55%;
 	background-repeat: no-repeat;
 	background-position: center center;
@@ -93,7 +93,7 @@
 #session-sync .header-bar .header-menu {
 	width: 1.8em;
 	height: 1.8em;
-	background-image: url('images/icons_v2/menu.png');
+	background-image: url('../images/icons_v2/menu.png');
 	background-size: 75% 80%;
 	background-repeat: no-repeat;
 	background-position: center center;
@@ -178,7 +178,7 @@
 
 #session-sync .header-bar .header-menu .menu-button .icon {
 	height: 2em;
-	background-image: url('images/icons/power.png');
+	background-image: url('../images/icons/power.png');
 	background-size: contain !important;
 	background-repeat: no-repeat;
 	background-position: center;

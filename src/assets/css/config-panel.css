@@ -60,7 +60,7 @@
 	margin: 2em auto;
 	padding: 0;
 	border: none;
-	background: url('images/icon64.png') center top no-repeat;
+	background: url('../images/icon64.png') center top no-repeat;
 }
 
 #session-sync .config-panel .logo:hover {
@@ -107,13 +107,13 @@
 	width: 1.5em;
 	height: 1.5em;
 	margin: 0 0.5em;
-	background-image: url('images/arrow-up.png');
+	background-image: url('../images/arrow-up.png');
 	background-size: contain;
 	float: left;
 }
 
 #session-sync .config-panel .section-container[collapsed] .drop-icon {
-	background-image: url('images/arrow-down.png');
+	background-image: url('../images/arrow-down.png');
 	background-size: contain;
 }
 
@@ -177,12 +177,12 @@
 }
 
 #session-sync .config-panel .comp-range-control .button.inc {
-	background: url('images/arrow-right.png') center top no-repeat;
+	background: url('../images/arrow-right.png') center top no-repeat;
 	background-size: 100%;
 }
 
 #session-sync .config-panel .comp-range-control .button.dec {
-	background: url('images/arrow-left.png') center top no-repeat;
+	background: url('../images/arrow-left.png') center top no-repeat;
 	background-size: 100%;
 }
 

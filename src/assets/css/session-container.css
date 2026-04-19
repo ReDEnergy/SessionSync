@@ -31,7 +31,7 @@
 	height: 3.4em;
 	width: 3.4em;
 
-	background: url('images/icons/heart.png') no-repeat;
+	background: url('../images/icons/heart.png') no-repeat;
 	background-size: 2em;
 	background-position: 1em 0.4em;
 	background-color: #f5f5f5;
@@ -177,7 +177,7 @@
 #session-sync .session-container .bookmark .favicon {
 	width: 1.33em;
 	height: 100%;
-	background: url('images/icons/globe.png');
+	background: url('../images/icons/globe.png');
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center center;
@@ -208,7 +208,7 @@
 #session-sync .session-container .bookmark .pin {
 	width: 1.5em;
 	height: 100%;
-	background-image: url('images/icons/pin.png');
+	background-image: url('../images/icons/pin.png');
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center center;
@@ -253,7 +253,7 @@
 	padding: 0 0.6em;
 
 	/* padding: 0 0.6em 0 1.8em;
-	background-image: url('images/material_icons/tab_group.svg');
+	background-image: url('../images/material_icons/tab_group.svg');
 	background-size: 1em;
 	background-repeat: no-repeat;
 	background-position: 0.4em center; */
@@ -261,44 +261,70 @@
 	color: #fff;
 	white-space: nowrap;
 	text-overflow: ellipsis;
-	font-weight: 500;
+	font-weight: 600;
 	font-size: 0.9em;
 	overflow: hidden;
 
-	border-radius: 4px;
+	border-radius: 6px;
 	border: 1px solid rgba(255, 255, 255, 0.2);
 
 	box-sizing: border-box;
 	display: flex;
 }
 
-#session-sync .session-container .bookmark .tab-group-tag[color='grey'] {
-	background-color: #5f6368;
+#session-sync .session-container .bookmark .tab-group-tag[color='grey'],
+#session-sync .session-container .bookmark .tab-group-tag[color='gray'] {
+	background-color: #5f636810;
+	color: #5f6368;
+	border: 1px solid #5f6368;
 }
+
 #session-sync .session-container .bookmark .tab-group-tag[color='blue'] {
-	background-color: #1a73e8;
+	background-color: #1a73e810;
+	color: #1a73e8;
+	border: 1px solid #1a73e8;
 }
+
 #session-sync .session-container .bookmark .tab-group-tag[color='red'] {
-	background-color: #d93025;
+	background-color: #d9302510;
+	color: #d93025;
+	border: 1px solid #d93025;
 }
+
 #session-sync .session-container .bookmark .tab-group-tag[color='yellow'] {
-	background-color: #f29900;
-	color: #202124;
+	background-color: #c4821010;
+	color: #c48210;
+	border: 1px solid #c48210;
 }
+
 #session-sync .session-container .bookmark .tab-group-tag[color='green'] {
-	background-color: #1e8e3e;
+	background-color: #1e8e3e10;
+	color: #1e8e3e;
+	border: 1px solid #1e8e3e;
 }
+
 #session-sync .session-container .bookmark .tab-group-tag[color='pink'] {
-	background-color: #d01884;
+	background-color: #d0188410;
+	color: #d01884;
+	border: 1px solid #d01884;
 }
+
 #session-sync .session-container .bookmark .tab-group-tag[color='purple'] {
-	background-color: #9334e6;
+	background-color: #9334e610;
+	color: #9334e6;
+	border: 1px solid #9334e6;
 }
+
 #session-sync .session-container .bookmark .tab-group-tag[color='cyan'] {
-	background-color: #007b83;
+	background-color: #007b8310;
+	color: #007b83;
+	border: 1px solid #007b83;
 }
+
 #session-sync .session-container .bookmark .tab-group-tag[color='orange'] {
-	background-color: #fa903e;
+	background-color: #bb4b0a10;
+	color: #bb4b0a;
+	border: 1px solid #bb4b0a;
 }
 
 #session-sync .session-container .bookmark .tab-group-tag .name {

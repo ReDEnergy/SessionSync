@@ -1,0 +1,272 @@
+/**
+ * Control Panel
+ */
+
+#session-sync .session-toolbar {
+	width: 100%;
+	height: 3em;
+
+	background: #fff;
+	color: #000;
+	display: flex;
+	font-size: 12px;
+
+	position: relative;
+	opacity: 100;
+	border-bottom: 1px solid #ccc;
+	box-shadow: 0px 0px 3px 0px #ccc;
+	z-index: 1;
+
+	transition: all 0.15s;
+}
+
+#session-sync .session-toolbar .session-selector {
+	width: 220px;
+	min-width: 160px;
+	max-width: 60%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	border-right: 1px solid #ddd;
+
+	line-height: 3em;
+	word-break: break-all;
+	text-align: center;
+	color: #555;
+
+	display: flex;
+	box-sizing: border-box;
+}
+
+#session-sync .session-toolbar .session-selector .button {
+	text-align: center;
+	overflow: hidden;
+	display: block;
+	color: #333;
+	flex: 1;
+}
+
+#session-sync .session-toolbar .session-selector .button:hover {
+	cursor: pointer;
+}
+
+#session-sync .session-toolbar .session-selector .active-session {
+	background-image: url('../images/icon128.png');
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: 1.8em;
+	background-color: #fff;
+}
+
+#session-sync[list='active'] .session-toolbar .session-selector .active-session,
+#session-sync[list='sync'] .session-toolbar .session-selector .sync,
+#session-sync[list='history'] .session-toolbar .session-selector .history {
+	display: block;
+	background-color: #2d92eb;
+	color: #fff;
+}
+
+#session-sync[history='false'] .session-toolbar .session-selector .history {
+	display: none;
+}
+
+/*
+ * Session info
+ */
+
+#session-sync:not([session='restore']) .session-toolbar .session-date {
+	display: none;
+}
+
+#session-sync .session-toolbar .session-date {
+	padding: 0.9em 1em;
+	color: #999;
+	text-align: right;
+	display: block;
+	position: absolute;
+	top: -1px;
+	right: 0;
+	z-index: 10;
+}
+
+/**
+ * 	Menu Section
+ */
+
+#session-sync .session-toolbar .menu-bar {
+	height: 100%;
+	padding: 0.5em;
+
+	box-sizing: border-box;
+	flex: 1;
+}
+
+#session-sync .session-toolbar[session-type='separator'] .menu-bar {
+	display: none;
+}
+
+#session-sync[session='current'] .session-toolbar .menu-bar {
+	display: block;
+}
+
+#session-sync .session-toolbar .menu-bar .button {
+	width: 2.6em;
+	height: 100%;
+
+	background: url('../images/icons/none.png') no-repeat center;
+	background-size: contain !important;
+
+	display: none;
+	float: left;
+
+	/* opacity: 0.75;
+	filter: grayscale(100%); */
+}
+
+#session-sync .session-toolbar .menu-bar .button:hover {
+	cursor: pointer;
+	opacity: 1;
+	box-shadow: none;
+}
+
+#session-sync .session-toolbar .menu-bar .separator {
+	height: 100%;
+	width: 1px;
+	margin: 0 0.5em;
+	background: #ccc;
+	float: left;
+	display: none;
+}
+
+#session-sync .session-toolbar .menu-bar .add {
+	background: url('../images/icons/star.png') no-repeat center;
+}
+
+#session-sync .session-toolbar .menu-bar .save {
+	background: url('../images/icons/heart.png') no-repeat center;
+}
+
+#session-sync .session-toolbar .menu-bar .merge-sessions {
+	background: url('../images/icons/merge.png') no-repeat center;
+}
+
+#session-sync .session-toolbar .menu-bar .replace-session {
+	background: url('../images/icons/recycle.png') no-repeat center;
+}
+
+#session-sync .session-toolbar .menu-bar .restore {
+	background: url('../images/icons/stack.png') no-repeat center;
+}
+
+#session-sync .session-toolbar .menu-bar .restore-new-win {
+	background: url('../images/icons/frames.png') no-repeat center;
+}
+
+#session-sync .session-toolbar .menu-bar .repalce-session-all {
+	background: url('../images/material_icons/repeat.svg') no-repeat center;
+}
+
+#session-sync .session-toolbar .menu-bar .repalce-session {
+	background: url('../images/material_icons/repeat_one.svg') no-repeat center;
+}
+
+#session-sync .session-toolbar .menu-bar .fix-session {
+	background: url('../images/icons/tools.png') no-repeat center;
+}
+
+#session-sync .session-toolbar .menu-bar .customize-toolbar {
+	background: url('../images/icons_v2/more.png') no-repeat center;
+}
+
+/*
+ * Menu state
+ */
+
+#session-sync[session='current'] .session-toolbar .menu-bar .button[state-current='true'] {
+	display: block;
+}
+
+#session-sync[session='restore'] .session-toolbar .menu-bar .button[state-restore='true'] {
+	display: block;
+}
+
+#session-sync[session='restore'] .session-toolbar .menu-bar .separator {
+	display: block;
+}
+
+#session-sync[session='history'] .session-toolbar .menu-bar .button[state-history='true'] {
+	display: block;
+}
+
+/*
+ * Save configuration
+ */
+
+#session-sync .session-toolbar .menu-bar .save-config {
+	height: 100%;
+	padding: 0 40px 0 0;
+	display: block;
+}
+
+#session-sync .session-toolbar .menu-bar .save-config .comp-toggle-switch {
+	opacity: 1;
+	transition: opacity 0.2s ease-out;
+}
+
+#session-sync .session-toolbar .menu-bar:hover .save-config .comp-toggle-switch {
+	opacity: 1;
+}
+
+#session-sync[session='restore'] .session-toolbar .menu-bar .save-config {
+	display: none;
+}
+
+#session-sync[session='history'] .session-toolbar .menu-bar .save-config .comp-toggle-switch[windows] {
+	display: none;
+}
+
+#session-sync .session-toolbar .menu-bar .save-config .comp-toggle-switch {
+	height: 100%;
+	width: 4em;
+	margin: 0;
+	float: right;
+}
+
+#session-sync .session-toolbar .menu-bar .save-config .comp-toggle-switch .label {
+	display: none;
+}
+
+#session-sync .session-toolbar .menu-bar .save-config .comp-toggle-switch .switch {
+	width: 2.6em;
+	height: 100%;
+	background-color: #40b740;
+	background-image: url('../images/icons/gear.png');
+	background-size: 1.6em;
+	background-repeat: no-repeat;
+	background-position: center right 0.2em;
+	border-radius: 2em;
+	display: block;
+
+	box-sizing: border-box;
+}
+
+#session-sync .session-toolbar .menu-bar .save-config .comp-toggle-switch .switch:after {
+	display: none;
+}
+
+#session-sync .session-toolbar .menu-bar .save-config .comp-toggle-switch .switch[state='false'] {
+	background-color: #bbb;
+	background-position: center left 0.2em;
+}
+
+#session-sync .session-toolbar .menu-bar .save-config .comp-toggle-switch[pin] .switch {
+	background-image: url('../images/icons/pin.png');
+}
+
+#session-sync .session-toolbar .menu-bar .save-config .comp-toggle-switch[pin-state] .switch {
+	background-image: url('../images/icons/pin2.png');
+}
+
+#session-sync .session-toolbar .menu-bar .save-config .comp-toggle-switch[windows] .switch {
+	background-image: url('../images/icons/stack.png');
+}

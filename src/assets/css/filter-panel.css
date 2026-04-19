@@ -36,7 +36,7 @@
 	margin: 10px 0;
 	height: 64px;
 	width: 100%;
-	background: url('images/icon64.png') center top no-repeat;
+	background: url('../images/icon64.png') center top no-repeat;
 }
 
 #session-sync .filter-panel .separator {

@@ -8,7 +8,7 @@
 	padding: 0;
 	display: flex;
 
-	background-image: url('images/sort.png');
+	background-image: url('../images/sort.png');
 	background-size: 20px;
 	background-repeat: no-repeat;
 	background-position: center center;
