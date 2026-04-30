@@ -40,7 +40,7 @@ export default defineConfig(() => {
 		},
 		manifest: {
 			name: 'Session Sync',
-			version: '3.2.3',
+			version: '3.2.6',
 			author: 'Gabriel Ivanica',
 			description:
 				'Save sessions as bookmarks and sync them through Firefox Sync (or any other sync engine).\nPowerful session management - organize, edit, change, save, restore, etc\n',
@@ -86,7 +86,8 @@ export default defineConfig(() => {
 				_execute_action: {
 					suggested_key: {
 						default: 'Ctrl+Shift+F'
-					}
+					},
+					description: 'Widget View'
 				},
 				session_sync_detach_tab: {
 					suggested_key: {
@@ -96,7 +97,7 @@ export default defineConfig(() => {
 				},
 				session_sync_detach_window: {
 					suggested_key: {
-						default: 'Ctrl+Shift+2'
+						default: 'Ctrl+Shift+F6'
 					},
 					description: 'Window View'
 				}
