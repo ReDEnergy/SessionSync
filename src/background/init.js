@@ -1,8 +1,10 @@
 import { SessionSync } from './main';
 import { SessionManagement } from './session-management';
 import { SessionAutoSave } from './session-history';
+import { FaviconService } from './favicon-service';
 
 export function initBackground() {
+	FaviconService.init();
 	SessionSync.init();
 	SessionManagement.init();
 	SessionAutoSave.init();
@@ -17,5 +19,5 @@ export function initBackground() {
 		browser.storage.local.set({ 'session.history.selected': null });
 	}
 
-	console.log('Session Sync Background script initialized.');
+	console.log('Session Sync -> background script initialized!');
 }

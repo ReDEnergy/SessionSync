@@ -29,7 +29,7 @@ export function SessionFolderEvents(container) {
 		try {
 			return target.getAttribute(attribute);
 		} catch (err) {
-			console.log(err);
+			console.error(err);
 			return null;
 		}
 	}

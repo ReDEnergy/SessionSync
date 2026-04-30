@@ -316,8 +316,7 @@ export const SessionSyncUI = function SessionSyncUI() {
 		var mark = SessionSyncModel.bookmarks[bookmarkID];
 		BookmarkManager.openBookmark(mark.url, {
 			title: mark.title,
-			mode: 'newTab',
-			favicon: true
+			mode: 'newTab'
 		});
 	});
 
@@ -325,8 +324,7 @@ export const SessionSyncUI = function SessionSyncUI() {
 		var mark = SessionSyncModel.bookmarks[bookmarkID];
 		BookmarkManager.openBookmark(mark.url, {
 			title: mark.title,
-			mode: 'activeTab',
-			favicon: true
+			mode: 'activeTab'
 		});
 	});
 
@@ -334,8 +332,7 @@ export const SessionSyncUI = function SessionSyncUI() {
 		var mark = SessionSyncModel.bookmarks[bookmarkID];
 		BookmarkManager.openBookmark(mark.url, {
 			title: mark.title,
-			mode: 'newWindow',
-			favicon: true
+			mode: 'newWindow'
 		});
 	});
 

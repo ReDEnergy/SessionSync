@@ -305,7 +305,7 @@ export const SessionSyncModel = (function SessionSync() {
 				message: 'Success'
 			});
 		} catch (err) {
-			console.log(err);
+			console.error(err);
 			WindowEvents.emitLocal('Notification', {
 				message: 'Error while saving bookmark'
 			});

@@ -92,16 +92,15 @@ const Config = (function () {
 				}
 			},
 			function onError(error) {
-				console.log(error);
+				console.error(error);
 			}
 		);
 	};
 
 	var get = function get(key) {
 		if (localSettings[key] === undefined) {
-			console.log('[ERROR] Settings key [' + key + '] was not found!');
+			console.error('[ERROR] Settings key [' + key + '] was not found!');
 		}
-		// console.log(key, localSettings[key]);
 		return localSettings[key];
 	};
 

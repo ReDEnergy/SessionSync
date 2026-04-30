@@ -76,21 +76,20 @@ const FaviconService = (function FaviconService() {
 		}
 	};
 
-	var initConfig = function initConfig() {
+	var init = function init() {
 		browser.storage.local.get(serviceStatusKey).then(function (obj) {
 			serviceStatus = obj[serviceStatusKey];
 		});
+
+		browser.storage.onChanged.addListener(function onChange(object) {
+			if (object[serviceStatusKey]) {
+				serviceStatus = object[serviceStatusKey].newValue;
+			}
+		});
 	};
 
-	browser.storage.onChanged.addListener(function onChange(object) {
-		if (object[serviceStatusKey]) {
-			serviceStatus = object[serviceStatusKey].newValue;
-		}
-	});
-
-	initConfig();
-
 	return {
+		init: init,
 		checkTabFaviconSaved: checkTabFaviconSaved
 	};
 })();

@@ -44,7 +44,7 @@ export const BookmarkManager = (function BookmarkManager() {
 	var getFolderBookmarks = function getFolderBookmarks(folderID, callback) {
 		var result = browser.bookmarks.getChildren(folderID);
 		result.then(callback, function fail() {
-			console.log('Error getting bookmarks from folder ID: ', folderID);
+			console.error('Error getting bookmarks from folder ID: ', folderID);
 		});
 	};
 
@@ -63,7 +63,6 @@ export const BookmarkManager = (function BookmarkManager() {
 		browser.runtime.sendMessage({ event: 'save-favicon', tab: tab });
 
 		var title = tab.title;
-		console.log('tab', tab);
 
 		if (tab.groupId !== undefined && tab.groupId > -1 && !tab.groupTitle && typeof browser !== 'undefined' && browser.tabGroups) {
 			try {
@@ -71,7 +70,7 @@ export const BookmarkManager = (function BookmarkManager() {
 				tab.groupTitle = group.title;
 				tab.groupColor = group.color;
 			} catch (e) {
-				console.log('Error fetching tab group info', e);
+				console.error('Error fetching tab group info', e);
 			}
 		}
 
@@ -101,6 +100,8 @@ export const BookmarkManager = (function BookmarkManager() {
 			url: url
 		};
 
+		info.favicon = true;
+
 		if (AppConfig.isPanel() == false) {
 			options.active = false;
 			if (info.mode === 'activeTab') {
@@ -121,8 +122,6 @@ export const BookmarkManager = (function BookmarkManager() {
 			if (bookmarkInfo.properties.group) {
 				info.group = bookmarkInfo.properties.group;
 			}
-
-			delete options.title;
 		}
 
 		browser.runtime.sendMessage({ event: 'open-tab', options: options, info: info });
@@ -148,8 +147,6 @@ export const BookmarkManager = (function BookmarkManager() {
 	};
 
 	var openHistoryTab = function openHistoryTab(tab, mode) {
-		console.log('openHistoryTab', tab, mode);
-
 		var options = {
 			url: tab.url
 		};

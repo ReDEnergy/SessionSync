@@ -8,7 +8,6 @@ export const HistoryManager = (function HistoryManager() {
 
 	var selectSession = function selectSession(sessionInfo) {
 		selectedSessions = sessionInfo;
-		console.log('selectedSessions', selectedSessions);
 	};
 
 	var getSelectedSession = function getSelectedSession() {

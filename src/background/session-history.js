@@ -38,7 +38,7 @@ BrowserSession.prototype.update = async function update() {
 				const groups = await browser.tabGroups.query({});
 				groups.forEach((g) => groupMap.set(g.id, g));
 			} catch (e) {
-				console.log('Error fetching groups in history update', e);
+				console.error('Error fetching groups in history update', e);
 			}
 		}
 
@@ -85,7 +85,7 @@ BrowserSession.prototype.update = async function update() {
 			browser.storage.local.set({ [storageKey.active]: this });
 		}
 	} catch (err) {
-		console.log('Error in BrowserSession.update', err);
+		console.error('Error in BrowserSession.update', err);
 	}
 };
 

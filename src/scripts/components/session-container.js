@@ -305,8 +305,6 @@ export class SessionContainer {
 		this.selectedHistorySession = sessionInfo;
 		HistoryManager.selectSession(sessionInfo);
 
-		console.log('sessionInfo', sessionInfo);
-
 		var tabIndex = 0;
 		var windowIndex = 0;
 

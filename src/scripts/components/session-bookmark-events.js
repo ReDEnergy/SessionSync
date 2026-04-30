@@ -31,7 +31,7 @@ export function SessionBookmarkEvents(container) {
 		try {
 			return target.getAttribute(attribute);
 		} catch (err) {
-			console.log(err);
+			console.error(err);
 			return null;
 		}
 	}
@@ -197,8 +197,7 @@ export function SessionBookmarkEvents(container) {
 							var mark = SessionSyncModel.bookmarks[bookmarkID];
 							BookmarkManager.openBookmark(mark.url, {
 								title: mark.title,
-								mode: BookmarkManager.getOpenMode(0),
-								favicon: true
+								mode: BookmarkManager.getOpenMode(0)
 							});
 						}
 					} else {
@@ -288,8 +287,7 @@ export function SessionBookmarkEvents(container) {
 					var mark = SessionSyncModel.bookmarks[bookmarkID];
 					BookmarkManager.openBookmark(mark.url, {
 						title: mark.title,
-						mode: BookmarkManager.getOpenMode(1),
-						favicon: true
+						mode: BookmarkManager.getOpenMode(1)
 					});
 					return;
 				}

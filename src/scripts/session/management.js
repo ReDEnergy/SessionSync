@@ -307,7 +307,7 @@ export const SessionManager = (function SessionManager() {
 				});
 			},
 			function onError(msg) {
-				console.log(msg);
+				console.error(msg);
 			}
 		);
 	};

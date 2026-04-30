@@ -46,7 +46,7 @@ export const SessionManagement = (function SessionManagement() {
 						tryCreate(false);
 					} else {
 						if (onError) onError(err);
-						else console.log('createTab error:', err);
+						else console.error('createTab error:', err);
 					}
 				}
 			);
@@ -93,10 +93,7 @@ export const SessionManagement = (function SessionManagement() {
 	};
 
 	var openTab = async function openTab(options, info) {
-		var checkFavicon = options.favicon === true ? FaviconService.checkTabFaviconSaved : () => {};
-		delete options.favicon;
-
-		console.log('openTab', options, info);
+		var checkFavicon = info.favicon === true ? FaviconService.checkTabFaviconSaved : () => {};
 
 		switch (info.mode) {
 			case 'newTab': {
@@ -183,7 +180,7 @@ export const SessionManagement = (function SessionManagement() {
 				const groupId = await browser.tabs.group({ tabIds, createProperties: { windowId } });
 				await browser.tabGroups.update(groupId, { title, color });
 			} catch (e) {
-				console.log('Error assigning tab group during restore:', e);
+				console.error('Error assigning tab group during restore:', e);
 			}
 		}
 	}
@@ -195,7 +192,6 @@ export const SessionManagement = (function SessionManagement() {
 
 		bookmarks.forEach(function (bookmark) {
 			const info = BookmarkProperties.parseTitle(bookmark.title);
-			console.log(info.properties);
 
 			// Wrap createTab in a Promise so we can await the created tab ID
 			const tabPromise = new Promise((resolve) => {
@@ -293,7 +289,7 @@ export const SessionManagement = (function SessionManagement() {
 							}
 						},
 						function onError() {
-							console.log('strage error');
+							console.error('strage error');
 						}
 					);
 				} else {
@@ -301,7 +297,7 @@ export const SessionManagement = (function SessionManagement() {
 				}
 			},
 			function fail() {
-				console.log('Error getting bookmarks from folder ID: ', folderID);
+				console.error('Error getting bookmarks from folder ID: ', folderID);
 			}
 		);
 	};
