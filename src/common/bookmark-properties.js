@@ -11,10 +11,12 @@ export class BookmarkProperties {
 	// ------------------------------------------------------------------------
 	// Public properties
 
+	static defaultContainer = 'firefox-default';
+
 	static encode(tab) {
 		var properties = {};
 
-		if (tab.cookieStoreId) {
+		if (tab.cookieStoreId && tab.cookieStoreId !== BookmarkProperties.defaultContainer) {
 			properties.container = tab.cookieStoreId;
 		}
 
@@ -27,6 +29,11 @@ export class BookmarkProperties {
 
 		if (tab.pinned) {
 			properties.pinned = 1;
+		}
+
+		// If properties object is empty, don't add the marker to the title
+		if (Object.keys(properties).length === 0) {
+			return '';
 		}
 
 		return ' [' + JSON.stringify(properties) + ']';

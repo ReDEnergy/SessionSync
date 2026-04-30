@@ -8,7 +8,6 @@ export const SessionManagement = (function SessionManagement() {
 	var lazyLoading = false;
 	var windowsTabsToKill = [];
 
-	const defaultContainer = 'firefox-default';
 	var reverseOrderKey = 'restore.reverse.order';
 	var reverseOrder = false;
 
@@ -127,7 +126,7 @@ export const SessionManagement = (function SessionManagement() {
 				const tab = await browser.tabs.get(tabs[0].id);
 
 				if (
-					(options.cookieStoreId == undefined && tab.cookieStoreId == defaultContainer) ||
+					(options.cookieStoreId == undefined && tab.cookieStoreId == BookmarkProperties.defaultContainer) ||
 					tab.cookieStoreId === options.cookieStoreId
 				) {
 					delete options.cookieStoreId;
