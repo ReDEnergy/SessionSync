@@ -40,7 +40,7 @@ export default defineConfig(() => {
 		},
 		manifest: {
 			name: 'Session Sync',
-			version: '3.2.6',
+			version: '3.3.0',
 			author: 'Gabriel Ivanica',
 			description:
 				'Save sessions as bookmarks and sync them through Firefox Sync (or any other sync engine).\nPowerful session management - organize, edit, change, save, restore, etc\n',
