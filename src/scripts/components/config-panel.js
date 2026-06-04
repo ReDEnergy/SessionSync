@@ -229,11 +229,16 @@ export function ConfigPanel() {
 
 		ToggleOptionConfig({
 			parent: section,
+			name: 'Slim scroll bar',
+			key: 'scroll.bar.slim',
+			type: 'switch'
+		});
+
+		ToggleOptionConfig({
+			parent: section,
 			type: 'switch',
 			name: 'Context menu icons',
-			key: 'context.menu.icons',
-			onState: 'Show',
-			offState: 'Disabled'
+			key: 'context.menu.icons'
 		});
 
 		ToggleOptionConfig({

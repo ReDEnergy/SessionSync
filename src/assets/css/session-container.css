@@ -71,8 +71,9 @@
 	flex: 1;
 }
 
-#session-sync .session-container .bookmarks:hover {
-	overflow-y: scroll;
+/* When scrollbar is enabled, use standard width to show it */
+#session-sync[scrollbar="wide"] .session-container .bookmarks {
+	width: 100%;
 }
 
 #session-sync .session-container .window-separator {

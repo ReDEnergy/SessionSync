@@ -44,6 +44,7 @@ const Config = (function () {
 		'restore.reverse.order': false,
 
 		'context.menu.icons': true,
+		'scroll.bar.slim': true,
 		'trashcan.hide': true,
 		'trashcan.hide-count': 0,
 		'undo.events': [],

@@ -45,6 +45,7 @@ export const SessionSyncUI = function SessionSyncUI() {
 	var DomElem = HTMLCreator();
 
 	document.body.setAttribute('panel', AppConfig.isPanel());
+	document.body.setAttribute('scrollbar', AppConfig.get('scroll.bar.slim'));
 	var content = document.getElementById('body');
 
 	// ------------------------------------------------------------------------
@@ -420,6 +421,10 @@ export const SessionSyncUI = function SessionSyncUI() {
 		document.body.style.height = height + 'px';
 	}
 
+	function setScrollbarType(value) {
+		document.body.setAttribute('scrollbar', value ? 'slim' : 'wide');
+	}
+
 	if (AppConfig.isPanel()) {
 		// Apply immediately from current config (handles Chrome popup where onChange
 		// events from setupConfig fire before these listeners are registered)
@@ -451,6 +456,9 @@ export const SessionSyncUI = function SessionSyncUI() {
 		e.preventDefault();
 		e.stopPropagation();
 	}
+
+	// Handle scrollbar setting
+	AppConfig.onChange('scroll.bar.slim', setScrollbarType);
 
 	document.body.addEventListener('contextmenu', preventDefault);
 	document.body.addEventListener('mousedown', function (e) {
